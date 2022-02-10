@@ -34,8 +34,8 @@ export let keyboardBinding = (prop: KeyboardBindingProp): Remover => {
     onKeydown("Home", act.pageLeft)
     onKeydown("End", act.pageRight)
 
-    onKeydown("[", act.halfSpeed)
-    onKeydown("]", act.doubleSpeed)
+    onKeydown("[", act.increaseSpeed)
+    onKeydown("]", act.decreaseSpeed)
 
     onKeydown("{", act.gotoMaxLeft)
     onKeydown("|", act.gotoCenter)

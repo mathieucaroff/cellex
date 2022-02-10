@@ -66,7 +66,7 @@ function main() {
         context.updatePosition((position, state) => {
             position.posS = xy.x
             if (!state.play) {
-                position.posT = xy.y
+                position.posT = Math.max(xy.y, 0)
             }
         })
     })

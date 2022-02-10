@@ -22,13 +22,16 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
             return
         }
 
-        // move current image
-        let baseX = Math.max(deltaX, 0)
-        let baseY = Math.max(deltaY, 0)
-        let imageData = ctx.getImageData(baseX, baseY, width, height)
-        // ctx.fillStyle = "#000000"
-        // ctx.fillRect(0, 0, width, height)
-        ctx.putImageData(imageData, Math.max(-deltaX, 0), Math.max(-deltaY, 0))
+        try {
+            // move current image
+            let imageData = ctx.getImageData(
+                Math.max(deltaX, 0),
+                Math.max(deltaY, 0),
+                width - Math.abs(deltaX),
+                height - Math.abs(deltaY),
+            )
+            ctx.putImageData(imageData, Math.max(-deltaX, 0), Math.max(-deltaY, 0))
+        } catch (e) {}
 
         // create new imagery where there's none
         if (deltaX != 0) {

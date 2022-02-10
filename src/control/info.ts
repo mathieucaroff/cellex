@@ -53,8 +53,7 @@ export let createInfo = (state: State): Info => {
         /** ** Horizontal ** **/
         /** Sizes */
         horizontalPage() {
-            // todo
-            return Math.floor((state.posS % 1) * (state.canvasSize.width / state.zoom))
+            return state.canvasSize.width
         },
         horizontalMove() {
             return Math.floor(info.horizontalPage() / 12)
@@ -62,17 +61,13 @@ export let createInfo = (state: State): Info => {
 
         /** Positions */
         maxLeft() {
-            return 0
+            return 1 - state.topology.width / 2
         },
         maxRight() {
-            // todo
-            let pixel6 = state.topology.width * state.zoom
-            let difference = pixel6 - state.canvasSize.width * 6
-            let right = Math.floor((difference * (state.posS % 1)) / state.zoom)
-            return right
+            return state.topology.width / 2
         },
         center() {
-            return Math.floor((info.maxLeft() + info.maxRight()) / 2)
+            return 0
         },
         /** Position tests */
         pockingLeft() {
@@ -102,7 +97,7 @@ export let createInfo = (state: State): Info => {
         /** ** Vertical ** **/
         /** Sizes */
         verticalPage() {
-            return Math.floor((state.posT % 1) * (state.canvasSize.height / state.zoom) * 6)
+            return state.canvasSize.height
         },
         verticalMove() {
             return Math.floor(info.verticalPage() / 12)
