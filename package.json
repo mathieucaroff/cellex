@@ -1,0 +1,34 @@
+{
+   "name": "recell",
+   "version": "0.1.0",
+   "description": "Unidimensional cellular automaton explorer to highlight their unique properties",
+   "repository": "https://github.com/mathieucaroff/recell",
+   "author": "Mathieu CAROFF <mathieu.caroff@free.fr>",
+   "license": "NTP",
+   "scripts": {
+      "build": "parcel build src/www/recell.html --public-url recell.d",
+      "start": "parcel src/www/recell.html"
+   },
+   "devDependencies": {
+      "@types/nearley": "^2.11.1",
+      "@types/node": "^13.1.1",
+      "@types/react": "^17.0.39",
+      "@types/react-dom": "^17.0.11",
+      "prettier": "^2.0.5",
+      "typescript": "4.5.5"
+   },
+   "dependencies": {
+      "antd": "^4.18.6",
+      "js-xxhash": "^1.0.4",
+      "nearley": "^2.19.1",
+      "parcel": "^2.2.1",
+      "parcel-plugin-nearley": "^1.0.0",
+      "react": "^17.0.2",
+      "react-dom": "^17.0.2",
+      "rehype-react": "^4.0.1",
+      "remark-parse": "^7.0.2",
+      "remark-rehype": "^5.0.0",
+      "rxjs": "^6.5.4",
+      "unified": "^8.4.2"
+   }
+}

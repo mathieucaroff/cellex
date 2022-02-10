@@ -1,0 +1,18 @@
+# Folders
+/*/
+
+!/contribute/
+!/doc/
+!/src/
+
+# Files
+/.*
+*.log
+*.js
+
+!/.editorconfig
+!/.env
+!/.gitignore
+!/.now.json
+!/.prettier*
+!/.yarnrc
