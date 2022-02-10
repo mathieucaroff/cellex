@@ -12,6 +12,7 @@ export let colorMap = [
 export function fillImage(
     engine: Engine,
     ctx: CanvasRenderingContext2D,
+    canvasWidth: number,
     width: number,
     height: number,
     baseX: number,
@@ -34,7 +35,7 @@ export function fillImage(
     line = engine.getLine(y)
     for (let k = 0; k < width * height; k += step) {
         y = posY + baseY + Math.floor(k / width)
-        x = posX + baseX + Math.floor(line.length / 4) + (k % width)
+        x = posX + baseX + Math.floor((line.length - canvasWidth) / 2) + (k % width)
         if (currentY != y) {
             line = engine.getLine(y)
             currentY = y

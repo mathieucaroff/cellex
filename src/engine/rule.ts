@@ -68,7 +68,7 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
         transitionFunction,
     }
 
-    console.log(ruleName(me), me)
+    location.hash = ruleName(me)
 
     return me
 }
@@ -77,10 +77,10 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
 let thousandSplit = (integer: string) => {
     integer = "" + integer
     let cut = ((integer.length - 1) % 9) + 1
-    let resultStart = integer.slice(0, cut)
+    let resultStart = integer.slice(0, cut).replace(/([0-9]{3})($|_)/g, "_$1$2")
     let resultEnd = integer.slice(cut).replace(/([0-9]{9})/g, "_$1")
-    let result = resultStart + resultEnd
-    return result.replace(/([0-9]{3})/g, "_$1")
+    let result = resultStart + resultEnd.replace(/([0-9]{3})/g, "_$1")
+    return result
 }
 
 // ruleName gives a unique string name to a rule

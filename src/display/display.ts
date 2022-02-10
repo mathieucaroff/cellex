@@ -7,7 +7,7 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
     let engine: Engine
 
     function init() {
-        fillImage(engine, ctx, canvas.width, canvas.height, 0, 0, 0, 0, 1) // 148/4
+        fillImage(engine, ctx, canvas.width, canvas.width, canvas.height, 0, 0, 0, 0, 1) // 148/4
     }
 
     let lastX: number = 0
@@ -18,7 +18,7 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
         let deltaY = y - lastY
 
         if (redraw) {
-            fillImage(engine, ctx, width, height, 0, 0, x, y, 1)
+            fillImage(engine, ctx, width, width, height, 0, 0, x, y, 1)
             return
         }
 
@@ -38,14 +38,14 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
             // Vertical empty band
             let imageWidth = Math.abs(deltaX)
             let baseX = deltaX > 0 ? width - deltaX : 0
-            fillImage(engine, ctx, imageWidth, height, baseX, 0, x, y, 1)
+            fillImage(engine, ctx, width, imageWidth, height, baseX, 0, x, y, 1)
         }
 
         if (deltaY != 0) {
             // Horizontal empty band
             let imageHeight = Math.abs(deltaY)
             let baseY = deltaY > 0 ? height - deltaY : 0
-            fillImage(engine, ctx, width, imageHeight, 0, baseY, x, y, 1)
+            fillImage(engine, ctx, width, width, imageHeight, 0, baseY, x, y, 1)
         }
 
         lastX = x
@@ -55,8 +55,8 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
     context
         .use(({ zoom, canvasSize, topology }) => ({ zoom, canvasSize, topology }))
         .for(({ zoom, canvasSize, topology }) => {
+            topology.width = Math.floor(canvasSize.width)
             canvas.width = canvasSize.width
-            topology.width = canvasSize.width * 2
             canvas.height = canvasSize.height
         })
 

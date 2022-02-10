@@ -1,5 +1,5 @@
 // import { elementaryRule, nAryRule, ternaryRule } from "../engine/rule"
-import { elementaryRule } from "../engine/rule"
+import { elementaryRule, nAryRule, parseRule } from "../engine/rule"
 import { Size, State } from "../type"
 
 export let defaultState = (): State => {
@@ -21,7 +21,7 @@ export let defaultState = (): State => {
     }
 
     return {
-        rule: elementaryRule(73),
+        rule: location.hash ? parseRule(location.hash.slice(1)) : nAryRule(),
         // theme: "dark",
 
         speed: 6,
@@ -60,8 +60,8 @@ export let defaultState = (): State => {
 }
 
 let canvasSizeAdvice = (w: Window): Size => {
-    let fx = w.innerWidth * 0.99 - 50
-    let fy = Math.max(w.innerHeight * 0.95 - 100, 60)
+    let fx = w.innerWidth * 0.99
+    let fy = Math.max(w.innerHeight * 0.95 - 120, 60)
     let width = Math.ceil(fx)
     let height = Math.ceil(Math.min(width, fy))
     return { width, height }

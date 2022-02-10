@@ -11,6 +11,7 @@ import { keyboardBinding } from "./control/keyboardBinding"
 import { createInfo } from "./control/info"
 import { createAct } from "./control/act"
 import { createDragManager } from "./control/dragManager"
+import { nAryRule, parseRule } from "./engine/rule"
 
 function main() {
     let div = document.createElement("div")
@@ -26,6 +27,32 @@ function main() {
     let context = createContext(state)
 
     let appRoot = document.getElementById("appRoot")!
+    // random
+    let buttonRandomRule = document.createElement("button")
+    buttonRandomRule.textContent = "🎲 random rule"
+    buttonRandomRule.addEventListener(
+        "click",
+        (ev) => {
+            context.updateState((state) => {
+                state.rule = nAryRule()
+            })
+        },
+        true,
+    )
+    appRoot.appendChild(buttonRandomRule)
+
+    let buttonRandomSeed = document.createElement("button")
+    buttonRandomSeed.textContent = "🎲 random seed"
+    buttonRandomSeed.addEventListener(
+        "click",
+        (ev) => {
+            context.updateState((state) => {
+                state.seed = Math.random().toString(36).slice(2)
+            })
+        },
+        true,
+    )
+    appRoot.appendChild(buttonRandomSeed)
 
     // /\ control
     let info = createInfo(state)
@@ -36,11 +63,21 @@ function main() {
         keyKb: createKeyboardManager({
             element: document.body,
             evPropName: "key",
+            capture: false,
         }),
         codeKb: createKeyboardManager({
             element: document.body,
             evPropName: "code",
+            capture: false,
         }),
+    })
+
+    window.addEventListener("hashchange", () => {
+        if (location.hash.length > 1) {
+            context.updateState((state) => {
+                state.rule = parseRule(location.hash.slice(1))
+            })
+        }
     })
     // \/ control
 
@@ -48,10 +85,11 @@ function main() {
     let display = createDisplay(context, canvas)
     context
         .use(({ rule, seed, topology }) => ({ rule, seed, topology }))
-        .for(({ rule, seed, topology }) => {
+        .for(({ rule, seed, topology }, state) => {
             let randomMapper = createRandomMapper({ seedString: seed })
             let engine = createAutomatonEngine(rule, topology, randomMapper)
             display.setEngine(engine)
+            display.draw(state.posS, state.posT, true)
         })
 
     let dragManager = createDragManager({
@@ -64,7 +102,11 @@ function main() {
 
     dragManager.onMove((xy) => {
         context.updatePosition((position, state) => {
-            position.posS = xy.x
+            if (state.topology.width > state.canvasSize.width) {
+                position.posS = xy.x
+            } else {
+                position.posS = 0
+            }
             if (!state.play) {
                 position.posT = Math.max(xy.y, 0)
             }

@@ -3,6 +3,7 @@ import { Remover } from "../type"
 export interface KeyboardManagerProp {
     element: Element
     evPropName: keyof KeyboardEvent
+    capture: boolean
 }
 
 export interface KeyboardManager {
@@ -11,7 +12,7 @@ export interface KeyboardManager {
 }
 
 export let createKeyboardManager = (prop: KeyboardManagerProp) => {
-    let { element, evPropName } = prop
+    let { element, evPropName, capture } = prop
 
     type EventMap = Record<string, (() => void) | undefined>
     let onKeydownMap: EventMap = {}
@@ -29,12 +30,12 @@ export let createKeyboardManager = (prop: KeyboardManagerProp) => {
     let handleKeydown = eventHandler("down", onKeydownMap)
     let handleKeyup = eventHandler("up", onKeyupMap)
 
-    element.addEventListener("keydown", handleKeydown, true)
-    element.addEventListener("keyup", handleKeyup, true)
+    element.addEventListener("keydown", handleKeydown, capture)
+    element.addEventListener("keyup", handleKeyup, capture)
 
     let removeAll = () => {
-        element.removeEventListener("keydown", handleKeydown, true)
-        element.removeEventListener("keyup", handleKeyup, true)
+        element.removeEventListener("keydown", handleKeydown, capture)
+        element.removeEventListener("keyup", handleKeyup, capture)
     }
 
     return {

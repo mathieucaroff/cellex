@@ -23,6 +23,7 @@ export let createContext = (state: State) => {
                         propertyUtilizationShelf.push([selector, deepCopy(selection), runFunction])
                         done = true
                     }
+                    console.log("useState.for:", propertyUtilizationShelf.length, "functions")
                 },
             }
         },
@@ -42,6 +43,7 @@ export let createContext = (state: State) => {
         usePosition(runFunction: (pos: StatePosition, st: State) => unknown) {
             runFunction(state, state)
             positionShelf.push(runFunction)
+            console.log("usePosition:", positionShelf.length, "functions")
         },
         updatePosition(changer: (p: StatePosition, st: State) => void) {
             changer(state, state)
