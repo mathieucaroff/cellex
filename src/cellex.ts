@@ -38,7 +38,7 @@ function main() {
     // \/ canvas
 
     // /\ control
-    keyboardBinding({
+    let keyboardBindingReference = keyboardBinding({
         act,
         keyKb: createKeyboardManager({
             element: document.body,
@@ -69,10 +69,11 @@ function main() {
 
     let appRoot = document.getElementById("appRoot")!
 
+    let helpList = keyboardBindingReference.getHelp()
     let span = document.createElement("span")
     appRoot.appendChild(span)
     context.usePosition(() => {
-        ReactDOM.render(ConfigurationPopoverButton({ act, context }), span)
+        ReactDOM.render(ConfigurationPopoverButton({ act, context, helpList }), span)
     })
 
     // /\ display

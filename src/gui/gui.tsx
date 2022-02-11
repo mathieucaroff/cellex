@@ -4,15 +4,17 @@ import { Act } from "../control/act"
 import { Context } from "../state/context"
 import { ReactContext } from "../state/reactcontext"
 import { ConfigurationContent } from "./configuration"
+import { HelpContent } from "./help"
 import { ThemeContent } from "./theme"
 
 interface ConfigurationPopoverButtonProp {
     act: Act
     context: Context
+    helpList: [string, string][]
 }
 
 export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) => {
-    let { act, context } = prop
+    let { act, context, helpList } = prop
     return (
         <ReactContext.Provider value={{ act, context }}>
             <PageHeader
@@ -25,7 +27,7 @@ export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) =
             <Divider type="vertical" />
             <Popover
                 placement="bottomLeft"
-                title={"Configuration"}
+                title="Configuration"
                 content={<ConfigurationContent />}
                 trigger="click"
             >
@@ -33,11 +35,19 @@ export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) =
             </Popover>
             <Popover
                 placement="bottomLeft"
-                title={"Theme"}
+                title="Theme"
                 content={<ThemeContent />}
                 trigger="click"
             >
                 <Button>Theme</Button>
+            </Popover>
+            <Popover
+                placement="bottomLeft"
+                title="Help"
+                content={<HelpContent helpList={helpList} />}
+                trigger="click"
+            >
+                <Button>?</Button>
             </Popover>
         </ReactContext.Provider>
     )
