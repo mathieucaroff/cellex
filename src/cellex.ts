@@ -32,6 +32,7 @@ function main() {
 
     // /\ canvas
     div = document.createElement("div")
+    div.tabIndex = 0
     let canvas = document.createElement("canvas")
     document.body.appendChild(div)
     div.appendChild(canvas)
@@ -41,12 +42,12 @@ function main() {
     let keyboardBindingReference = keyboardBinding({
         act,
         keyKb: createKeyboardManager({
-            element: document.body,
+            element: div,
             evPropName: "key",
             capture: false,
         }),
         codeKb: createKeyboardManager({
-            element: document.body,
+            element: div,
             evPropName: "code",
             capture: false,
         }),
