@@ -71,7 +71,6 @@ export let createAutomatonEngine = (
 
     reset()
 
-    let memory: Uint8Array[] = []
     let nextLine = () => {
         // initialize neighborhoodValue
         let neighborhoodValue = 0
@@ -124,16 +123,7 @@ export let createAutomatonEngine = (
         currentT += 1
     }
 
-    let count = 0
-    let lineRequestHistory: number[] = []
     return {
-        start() {
-            count = 0
-            lineRequestHistory = []
-        },
-        stop() {
-            console.log("computed line count:", count, "y history:", lineRequestHistory)
-        },
         getLine: (t: number): Uint8Array => {
             if (t < currentT) {
                 if (t < 0) {
@@ -144,8 +134,6 @@ export let createAutomatonEngine = (
             }
             while (currentT < t) {
                 nextLine()
-                lineRequestHistory.push(t)
-                count += 1
             }
             return lineA
         },

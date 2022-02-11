@@ -1,4 +1,4 @@
-import { Button, Divider, PageHeader, Popover } from "antd"
+import { Button, PageHeader, Popover } from "antd"
 
 import { Act } from "../control/act"
 import { Context } from "../state/context"
@@ -22,8 +22,7 @@ export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) =
                 title="Cellex"
                 subTitle="Monodimensional Cellular Automaton Explorer"
             />
-            ,
-            <Divider type="vertical" />
+
             <Popover
                 placement="bottomLeft"
                 title="Configuration"
