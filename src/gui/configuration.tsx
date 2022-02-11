@@ -48,7 +48,12 @@ export let ConfigurationContent = () => {
                 />
             </li>
             <li>
-                Speed: <OxInputNumber path="speed" />
+                Speed:
+                <Button icon={"/2"} onClick={act.halfSpeed} />
+                <Button icon={"-"} onClick={act.decreaseSpeed} />
+                <OxInputNumber path="speed" />
+                <Button icon={"+"} onClick={act.increaseSpeed} />
+                <Button icon={"x2"} onClick={act.doubleSpeed} />
             </li>
             <li>
                 Space position: <OxInputNumber path="posS" />
