@@ -30,7 +30,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     let onKeydown = onKeydownForKb(keyKb)
     let codeOnKeydown = onKeydownForKb(codeKb)
 
-    onKeydown(" ", act.togglePlay, "[space]", "toogle play")
+    onKeydown(" ", act.togglePlay, "[space]", "toggle play / pause")
     onKeydown("Enter", act.singleStep, "[enter]", "process one time generation")
 
     onKeydown("ArrowLeft", act.goLeft, "[left]", "move camera left")

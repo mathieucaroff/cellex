@@ -19,7 +19,6 @@ export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) =
         <ReactContext.Provider value={{ act, context }}>
             <PageHeader
                 className="site-page-header"
-                onBack={() => null}
                 title="Cellex"
                 subTitle="Monodimensional Cellular Automaton Explorer"
             />

@@ -72,9 +72,9 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
 // thousandSplit add billion markers (__) and thousand markers (_)
 let thousandSplit = (integer: string) => {
     let reverse = integer.split("").reverse().join("")
-    reverse = reverse.replace(/([0-9]{9})/g, "_$1")
-    reverse = reverse.replace(/([0-9]{3})/g, "_$1")
-    reverse = reverse.replace(/^_+/, "")
+    reverse = reverse.replace(/([0-9]{9})/g, "$1_")
+    reverse = reverse.replace(/([0-9]{3})/g, "$1_")
+    reverse = reverse.replace(/_+$/, "")
     return reverse.split("").reverse().join("")
 }
 
