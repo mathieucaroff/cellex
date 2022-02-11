@@ -11,6 +11,7 @@ export interface Info {
     maxLeft(): number
     maxRight(): number
     center(): number
+    isBigEnough(): number
     pockingLeft(): boolean
     pockingRight(): boolean
 
@@ -61,13 +62,16 @@ export let createInfo = (state: State): Info => {
 
         /** Positions */
         maxLeft() {
-            return 1 - state.topology.width / 2
+            return Math.floor((state.canvasSize.width - state.topology.width) / 2)
         },
         maxRight() {
-            return state.topology.width / 2
+            return Math.ceil((state.topology.width - state.canvasSize.width) / 2)
         },
         center() {
             return 0
+        },
+        isBigEnough() {
+            return state.canvasSize.width < state.topology.width
         },
         /** Position tests */
         pockingLeft() {

@@ -1,3 +1,7 @@
+import * as ReactDOM from "react-dom"
+
+import "antd/dist/antd.css"
+
 import { githubCornerHTML } from "./lib/githubCorner"
 import * as packageInfo from "../package.json"
 import { createDisplay } from "./display/display"
@@ -11,23 +15,29 @@ import { keyboardBinding } from "./control/keyboardBinding"
 import { createInfo } from "./control/info"
 import { createAct } from "./control/act"
 import { createDragManager } from "./control/dragManager"
-import { nAryRule, parseRule } from "./engine/rule"
+import { nAryRule, parseRule, ruleName } from "./engine/rule"
+import { ConfigurationPopoverButton } from "./gui/gui"
 
 function main() {
+    // /\ github corner / package
     let div = document.createElement("div")
     div.innerHTML = githubCornerHTML(packageInfo.repository, packageInfo.version)
     document.body.appendChild(div)
-
-    div = document.createElement("div")
-    let canvas = document.createElement("canvas")
-    document.body.appendChild(div)
-    div.appendChild(canvas)
+    // \/ canvas
 
     let state = defaultState()
     let context = createContext(state)
 
+    // /\ canvas
+    div = document.createElement("div")
+    let canvas = document.createElement("canvas")
+    document.body.appendChild(div)
+    div.appendChild(canvas)
+    // \/ canvas
+
     let appRoot = document.getElementById("appRoot")!
-    // random
+
+    // random rule
     let buttonRandomRule = document.createElement("button")
     buttonRandomRule.textContent = "🎲 random rule"
     buttonRandomRule.addEventListener(
@@ -41,6 +51,7 @@ function main() {
     )
     appRoot.appendChild(buttonRandomRule)
 
+    // random seed
     let buttonRandomSeed = document.createElement("button")
     buttonRandomSeed.textContent = "🎲 random seed"
     buttonRandomSeed.addEventListener(
@@ -53,6 +64,15 @@ function main() {
         true,
     )
     appRoot.appendChild(buttonRandomSeed)
+
+    // configuration, react
+    let span = document.createElement("span")
+    appRoot.appendChild(span)
+    let refreshReactConfiguration = () => {
+        ReactDOM.render(ConfigurationPopoverButton({ context }), span)
+    }
+    context.use((state) => state).for(refreshReactConfiguration)
+    context.usePosition(refreshReactConfiguration)
 
     // /\ control
     let info = createInfo(state)
@@ -88,12 +108,21 @@ function main() {
         .for(({ rule, seed, topology }, state) => {
             let randomMapper = createRandomMapper({ seedString: seed })
             let engine = createAutomatonEngine(rule, topology, randomMapper)
+            location.hash = ruleName(rule)
             display.setEngine(engine)
             display.draw(state.posS, state.posT, true)
         })
 
+    context
+        .use(({ canvasSize }) => ({ canvasSize }))
+        .for(({ canvasSize }, state) => {
+            canvas.width = canvasSize.width
+            canvas.height = canvasSize.height
+            display.draw(state.posS, state.posT, true)
+        })
+
     let dragManager = createDragManager({
-        element: document.documentElement,
+        element: canvas,
         getDisplayInit: () => {
             let xy = { x: state.posS, y: state.posT }
             return xy
@@ -102,18 +131,14 @@ function main() {
 
     dragManager.onMove((xy) => {
         context.updatePosition((position, state) => {
-            if (state.topology.width > state.canvasSize.width) {
-                position.posS = xy.x
-            } else {
-                position.posS = 0
-            }
+            position.posS = xy.x
+            act.fixPosition()
             if (!state.play) {
                 position.posT = Math.max(xy.y, 0)
             }
         })
     })
 
-    display.init()
     emitterLoop(requestAnimationFrame).link(() => {
         if (state.play) {
             context.updatePosition((position) => {

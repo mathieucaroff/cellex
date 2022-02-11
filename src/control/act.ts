@@ -12,19 +12,18 @@ export let createAct = (context: Context, info: Info) => {
 
     // //
 
-    let isBigEnough = () => info.maxLeft() <= info.maxRight()
     let fixLeft = () => {
-        if (info.pockingLeft() && isBigEnough()) {
+        if (info.pockingLeft() && info.isBigEnough()) {
             act.gotoMaxLeft()
         }
     }
     let fixRight = () => {
-        if (info.pockingRight() && isBigEnough()) {
+        if (info.pockingRight() && info.isBigEnough()) {
             act.gotoMaxRight()
         }
     }
     let fixPosition = () => {
-        if (isBigEnough()) {
+        if (info.isBigEnough()) {
             fixLeft()
             fixRight()
         } else {
@@ -139,6 +138,10 @@ export let createAct = (context: Context, info: Info) => {
             position.posS += info.horizontalPage()
             fixPosition()
         }),
+
+        fixPosition: () => {
+            fixPosition()
+        },
 
         /** Goto */
         gotoMaxLeft: posAction((position) => {

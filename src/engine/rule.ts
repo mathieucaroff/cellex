@@ -62,15 +62,11 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
         })
     }
 
-    let me = {
+    return {
         stateCount: Number(colorCount),
         neighborhoodSize: 3,
         transitionFunction,
     }
-
-    location.hash = ruleName(me)
-
-    return me
 }
 
 // thousandSplit add billion markers (__) and thousand markers (_)

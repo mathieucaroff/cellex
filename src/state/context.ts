@@ -52,6 +52,9 @@ export let createContext = (state: State) => {
                 f(state, state)
             })
         },
+        getState() {
+            return state
+        },
     }
 }
 

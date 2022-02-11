@@ -19,33 +19,32 @@ export function fillImage(
     baseY: number,
     posX: number,
     posY: number,
-    step: number,
 ) {
     let x: number
     let y: number
-    let currentY: number = -1
     let line: Uint8Array
     let imageData = ctx.createImageData(width, height)
 
     if (!engine) {
         return
     }
-    y = baseY
-    currentY = baseY
-    line = engine.getLine(y)
-    for (let k = 0; k < width * height; k += step) {
-        y = posY + baseY + Math.floor(k / width)
-        x = posX + baseX + Math.floor((line.length - canvasWidth) / 2) + (k % width)
-        if (currentY != y) {
-            line = engine.getLine(y)
-            currentY = y
-        }
-        if (x >= 0 && x < line.length) {
-            let color = colorMap[line[x]]
-            imageData.data[4 * k] = color.red
-            imageData.data[4 * k + 1] = color.green
-            imageData.data[4 * k + 2] = color.blue
-            imageData.data[4 * k + 3] = 255
+    for (let dy = 0; dy < height; dy += 1) {
+        y = posY + baseY + dy
+        line = engine.getLine(y)
+        for (let dx = 0; dx < width; dx += 1) {
+            x = Math.round(posX + baseX + dx + (line.length - canvasWidth) / 2)
+            if (x >= 0 && x < line.length) {
+                let color = colorMap[line[x]]
+                if (!color) {
+                    console.error(x, line[x])
+                    continue
+                }
+                let u = 4 * (dy * width + dx)
+                imageData.data[u] = color.red
+                imageData.data[u + 1] = color.green
+                imageData.data[u + 2] = color.blue
+                imageData.data[u + 3] = 255
+            }
         }
     }
 

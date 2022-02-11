@@ -50,9 +50,9 @@ export let defaultState = (): State => {
             borderLeft: { kind: "side", init: [], cycle: [roz] },
             borderRight: { kind: "side", init: [], cycle: [roz] },
         },
-        seed: location.hash,
+        seed: "_",
 
-        redraw: false,
+        redraw: true,
 
         // MDisplay
         canvasSize: canvasSizeAdvice(window),
