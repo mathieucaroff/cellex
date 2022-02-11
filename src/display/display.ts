@@ -7,7 +7,8 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
     let engine: Engine
 
     function init() {
-        fillImage(engine, ctx, canvas.width, canvas.width, canvas.height, 0, 0, 0, 0) // 148/4
+        let { colorMap } = context.getState()
+        fillImage(engine, ctx, canvas.width, canvas.width, canvas.height, 0, 0, 0, 0, colorMap) // 148/4
     }
 
     let lastX: number = 0
@@ -18,7 +19,7 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
         let deltaY = y - lastY
 
         if (redraw) {
-            fillImage(engine, ctx, width, width, height, 0, 0, x, y)
+            fillImage(engine, ctx, width, width, height, 0, 0, x, y, context.getState().colorMap)
             lastX = x
             lastY = y
             return
@@ -40,14 +41,36 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
             // Vertical empty band
             let imageWidth = Math.abs(deltaX)
             let baseX = deltaX > 0 ? width - deltaX : 0
-            fillImage(engine, ctx, width, imageWidth, height, baseX, 0, x, y)
+            fillImage(
+                engine,
+                ctx,
+                width,
+                imageWidth,
+                height,
+                baseX,
+                0,
+                x,
+                y,
+                context.getState().colorMap,
+            )
         }
 
         if (deltaY != 0) {
             // Horizontal empty band
             let imageHeight = Math.abs(deltaY)
             let baseY = deltaY > 0 ? height - deltaY : 0
-            fillImage(engine, ctx, width, width, imageHeight, 0, baseY, x, y)
+            fillImage(
+                engine,
+                ctx,
+                width,
+                width,
+                imageHeight,
+                0,
+                baseY,
+                x,
+                y,
+                context.getState().colorMap,
+            )
         }
 
         lastX = x

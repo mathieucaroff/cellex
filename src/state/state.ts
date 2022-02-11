@@ -2,6 +2,17 @@
 import { elementaryRule, nAryRule, parseRule } from "../engine/rule"
 import { Size, State } from "../type"
 
+export let defaultColorMap = () => {
+    return [
+        { red: 0, green: 0, blue: 0 }, // 0 black
+        { red: 0, green: 127, blue: 200 }, // 1 blue
+        { red: 127, green: 127, blue: 0 }, // 2 yellow
+        { red: 160, green: 0, blue: 0 }, // 3 red
+        { red: 0, green: 160, blue: 0 }, // 4 green
+        { red: 127, green: 0, blue: 200 }, // 5 majenta
+    ]
+}
+
 export let defaultState = (): State => {
     let random10 = {
         cumulativeMap: [9, 10],
@@ -29,11 +40,12 @@ export let defaultState = (): State => {
         posT: 0,
         play: false,
         zoom: 1,
+        colorMap: defaultColorMap(),
         // selectedSimpleGenesis: "Random 10%",
         topology: {
             finitness: "finite",
             kind: "border",
-            width: 1800,
+            width: canvasSizeAdvice(window).width,
             genesis: {
                 kind: "top",
                 center: [one],

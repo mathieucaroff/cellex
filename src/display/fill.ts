@@ -1,13 +1,5 @@
 import { Engine } from "../engine/engine"
-
-export let colorMap = [
-    { red: 0, green: 0, blue: 0 }, // 0 black
-    { red: 0, green: 127, blue: 200 }, // 1 blue
-    { red: 127, green: 127, blue: 0 }, // 2 yellow
-    { red: 160, green: 0, blue: 0 }, // 3 red
-    { red: 0, green: 160, blue: 0 }, // 4 green
-    { red: 127, green: 0, blue: 200 }, // 5 majenta
-]
+import { Color } from "../type"
 
 export function fillImage(
     engine: Engine,
@@ -19,6 +11,7 @@ export function fillImage(
     baseY: number,
     posX: number,
     posY: number,
+    colorMap: Color[],
 ) {
     let x: number
     let y: number

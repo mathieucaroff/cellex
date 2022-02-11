@@ -12,6 +12,12 @@ export interface Size {
 
 export interface Rect extends Pair, Size {}
 
+export interface Color {
+    red: number
+    green: number
+    blue: number
+}
+
 export interface Rule {
     stateCount: number
     neighborhoodSize: number
@@ -31,6 +37,7 @@ export interface State {
     redraw: boolean
     play: boolean
     zoom: number
+    colorMap: Color[]
     // selectedSimpleGenesis: SimpleGenesis
     topology: TopologyFinite
     seed: string
