@@ -1,5 +1,5 @@
 import { Input, InputNumber } from "antd"
-import { CSSProperties, useContext } from "react"
+import { CSSProperties, useContext, useState } from "react"
 import { ReactContext } from "../state/reactcontext"
 import { State } from "../type"
 
@@ -35,6 +35,47 @@ export function OxInput(prop: OxInputProp) {
                 context.updateState((state) => {
                     let { piece, last } = readPath(path, state)
                     piece[last] = parse(ev.target.value)
+                })
+            }}
+        ></Input>
+    )
+}
+
+interface OxEnterInputProp {
+    path: string
+    disabled?: boolean
+    style?: CSSProperties
+    present?: (x: any) => string
+    parse?: (y: string) => any
+}
+
+export function OxEnterInput(prop: OxEnterInputProp) {
+    let { disabled, path, present = (x) => x, parse = (y) => y, style = {} } = prop
+    let { context } = useContext(ReactContext)
+    let { piece, last } = readPath(path, context.getState())
+    let [localValue, setValue] = useState(() => present(piece[last]))
+    return (
+        <Input
+            style={{ width: "70%", ...style }}
+            disabled={disabled}
+            value={localValue}
+            onChange={(ev) => {
+                let v = ev.target.value
+                setValue(v)
+                try {
+                    var p = parse(v)
+                } catch {}
+                if (present(p) === v) {
+                    context.updateState((state) => {
+                        piece[last] = parse(v)
+                    })
+                }
+            }}
+            onPressEnter={(ev) => {
+                context.updateState((state) => {
+                    let { piece, last } = readPath(path, state)
+                    piece[last] = parse(localValue)
+                    setValue(present(piece[last]))
                 })
             }}
         ></Input>

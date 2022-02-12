@@ -4,7 +4,7 @@ import { useContext } from "react"
 
 import { nAryRule, parseRule, ruleName } from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
-import { OxInput, OxInputNumber } from "./component"
+import { OxEnterInput, OxInput, OxInputNumber } from "./component"
 
 export let ConfigurationContent = () => {
     let { act, context } = useContext(ReactContext)
@@ -26,7 +26,7 @@ export let ConfigurationContent = () => {
                 />
             </li>
             <li>
-                Rule: <OxInput path="rule" present={ruleName} parse={parseRule} />
+                Rule: <OxEnterInput path="rule" present={ruleName} parse={parseRule} />
                 <Button
                     icon={"🎲"}
                     onClick={() => {
