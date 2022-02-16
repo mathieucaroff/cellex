@@ -26,14 +26,12 @@ export let ConfigurationContent = () => {
                 />
             </li>
             <li>
-                Rule: <OxEnterInput path="rule" present={ruleName} parse={parseRule} />
-                <Button
-                    icon={"🎲"}
-                    onClick={() => {
-                        context.updateState((state) => {
-                            state.rule = nAryRule()
-                        })
-                    }}
+                Rule:{" "}
+                <OxEnterInput
+                    path="rule"
+                    present={ruleName}
+                    parse={parseRule}
+                    randomiser={nAryRule}
                 />
             </li>
             <li>

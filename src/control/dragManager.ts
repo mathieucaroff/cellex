@@ -1,5 +1,7 @@
 import { Pair } from "../type"
 
+// dragManager helps with implementing the panning feature
+
 export interface DragManagerProp {
     /**
      * the element for which we want to listen for "drag events"

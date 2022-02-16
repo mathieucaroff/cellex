@@ -34,7 +34,7 @@ export let createContext = (state: State) => {
                 let newSelection = selector(state)
                 if (!deepEqual(newSelection, selection)) {
                     runFunction(newSelection, state)
-                    triplet[1] = newSelection
+                    triplet[1] = deepCopy(newSelection)
                 }
             })
             positionShelf.forEach((f) => {

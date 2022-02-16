@@ -1,5 +1,6 @@
 // import { elementaryRule, nAryRule, ternaryRule } from "../engine/rule"
 import { elementaryRule, nAryRule, parseRule } from "../engine/rule"
+import { group, rootGroup, stochastic } from "../patternlang/patternutil"
 import { Size, State } from "../type"
 
 export let defaultColorMap = () => {
@@ -14,22 +15,10 @@ export let defaultColorMap = () => {
 }
 
 export let defaultState = (): State => {
-    let random10 = {
-        cumulativeMap: [9, 10],
-        total: 10,
-    }
-    let zer = {
-        cumulativeMap: [1, 1],
-        total: 1,
-    }
-    let one = {
-        cumulativeMap: [0, 1],
-        total: 1,
-    }
-    let roz = {
-        cumulativeMap: [1, 2],
-        total: 2,
-    }
+    let random10 = stochastic([9, 10])(1, 1)
+    let zer = stochastic([1])(1, 1)
+    let one = stochastic([0, 1])(1, 1)
+    let roz = stochastic([1, 2])(1, 1)
 
     return {
         rule: location.hash ? parseRule(location.hash.slice(1)) : nAryRule(),
@@ -47,24 +36,22 @@ export let defaultState = (): State => {
             kind: "border",
             width: canvasSizeAdvice(window).width,
             genesis: {
-                kind: "top",
-                center: [one],
-                // cycleLeft: [one, zer, zer, zer, zer, zer, one, zer, one, zer, one, one], // 0
-                // cycleLeft: [one, zer, zer, zer], // 0
-                // cycleRight: [one, zer, zer, zer], // 0
-                cycleLeft: [zer], // 0
-                cycleRight: [zer], // 0
-                // cycleRight: [{ cumulativeMap: [9, 10], total: 10 }],
-                // center: [],
-                // cycleLeft: [random10],
-                // cycleRight: [random10],
+                center: rootGroup([one]),
+                cycleLeft: rootGroup([zer]),
+                cycleRight: rootGroup([zer]),
             },
-            borderLeft: { kind: "side", init: [], cycle: [roz] },
-            borderRight: { kind: "side", init: [], cycle: [roz] },
+            borderLeft: {
+                init: rootGroup([group([zer])(1)]),
+                cycle: rootGroup([roz]),
+            },
+            borderRight: {
+                init: rootGroup([group([zer])(1)]),
+                cycle: rootGroup([roz]),
+            },
         },
         seed: "_",
 
-        redraw: true,
+        redraw: false,
 
         // MDisplay
         canvasSize: canvasSizeAdvice(window),

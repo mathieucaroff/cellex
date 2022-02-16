@@ -3,6 +3,7 @@ import { Button, PageHeader, Popover } from "antd"
 import { Act } from "../control/act"
 import { Context } from "../state/context"
 import { ReactContext } from "../state/reactcontext"
+import { PatternContent } from "./pattern"
 import { ConfigurationContent } from "./configuration"
 import { HelpContent } from "./help"
 import { ThemeContent } from "./theme"
@@ -30,6 +31,14 @@ export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) =
                 trigger="click"
             >
                 <Button>Configuration</Button>
+            </Popover>
+            <Popover
+                placement="bottomLeft"
+                title="Pattern"
+                content={<PatternContent />}
+                trigger="click"
+            >
+                <Button>Pattern</Button>
             </Popover>
             <Popover
                 placement="bottomLeft"

@@ -14,5 +14,6 @@
 !/.env
 !/.gitignore
 !/.now.json
+!/.parcelrc
 !/.prettier*
 !/.yarnrc

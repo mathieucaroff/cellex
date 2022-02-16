@@ -1,27 +1,25 @@
-import { TopBorderDescriptor, SideBorderDescriptor, BorderDescriptor } from "./borderType"
+import { TopBorder, SideBorder } from "./patternlang/BorderType"
 
-interface __TopologyBase {
-    genesis: TopBorderDescriptor
-}
-
-interface __TopologyFiniteBase extends __TopologyBase {
+export interface TopologyFiniteBorder {
+    genesis: TopBorder
     finitness: "finite"
     width: number
-}
-
-export interface TopologyFiniteBorder extends __TopologyFiniteBase {
     kind: "border"
-    borderLeft: SideBorderDescriptor
-    borderRight: SideBorderDescriptor
+    borderLeft: SideBorder
+    borderRight: SideBorder
 }
 
-export interface TopologyFiniteLoop extends __TopologyFiniteBase {
+export interface TopologyFiniteLoop {
+    genesis: TopBorder
+    finitness: "finite"
+    width: number
     kind: "loop"
 }
 
 export type TopologyFinite = TopologyFiniteBorder | TopologyFiniteLoop
 
-export interface TopologyInfinite extends __TopologyBase {
+export interface TopologyInfinite {
+    genesis: TopBorder
     finitness: "infinite"
 }
 

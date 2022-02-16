@@ -13,7 +13,7 @@ export let ThemeContent = () => {
         <ul>
             {context.getState().colorMap.map((c, k) => (
                 <li key={k}>
-                    Color #{k + 1}:{" "}
+                    Color #{k}:{" "}
                     <Popover
                         placement="bottomLeft"
                         title={`Select color #${k + 1}`}

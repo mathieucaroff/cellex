@@ -11,7 +11,7 @@ export interface Info {
     maxLeft(): number
     maxRight(): number
     center(): number
-    isBigEnough(): number
+    isBigEnough(): boolean
     pockingLeft(): boolean
     pockingRight(): boolean
 
