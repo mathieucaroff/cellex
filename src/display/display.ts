@@ -25,16 +25,7 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
             return
         }
 
-        try {
-            // move current image
-            let imageData = ctx.getImageData(
-                Math.max(deltaX, 0),
-                Math.max(deltaY, 0),
-                width - Math.abs(deltaX),
-                height - Math.abs(deltaY),
-            )
-            ctx.putImageData(imageData, Math.max(-deltaX, 0), Math.max(-deltaY, 0))
-        } catch (e) {}
+        ctx.drawImage(canvas, -deltaX, -deltaY)
 
         // create new imagery where there's none
         if (deltaX != 0) {
