@@ -1,4 +1,4 @@
-import { TopologyFinite } from "./topologyType"
+import { TopologyFiniteBorder } from "./topologyType"
 
 export interface Pair {
     x: number
@@ -39,7 +39,7 @@ export interface State {
     zoom: number
     colorMap: Color[]
     // selectedSimpleGenesis: SimpleGenesis
-    topology: TopologyFinite
+    topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
     seed: string
 
     canvasSize: Size

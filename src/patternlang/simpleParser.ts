@@ -28,11 +28,6 @@ export let parseSideBorder = (input: string) => {
         parser.feed(input)
     } catch {}
 
-    // Aquire results
-    if (parser.results?.length > 0) {
-        console.log("p results", parser.results)
-    }
-
     return parser.results // TODO
 }
 
@@ -44,11 +39,6 @@ export let parseTopBorder = (input: string) => {
     try {
         parser.feed(input)
     } catch {}
-
-    // Aquire results
-    if (parser.results?.length > 0) {
-        console.log("p results", parser.results)
-    }
 
     return parser.results // TODO
 }
