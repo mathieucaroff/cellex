@@ -16,7 +16,7 @@ export let getStochastic = (group: BorderGroup, position: number): StochasticSta
         }
         return false
     })!
-    if (border.type == "state") {
+    if (border.type === "state") {
         return border
     } else {
         return getStochastic(border, position)
@@ -74,15 +74,14 @@ export let createAutomatonEngine = (
         throw `neighborhood too big (got ${rule.neighborhoodSize})`
     }
 
-    let valuationArray = Array.from({ length: rule.neighborhoodSize }, (_, k) => {
-        return rule.stateCount ** (rule.neighborhoodSize - 1 - k)
-    })
     let neighborhoodMiddle = Math.floor(rule.neighborhoodSize / 2)
-    let maxValuation = Math.max(...valuationArray)
+    let excessValue = rule.stateCount ** rule.neighborhoodSize
 
     let currentT = 0
     let lineA = Uint8Array.from({ length: topology.width }) // known
     let lineB = Uint8Array.from({ length: topology.width }) // being computed
+
+    let functionLength = rule.transitionFunction.length
 
     // reset set lineA to genesis values
     let reset = () => {
@@ -90,65 +89,75 @@ export let createAutomatonEngine = (
         let left = -Math.floor(topology.width / 2)
         for (let k = 0; k < topology.width; k++) {
             let v = getTopBorderValue(topology.genesis, k + left, randomMapper.top)
-            lineA[k] = v
+            lineB[k] = v
         }
     }
 
     reset()
 
     let nextLine = () => {
-        // initialize neighborhoodValue
-        let neighborhoodValue = 0
-        for (let k = -neighborhoodMiddle; k < 0; k++) {
-            if (topology.kind == "loop") {
-                // look on the other side: `lineA[topology.width + k]`
-                neighborhoodValue +=
-                    lineA[topology.width + k] * valuationArray[neighborhoodMiddle - k]
-            } else if (topology.kind == "border") {
-                // read the border
-                var inc =
-                    getSideBorderValue(topology.borderLeft, currentT, randomMapper.left) *
-                    valuationArray[neighborhoodMiddle - k]
-                neighborhoodValue += inc
-            }
-        }
-        for (let k = 0; k <= neighborhoodMiddle; k++) {
-            neighborhoodValue += lineA[k] * valuationArray[neighborhoodMiddle - k]
-        }
-
-        // main loop
-        for (let k = 0; k + neighborhoodMiddle < topology.width; k++) {
-            neighborhoodValue += lineA[k + neighborhoodMiddle]
-            lineB[k] =
-                rule.transitionFunction[rule.transitionFunction.length - 1 - neighborhoodValue]
-            neighborhoodValue = (neighborhoodValue % maxValuation) * rule.stateCount
-        }
-
-        // compute the last few values
-        for (let k = topology.width - neighborhoodMiddle; k < topology.width; k++) {
-            neighborhoodValue = (neighborhoodValue % maxValuation) * rule.stateCount
-            if (topology.kind == "loop") {
-                // look on the other side: `lineA[topology.width + k]`
-                neighborhoodValue += lineA[k - (topology.width - neighborhoodMiddle)]
-            } else if (topology.kind == "border") {
-                neighborhoodValue += getSideBorderValue(
-                    topology.borderRight,
-                    currentT,
-                    randomMapper.right,
-                )
-                lineB[k] =
-                    rule.transitionFunction[rule.transitionFunction.length - 1 - neighborhoodValue]
-            }
-        }
-
         // swap the two lines and increase time
         let oldLine = lineA
         lineA = lineB
         lineB = oldLine
+
+        // line A is known
+        // line B is being computed
+
         currentT += 1
+
+        // initialize the rolling result of the rule
+        let index = 0
+        for (let k = -neighborhoodMiddle; k < 0; k++) {
+            index *= rule.stateCount
+            if (topology.kind == "loop") {
+                // look on the other side: `lineA[topology.width + k]`
+                index += lineA[topology.width + k]
+            } else if (topology.kind == "border") {
+                // read the border
+                index += getSideBorderValue(topology.borderLeft, currentT, randomMapper.left)
+            }
+        }
+        for (let k = 0; k < neighborhoodMiddle; k++) {
+            index *= rule.stateCount
+            index += lineA[k]
+        }
+
+        // main loop
+        for (let k = 0; k + neighborhoodMiddle < topology.width; k++) {
+            index = (index * rule.stateCount) % excessValue
+            index += lineA[k + neighborhoodMiddle]
+            lineB[k] = rule.transitionFunction[functionLength - 1 - index]
+        }
+
+        // compute the last few values
+        for (let k = topology.width - neighborhoodMiddle; k < topology.width; k++) {
+            index = (index * rule.stateCount) % excessValue
+            if (topology.kind == "loop") {
+                // look on the other side: `lineA[topology.width + k]`
+                index += lineA[k - (topology.width - neighborhoodMiddle)]
+            } else if (topology.kind == "border") {
+                index += getSideBorderValue(topology.borderRight, currentT, randomMapper.right)
+            }
+
+            lineB[k] = rule.transitionFunction[functionLength - 1 - index]
+        }
+
+        return lineB
     }
 
+    let dereference = (indexLine: Uint16Array): Uint8Array =>
+        Uint8Array.from(indexLine, (v) => rule.transitionFunction[functionLength - 1 - v])
+
     return {
+        // getIndexLine: (t: number): Uint16Array => {
+        //     reset()
+        //     let line = lineA
+        //     Array.from({ length: t - 1 }, () => {
+        //         line = dereference(nextIndexLine(line))
+        //     })
+        //     return nextIndexLine(line)
+        // },
         getLine: (t: number): Uint8Array => {
             if (t < currentT) {
                 if (t < 0) {
@@ -160,7 +169,7 @@ export let createAutomatonEngine = (
             while (currentT < t) {
                 nextLine()
             }
-            return lineA
+            return lineB
         },
     }
 }

@@ -34,7 +34,7 @@ export let hexaryRule = (transitionNumber?: number | bigint): Rule => {
 }
 
 // randomNAryRule produces a random rule whose state count is given or randomly
-// taken between 2 and 6 inclusive.
+// taken between 2 and 6 inclusive and whose neighborhood size is 3.
 export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint): Rule => {
     let colorCount
     if (!stateCount) {

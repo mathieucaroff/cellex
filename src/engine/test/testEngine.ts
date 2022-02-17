@@ -1,4 +1,5 @@
 import assert from "assert"
+import { TopBorder } from "../../patternlang/BorderType"
 import { group, rootGroup } from "../../patternlang/patternutil"
 import {
     createAutomatonEngine,
@@ -7,6 +8,9 @@ import {
     getTopBorderValue,
     runStochastic,
 } from "../engine"
+import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopEngine"
+import { createRandomMapper } from "../randomMapper"
+import { elementaryRule } from "../rule"
 
 const ts = { type: "state" as const }
 const qw1 = { quantity: 1, width: 1 }
@@ -68,3 +72,37 @@ let sideBorder = { init: rootGroup([]), cycle: rootGroup([zero]) }
 assert(getSideBorderValue(sideBorder, 0, r1) == 0)
 assert(getSideBorderValue(sideBorder, 1, r1) == 0)
 assert(getSideBorderValue(sideBorder, 2, r1) == 0)
+
+let content = [..."11111000100110"].map((c) => (c === "1" ? one : zero))
+let width = content.length
+
+// createAutomatonEngine
+let genesisB: TopBorder = {
+    center: { content: [], quantity: 1, type: "group", width: 0 },
+    cycleLeft: { content, quantity: 1, type: "group", width },
+    cycleRight: { content, quantity: 1, type: "group", width },
+}
+let engineB = createAutomatonEngine(
+    elementaryRule(110),
+    {
+        kind: "loop",
+        finitness: "finite",
+        width: 10,
+        genesis: genesisB,
+    },
+    createRandomMapper({ seedString: "_" }),
+)
+let engineC = createSlowLoopEngine(
+    elementaryRule(110),
+    {
+        kind: "loop",
+        finitness: "finite",
+        width: 10,
+        genesis: genesisB,
+    },
+    createRandomMapper({ seedString: "_" }),
+)
+
+assert.deepStrictEqual(engineB.getLine(0), engineC.getLine(0), "line 0")
+assert.deepStrictEqual(engineB.getLine(1), engineC.getLine(1), "line 1")
+assert.deepStrictEqual(engineB.getLine(2), engineC.getLine(2), "line 2")
