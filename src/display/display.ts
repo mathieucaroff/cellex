@@ -2,29 +2,31 @@ import { Engine } from "../engine/engine"
 import { Context } from "../state/context"
 import { fillImage } from "./fill"
 
-export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
+export let createDisplay = (
+    context: Context,
+    canvas: HTMLCanvasElement,
+    zoomCanvas: HTMLCanvasElement,
+) => {
     let ctx = canvas.getContext("2d")!
+    let zoomCtx = zoomCanvas.getContext("2d")!
     let engine: Engine
-
-    function init() {
-        let { colorMap } = context.getState()
-        fillImage(engine, ctx, canvas.width, canvas.width, canvas.height, 0, 0, 0, 0, colorMap) // 148/4
-    }
 
     let lastX: number = 0
     let lastY: number = 0
     function draw(x: number, y: number, redraw: boolean) {
         let { width, height } = canvas
+        let { zoom, colorMap } = context.getState()
         let deltaX = x - lastX
         let deltaY = y - lastY
 
         if (redraw) {
-            fillImage(engine, ctx, width, width, height, 0, 0, x, y, context.getState().colorMap)
+            fillImage(engine, ctx, width, width, height, 0, 0, x, y, colorMap)
             lastX = x
             lastY = y
             return
         }
 
+        // move image in canvas
         ctx.drawImage(canvas, -deltaX, -deltaY)
 
         // create new imagery where there's none
@@ -66,6 +68,20 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
 
         lastX = x
         lastY = y
+
+        // draw to zoom canvas
+        zoomCtx.imageSmoothingEnabled = false
+        zoomCtx.drawImage(
+            canvas,
+            0,
+            0,
+            zoomCanvas.width / zoom,
+            zoomCanvas.height / zoom,
+            0,
+            0,
+            zoomCanvas.width,
+            zoomCanvas.height,
+        )
     }
 
     return {
@@ -75,13 +91,6 @@ export let createDisplay = (context: Context, canvas: HTMLCanvasElement) => {
         setEngine(newEngine: Engine) {
             engine = newEngine
         },
-        shift(dy, dx) {
-            context.updatePosition((position) => {
-                position.posT += dy
-                position.posS += dx
-            })
-        },
-        init,
         draw,
     }
 }

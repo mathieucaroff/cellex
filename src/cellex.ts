@@ -33,8 +33,10 @@ function main() {
     div = document.createElement("div")
     div.tabIndex = 0
     let canvas = document.createElement("canvas")
+    let zoomCanvas = document.createElement("canvas")
     document.body.appendChild(div)
     div.appendChild(canvas)
+    div.appendChild(zoomCanvas)
     // \/ canvas
 
     // /\ control
@@ -77,7 +79,7 @@ function main() {
     })
 
     // /\ display
-    let display = createDisplay(context, canvas)
+    let display = createDisplay(context, canvas, zoomCanvas)
     context
         .use(({ rule, seed, topology }) => ({ rule, seed, topology }))
         .for(({ rule, seed, topology }, state) => {
@@ -89,10 +91,16 @@ function main() {
         })
 
     context
-        .use(({ canvasSize, colorMap }) => ({ canvasSize, colorMap }))
-        .for(({ canvasSize }, state) => {
+        .use(({ canvasSize, zoomCanvasSize, colorMap }) => ({
+            canvasSize,
+            zoomCanvasSize,
+            colorMap,
+        }))
+        .for(({ canvasSize, zoomCanvasSize }, state) => {
             canvas.width = canvasSize.width
             canvas.height = canvasSize.height
+            zoomCanvas.width = zoomCanvasSize.width
+            zoomCanvas.height = zoomCanvasSize.height
             display.draw(state.posS, state.posT, true)
         })
 

@@ -43,6 +43,7 @@ export interface State {
     seed: string
 
     canvasSize: Size
+    zoomCanvasSize: Size
 }
 
 export interface StatePosition {
