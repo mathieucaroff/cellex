@@ -36,7 +36,7 @@ export let createInfo = (state: State): Info => {
         /*****************/
         /** Speed */
         minSpeed() {
-            return 1
+            return 0
         },
         maxSpeed() {
             return 256

@@ -90,7 +90,7 @@ export let createAct = (context: Context, info: Info) => {
             }
         }),
         increaseSpeed: action((state) => {
-            state.speed += Math.ceil(Math.sqrt(state.speed))
+            state.speed += Math.ceil(Math.sqrt(state.speed || 1))
             if (info.passingMaxSpeed()) {
                 act.setToMaxSpeed()
             }

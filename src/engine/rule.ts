@@ -38,7 +38,7 @@ export let hexaryRule = (transitionNumber?: number | bigint): Rule => {
 export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint): Rule => {
     let colorCount
     if (!stateCount) {
-        stateCount = 2 + Math.floor(5 * Math.random())
+        stateCount = 2 + Math.floor(5 * Math.random() * Math.random())
         colorCount = BigInt(stateCount)
     } else {
         colorCount = BigInt(stateCount)

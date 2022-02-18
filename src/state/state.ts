@@ -52,7 +52,7 @@ export let defaultState = (): State => {
         },
         seed: "_",
 
-        redraw: false,
+        redraw: true,
 
         // MDisplay
         ...canvasSizeAdvice(window),

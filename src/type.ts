@@ -38,7 +38,6 @@ export interface State {
     play: boolean
     zoom: number
     colorMap: Color[]
-    // selectedSimpleGenesis: SimpleGenesis
     topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
     seed: string
 
