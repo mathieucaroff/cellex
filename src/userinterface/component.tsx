@@ -45,6 +45,7 @@ export function OxInput(prop: OxInputProp) {
 
 interface OxEnterInputProp {
     path: string
+    title?: string
     disabled?: boolean
     style?: CSSProperties
     present?: (x: any) => string
@@ -57,7 +58,15 @@ interface OxEnterInputProp {
 // It saves either when Enter is pressed or when the input matches perfectly
 // the result of a round trip through the adaptor functions
 export function OxEnterInput(prop: OxEnterInputProp) {
-    let { disabled, path, present = (x) => x, parse = (y) => y, style = {}, randomiser } = prop
+    let {
+        path,
+        title,
+        disabled,
+        present = (x) => x,
+        parse = (y) => y,
+        style = {},
+        randomiser,
+    } = prop
     let { context } = useContext(ReactContext)
     let { piece, last } = readPath(path, context.getState())
     let [localValue, setValue] = useState(() => present(piece[last]))
@@ -79,6 +88,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         <>
             <Input
                 style={{ width: "74%", ...style }}
+                title={title}
                 disabled={disabled}
                 value={localValue}
                 onChange={(ev) => {

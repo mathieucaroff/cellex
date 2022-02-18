@@ -1,8 +1,9 @@
 import { Button, Popover } from "antd"
 import { useContext } from "react"
 import { SketchPicker } from "react-color"
-import { colorToHexColor, hexColorToColor } from "../engine/color"
 
+import { parseColorMap, presentColorMap } from "../display/display"
+import { colorToHexColor } from "../engine/color"
 import { ReactContext } from "../state/reactcontext"
 import { defaultColorMap } from "../state/state"
 import { OxInput } from "./component"
@@ -54,8 +55,8 @@ export let ThemeContent = () => {
                 <OxInput
                     style={{ display: "block", width: "100%" }}
                     path="colorMap"
-                    present={(colorMap) => colorMap.map((c) => colorToHexColor(c)).join(";")}
-                    parse={(colorString) => colorString.split(";").map((h) => hexColorToColor(h))}
+                    present={presentColorMap}
+                    parse={parseColorMap}
                 />
             </li>
         </ul>

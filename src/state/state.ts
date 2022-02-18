@@ -1,6 +1,8 @@
+import { parseColorMap } from "../display/display"
 import { nAryRule, parseRule } from "../engine/rule"
+import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { group, rootGroup, stochastic } from "../patternlang/patternutil"
-import { Size, State } from "../type"
+import { State } from "../type"
 
 export let defaultColorMap = () => {
     return [
@@ -21,45 +23,56 @@ export let defaultState = (): State => {
     let i = stochastic([0, 1])(1, 1)
     let roz = stochastic([1, 2])(1, 1)
 
+    let param = new URLSearchParams(location.search)
+
+    let getOr = <T>(key: string, parse: (v: string) => T, alt: () => T) => {
+        return param.has(key) ? parse(param.get(key)!) : alt()
+    }
+
     return {
-        rule: location.hash ? parseRule(location.hash.slice(1)) : nAryRule(),
-        // theme: "dark",
+        rule: getOr("rule", parseRule, nAryRule),
 
         speed: 1,
         posS: 0,
         posT: 0,
         play: false,
         zoom: 4,
-        colorMap: defaultColorMap(),
-        // selectedSimpleGenesis: "Random 10%",
+        colorMap: getOr("colorMap", parseColorMap, defaultColorMap),
         topology: {
             finitness: "finite",
-            kind: "border",
-            width: canvasSizeAdvice(window).canvasSize.width,
-            genesis: {
+            kind: getOr(
+                "topologyKind",
+                (x) => x as any,
+                () => "border",
+            ),
+            width: adaptiveCanvasSize(window).canvasSize.width,
+            genesis: getOr("genesis", parseTopBorder, () => ({
                 center: rootGroup([i]),
                 cycleLeft: rootGroup([z]),
                 cycleRight: rootGroup([z]),
-            },
-            borderLeft: {
+            })),
+            borderLeft: getOr("borderLeft", parseSideBorder, () => ({
                 init: rootGroup([group([z])(1)]),
                 cycle: rootGroup([roz]),
-            },
-            borderRight: {
+            })),
+            borderRight: getOr("borderRight", parseSideBorder, () => ({
                 init: rootGroup([group([z])(1)]),
                 cycle: rootGroup([roz]),
-            },
+            })),
         },
-        seed: "_",
+        seed: getOr(
+            "seed",
+            (x) => x,
+            () => "_",
+        ),
 
         redraw: true,
 
-        // MDisplay
-        ...canvasSizeAdvice(window),
+        ...adaptiveCanvasSize(window),
     }
 }
 
-let canvasSizeAdvice = (w: Window) => {
+let adaptiveCanvasSize = (w: Window) => {
     let fullwidth = Math.ceil(w.innerWidth * 0.98)
     let width = Math.ceil(fullwidth * 0.5)
     let height = Math.ceil(Math.min(2 * width, Math.max(w.innerHeight * 0.95 - 120, 60)))

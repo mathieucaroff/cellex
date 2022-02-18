@@ -1,11 +1,14 @@
+import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
 import { Button, PageHeader, Popover } from "antd"
 
 import { Act } from "../control/act"
+import { nAryRule, parseRule, ruleName } from "../engine/rule"
 import { Context } from "../state/context"
 import { ReactContext } from "../state/reactcontext"
-import { PatternContent } from "./pattern"
+import { OxEnterInput } from "./component"
 import { ConfigurationContent } from "./configuration"
 import { HelpContent } from "./help"
+import { PatternContent } from "./pattern"
 import { ThemeContent } from "./theme"
 
 interface ConfigurationPopoverButtonProp {
@@ -24,6 +27,28 @@ export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) =
                 subTitle="Monodimensional Cellular Automaton Explorer"
             />
 
+            <Button
+                type="primary"
+                title="play"
+                icon={<PlayCircleOutlined />}
+                disabled={context.getState().play}
+                onClick={act.setPlay}
+            />
+            <Button
+                type="primary"
+                title="pause"
+                icon={<PauseCircleOutlined />}
+                disabled={!context.getState().play}
+                onClick={act.setPause}
+            />
+            <OxEnterInput
+                path="rule"
+                style={{ width: "initial" }}
+                title="set rule"
+                present={ruleName}
+                parse={parseRule}
+                randomiser={nAryRule}
+            />
             <Popover
                 placement="bottomLeft"
                 title="Configuration"

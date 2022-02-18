@@ -1,6 +1,10 @@
+import { colorToHexColor, hexColorToColor } from "../engine/color"
 import { Engine } from "../engine/engine"
 import { Context } from "../state/context"
 import { fillImage } from "./fill"
+
+export let presentColorMap = (colorMap) => colorMap.map((c) => colorToHexColor(c)).join(";")
+export let parseColorMap = (colorString) => colorString.split(";").map((h) => hexColorToColor(h))
 
 export let createDisplay = (
     context: Context,

@@ -22,5 +22,21 @@ export let HelpContent = (prop: HelpContentProp) => {
             })}
         </ul>
     )
-    return <div>{ul}</div>
+    let p = <p>The rules can have various number of states:</p>
+    let ul2 = (
+        <ul>
+            <li>b binary (2)</li>
+            <li>t ternary (3)</li>
+            <li>q quad (4)</li>
+            <li>p penta (5)</li>
+            <li>h hexa (6)</li>
+        </ul>
+    )
+    return (
+        <div>
+            {ul}
+            {p}
+            {ul2}
+        </div>
+    )
 }

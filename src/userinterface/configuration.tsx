@@ -1,39 +1,13 @@
-import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
 import { Button } from "antd"
 import { useContext } from "react"
 
-import { nAryRule, parseRule, ruleName } from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
-import { OxEnterInput, OxInput, OxInputNumber } from "./component"
+import { OxInput, OxInputNumber } from "./component"
 
 export let ConfigurationContent = () => {
     let { act, context } = useContext(ReactContext)
     let ul = (
         <ul>
-            <li>
-                {"Play state: "}
-                <Button
-                    type="primary"
-                    icon={<PlayCircleOutlined />}
-                    disabled={context.getState().play}
-                    onClick={act.setPlay}
-                />
-                <Button
-                    type="primary"
-                    icon={<PauseCircleOutlined />}
-                    disabled={!context.getState().play}
-                    onClick={act.setPause}
-                />
-            </li>
-            <li>
-                Rule:{" "}
-                <OxEnterInput
-                    path="rule"
-                    present={ruleName}
-                    parse={parseRule}
-                    randomiser={nAryRule}
-                />
-            </li>
             <li>
                 Seed: <OxInput path="seed" />
                 <Button

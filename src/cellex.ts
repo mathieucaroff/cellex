@@ -7,15 +7,17 @@ import { createDragManager } from "./control/dragManager"
 import { createInfo } from "./control/info"
 import { keyboardBinding } from "./control/keyboardBinding"
 import { createKeyboardManager } from "./control/keyboardManager"
-import { createDisplay } from "./display/display"
+import { createDisplay, presentColorMap } from "./display/display"
 import { createAutomatonEngine } from "./engine/engine"
 import { createRandomMapper } from "./engine/randomMapper"
 import { parseRule, ruleName } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
+import { presentSideBorder, presentTopBorder } from "./patternlang/presenter"
 import { createContext } from "./state/context"
 import { defaultState } from "./state/state"
 import { ConfigurationPopoverButton } from "./userinterface/userinterface"
 import { emitterLoop } from "./util/emitterLoop"
+import { setQueryString } from "./util/setQueryString"
 
 function main() {
     // /\ github corner / package
@@ -85,7 +87,12 @@ function main() {
         .for(({ rule, seed, topology }, state) => {
             let randomMapper = createRandomMapper({ seedString: seed })
             let engine = createAutomatonEngine(rule, topology, randomMapper)
-            location.hash = ruleName(rule)
+            setQueryString(window, "rule", ruleName(rule))
+            setQueryString(window, "seed", seed)
+            setQueryString(window, "topologyKind", topology.kind)
+            setQueryString(window, "genesis", presentTopBorder(topology.genesis))
+            setQueryString(window, "borderLeft", presentSideBorder(topology.borderLeft))
+            setQueryString(window, "borderRight", presentSideBorder(topology.borderRight))
             display.setEngine(engine)
             display.draw(state.posS, state.posT, true)
         })
@@ -96,11 +103,12 @@ function main() {
             zoomCanvasSize,
             colorMap,
         }))
-        .for(({ canvasSize, zoomCanvasSize }, state) => {
+        .for(({ canvasSize, zoomCanvasSize, colorMap }, state) => {
             canvas.width = canvasSize.width
             canvas.height = canvasSize.height
             zoomCanvas.width = zoomCanvasSize.width
             zoomCanvas.height = zoomCanvasSize.height
+            setQueryString(window, "colorMap", presentColorMap(colorMap))
             display.draw(state.posS, state.posT, true)
         })
 
