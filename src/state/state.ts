@@ -25,11 +25,11 @@ export let defaultState = (): State => {
         rule: location.hash ? parseRule(location.hash.slice(1)) : nAryRule(),
         // theme: "dark",
 
-        speed: 6,
+        speed: 1,
         posS: 0,
         posT: 0,
         play: false,
-        zoom: 10,
+        zoom: 4,
         colorMap: defaultColorMap(),
         // selectedSimpleGenesis: "Random 10%",
         topology: {

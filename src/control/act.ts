@@ -1,4 +1,5 @@
 import { Context } from "../state/context"
+import { clamp } from "../util/clamp"
 import { Info } from "./info"
 
 export let createAct = (context: Context, info: Info) => {
@@ -39,15 +40,8 @@ export let createAct = (context: Context, info: Info) => {
     }
 
     let fixZoom = () => {
-        context.updateState((state) => {
-            if (state.zoom > 256) {
-                state.zoom = 256
-            } else if (state.zoom < 4) {
-                state.zoom = 4
-            } else if (Math.log2(state.zoom) % 1 > 0) {
-                state.zoom = 2 ** Math.floor(Math.log2(state.zoom))
-            }
-        })
+        let state = context.getState()
+        state.zoom = clamp(state.zoom, 2, 64)
     }
 
     let act = {
@@ -106,15 +100,28 @@ export let createAct = (context: Context, info: Info) => {
         /* Zoom */
         /********/
 
-        increaseZoom: action((state) => {
+        halfZoom: action((state) => {
+            state.zoom /= 2
+            fixZoom()
+            fixPosition()
+        }),
+        doubleZoom: action((state) => {
             state.zoom *= 2
             fixZoom()
             fixPosition()
         }),
         decreaseZoom: action((state) => {
-            state.zoom /= 2
+            state.zoom -= Math.floor(Math.sqrt(state.speed))
             fixZoom()
             fixPosition()
+        }),
+        increaseZoom: action((state) => {
+            state.zoom += Math.ceil(Math.sqrt(state.speed || 1))
+            fixZoom()
+            fixPosition()
+        }),
+        fixZoom: action(() => {
+            fixZoom()
         }),
 
         /***********/

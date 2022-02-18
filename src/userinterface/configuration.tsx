@@ -54,6 +54,14 @@ export let ConfigurationContent = () => {
                 <Button icon={"x2"} onClick={act.doubleSpeed} />
             </li>
             <li>
+                Zoom:
+                <Button icon={"/2"} onClick={act.halfZoom} />
+                <Button icon={"-"} onClick={act.decreaseZoom} />
+                <OxInputNumber path="zoom" />
+                <Button icon={"+"} onClick={act.increaseZoom} />
+                <Button icon={"x2"} onClick={act.doubleZoom} />
+            </li>
+            <li>
                 Space position: <OxInputNumber path="posS" />
             </li>
             <li>
