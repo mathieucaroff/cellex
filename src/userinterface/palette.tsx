@@ -4,11 +4,12 @@ import { SketchPicker } from "react-color"
 
 import { parseColorMap, presentColorMap } from "../display/display"
 import { colorToHexColor } from "../engine/color"
+import { randomPalette } from "../palette/randompalette"
 import { ReactContext } from "../state/reactcontext"
 import { defaultColorMap } from "../state/state"
 import { OxInput } from "./component"
 
-export let ThemeContent = () => {
+export let PaletteContent = () => {
     let { context } = useContext(ReactContext)
     let ul = (
         <ul>
@@ -38,6 +39,18 @@ export let ThemeContent = () => {
                     </Popover>
                 </li>
             ))}
+            <li>
+                <Button
+                    onClick={() => {
+                        context.updateState((state) => {
+                            state.colorMap = randomPalette(state.colorMap.length)
+                            state.redraw = true
+                        })
+                    }}
+                >
+                    Randomize palette
+                </Button>
+            </li>
             <li>
                 <Button
                     onClick={() => {

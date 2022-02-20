@@ -69,6 +69,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         style = {},
         randomiser,
     } = prop
+
     let { context } = useContext(ReactContext)
     let { piece, last } = readPath(path, context.getState())
     let [localValue, setValue] = useState(() => present(piece[last]))
@@ -115,6 +116,9 @@ export function OxEnterInput(prop: OxEnterInputProp) {
                         piece[last] = parse(localValue)
                         setValue(present(piece[last]))
                     })
+                }}
+                onBlur={() => {
+                    setValue(present(piece[last]))
                 }}
             ></Input>
             {randomElement}

@@ -7,8 +7,8 @@ import { OxCheckbox, OxEnterInput } from "./component"
 
 const { Option } = Select
 
-interface PatternContentProp {}
-export let PatternContent = (prop: PatternContentProp) => {
+interface BorderContentProp {}
+export let BorderContent = (prop: BorderContentProp) => {
     let { context } = useContext(ReactContext)
     let ul = (
         <ul>

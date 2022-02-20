@@ -8,16 +8,16 @@ function writeColor(buffer: Uint8ClampedArray, x: number, color: Color) {
 }
 
 // fillRuleEditor fill the ruleEditor small canvas from the rule data
-export let fillRuleEditor = (ctx: CanvasRenderingContext2D, rule: Rule, colorMap: Color[]) => {
-    // xSpacing, ySpacing tell the spacing between the occurences of the function's entries
-    const xSpacing = rule.neighborhoodSize + 1
-    const ySpacing = 3
-
+export let fillRuleEditor = (
+    ctx: CanvasRenderingContext2D,
+    rule: Rule,
+    colorMap: Color[],
+    xSpacing: number,
+    ySpacing: number,
+    iWidth: number,
+    iHeight: number,
+) => {
     const xMiddle = Math.floor(rule.neighborhoodSize / 2)
-
-    // iWidth, iHeight tell how many occurences of entry per row or column
-    const iWidth = 8
-    const iHeight = Math.ceil(rule.transitionFunction.length / iWidth)
 
     // set canvas width and height
     ctx.canvas.width = iWidth * xSpacing
@@ -36,7 +36,7 @@ export let fillRuleEditor = (ctx: CanvasRenderingContext2D, rule: Rule, colorMap
         let q2 = 4 * (p + ctx.canvas.width + xMiddle)
 
         let text = (rule.transitionFunction.length - 1 - i).toString(rule.stateCount)
-        text = "0".repeat(rule.neighborhoodSize - text.length) + text
+        text = text.padStart(rule.neighborhoodSize, "0")
         text.split("").forEach((c, dp) => {
             writeColor(image.data, q + 4 * dp, colorMap[parseInt(c, 16)])
         })
@@ -45,4 +45,6 @@ export let fillRuleEditor = (ctx: CanvasRenderingContext2D, rule: Rule, colorMap
     }
 
     ctx.putImageData(image, 0, 0)
+
+    return [iWidth, iHeight]
 }

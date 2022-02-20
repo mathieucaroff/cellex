@@ -7,7 +7,7 @@ import { createDragManager } from "./control/dragManager"
 import { createInfo } from "./control/info"
 import { keyboardBinding } from "./control/keyboardBinding"
 import { createKeyboardManager } from "./control/keyboardManager"
-import { createDisplay, presentColorMap } from "./display/display"
+import { createDisplay } from "./display/display"
 import { createAutomatonEngine } from "./engine/engine"
 import { createRandomMapper } from "./engine/randomMapper"
 import { parseRule, ruleName } from "./engine/rule"
@@ -108,7 +108,6 @@ function main() {
             canvas.height = canvasSize.height
             zoomCanvas.width = zoomCanvasSize.width
             zoomCanvas.height = zoomCanvasSize.height
-            setQueryString(window, "colorMap", presentColorMap(colorMap))
             display.draw(state.posS, state.posT, true)
         })
 

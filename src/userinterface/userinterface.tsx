@@ -9,9 +9,9 @@ import { OxEnterInput } from "./component"
 import { DivGraft } from "./components/graft"
 import { ConfigurationContent } from "./configuration"
 import { HelpContent } from "./help"
-import { PatternContent } from "./pattern"
+import { BorderContent } from "./pattern"
 import { RuleContent } from "./rulecontent"
-import { ThemeContent } from "./theme"
+import { PaletteContent } from "./palette"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
@@ -63,19 +63,19 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             </Popover>
             <Popover
                 placement="bottomLeft"
-                title="Pattern"
-                content={<PatternContent />}
+                title="Border"
+                content={<BorderContent />}
                 trigger="click"
             >
-                <Button>Pattern</Button>
+                <Button>Border</Button>
             </Popover>
             <Popover
                 placement="bottomLeft"
-                title="Theme"
-                content={<ThemeContent />}
+                title="Palette"
+                content={<PaletteContent />}
                 trigger="click"
             >
-                <Button>Theme</Button>
+                <Button>Palette</Button>
             </Popover>
             <Popover
                 placement="bottomLeft"

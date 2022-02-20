@@ -7,13 +7,11 @@ import { State } from "../type"
 export let defaultColorMap = () => {
     return [
         { red: 0, green: 0, blue: 0 }, // 0 black
-        { red: 0, green: 127, blue: 200 }, // 1 blue
-        { red: 127, green: 127, blue: 0 }, // 2 yellow
-        { red: 160, green: 0, blue: 0 }, // 3 red
-        { red: 0, green: 160, blue: 0 }, // 4 green
-        { red: 127, green: 0, blue: 200 }, // 5 majenta
-        { red: 127, green: 127, blue: 127 }, // 6 grey
-        { red: 255, green: 255, blue: 255 }, // 7 white
+        { red: 0, green: 127, blue: 255 }, // 1 blue
+        { red: 180, green: 180, blue: 0 }, // 2 yellow
+        { red: 127, green: 0, blue: 200 }, // 3 majenta
+        { red: 10, green: 160, blue: 10 }, // 4 green
+        { red: 127, green: 30, blue: 30 }, // 4 red
     ]
 }
 
@@ -37,7 +35,7 @@ export let defaultState = (): State => {
         posT: 0,
         play: false,
         zoom: 4,
-        colorMap: getOr("colorMap", parseColorMap, defaultColorMap),
+        colorMap: defaultColorMap(),
         topology: {
             finitness: "finite",
             kind: getOr(
