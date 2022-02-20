@@ -4,7 +4,6 @@ import { hslToRGB } from "./hsltohex"
 const baseLuminosity = 0.6
 const lumSpacing = 0.2
 const saturation = 0.7
-const backgroundColor = "#FFF"
 
 const luminosityArray = [baseLuminosity + lumSpacing, baseLuminosity - lumSpacing]
 
@@ -19,7 +18,7 @@ export function randomPalette(colorCount: number): Color[] {
 
     if (80 <= baseHue && baseHue < 140) {
         // green
-        hueBoost = 2.4
+        hueBoost = 2
         console.log("**green**")
     } else if (180 <= baseHue && baseHue < 260) {
         // blue

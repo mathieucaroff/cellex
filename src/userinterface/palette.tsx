@@ -43,7 +43,10 @@ export let PaletteContent = () => {
                 <Button
                     onClick={() => {
                         context.updateState((state) => {
-                            state.colorMap = randomPalette(state.colorMap.length)
+                            state.colorMap = [
+                                state.colorMap[0],
+                                ...randomPalette(state.colorMap.length - 1),
+                            ]
                             state.redraw = true
                         })
                     }}
