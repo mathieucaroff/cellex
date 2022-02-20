@@ -1,6 +1,9 @@
+import { Button, Divider, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 import { ruleName } from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
+import { deepEqual } from "../util/deepEqual"
+import { mod } from "../util/mod"
 import { setQueryString } from "../util/setQueryString"
 import { fillRuleEditor } from "./fillruleeditor"
 
@@ -42,30 +45,90 @@ export let RuleEditor = (prop: RuleEditorProp) => {
         )
     })
 
-    let stateCountArray = Array.from({ length: 5 }, (_, k) => `${k + 2}`)
-
-    let getPosition = (ev: any) => {
-        let bounds = ev.target.getBoundingClientRect()
-        let x = ev.clientX - bounds.left
-        let y = ev.clientY - bounds.top
-        let ix = Math.floor(x / zoom / xSpacing)
-        let iy = Math.floor(y / zoom / ySpacing)
+    let getPosition = (ev: any, exact: boolean): [number, string] => {
+        let bound = ev.target.getBoundingClientRect()
+        let mouseX = ev.clientX - bound.left
+        let mouseY = ev.clientY - bound.top
+        if (exact) {
+            let x = Math.floor(mouseX / zoom)
+            let y = Math.floor(mouseY / zoom)
+            if (x % (rule.neighborhoodSize + 1) !== Math.floor(rule.neighborhoodSize / 2)) {
+                return [0, "inexact x coordinate"]
+            } else if (y % 3 != 1) {
+                return [0, "inexact y coordinate"]
+            }
+        }
+        let ix = Math.floor(mouseX / zoom / xSpacing)
+        let iy = Math.floor(mouseY / zoom / ySpacing)
         let position = iy * iWidth + ix
-        return position
+        return [position, ""]
+    }
+
+    let leftRightSymmetric = (transitionFunction: number[]): number[] => {
+        return transitionFunction.map((_, k) => {
+            let text = k.toString(rule.stateCount).padStart(rule.neighborhoodSize, "0")
+            return transitionFunction[parseInt(text.split("").reverse().join(""), rule.stateCount)]
+        })
+    }
+
+    let colorComplement = (transitionFunction: number[]): number[] => {
+        return transitionFunction.map((c) => rule.stateCount - 1 - c).reverse()
+    }
+
+    let ruleNameWith = (f: (tf: number[]) => number[]) => {
+        return ruleName({
+            stateCount: rule.stateCount,
+            neighborhoodSize: rule.neighborhoodSize,
+            transitionFunction: f(rule.transitionFunction),
+        })
+    }
+
+    let changeColor = (delta, exact) => (ev) => {
+        let { stateCount, transitionFunction } = rule
+        let [position, error] = getPosition(ev, exact)
+        if (error) {
+            return
+        }
+        context.updateState((state) => {
+            transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
+            setQueryString(window, "rule", ruleName(rule))
+        })
     }
 
     return (
-        <canvas
-            ref={canvasRef}
-            onClick={(ev) => {
-                context.updateState((state) => {
-                    let { stateCount, transitionFunction } = state.rule
-                    let position = getPosition(ev)
-                    transitionFunction[position] = (transitionFunction[position] + 1) % stateCount
-                    setQueryString(window, "rule", ruleName(rule))
-                })
-            }}
-            onScroll={(ev) => {}}
-        />
+        <div>
+            <canvas
+                style={{ display: "table" }}
+                ref={canvasRef}
+                onClick={changeColor(1, false)}
+                onWheel={(ev) => changeColor(ev.deltaY > 0 ? 1 : -1, true)(ev)}
+            />
+            <Button
+                disabled={deepEqual(
+                    rule.transitionFunction,
+                    colorComplement(rule.transitionFunction),
+                )}
+                onClick={() => {
+                    context.updateState(({ rule }) => {
+                        rule.transitionFunction = colorComplement(rule.transitionFunction)
+                    })
+                }}
+            >
+                Switch to color complement: {ruleNameWith(colorComplement)}
+            </Button>
+            <Button
+                disabled={deepEqual(
+                    rule.transitionFunction,
+                    leftRightSymmetric(rule.transitionFunction),
+                )}
+                onClick={() => {
+                    context.updateState(({ rule }) => {
+                        rule.transitionFunction = leftRightSymmetric(rule.transitionFunction)
+                    })
+                }}
+            >
+                Switch to left-right symmetric: {ruleNameWith(leftRightSymmetric)}
+            </Button>
+        </div>
     )
 }

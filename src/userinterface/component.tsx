@@ -200,11 +200,11 @@ export function OxButton(prop: OxButtonProp) {
     let { path, icon, disabled, half, double } = prop
     let { context } = useContext(ReactContext)
 
-    let contrib: any = { icon, disabled }
+    let contribution: any = { icon, disabled }
 
     if (half || double) {
         let ratio = half ? 1 / 2 : 2
-        contrib.onClick = (ev) => {
+        contribution.onClick = (ev) => {
             context.updateState((state) => {
                 let { piece, last } = readPath(path, state)
                 piece[last] *= ratio
@@ -212,7 +212,7 @@ export function OxButton(prop: OxButtonProp) {
         }
     }
 
-    return <Button {...contrib} />
+    return <Button {...contribution} />
 }
 
 interface OxCheckboxProp {
