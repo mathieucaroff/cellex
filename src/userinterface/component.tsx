@@ -181,6 +181,34 @@ export function OxSelect(prop: OxSelectProp) {
     )
 }
 
+interface OxButtonProp {
+    path: string
+    icon: React.ReactNode
+    disabled?: boolean
+    half?: boolean
+    double?: boolean
+}
+
+// OxCheckbox a checkbox input tied to a boolean value of the state
+export function OxButton(prop: OxButtonProp) {
+    let { path, icon, disabled, half, double } = prop
+    let { context } = useContext(ReactContext)
+
+    let contrib: any = { icon, disabled }
+
+    if (half || double) {
+        let ratio = half ? 1 / 2 : 2
+        contrib.onClick = (ev) => {
+            context.updateState((state) => {
+                let { piece, last } = readPath(path, state)
+                piece[last] *= ratio
+            })
+        }
+    }
+
+    return <Button {...contrib} />
+}
+
 interface OxCheckboxProp {
     path: string
     disabled: boolean

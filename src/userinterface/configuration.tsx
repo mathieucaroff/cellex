@@ -2,7 +2,7 @@ import { Button } from "antd"
 import { useContext } from "react"
 
 import { ReactContext } from "../state/reactcontext"
-import { OxInput, OxInputNumber } from "./component"
+import { OxButton, OxInput, OxInputNumber } from "./component"
 
 export let ConfigurationContent = () => {
     let { act, context } = useContext(ReactContext)
@@ -42,19 +42,34 @@ export let ConfigurationContent = () => {
                 Time position: <OxInputNumber path="posT" />
             </li>
             <li>
-                Simulation width: <OxInputNumber path="topology.width" />
+                Simulation width:
+                <OxButton half icon={"/2"} path="topology.width" />
+                <OxInputNumber path="topology.width" />
+                <OxButton double icon={"x2"} path="topology.width" />
             </li>
             <li>
-                Canvas width: <OxInputNumber path="canvasSize.width" />
+                Canvas width:
+                <OxButton half icon={"/2"} path="canvasSize.width" />
+                <OxInputNumber path="canvasSize.width" />
+                <OxButton double icon={"x2"} path="canvasSize.width" />
             </li>
             <li>
-                Canvas height: <OxInputNumber path="canvasSize.height" />
+                Zoom c. width:
+                <OxButton half icon={"/2"} path="zoomCanvasSize.width" />
+                <OxInputNumber path="zoomCanvasSize.width" />
+                <OxButton double icon={"x2"} path="zoomCanvasSize.width" />
             </li>
             <li>
-                Zoom canvas width: <OxInputNumber path="zoomCanvasSize.width" />
+                Canvas height:
+                <OxButton half icon={"/2"} path="canvasSize.height" />
+                <OxInputNumber path="canvasSize.height" />
+                <OxButton double icon={"x2"} path="canvasSize.height" />
             </li>
             <li>
-                Zoom canvas height: <OxInputNumber path="zoomCanvasSize.height" />
+                Zoom c. height:
+                <OxButton half icon={"/2"} path="zoomCanvasSize.height" />
+                <OxInputNumber path="zoomCanvasSize.height" />
+                <OxButton double icon={"x2"} path="zoomCanvasSize.height" />
             </li>
         </ul>
     )
