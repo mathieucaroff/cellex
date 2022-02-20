@@ -11,11 +11,36 @@ export let presentSideBorder = (border: SideBorder): string => {
 }
 
 export let presentGroup = (group: BorderGroup): string => {
-    return decorate(
-        group.content.map((x) => (x.type === "group" ? presentGroup(x) : presentState(x))).join(""),
-        group,
-        true,
-    )
+    let content = group.content.map((x) => (x.type === "group" ? presentGroup(x) : presentState(x)))
+
+    let lastElement = content[0] || ""
+    let count = 0
+    let compactContent: string[] = []
+    content.forEach((x) => {
+        if (!lastElement) {
+            lastElement = x
+            return
+        }
+        if (x === lastElement && !x.includes("{")) {
+            // this approach is unable to deal with any preexisting quantity
+            count += 1
+        } else {
+            if (lastElement.length * (count - 1) > +3) {
+                compactContent.push(`${lastElement}{${count}}`)
+            } else {
+                compactContent.push(...Array(count).fill(lastElement))
+            }
+            count = 1
+        }
+        lastElement = x
+    })
+    if (lastElement.length * (count - 1) > 3) {
+        compactContent.push(`${lastElement}{${count}}`)
+    } else {
+        compactContent.push(...Array(count).fill(lastElement))
+    }
+
+    return decorate(compactContent.join(""), group, true)
 }
 
 export let presentState = (state: StochasticState): string => {
