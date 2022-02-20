@@ -36,14 +36,20 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 title="play"
                 icon={<PlayCircleOutlined />}
                 disabled={context.getState().play}
-                onClick={act.setPlay}
+                onClick={() => {
+                    act.setPlay()
+                    displayDiv.focus()
+                }}
             />
             <Button
                 type="primary"
                 title="pause"
                 icon={<PauseCircleOutlined />}
                 disabled={!context.getState().play}
-                onClick={act.setPause}
+                onClick={() => {
+                    act.setPause()
+                    displayDiv.focus()
+                }}
             />
             <OxEnterInput
                 path="rule"

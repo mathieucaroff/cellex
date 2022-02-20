@@ -61,6 +61,9 @@ export let RuleEditor = (prop: RuleEditorProp) => {
         let ix = Math.floor(mouseX / zoom / xSpacing)
         let iy = Math.floor(mouseY / zoom / ySpacing)
         let position = iy * iWidth + ix
+        if (position >= rule.transitionFunction.length) {
+            return [position, "clicking out of range"]
+        }
         return [position, ""]
     }
 
