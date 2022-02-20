@@ -1,6 +1,6 @@
 import { Button, Input, InputNumber, Select } from "antd"
 import Checkbox from "antd/lib/checkbox/Checkbox"
-import { CSSProperties, useContext, useState } from "react"
+import { CSSProperties, useContext, useEffect, useState } from "react"
 import { ReactContext } from "../state/reactcontext"
 import { State } from "../type"
 
@@ -73,6 +73,13 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     let { context } = useContext(ReactContext)
     let { piece, last } = readPath(path, context.getState())
     let [localValue, setValue] = useState(() => present(piece[last]))
+    let [isFocused, setIsFocused] = useState(false)
+
+    useEffect(() => {
+        if (!isFocused) {
+            setValue(present(piece[last]))
+        }
+    }, [isFocused])
 
     let randomElement = randomiser ? (
         <Button
@@ -117,9 +124,8 @@ export function OxEnterInput(prop: OxEnterInputProp) {
                         setValue(present(piece[last]))
                     })
                 }}
-                onBlur={() => {
-                    setValue(present(piece[last]))
-                }}
+                onBlur={() => setIsFocused(false)}
+                onFocus={() => setIsFocused(true)}
             ></Input>
             {randomElement}
         </>
