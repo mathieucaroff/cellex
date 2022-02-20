@@ -73,6 +73,8 @@ export let createDisplay = (
             let sh = zoomCanvas.height / zoom
             let dw = zoomCanvas.width
             let dh = zoomCanvas.height
+            zoomCtx.fillStyle = "#FFFFFF"
+            zoomCtx.fillRect(0, 0, zoomCanvas.width, zoomCanvas.height)
             zoomCtx.drawImage(canvas, sx, sy, sw, sh, 0, 0, dw, dh)
         },
     }

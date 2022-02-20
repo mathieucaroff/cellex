@@ -1,24 +1,28 @@
 import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, PageHeader, Popover } from "antd"
+import { Button, Collapse, PageHeader, Popover } from "antd"
 
 import { Act } from "../control/act"
 import { nAryRule, parseRule, ruleName } from "../engine/rule"
 import { Context } from "../state/context"
 import { ReactContext } from "../state/reactcontext"
 import { OxEnterInput } from "./component"
+import { DivGraft } from "./components/graft"
 import { ConfigurationContent } from "./configuration"
 import { HelpContent } from "./help"
 import { PatternContent } from "./pattern"
+import { RuleContent } from "./rulecontent"
 import { ThemeContent } from "./theme"
 
-interface ConfigurationPopoverButtonProp {
+const { Panel } = Collapse
+interface UserInterfaceProp {
     act: Act
     context: Context
     helpList: [string, string][]
+    displayDiv: HTMLDivElement
 }
 
-export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) => {
-    let { act, context, helpList } = prop
+export let UserInterface = (prop: UserInterfaceProp) => {
+    let { act, context, helpList, displayDiv } = prop
     return (
         <ReactContext.Provider value={{ act, context }}>
             <PageHeader
@@ -81,6 +85,16 @@ export let ConfigurationPopoverButton = (prop: ConfigurationPopoverButtonProp) =
             >
                 <Button>?</Button>
             </Popover>
+
+            {/* /\ DISPLAY ELEMENT HERE /\ */}
+            <DivGraft element={displayDiv} />
+            {/* \/ DISPLAY ELEMENT HERE \/ */}
+
+            <Collapse>
+                <Panel header="Rule Editor" key={1}>
+                    <RuleContent />
+                </Panel>
+            </Collapse>
         </ReactContext.Provider>
     )
 }

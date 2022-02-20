@@ -1,8 +1,10 @@
-import { Button, Input, InputNumber } from "antd"
+import { Button, Input, InputNumber, Select } from "antd"
 import Checkbox from "antd/lib/checkbox/Checkbox"
 import { CSSProperties, useContext, useState } from "react"
 import { ReactContext } from "../state/reactcontext"
 import { State } from "../type"
+
+const { Option } = Select
 
 function readPath(path: string, state: State) {
     let piece = state
@@ -140,6 +142,38 @@ export function OxInputNumber(prop: OxInputNumberProp) {
                 })
             }}
         ></InputNumber>
+    )
+}
+
+interface OxSelectProp {
+    path: string
+    valueArray: string[]
+    disabled?: boolean
+}
+
+// OxSelect a select input
+export function OxSelect(prop: OxSelectProp) {
+    let { path, disabled, valueArray } = prop
+    let { context } = useContext(ReactContext)
+    let { piece, last } = readPath(path, context.getState())
+
+    return (
+        <Select
+            disabled={disabled}
+            value={piece[last]}
+            onChange={(value) => {
+                context.updateState((state) => {
+                    let { piece, last } = readPath(path, state)
+                    piece[last] = value
+                })
+            }}
+        >
+            {valueArray.map((v) => (
+                <Option value={v} key={v}>
+                    {v}
+                </Option>
+            ))}
+        </Select>
     )
 }
 

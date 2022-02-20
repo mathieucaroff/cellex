@@ -50,12 +50,19 @@ export let createAct = (context: Context, info: Info) => {
         /****************/
         setPlay: action((state) => {
             state.play = true
+            if (state.speed === 0) {
+                state.speed = 1
+            }
         }),
         setPause: action((state) => {
             state.play = false
         }),
         togglePlay: action((state) => {
-            state.play = !state.play
+            if (state.play) {
+                act.setPause()
+            } else {
+                act.setPlay()
+            }
         }),
         singleStep: action((state) => {
             state.play = false
@@ -93,7 +100,11 @@ export let createAct = (context: Context, info: Info) => {
             state.speed = info.maxSpeed()
         }),
         setToMinSpeed: action((state) => {
-            state.speed = info.minSpeed()
+            let min = info.minSpeed()
+            state.speed = min
+            if (min === 0) {
+                act.setPause()
+            }
         }),
 
         /********/

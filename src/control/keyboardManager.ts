@@ -23,7 +23,7 @@ export let createKeyboardManager = (prop: KeyboardManagerProp) => {
         let handler = onEventMap[key]
         if (handler !== undefined) {
             handler()
-            // ev.preventDefault()
+            ev.preventDefault()
         }
     }
 

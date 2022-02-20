@@ -15,15 +15,15 @@ import { githubCornerHTML } from "./lib/githubCorner"
 import { presentSideBorder, presentTopBorder } from "./patternlang/presenter"
 import { createContext } from "./state/context"
 import { defaultState } from "./state/state"
-import { ConfigurationPopoverButton } from "./userinterface/userinterface"
+import { UserInterface } from "./userinterface/userinterface"
 import { emitterLoop } from "./util/emitterLoop"
 import { setQueryString } from "./util/setQueryString"
 
 function main() {
     // /\ github corner / package
-    let div = document.createElement("div")
-    div.innerHTML = githubCornerHTML(packageInfo.repository, packageInfo.version)
-    document.body.appendChild(div)
+    let cornerDiv = document.createElement("div")
+    cornerDiv.innerHTML = githubCornerHTML(packageInfo.repository, packageInfo.version)
+    document.body.appendChild(cornerDiv)
     // \/ canvas
 
     let state = defaultState()
@@ -32,25 +32,25 @@ function main() {
     let act = createAct(context, info)
 
     // /\ canvas
-    div = document.createElement("div")
-    div.tabIndex = 0
+    let displayDiv = document.createElement("div")
+    displayDiv.tabIndex = 0
     let canvas = document.createElement("canvas")
     let zoomCanvas = document.createElement("canvas")
-    document.body.appendChild(div)
-    div.appendChild(canvas)
-    div.appendChild(zoomCanvas)
+    // document.body.appendChild(displayDiv)
+    displayDiv.appendChild(canvas)
+    displayDiv.appendChild(zoomCanvas)
     // \/ canvas
 
     // /\ control
     let keyboardBindingReference = keyboardBinding({
         act,
         keyKb: createKeyboardManager({
-            element: div,
+            element: displayDiv,
             evPropName: "key",
             capture: false,
         }),
         codeKb: createKeyboardManager({
-            element: div,
+            element: displayDiv,
             evPropName: "code",
             capture: false,
         }),
@@ -77,7 +77,7 @@ function main() {
     let span = document.createElement("span")
     appRoot.appendChild(span)
     context.usePosition(() => {
-        ReactDOM.render(ConfigurationPopoverButton({ act, context, helpList }), span)
+        ReactDOM.render(UserInterface({ act, context, helpList, displayDiv }), span)
     })
 
     // /\ display
@@ -113,7 +113,7 @@ function main() {
         })
 
     let dragManager = createDragManager({
-        element: canvas,
+        element: displayDiv,
         getDisplayInit: () => {
             let xy = { x: state.posS, y: state.posT }
             return xy

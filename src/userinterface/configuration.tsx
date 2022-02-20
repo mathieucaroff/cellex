@@ -50,6 +50,12 @@ export let ConfigurationContent = () => {
             <li>
                 Canvas height: <OxInputNumber path="canvasSize.height" />
             </li>
+            <li>
+                Zoom canvas width: <OxInputNumber path="zoomCanvasSize.width" />
+            </li>
+            <li>
+                Zoom canvas height: <OxInputNumber path="zoomCanvasSize.height" />
+            </li>
         </ul>
     )
     return <div>{ul}</div>
