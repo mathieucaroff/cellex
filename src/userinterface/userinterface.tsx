@@ -26,36 +26,40 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 title="Cellex"
                 subTitle="Monodimensional Cellular Automaton Explorer"
             />
-            <Space>
-                <Button.Group>
-                    <Button
-                        type="primary"
-                        title="play"
-                        icon={<PlayCircleOutlined />}
-                        disabled={context.getState().play}
-                        onClick={() => {
-                            act.setPlay()
-                            displayDiv.focus()
-                        }}
-                    />
-                    <Button
-                        type="primary"
-                        title="pause"
-                        icon={<PauseCircleOutlined />}
-                        disabled={!context.getState().play}
-                        onClick={() => {
-                            act.setPause()
-                            displayDiv.focus()
-                        }}
-                    />
-                </Button.Group>
-                <RuleInput />
-                <TopMenu helpList={helpList} />
-            </Space>
+            <Space direction="vertical">
+                <Space>
+                    <Button.Group>
+                        <Button
+                            type="primary"
+                            title="play"
+                            icon={<PlayCircleOutlined />}
+                            disabled={context.getState().play}
+                            onClick={() => {
+                                act.setPlay()
+                                displayDiv.focus()
+                            }}
+                        />
+                        <Button
+                            type="primary"
+                            title="pause"
+                            icon={<PauseCircleOutlined />}
+                            disabled={!context.getState().play}
+                            onClick={() => {
+                                act.setPause()
+                                displayDiv.focus()
+                            }}
+                        />
+                    </Button.Group>
+                    <RuleInput />
+                    <TopMenu helpList={helpList} />
+                </Space>
 
-            {/* /\ DISPLAY ELEMENT HERE /\ */}
-            <DivGraft element={displayDiv} />
-            {/* \/ DISPLAY ELEMENT HERE \/ */}
+                {/* /\ -------------------- /\ */}
+                {/* || DISPLAY ELEMENT HERE || */}
+                <DivGraft element={displayDiv} />
+                {/* || DISPLAY ELEMENT HERE || */}
+                {/* \/ -------------------- \/ */}
+            </Space>
 
             <Collapse>
                 <Panel header={`Rule Editor (${ruleName(context.getState().rule)})`} key={1}>

@@ -1,9 +1,10 @@
 import { Rule } from "../type"
+import { deepEqual } from "../util/deepEqual"
 
 // elementaryRule produces a rule
-export let elementaryRule = (ruleNumber: number): Rule => {
+export let elementaryRule = (ruleNumberValue: number): Rule => {
     let transitionFunction = Array.from({ length: 8 }, (_, k) => {
-        return (ruleNumber & (1 << (7 - k))) >> (7 - k)
+        return (ruleNumberValue & (1 << (7 - k))) >> (7 - k)
     })
 
     return {
@@ -78,6 +79,17 @@ let thousandSplit = (integer: string) => {
     return reverse.split("").reverse().join("")
 }
 
+export let ruleNumber = (rule: Rule): BigInt => {
+    let value = 0n // bigint
+    let stateCount = BigInt(rule.stateCount)
+    rule.transitionFunction.forEach((v) => {
+        value += BigInt(v)
+        value *= stateCount
+    })
+    value /= stateCount
+    return value
+}
+
 // ruleName gives a unique string name to a rule
 export let ruleName = (rule: Rule): string => {
     if (rule.stateCount > 6) {
@@ -87,13 +99,7 @@ export let ruleName = (rule: Rule): string => {
         throw "rule naming is limited to neighborhood of size 3"
     }
     let letter = "__btqph"[rule.stateCount]
-    let value = 0n // bigint
-    let stateCount = BigInt(rule.stateCount)
-    rule.transitionFunction.forEach((v) => {
-        value += BigInt(v)
-        value *= stateCount
-    })
-    value /= stateCount
+    let value = ruleNumber(rule)
     return `${letter}${thousandSplit("" + value)}`
 }
 
@@ -119,3 +125,63 @@ export let parseRule = (input: string): Rule => {
         throw "unrecognized input"
     }
 }
+
+// leftRightSymmetric of the given rule
+export let leftRightSymmetric = (rule: Rule): Rule => {
+    return {
+        ...rule,
+        transitionFunction: rule.transitionFunction.map((_, k) => {
+            let text = k.toString(rule.stateCount).padStart(rule.neighborhoodSize, "0")
+            return rule.transitionFunction[
+                parseInt(text.split("").reverse().join(""), rule.stateCount)
+            ]
+        }),
+    }
+}
+
+// colorComplement of the given rule
+export let colorComplement = (rule: Rule): Rule => {
+    return {
+        ...rule,
+        transitionFunction: rule.transitionFunction.map((c) => rule.stateCount - 1 - c).reverse(),
+    }
+}
+
+// Generate the elementary automata rule set, classifying each of them according to their symmetries
+let generateRuleSet = () => {
+    let ruleSet = {
+        both: [] as number[],
+        color: [] as number[][],
+        leftright: [] as number[][],
+        four: [] as number[][],
+    }
+
+    Array.from({ length: 256 }, (_, value) => {
+        let rule = elementaryRule(value)
+
+        let complementRule = colorComplement(rule)
+        let complement = Number(ruleNumber(complementRule))
+        let symmetric = Number(ruleNumber(leftRightSymmetric(rule)))
+        let both = Number(ruleNumber(leftRightSymmetric(complementRule)))
+
+        if (value === symmetric && value === complement) {
+            ruleSet.both.push(value)
+        } else if (value === complement && value !== symmetric) {
+            if (value < symmetric) {
+                ruleSet.leftright.push([value, symmetric])
+            }
+        } else if (value !== complement && value === symmetric) {
+            if (value < complement) {
+                ruleSet.color.push([value, complement])
+            }
+        } else {
+            if (value < complement && value < symmetric && value < both) {
+                ruleSet.four.push([value, symmetric, complement, both])
+            }
+        }
+    })
+
+    return ruleSet
+}
+
+export const ruleSet = generateRuleSet()

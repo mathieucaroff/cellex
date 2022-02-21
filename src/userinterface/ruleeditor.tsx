@@ -1,15 +1,13 @@
-import { Button, Divider, Space } from "antd"
+import { Button } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
-import { ruleName } from "../engine/rule"
+import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
 import { deepEqual } from "../util/deepEqual"
 import { mod } from "../util/mod"
 import { setQueryString } from "../util/setQueryString"
 import { fillRuleEditor } from "./fillruleeditor"
 
-export interface RuleEditorProp {}
-
-export let RuleEditor = (prop: RuleEditorProp) => {
+export let RuleEditor = () => {
     let { context } = useContext(ReactContext)
     let { rule, colorMap } = context.getState()
     let canvasRef = useRef<HTMLCanvasElement>(null)
@@ -25,12 +23,12 @@ export let RuleEditor = (prop: RuleEditorProp) => {
     fillRuleEditor(smallCtx, rule, colorMap, xSpacing, ySpacing, iWidth, iHeight)
 
     const zoom = 20
+    // useLayoutEffect here because we need to wait for the canvas to be instanciated
     useLayoutEffect(() => {
         let canvas = canvasRef.current!
         canvas.width = smallCanvas.width * zoom
         canvas.height = smallCanvas.height * zoom
         let ctx = canvas.getContext("2d")!
-        // ctx.clearRect(0, 0, canvas.width, canvas.height) // (seems useless)
         ctx.imageSmoothingEnabled = false
         ctx.drawImage(
             smallCanvas,
@@ -67,25 +65,6 @@ export let RuleEditor = (prop: RuleEditorProp) => {
         return [position, ""]
     }
 
-    let leftRightSymmetric = (transitionFunction: number[]): number[] => {
-        return transitionFunction.map((_, k) => {
-            let text = k.toString(rule.stateCount).padStart(rule.neighborhoodSize, "0")
-            return transitionFunction[parseInt(text.split("").reverse().join(""), rule.stateCount)]
-        })
-    }
-
-    let colorComplement = (transitionFunction: number[]): number[] => {
-        return transitionFunction.map((c) => rule.stateCount - 1 - c).reverse()
-    }
-
-    let ruleNameWith = (f: (tf: number[]) => number[]) => {
-        return ruleName({
-            stateCount: rule.stateCount,
-            neighborhoodSize: rule.neighborhoodSize,
-            transitionFunction: f(rule.transitionFunction),
-        })
-    }
-
     let changeColor = (delta, exact) => (ev) => {
         let { stateCount, transitionFunction } = rule
         let [position, error] = getPosition(ev, exact)
@@ -98,6 +77,9 @@ export let RuleEditor = (prop: RuleEditorProp) => {
         })
     }
 
+    let complement = colorComplement(rule)
+    let symmetric = leftRightSymmetric(rule)
+
     return (
         <div>
             <canvas
@@ -107,30 +89,24 @@ export let RuleEditor = (prop: RuleEditorProp) => {
                 onWheel={(ev) => changeColor(ev.deltaY > 0 ? 1 : -1, true)(ev)}
             />
             <Button
-                disabled={deepEqual(
-                    rule.transitionFunction,
-                    colorComplement(rule.transitionFunction),
-                )}
+                disabled={deepEqual(rule.transitionFunction, complement.transitionFunction)}
                 onClick={() => {
                     context.updateState(({ rule }) => {
-                        rule.transitionFunction = colorComplement(rule.transitionFunction)
+                        rule.transitionFunction = complement.transitionFunction
                     })
                 }}
             >
-                Switch to color complement: {ruleNameWith(colorComplement)}
+                Switch to color complement: {ruleName(complement)}
             </Button>
             <Button
-                disabled={deepEqual(
-                    rule.transitionFunction,
-                    leftRightSymmetric(rule.transitionFunction),
-                )}
+                disabled={deepEqual(rule.transitionFunction, symmetric.transitionFunction)}
                 onClick={() => {
                     context.updateState(({ rule }) => {
-                        rule.transitionFunction = leftRightSymmetric(rule.transitionFunction)
+                        rule.transitionFunction = symmetric.transitionFunction
                     })
                 }}
             >
-                Switch to left-right symmetric: {ruleNameWith(leftRightSymmetric)}
+                Switch to left-right symmetric: {ruleName(symmetric)}
             </Button>
         </div>
     )

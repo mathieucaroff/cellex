@@ -1,8 +1,18 @@
 import { Cascader } from "antd"
+import { DefaultOptionType } from "antd/lib/select"
 import { useContext, useState } from "react"
-import { elementaryRule, parseRule } from "../engine/rule"
+import {
+    colorComplement,
+    elementaryRule,
+    leftRightSymmetric,
+    parseRule,
+    ruleSet,
+} from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
+import { deepEqual } from "../util/deepEqual"
 import { limitLength } from "../util/limitLength"
+
+let labelValue = (s: string) => ({ label: s, value: s })
 
 // prettier-ignore
 let interestingElementaryRuleSet = {
@@ -15,12 +25,44 @@ let interestingElementaryRuleSet = {
     "Curated":    [26, 73, 105],
 }
 
-let cascaderOptionSet = Object.entries(interestingElementaryRuleSet).map(([name, valueArray]) => {
-    return {
-        label: name,
-        value: name,
-        children: valueArray.map((v) => ({ label: "b" + v, value: "b" + v })),
-    }
+let cascaderOptionSet: DefaultOptionType[] = Object.entries(interestingElementaryRuleSet).map(
+    ([name, valueArray]) => {
+        return {
+            ...labelValue(name),
+            children: valueArray.map((v) => labelValue("b" + v)),
+        }
+    },
+)
+
+cascaderOptionSet.unshift({
+    ...labelValue("Grouped"),
+    children: [
+        {
+            ...labelValue("No Other Symmetric"),
+            children: ruleSet.both.map((rule) => labelValue("" + rule)),
+        },
+        {
+            ...labelValue("Left-Right Symmetrics Only"),
+            children: ruleSet.leftright.map((ruleLine) => ({
+                ...labelValue("" + ruleLine[0]),
+                children: ruleLine.map((r) => labelValue("" + r)),
+            })),
+        },
+        {
+            ...labelValue("Color Symmetrics Only"),
+            children: ruleSet.color.map((ruleLine) => ({
+                ...labelValue("" + ruleLine[0]),
+                children: ruleLine.map((r) => labelValue("" + r)),
+            })),
+        },
+        {
+            ...labelValue("Four Symmetrics"),
+            children: ruleSet.four.map((ruleLine) => ({
+                ...labelValue("" + ruleLine[0]),
+                children: ruleLine.map((r) => labelValue("" + r)),
+            })),
+        },
+    ],
 })
 
 cascaderOptionSet.push({

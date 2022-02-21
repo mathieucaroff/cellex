@@ -22,7 +22,7 @@ export let HelpContent = (prop: HelpContentProp) => {
             })}
         </ul>
     )
-    let p = <p>The rules can have between two and six distict states:</p>
+    let p = <p>The rules can have between two and six distinct states:</p>
     let ul2 = (
         <ul>
             <li>b binary (2)</li>

@@ -16,11 +16,6 @@ export let defaultColorMap = () => {
 }
 
 export let defaultState = (): State => {
-    let random10 = stochastic([9, 10])(1, 1)
-    let z = stochastic([1])(1, 1)
-    let i = stochastic([0, 1])(1, 1)
-    let roz = stochastic([1, 2])(1, 1)
-
     let param = new URLSearchParams(location.search)
 
     let getOr = <T>(key: string, parse: (v: string) => T, alt: () => T) => {
@@ -44,19 +39,9 @@ export let defaultState = (): State => {
                 () => "border",
             ),
             width: adaptiveCanvasSize(window).canvasSize.width,
-            genesis: getOr("genesis", parseTopBorder, () => ({
-                center: rootGroup([i]),
-                cycleLeft: rootGroup([z]),
-                cycleRight: rootGroup([z]),
-            })),
-            borderLeft: getOr("borderLeft", parseSideBorder, () => ({
-                init: rootGroup([group([z])(1)]),
-                cycle: rootGroup([roz]),
-            })),
-            borderRight: getOr("borderRight", parseSideBorder, () => ({
-                init: rootGroup([group([z])(1)]),
-                cycle: rootGroup([roz]),
-            })),
+            genesis: getOr("genesis", parseTopBorder, () => parseTopBorder("([0001])([0111])")),
+            borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("011([01])")),
+            borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("011([01])")),
         },
         seed: getOr(
             "seed",
@@ -71,7 +56,7 @@ export let defaultState = (): State => {
 }
 
 let adaptiveCanvasSize = (w: Window) => {
-    let fullwidth = Math.ceil(w.innerWidth * 0.98)
+    let fullwidth = Math.ceil(w.innerWidth * 0.96)
     let width = Math.ceil(fullwidth * 0.5)
     let height = Math.ceil(Math.min(2 * width, Math.max(w.innerHeight * 0.5, 60)))
     return {
