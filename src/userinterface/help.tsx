@@ -22,7 +22,7 @@ export let HelpContent = (prop: HelpContentProp) => {
             })}
         </ul>
     )
-    let p = <p>The rules can have various number of states:</p>
+    let p = <p>The rules can have between two and six distict states:</p>
     let ul2 = (
         <ul>
             <li>b binary (2)</li>
@@ -34,6 +34,7 @@ export let HelpContent = (prop: HelpContentProp) => {
     )
     return (
         <div>
+            <p>While the display is selected, the following shortcuts are available:</p>
             {ul}
             {p}
             {ul2}

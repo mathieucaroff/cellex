@@ -1,17 +1,13 @@
 import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, PageHeader, Popover } from "antd"
-
+import { Button, Collapse, PageHeader, Space } from "antd"
 import { Act } from "../control/act"
-import { nAryRule, parseRule, ruleName } from "../engine/rule"
+import { ruleName } from "../engine/rule"
 import { Context } from "../state/context"
 import { ReactContext } from "../state/reactcontext"
-import { OxEnterInput } from "./component"
 import { DivGraft } from "./components/graft"
-import { ConfigurationContent } from "./configuration"
-import { HelpContent } from "./help"
-import { BorderContent } from "./pattern"
-import { RuleContent } from "./rulecontent"
-import { PaletteContent } from "./palette"
+import { RuleEditor } from "./ruleeditor"
+import { RuleInput } from "./ruleinput"
+import { TopMenu } from "./topmenu"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
@@ -30,75 +26,40 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 title="Cellex"
                 subTitle="Monodimensional Cellular Automaton Explorer"
             />
-
-            <Button
-                type="primary"
-                title="play"
-                icon={<PlayCircleOutlined />}
-                disabled={context.getState().play}
-                onClick={() => {
-                    act.setPlay()
-                    displayDiv.focus()
-                }}
-            />
-            <Button
-                type="primary"
-                title="pause"
-                icon={<PauseCircleOutlined />}
-                disabled={!context.getState().play}
-                onClick={() => {
-                    act.setPause()
-                    displayDiv.focus()
-                }}
-            />
-            <OxEnterInput
-                path="rule"
-                style={{ width: "initial" }}
-                title="set rule"
-                present={ruleName}
-                parse={parseRule}
-                randomiser={nAryRule}
-            />
-            <Popover
-                placement="bottomLeft"
-                title="Configuration"
-                content={<ConfigurationContent />}
-                trigger="click"
-            >
-                <Button>Configuration</Button>
-            </Popover>
-            <Popover
-                placement="bottomLeft"
-                title="Border"
-                content={<BorderContent />}
-                trigger="click"
-            >
-                <Button>Border</Button>
-            </Popover>
-            <Popover
-                placement="bottomLeft"
-                title="Palette"
-                content={<PaletteContent />}
-                trigger="click"
-            >
-                <Button>Palette</Button>
-            </Popover>
-            <Popover
-                placement="bottomLeft"
-                title="Help"
-                content={<HelpContent helpList={helpList} />}
-                trigger="click"
-            >
-                <Button>?</Button>
-            </Popover>
+            <Space>
+                <Button.Group>
+                    <Button
+                        type="primary"
+                        title="play"
+                        icon={<PlayCircleOutlined />}
+                        disabled={context.getState().play}
+                        onClick={() => {
+                            act.setPlay()
+                            displayDiv.focus()
+                        }}
+                    />
+                    <Button
+                        type="primary"
+                        title="pause"
+                        icon={<PauseCircleOutlined />}
+                        disabled={!context.getState().play}
+                        onClick={() => {
+                            act.setPause()
+                            displayDiv.focus()
+                        }}
+                    />
+                </Button.Group>
+                <RuleInput />
+                <TopMenu helpList={helpList} />
+            </Space>
 
             {/* /\ DISPLAY ELEMENT HERE /\ */}
             <DivGraft element={displayDiv} />
             {/* \/ DISPLAY ELEMENT HERE \/ */}
 
             <Collapse>
-                <Panel header="Rule Editor" key={1}>
-                    <RuleContent />
+                <Panel header={`Rule Editor (${ruleName(context.getState().rule)})`} key={1}>
+                    <RuleEditor />
                 </Panel>
             </Collapse>
         </ReactContext.Provider>
