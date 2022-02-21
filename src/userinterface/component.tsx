@@ -75,11 +75,12 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     let [localValue, setValue] = useState(() => present(piece[last]))
     let [isFocused, setIsFocused] = useState(false)
 
+    let p: string
     useEffect(() => {
-        if (!isFocused) {
-            setValue(present(piece[last]))
+        if (!isFocused && localValue !== p) {
+            setValue(p)
         }
-    }, [isFocused])
+    }, [isFocused || (p = present(piece[last]))])
 
     let randomElement = randomiser ? (
         <Button

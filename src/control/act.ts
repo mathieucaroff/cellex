@@ -122,12 +122,12 @@ export let createAct = (context: Context, info: Info) => {
             fixPosition()
         }),
         decreaseZoom: action((state) => {
-            state.zoom -= Math.floor(Math.sqrt(state.speed))
+            state.zoom -= Math.floor(Math.sqrt(state.zoom))
             fixZoom()
             fixPosition()
         }),
         increaseZoom: action((state) => {
-            state.zoom += Math.ceil(Math.sqrt(state.speed || 1))
+            state.zoom += Math.ceil(Math.sqrt(state.zoom || 1))
             fixZoom()
             fixPosition()
         }),
