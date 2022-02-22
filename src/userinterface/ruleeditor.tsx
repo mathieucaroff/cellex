@@ -4,6 +4,7 @@ import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
 import { deepEqual } from "../util/deepEqual"
 import { mod } from "../util/mod"
+import { addOne, subtractOne } from "../util/numberarray"
 import { setQueryString } from "../util/setQueryString"
 import { fillRuleEditor } from "./fillruleeditor"
 
@@ -82,6 +83,20 @@ export let RuleEditor = () => {
 
     return (
         <div>
+            <Button
+                onClick={context.action((state) => {
+                    subtractOne(state.rule.transitionFunction, state.rule.stateCount)
+                })}
+            >
+                -
+            </Button>
+            <Button
+                onClick={context.action((state) => {
+                    addOne(state.rule.transitionFunction, state.rule.stateCount)
+                })}
+            >
+                +
+            </Button>
             <canvas
                 style={{ display: "table" }}
                 ref={canvasRef}

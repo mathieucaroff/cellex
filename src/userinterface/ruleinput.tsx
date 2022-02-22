@@ -9,8 +9,8 @@ export let RuleInput = () => {
             <RuleCascader />
             <OxEnterInput
                 path="rule"
-                style={{ width: "initial" }}
                 title="set rule"
+                style={{ width: "initial" }}
                 present={ruleName}
                 parse={parseRule}
                 randomiser={nAryRule}

@@ -12,7 +12,7 @@ export let createContext = (state: State) => {
 
     let positionShelf: ((s: StatePosition, st: State) => unknown)[] = []
 
-    return {
+    let me = {
         use<T>(selector: (s: State) => T) {
             let selection = selector(state)
             let done = false
@@ -41,6 +41,11 @@ export let createContext = (state: State) => {
                 f(state, state)
             })
         },
+        action(f: (s: State) => void) {
+            return () => {
+                me.updateState(f)
+            }
+        },
         usePosition(runFunction: (pos: StatePosition, st: State) => unknown) {
             runFunction(state, state)
             positionShelf.push(runFunction)
@@ -56,6 +61,7 @@ export let createContext = (state: State) => {
             return state
         },
     }
+    return me
 }
 
 export type Context = ReturnType<typeof createContext>

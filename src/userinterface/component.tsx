@@ -98,7 +98,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     return (
         <>
             <Input
-                style={{ width: "74%", ...style }}
+                style={style}
                 title={title}
                 disabled={disabled}
                 value={localValue}

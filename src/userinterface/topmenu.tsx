@@ -2,7 +2,7 @@ import { Button, Popover, Space } from "antd"
 import { ConfigurationContent } from "./configuration"
 import { HelpContent } from "./help"
 import { PaletteContent } from "./palette"
-import { BorderContent } from "./pattern"
+import { BorderContent } from "./border"
 
 export interface TopMenuProp {
     helpList: [string, string][]
