@@ -36,7 +36,6 @@ function main() {
     displayDiv.tabIndex = 0
     let canvas = document.createElement("canvas")
     let zoomCanvas = document.createElement("canvas")
-    // document.body.appendChild(displayDiv)
     displayDiv.appendChild(canvas)
     displayDiv.appendChild(zoomCanvas)
     // \/ canvas

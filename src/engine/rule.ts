@@ -1,5 +1,15 @@
 import { Rule } from "../type"
-import { deepEqual } from "../util/deepEqual"
+import { randomChoice } from "../util/randomChoice"
+
+// prettier-ignore
+export const interestingElementaryRuleSet = {
+    "Famous":     [30, 90, 110, 184],
+    "Class 4":    [54, 106, 110],
+    "XOR":        [60, 90, 105, 150],
+    "Triangle":   [18, 22, 26, 30, 82, 122, 126, 146, 154],
+    "Primitives": [0, 255, 204, 51, 170, 240],
+    "Twinkling":  [15, 41, 45, 51, 62, 73, 94, 105],
+}
 
 // elementaryRule produces a rule
 export let elementaryRule = (ruleNumberValue: number): Rule => {
@@ -43,6 +53,13 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
         colorCount = BigInt(stateCount)
     } else {
         colorCount = BigInt(stateCount)
+    }
+
+    if (transitionNumber === undefined && stateCount === 2 && Math.random() < 0.67) {
+        let s = interestingElementaryRuleSet
+        transitionNumber = randomChoice(
+            ([] as number[]).concat(s["Class 4"], s.Famous, s.Triangle, s.Twinkling, s.XOR),
+        )
     }
 
     if (transitionNumber !== undefined) {
@@ -149,11 +166,14 @@ export let colorComplement = (rule: Rule): Rule => {
 
 // Generate the elementary automata rule set, classifying each of them according to their symmetries
 let generateRuleSet = () => {
-    let ruleSet = {
+    let ruleGroup = {
         both: [] as number[],
         color: [] as number[][],
         leftright: [] as number[][],
+        leftrightcolor: [] as number[][],
         four: [] as number[][],
+        four_a: [] as number[][],
+        four_b: [] as number[][],
     }
 
     Array.from({ length: 256 }, (_, value) => {
@@ -165,23 +185,29 @@ let generateRuleSet = () => {
         let both = Number(ruleNumber(leftRightSymmetric(complementRule)))
 
         if (value === symmetric && value === complement) {
-            ruleSet.both.push(value)
+            ruleGroup.both.push(value)
         } else if (value === complement && value !== symmetric) {
             if (value < symmetric) {
-                ruleSet.leftright.push([value, symmetric])
+                ruleGroup.leftright.push([value, symmetric])
             }
         } else if (value !== complement && value === symmetric) {
             if (value < complement) {
-                ruleSet.color.push([value, complement])
+                ruleGroup.color.push([value, complement])
             }
-        } else {
-            if (value < complement && value < symmetric && value < both) {
-                ruleSet.four.push([value, symmetric, complement, both])
+        } else if (value !== complement && value !== symmetric && value === both) {
+            ruleGroup.leftrightcolor.push([value, symmetric])
+        } else if (value < complement && value < symmetric && value < both) {
+            let entry = [value, symmetric, complement, both]
+            ruleGroup.four.push(entry)
+            if (value <= 42) {
+                ruleGroup.four_a.push(entry)
+            } else {
+                ruleGroup.four_b.push(entry)
             }
         }
     })
 
-    return ruleSet
+    return ruleGroup
 }
 
 export const ruleSet = generateRuleSet()

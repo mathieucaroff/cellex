@@ -1,21 +1,23 @@
 import { Cascader } from "antd"
 import { DefaultOptionType } from "antd/lib/cascader"
 import { useContext, useState } from "react"
-import { parseRule, ruleSet } from "../engine/rule"
+import { interestingElementaryRuleSet, parseRule, ruleSet } from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
 import { limitLength } from "../util/limitLength"
 
 let labelValue = (s: string) => ({ label: s, value: s })
-
-// prettier-ignore
-let interestingElementaryRuleSet = {
-    "Famous":     [30, 90, 110],
-    "Class 4":    [54, 106, 110],
-    "XOR":        [60, 90, 105, 150],
-    "Triangle":   [18, 22, 26, 30, 122, 126],
-    "Primitives": [0, 255, 204, 51, 170, 240],
-    "Twinkling":  [15, 41, 45, 51, 62, 73, 94, 105],
-}
+let entryFrom = (label: string, ruleArray: number[]) => ({
+    label,
+    value: label,
+    children: ruleArray.map((rule) => labelValue("b" + rule)),
+})
+let multiEntryFrom = (label: string, deepRuleArray: number[][]) => ({
+    ...labelValue(label),
+    children: deepRuleArray.map((ruleArray) => ({
+        ...labelValue("" + ruleArray[0]),
+        children: ruleArray.map((rule) => labelValue("b" + rule)),
+    })),
+})
 
 let cascaderOptionSet: DefaultOptionType[] = Object.entries(interestingElementaryRuleSet).map(
     ([name, valueArray]) => {
@@ -29,35 +31,17 @@ let cascaderOptionSet: DefaultOptionType[] = Object.entries(interestingElementar
 cascaderOptionSet.unshift({
     ...labelValue("Grouped"),
     children: [
-        {
-            ...labelValue("self-symmetric-self-color-complement (Single)"),
-            children: ruleSet.both.map((rule) => labelValue("b" + rule)),
-        },
-        {
-            ...labelValue("self-color-complement (Pair of left-right symmetrics)"),
-            children: ruleSet.leftright.map((ruleLine) => ({
-                ...labelValue("" + ruleLine[0]),
-                children: ruleLine.map((r) => labelValue("b" + r)),
-            })),
-        },
-        {
-            ...labelValue("self-left-right-symmetric (Pair of the color complements)"),
-            children: ruleSet.color.map((ruleLine) => ({
-                ...labelValue("" + ruleLine[0]),
-                children: ruleLine.map((r) => labelValue("b" + r)),
-            })),
-        },
-        {
-            ...labelValue("ordinary (Four rules)"),
-            children: ruleSet.four.map((ruleLine) => ({
-                ...labelValue("" + ruleLine[0]),
-                children: ruleLine.map((r) => labelValue("b" + r)),
-            })),
-        },
+        entryFrom("self-symmetric-self-color-complement (Single)", ruleSet.both),
+        multiEntryFrom("self-color-complement (Pair of left-right symmetrics)", ruleSet.color),
+        multiEntryFrom(
+            "self-left-right-symmetric (Pair of the color complements)",
+            ruleSet.leftright,
+        ),
+        multiEntryFrom("self-left-right-color (Pair)", ruleSet.leftrightcolor),
+        multiEntryFrom("ordinary (Four rules)", ruleSet.four_a),
+        multiEntryFrom("ordinary continued", ruleSet.four_b),
     ],
 })
-
-cascaderOptionSet.unshift(..."b30 b54 b60 b73 b90 b105 b106 b110 b150".split(" ").map(labelValue))
 
 cascaderOptionSet.push({
     label: "Big Curated",
@@ -76,24 +60,41 @@ cascaderOptionSet.push({
 export let RuleCascader = () => {
     let { context } = useContext(ReactContext)
 
+    // isOpen is managed to avoid the cascader closing when a value
+    // is selected. This is desirable for deep cascaders
     let [isOpen, setIsOpen] = useState(false)
 
     return (
-        <Cascader
-            open={isOpen}
-            value={[]}
-            onFocus={() => setIsOpen(true)}
-            onBlur={() => setIsOpen(false)}
-            style={{ maxWidth: "34px" }}
-            options={cascaderOptionSet}
-            onChange={(array) => {
-                if (!array) {
-                    return
-                }
-                context.updateState((state) => {
-                    state.rule = parseRule(array.slice(-1)[0])
-                })
-            }}
-        />
+        <>
+            <Cascader
+                value={[]}
+                style={{ maxWidth: "34px" }}
+                options={"b30 b54 b60 b73 b90 b105 b106 b110 b150 b184".split(" ").map(labelValue)}
+                onChange={(array) => {
+                    if (!array) {
+                        return
+                    }
+                    context.updateState((state) => {
+                        state.rule = parseRule(array.slice(-1)[0])
+                    })
+                }}
+            />
+            <Cascader
+                open={isOpen}
+                value={[]}
+                onFocus={() => setIsOpen(true)}
+                onBlur={() => setIsOpen(false)}
+                style={{ maxWidth: "34px" }}
+                options={cascaderOptionSet}
+                onChange={(array) => {
+                    if (!array) {
+                        return
+                    }
+                    context.updateState((state) => {
+                        state.rule = parseRule(array.slice(-1)[0])
+                    })
+                }}
+            />
+        </>
     )
 }

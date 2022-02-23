@@ -80,6 +80,7 @@ export let RuleEditor = () => {
 
     let complement = colorComplement(rule)
     let symmetric = leftRightSymmetric(rule)
+    let both = leftRightSymmetric(complement)
 
     return (
         <Space direction="vertical">
@@ -117,6 +118,16 @@ export let RuleEditor = () => {
                     }}
                 >
                     Switch to left-right symmetric: {ruleName(symmetric)}
+                </Button>
+                <Button
+                    disabled={deepEqual(rule.transitionFunction, symmetric.transitionFunction)}
+                    onClick={() => {
+                        context.updateState(({ rule }) => {
+                            rule.transitionFunction = symmetric.transitionFunction
+                        })
+                    }}
+                >
+                    Switch both: {ruleName(both)}
                 </Button>
             </Space>
             <canvas

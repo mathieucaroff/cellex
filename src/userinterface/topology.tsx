@@ -3,14 +3,17 @@ import { useContext } from "react"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { presentSideBorder, presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/reactcontext"
-import { SideBorderCascader, TopBorderCascader } from "./bordercascader"
+import { SideBorderCascader, TopBorderCascader } from "./topologycascader"
 import { OxEnterInput } from "./component"
 
 const { Option } = Select
 
-interface BorderContentProp {}
-export let BorderContent = (prop: BorderContentProp) => {
+interface TopologyContentProp {}
+export let TopologyContent = (prop: TopologyContentProp) => {
     let { context } = useContext(ReactContext)
+
+    let topologyIsLoop = context.getState().topology.kind == "loop"
+
     let ul = (
         <ul>
             <li>
@@ -42,11 +45,11 @@ export let BorderContent = (prop: BorderContentProp) => {
             <li>
                 Side Border Left:
                 <Input.Group compact>
-                    <SideBorderCascader side="borderLeft" />
+                    <SideBorderCascader side="borderLeft" disabled={topologyIsLoop} />
                     <OxEnterInput
                         path="topology.borderLeft"
                         style={{ width: "initial" }}
-                        disabled={context.getState().topology.kind == "loop"}
+                        disabled={topologyIsLoop}
                         present={presentSideBorder}
                         parse={parseSideBorder}
                     />
@@ -55,9 +58,9 @@ export let BorderContent = (prop: BorderContentProp) => {
             <li>
                 Side Border Right:
                 <Input.Group compact>
-                    <SideBorderCascader side="borderRight" />
+                    <SideBorderCascader side="borderRight" disabled={topologyIsLoop} />
                     <OxEnterInput
-                        disabled={context.getState().topology.kind == "loop"}
+                        disabled={topologyIsLoop}
                         style={{ width: "initial" }}
                         path="topology.borderRight"
                         present={presentSideBorder}

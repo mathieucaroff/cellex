@@ -90,21 +90,18 @@ export let TopBorderCascader = () => {
 }
 
 export interface SideBorderCascaderProp {
+    disabled?: boolean
     side: "borderLeft" | "borderRight"
 }
 
 export let SideBorderCascader = (prop: SideBorderCascaderProp) => {
-    let { side } = prop
+    let { side, disabled } = prop
     let { context } = useContext(ReactContext)
-
-    let [isOpen, setIsOpen] = useState(false)
 
     return (
         <Cascader
-            open={isOpen}
+            disabled={disabled}
             value={[]}
-            onFocus={() => setIsOpen(true)}
-            onBlur={() => setIsOpen(false)}
             style={{ maxWidth: "34px" }}
             options={sideCascaderOptionSet}
             onChange={(array) => {
