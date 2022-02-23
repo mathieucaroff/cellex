@@ -1,4 +1,4 @@
-import { Button } from "antd"
+import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
 import { ReactContext } from "../state/reactcontext"
@@ -82,47 +82,49 @@ export let RuleEditor = () => {
     let symmetric = leftRightSymmetric(rule)
 
     return (
-        <div>
-            <Button
-                onClick={context.action((state) => {
-                    subtractOne(state.rule.transitionFunction, state.rule.stateCount)
-                })}
-            >
-                -
-            </Button>
-            <Button
-                onClick={context.action((state) => {
-                    addOne(state.rule.transitionFunction, state.rule.stateCount)
-                })}
-            >
-                +
-            </Button>
+        <Space direction="vertical">
+            <Space>
+                <Button
+                    onClick={context.action((state) => {
+                        subtractOne(state.rule.transitionFunction, state.rule.stateCount)
+                    })}
+                >
+                    -1
+                </Button>
+                <Button
+                    onClick={context.action((state) => {
+                        addOne(state.rule.transitionFunction, state.rule.stateCount)
+                    })}
+                >
+                    +1
+                </Button>
+                <Button
+                    disabled={deepEqual(rule.transitionFunction, complement.transitionFunction)}
+                    onClick={() => {
+                        context.updateState(({ rule }) => {
+                            rule.transitionFunction = complement.transitionFunction
+                        })
+                    }}
+                >
+                    Switch to color complement: {ruleName(complement)}
+                </Button>
+                <Button
+                    disabled={deepEqual(rule.transitionFunction, symmetric.transitionFunction)}
+                    onClick={() => {
+                        context.updateState(({ rule }) => {
+                            rule.transitionFunction = symmetric.transitionFunction
+                        })
+                    }}
+                >
+                    Switch to left-right symmetric: {ruleName(symmetric)}
+                </Button>
+            </Space>
             <canvas
                 style={{ display: "table" }}
                 ref={canvasRef}
                 onClick={changeColor(1, false)}
                 onWheel={(ev) => changeColor(ev.deltaY > 0 ? 1 : -1, true)(ev)}
             />
-            <Button
-                disabled={deepEqual(rule.transitionFunction, complement.transitionFunction)}
-                onClick={() => {
-                    context.updateState(({ rule }) => {
-                        rule.transitionFunction = complement.transitionFunction
-                    })
-                }}
-            >
-                Switch to color complement: {ruleName(complement)}
-            </Button>
-            <Button
-                disabled={deepEqual(rule.transitionFunction, symmetric.transitionFunction)}
-                onClick={() => {
-                    context.updateState(({ rule }) => {
-                        rule.transitionFunction = symmetric.transitionFunction
-                    })
-                }}
-            >
-                Switch to left-right symmetric: {ruleName(symmetric)}
-            </Button>
-        </div>
+        </Space>
     )
 }
