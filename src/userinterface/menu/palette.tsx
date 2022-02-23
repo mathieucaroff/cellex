@@ -2,14 +2,14 @@ import { Button, Popover } from "antd"
 import { useContext } from "react"
 import { SketchPicker } from "react-color"
 
-import { parseColorMap, presentColorMap } from "../display/display"
-import { colorToHexColor } from "../engine/color"
-import { randomPalette } from "../palette/randompalette"
-import { ReactContext } from "../state/reactcontext"
-import { defaultColorMap } from "../state/state"
-import { OxInput } from "./component"
+import { parseColorMap, presentColorMap } from "../../display/display"
+import { colorToHexColor } from "../../engine/color"
+import { randomPalette } from "../../palette/randompalette"
+import { ReactContext } from "../../state/reactcontext"
+import { defaultColorMap } from "../../state/state"
+import { OxInput } from "../component"
 
-export let PaletteContent = () => {
+export let PaletteInterface = () => {
     let { context } = useContext(ReactContext)
     let ul = (
         <ul>

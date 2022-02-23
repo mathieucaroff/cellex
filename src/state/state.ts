@@ -57,8 +57,8 @@ export let defaultState = (): State => {
 
 let adaptiveCanvasSize = (w: Window) => {
     let fullwidth = Math.ceil(w.innerWidth * 0.98 - 60)
-    let width = Math.ceil(fullwidth * 0.5)
-    let height = Math.ceil(Math.min(2 * width, Math.max(w.innerHeight * 0.5, 60)))
+    let width = Math.ceil(fullwidth * 0.25) * 2
+    let height = Math.ceil(Math.min(width, Math.max(w.innerHeight * 0.25, 30))) * 2
     return {
         canvasSize: { width, height },
         zoomCanvasSize: { width: fullwidth - width, height },

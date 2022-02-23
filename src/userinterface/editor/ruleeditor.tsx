@@ -1,11 +1,11 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
-import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
-import { ReactContext } from "../state/reactcontext"
-import { deepEqual } from "../util/deepEqual"
-import { mod } from "../util/mod"
-import { addOne, subtractOne } from "../util/numberarray"
-import { setQueryString } from "../util/setQueryString"
+import { colorComplement, leftRightSymmetric, ruleName } from "../../engine/rule"
+import { ReactContext } from "../../state/reactcontext"
+import { deepEqual } from "../../util/deepEqual"
+import { mod } from "../../util/mod"
+import { addOne, subtractOne } from "../../util/numberarray"
+import { setQueryString } from "../../util/setQueryString"
 import { fillRuleEditor } from "./fillruleeditor"
 
 export let RuleEditor = () => {

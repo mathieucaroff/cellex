@@ -1,15 +1,15 @@
 import { Input, Select } from "antd"
 import { useContext } from "react"
-import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
-import { presentSideBorder, presentTopBorder } from "../patternlang/presenter"
-import { ReactContext } from "../state/reactcontext"
+import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
+import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
+import { ReactContext } from "../../state/reactcontext"
 import { SideBorderCascader, TopBorderCascader } from "./topologycascader"
-import { OxEnterInput } from "./component"
+import { OxEnterInput } from "../component"
 
 const { Option } = Select
 
 interface TopologyContentProp {}
-export let TopologyContent = (prop: TopologyContentProp) => {
+export let TopologyInterface = (prop: TopologyContentProp) => {
     let { context } = useContext(ReactContext)
 
     let topologyIsLoop = context.getState().topology.kind == "loop"

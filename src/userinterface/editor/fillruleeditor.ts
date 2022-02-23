@@ -1,4 +1,4 @@
-import { Color, Rule } from "../type"
+import { Color, Rule } from "../../type"
 
 function writeColor(buffer: Uint8ClampedArray, x: number, color: Color) {
     buffer[x] = color.red
