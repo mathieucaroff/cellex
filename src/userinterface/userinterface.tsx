@@ -32,20 +32,15 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                         <Button
                             type="primary"
                             title="play"
-                            icon={<PlayCircleOutlined />}
-                            disabled={context.getState().play}
+                            icon={
+                                context.getState().play ? (
+                                    <PauseCircleOutlined />
+                                ) : (
+                                    <PlayCircleOutlined />
+                                )
+                            }
                             onClick={() => {
-                                act.setPlay()
-                                displayDiv.focus()
-                            }}
-                        />
-                        <Button
-                            type="primary"
-                            title="pause"
-                            icon={<PauseCircleOutlined />}
-                            disabled={!context.getState().play}
-                            onClick={() => {
-                                act.setPause()
+                                act.togglePlay()
                                 displayDiv.focus()
                             }}
                         />

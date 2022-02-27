@@ -195,7 +195,9 @@ let generateRuleSet = () => {
                 ruleGroup.color.push([value, complement])
             }
         } else if (value !== complement && value !== symmetric && value === both) {
-            ruleGroup.leftrightcolor.push([value, symmetric])
+            if (value < complement) {
+                ruleGroup.leftrightcolor.push([value, complement])
+            }
         } else if (value < complement && value < symmetric && value < both) {
             let entry = [value, symmetric, complement, both]
             ruleGroup.four.push(entry)
@@ -211,3 +213,4 @@ let generateRuleSet = () => {
 }
 
 export const ruleSet = generateRuleSet()
+;(window as any).ruleSet = ruleSet

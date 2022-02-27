@@ -120,7 +120,7 @@ export let RuleEditor = () => {
                     Switch to left-right symmetric: {ruleName(symmetric)}
                 </Button>
                 <Button
-                    disabled={deepEqual(rule.transitionFunction, symmetric.transitionFunction)}
+                    disabled={deepEqual(rule.transitionFunction, both.transitionFunction)}
                     onClick={() => {
                         context.updateState(({ rule }) => {
                             rule.transitionFunction = symmetric.transitionFunction
