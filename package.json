@@ -25,7 +25,7 @@
         "antd": "^4.18.6",
         "js-xxhash": "^1.0.4",
         "nearley": "^2.19.1",
-        "parcel": "^2.2.1",
+        "parcel": "^2.3.2",
         "parcel-transformer-nearley": "^1.0.4",
         "react": "^17.0.2",
         "react-color": "^2.19.3",

@@ -39,6 +39,7 @@ export let createDisplay = (
             let deltaY = y - lastY
 
             if (redraw) {
+                // fill the whole canvas at the current coordinates
                 fillImage(engine, ctx, width, width, height, 0, 0, x, y, colorMap)
                 lastX = x
                 lastY = y
@@ -50,15 +51,15 @@ export let createDisplay = (
             // create new imagery where there's none
             if (deltaX != 0) {
                 // Vertical empty band
-                let imageWidth = Math.abs(deltaX)
-                let baseX = deltaX > 0 ? width - deltaX : 0
+                let imageWidth = Math.min(Math.abs(deltaX), width)
+                let baseX = deltaX > 0 ? Math.max(width - deltaX, 0) : 0
                 fillImage(engine, ctx, width, imageWidth, height, baseX, 0, x, y, colorMap)
             }
 
             if (deltaY != 0) {
                 // Horizontal empty band
-                let imageHeight = Math.abs(deltaY)
-                let baseY = deltaY > 0 ? height - deltaY : 0
+                let imageHeight = Math.min(Math.abs(deltaY), height)
+                let baseY = deltaY > 0 ? Math.max(height - deltaY, 0) : 0
                 fillImage(engine, ctx, width, width, imageHeight, 0, baseY, x, y, colorMap)
             }
 

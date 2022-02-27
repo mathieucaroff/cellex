@@ -9,24 +9,25 @@ export let DisplayInterface = () => {
     let ul = (
         <ul>
             <li>
-                Speed: <Button icon={"/2"} onClick={act.halfSpeed} />
-                <Button icon={"-"} onClick={act.decreaseSpeed} />
+                Speed: <Button icon={"/2"} onClick={() => act.halfSpeed()} />
+                <Button icon={"-"} onClick={() => act.decreaseSpeed()} />
                 <OxInputNumber path="speed" />
-                <Button icon={"+"} onClick={act.increaseSpeed} />
-                <Button icon={"x2"} onClick={act.doubleSpeed} />
+                <Button icon={"+"} onClick={() => act.increaseSpeed()} />
+                <Button icon={"x2"} onClick={() => act.doubleSpeed()} />
             </li>
             <li>
-                Zoom: <Button icon={"/2"} onClick={act.halfZoom} />
-                <Button icon={"-"} onClick={act.decreaseZoom} />
+                Zoom: <Button icon={"/2"} onClick={() => act.halfZoom()} />
+                <Button icon={"-"} onClick={() => act.decreaseZoom()} />
                 <OxInputNumber path="zoom" />
-                <Button icon={"+"} onClick={act.increaseZoom} />
-                <Button icon={"x2"} onClick={act.doubleZoom} />
+                <Button icon={"+"} onClick={() => act.increaseZoom()} />
+                <Button icon={"x2"} onClick={() => act.doubleZoom()} />
             </li>
             <li>
                 Space position: <OxInputNumber path="posS" />
             </li>
             <li>
                 Time position: <OxInputNumber path="posT" />
+                <Button onClick={() => act.gotoTop()}>Reset</Button>
             </li>
             <li>
                 Canvas width: <OxButton half icon={"/2"} path="canvasSize.width" />

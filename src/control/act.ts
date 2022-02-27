@@ -1,48 +1,54 @@
 import { Context } from "../state/context"
+import { State, StatePosition } from "../type"
 import { clamp } from "../util/clamp"
 import { Info } from "./info"
 
 export let createAct = (context: Context, info: Info) => {
-    let action = (f) => () => {
-        context.updateState(f)
+    let action = (f: (state: State) => void) => (state?: State) => {
+        if (state) {
+            f(state)
+        } else {
+            context.updateState(f)
+        }
     }
 
-    let posAction = (f) => () => {
-        context.updatePosition(f)
+    let posAction = (f: (position: State, state: State) => void) => (position?: State) => {
+        if (position) {
+            f(position, position)
+        } else {
+            context.updatePosition(f as any)
+        }
     }
 
     // //
 
-    let fixLeft = () => {
+    let fixLeft = posAction((position) => {
         if (info.pockingLeft() && info.isBigEnough()) {
-            act.gotoMaxLeft()
+            position.posS = info.maxLeft()
         }
-    }
-    let fixRight = () => {
+    })
+    let fixRight = posAction((position) => {
         if (info.pockingRight() && info.isBigEnough()) {
-            act.gotoMaxRight()
+            position.posS = info.maxRight()
         }
-    }
-    let fixPosition = () => {
+    })
+    let fixPosition = posAction((position) => {
         if (info.isBigEnough()) {
-            fixLeft()
-            fixRight()
+            fixLeft(position)
+            fixRight(position)
         } else {
-            act.gotoCenter()
+            position.posS = info.center()
         }
-    }
-    let fixTop = () => {
-        context.updatePosition((position) => {
-            if (position.posT < 0) {
-                position.posT = 0
-            }
-        })
-    }
+    })
+    let fixTop = posAction((position) => {
+        if (position.posT < 0) {
+            position.posT = 0
+        }
+    })
 
-    let fixZoom = () => {
-        let state = context.getState()
+    let fixZoom = action((state) => {
         state.zoom = clamp(state.zoom, 2, 64)
-    }
+    })
 
     let act = {
         /****************/
@@ -59,9 +65,9 @@ export let createAct = (context: Context, info: Info) => {
         }),
         togglePlay: action((state) => {
             if (state.play) {
-                act.setPause()
+                act.setPause(state)
             } else {
-                act.setPlay()
+                act.setPlay(state)
             }
         }),
         singleStep: action((state) => {
@@ -75,25 +81,25 @@ export let createAct = (context: Context, info: Info) => {
         halfSpeed: action((state) => {
             state.speed /= 2
             if (info.passingMinSpeed()) {
-                act.setToMinSpeed()
+                act.setToMinSpeed(state)
             }
         }),
         doubleSpeed: action((state) => {
             state.speed *= 2
             if (info.passingMaxSpeed()) {
-                act.setToMaxSpeed()
+                act.setToMaxSpeed(state)
             }
         }),
         decreaseSpeed: action((state) => {
             state.speed -= Math.floor(Math.sqrt(state.speed))
             if (info.passingMinSpeed()) {
-                act.setToMinSpeed()
+                act.setToMinSpeed(state)
             }
         }),
         increaseSpeed: action((state) => {
             state.speed += Math.ceil(Math.sqrt(state.speed || 1))
             if (info.passingMaxSpeed()) {
-                act.setToMaxSpeed()
+                act.setToMaxSpeed(state)
             }
         }),
         setToMaxSpeed: action((state) => {
@@ -103,7 +109,7 @@ export let createAct = (context: Context, info: Info) => {
             let min = info.minSpeed()
             state.speed = min
             if (min === 0) {
-                act.setPause()
+                act.setPause(state)
             }
         }),
 
@@ -113,27 +119,25 @@ export let createAct = (context: Context, info: Info) => {
 
         halfZoom: action((state) => {
             state.zoom /= 2
-            fixZoom()
+            fixZoom(state)
             fixPosition()
         }),
         doubleZoom: action((state) => {
             state.zoom *= 2
-            fixZoom()
-            fixPosition()
+            fixZoom(state)
+            fixPosition(state)
         }),
         decreaseZoom: action((state) => {
             state.zoom -= Math.floor(Math.sqrt(state.zoom))
-            fixZoom()
-            fixPosition()
+            fixZoom(state)
+            fixPosition(state)
         }),
         increaseZoom: action((state) => {
             state.zoom += Math.ceil(Math.sqrt(state.zoom || 1))
-            fixZoom()
-            fixPosition()
+            fixZoom(state)
+            fixPosition(state)
         }),
-        fixZoom: action(() => {
-            fixZoom()
-        }),
+        fixZoom,
 
         /***********/
         /* Panning */
@@ -142,24 +146,22 @@ export let createAct = (context: Context, info: Info) => {
         /** Relative move */
         pageLeft: posAction((position) => {
             position.posS -= info.horizontalPage()
-            fixPosition()
+            fixPosition(position)
         }),
         goLeft: posAction((position) => {
             position.posS -= info.horizontalMove()
-            fixPosition()
+            fixPosition(position)
         }),
         goRight: posAction((position) => {
             position.posS += info.horizontalMove()
-            fixPosition()
+            fixPosition(position)
         }),
         pageRight: posAction((position) => {
             position.posS += info.horizontalPage()
-            fixPosition()
+            fixPosition(position)
         }),
 
-        fixPosition: () => {
-            fixPosition()
-        },
+        fixPosition,
 
         /** Goto */
         gotoMaxLeft: posAction((position) => {
@@ -189,14 +191,14 @@ export let createAct = (context: Context, info: Info) => {
         }),
 
         /** Goto */
-        gotoTop: action((state) => {
+        gotoTop: posAction((state) => {
             state.play = false
             state.posT = info.top()
         }),
         gotoLocation: ({ x, y }) => {
             context.updatePosition((position) => {
                 position.posS = x
-                fixPosition()
+                fixPosition(position as any)
 
                 if (!(position as any).play) {
                     if (y < 0) {
