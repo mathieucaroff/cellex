@@ -57,7 +57,11 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             </Space>
 
             <Collapse>
-                <Panel header={`Rule Editor (${ruleName(context.getState().rule)})`} key={1}>
+                <Panel
+                    className="ruleEditor"
+                    header={`Rule Editor (${ruleName(context.getState().rule)})`}
+                    key={1}
+                >
                     <RuleEditor />
                 </Panel>
             </Collapse>

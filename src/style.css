@@ -61,3 +61,12 @@ ul {
    text-align: right;
    line-height: 12px;
 }
+
+.ruleEditor {
+    /* rule names can be extremely long */
+    word-break: break-word;
+}
+
+.ruleEditor button {
+    margin: 4px;
+}

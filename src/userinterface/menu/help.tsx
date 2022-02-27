@@ -22,7 +22,6 @@ export let HelpContent = (prop: HelpContentProp) => {
             })}
         </ul>
     )
-    let p = <p>The rules can have between two and six distinct states:</p>
     let ul2 = (
         <ul>
             <li>b binary (2)</li>
@@ -33,10 +32,17 @@ export let HelpContent = (prop: HelpContentProp) => {
         </ul>
     )
     return (
-        <div>
+        <div style={{ width: "600px" }}>
             <p>While the display is selected, the following shortcuts are available:</p>
             {ul}
-            {p}
+            <p>
+                [*]moving the camera horizontally is only possible when the simulation is bigger
+                than the camera. You can set the camera size (canvas size) in the Display menu, and
+                set the simulation size in the Engine menu.
+            </p>
+            <p>
+                The rules can have from <b>two</b> to <b>six</b> distinct states:
+            </p>
             {ul2}
         </div>
     )

@@ -84,7 +84,7 @@ export let RuleEditor = () => {
 
     return (
         <Space direction="vertical">
-            <Space>
+            <div>
                 <Button
                     onClick={context.action((state) => {
                         subtractOne(state.rule.transitionFunction, state.rule.stateCount)
@@ -129,7 +129,7 @@ export let RuleEditor = () => {
                 >
                     Switch both: {ruleName(both)}
                 </Button>
-            </Space>
+            </div>
             <canvas
                 style={{ display: "table" }}
                 ref={canvasRef}
