@@ -33,7 +33,6 @@
         "rehype-react": "^4.0.1",
         "remark-parse": "^7.0.2",
         "remark-rehype": "^5.0.0",
-        "rxjs": "^6.5.4",
         "unified": "^8.4.2"
     },
     "alias": {

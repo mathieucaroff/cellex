@@ -6,7 +6,7 @@ export const interestingElementaryRuleSet = {
     "Famous":     [30, 90, 110, 184],
     "Class 4":    [54, 106, 110],
     "XOR":        [60, 90, 105, 150],
-    "Triangle":   [18, 22, 26, 30, 82, 122, 126, 146, 154],
+    "Triangle":   [18, 22, 26, 30, 122, 126, 146, 154],
     "Primitives": [0, 255, 204, 51, 170, 240],
     "Twinkling":  [15, 41, 45, 51, 62, 73, 94, 105],
 }

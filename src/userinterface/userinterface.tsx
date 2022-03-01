@@ -8,6 +8,7 @@ import { DivGraft } from "./graft"
 import { RuleEditor } from "./editor/ruleeditor"
 import { RuleInput } from "./ruleinput"
 import { TopMenu } from "./topmenu"
+import { getRuleInformation, RuleInfo } from "./ruleabout"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
@@ -19,10 +20,14 @@ interface UserInterfaceProp {
 
 export let UserInterface = (prop: UserInterfaceProp) => {
     let { act, context, helpList, displayDiv } = prop
+    let { rule } = context.getState()
     return (
         <ReactContext.Provider value={{ act, context }}>
             <PageHeader
                 className="site-page-header"
+                onBack={() => {
+                    location.assign(".")
+                }}
                 title="Cellex"
                 subTitle="Monodimensional Cellular Automaton Explorer"
             />
@@ -56,13 +61,17 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 {/* \/ -------------------- \/ */}
             </Space>
 
-            <Collapse>
-                <Panel
-                    className="ruleEditor"
-                    header={`Rule Editor (${ruleName(context.getState().rule)})`}
-                    key={1}
-                >
+            <Collapse accordion>
+                <Panel className="ruleEditor" header={`Rule Editor (${ruleName(rule)})`} key={1}>
                     <RuleEditor />
+                </Panel>
+                <Panel
+                    collapsible={getRuleInformation(rule) ? "header" : "disabled"}
+                    className="ruleInfo"
+                    header={`About this rule`}
+                    key={2}
+                >
+                    <RuleInfo />
                 </Panel>
             </Collapse>
         </ReactContext.Provider>

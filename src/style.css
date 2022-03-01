@@ -70,3 +70,7 @@ ul {
 .ruleEditor button {
     margin: 4px;
 }
+
+.ruleEditorCanvas {
+    cursor: pointer;
+}

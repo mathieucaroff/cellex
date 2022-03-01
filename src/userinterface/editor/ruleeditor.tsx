@@ -131,6 +131,7 @@ export let RuleEditor = () => {
                 </Button>
             </div>
             <canvas
+                className="ruleEditorCanvas"
                 style={{ display: "table" }}
                 ref={canvasRef}
                 onClick={changeColor(1, false)}
