@@ -7,6 +7,15 @@ To be more specific, Cellex supports up to 16 states and a transition function o
 
 ## Features
 
-Cellex supports panning, moving around with the keyboard as well as autoscroll down and varying the autoscroll speed.
+Cellex supports panning, moving around with the keyboard as well as autoscroll down and varying the autoscroll speed. It also features an adjustable zoomed up view.
 
-Zoom is on the way.
+## Other cellular automata explorers
+
+_All the below explorers are limited to elementary automata_
+
+- [Cellexp](https://mathieucaroff.com/cellexp) – Autoscrolling, Speed, Impuse, Zoom, Size, Navigation, Border, Random, Properties, Symmetrics
+- [Celldemo](http://devinacker.github.io/celldemo/) – Autoscrolling, Impuse, Random proportion,
+- [ECAX](https://www.xanxys.net/ecax/) – Zoom, Navigation, Compute-on-demand
+- [ECA Canvas](http://www.cs.swan.ac.uk/~csandy/research/play/ca/) – Size, Border, Random
+- [ECA EmergentMind](http://www.emergentmind.com/elementary-cellular-automata) - Zoom, Board of 256 rules
+- [WolframAlpha](https://www.wolframalpha.com/input/?i=rule+110) – Description (symmetries, properties, classes), Differential propagation examples
