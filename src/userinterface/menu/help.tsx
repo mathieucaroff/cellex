@@ -41,6 +41,10 @@ export let HelpContent = (prop: HelpContentProp) => {
                 set the simulation size in the Engine menu.
             </p>
             <p>
+                At the bottom right corner of each canvas, there is a hidden handle which allows to
+                resize the canvas.
+            </p>
+            <p>
                 The rules can have from <b>two</b> to <b>six</b> distinct states:
             </p>
             {ul2}

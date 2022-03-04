@@ -12,6 +12,7 @@ import { createAutomatonEngine } from "./engine/engine"
 import { createRandomMapper } from "./engine/randomMapper"
 import { parseRule, ruleName } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
+import { h } from "./lib/hyper"
 import { presentSideBorder, presentTopBorder } from "./patternlang/presenter"
 import { createContext } from "./state/context"
 import { defaultState } from "./state/state"
@@ -21,8 +22,9 @@ import { setQueryString } from "./util/setQueryString"
 
 function main() {
     // /\ github corner / package
-    let cornerDiv = document.createElement("div")
-    cornerDiv.innerHTML = githubCornerHTML(packageInfo.repository, packageInfo.version)
+    let cornerDiv = h("div", {
+        innerHTML: githubCornerHTML(packageInfo.repository, packageInfo.version),
+    })
     document.body.appendChild(cornerDiv)
     // \/ canvas
 
@@ -32,12 +34,15 @@ function main() {
     let act = createAct(context, info)
 
     // /\ canvas
-    let displayDiv = document.createElement("div")
-    displayDiv.tabIndex = 0
-    let canvas = document.createElement("canvas")
-    let zoomCanvas = document.createElement("canvas")
+    let displayDiv = h("div", { tabIndex: 0 })
+    let canvas = h("canvas")
+    let canvasResizeHandle = h("div", { className: "canvasResizeHandle" })
+    let zoomCanvas = h("canvas")
+    let zoomCanvasResizeHandle = h("div", { className: "zoomCanvasResizeHandle" })
     displayDiv.appendChild(canvas)
+    displayDiv.appendChild(canvasResizeHandle)
     displayDiv.appendChild(zoomCanvas)
+    displayDiv.appendChild(zoomCanvasResizeHandle)
     // \/ canvas
 
     // /\ control
@@ -73,7 +78,7 @@ function main() {
     let appRoot = document.getElementById("appRoot")!
 
     let helpList = keyboardBindingReference.getHelp()
-    let span = document.createElement("span")
+    let span = h("span")
     appRoot.appendChild(span)
     context.usePosition(() => {
         ReactDOM.render(UserInterface({ act, context, helpList, displayDiv }), span)
@@ -110,21 +115,62 @@ function main() {
             display.draw(state.posS, state.posT, true)
         })
 
-    let dragManager = createDragManager({
+    // main canvas panning
+    let panningDragManager = createDragManager({
         element: displayDiv,
         getDisplayInit: () => {
             let xy = { x: state.posS, y: state.posT }
             return xy
         },
     })
-
-    dragManager.onMove((xy) => {
+    panningDragManager.onMove((xy) => {
         context.updatePosition((position, state) => {
             position.posS = xy.x
             act.fixPosition()
             if (!state.play) {
                 position.posT = Math.max(xy.y, 0)
             }
+        })
+    })
+
+    // during resize, the main canvas and the zoom canvas have their height synced
+    // this is because with the handles which are at the bottom right,
+    // we would need canvases to be top-aligned for a comfortable experience
+    // while the canvases are bottom-aligned. Also it looks better.
+
+    // the drag manager receives negative coordinates and the onMove callback
+    // negates the data it is given. This is because the use case is not a proper
+    // move-content-inside-camera, but is a move-handle
+
+    // main canvas resize
+    let mainResizeDragManager = createDragManager({
+        element: canvasResizeHandle,
+        getDisplayInit: () => {
+            let xy = { x: -state.canvasSize.width, y: -state.canvasSize.height }
+            return xy
+        },
+    })
+    mainResizeDragManager.onMove((xy) => {
+        context.updateState((state) => {
+            state.canvasSize.width = -xy.x
+            state.canvasSize.height = -xy.y
+            state.zoomCanvasSize.height = -xy.y
+        })
+    })
+
+    // zoom canvas resize
+    let zoomResizeDragManager = createDragManager({
+        element: zoomCanvasResizeHandle,
+        getDisplayInit: () => {
+            let xy = { x: -state.zoomCanvasSize.width, y: -state.zoomCanvasSize.height }
+            return xy
+        },
+    })
+    zoomResizeDragManager.onMove((xy) => {
+        context.updateState((state) => {
+            state.zoomCanvasSize.width = -xy.x
+            state.zoomCanvasSize.height = -xy.y
+            state.canvasSize.height = -xy.y
         })
     })
 
