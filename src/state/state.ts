@@ -1,7 +1,5 @@
-import { parseColorMap } from "../display/display"
 import { nAryRule, parseRule } from "../engine/rule"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
-import { group, rootGroup, stochastic } from "../patternlang/patternutil"
 import { State } from "../type"
 
 export let defaultColorMap = () => {
@@ -20,6 +18,21 @@ export let defaultState = (): State => {
 
     let getOr = <T>(key: string, parse: (v: string) => T, alt: () => T) => {
         return param.has(key) ? parse(param.get(key)!) : alt()
+    }
+
+    let adaptiveCanvasSize = (w: Window) => {
+        let fullwidth = Math.ceil(w.innerWidth * 0.98 - 60)
+        let width = Math.ceil(fullwidth * 0.25) * 2
+        let height = Math.ceil(Math.min(width, Math.max(w.innerHeight * 0.25, 30))) * 2
+
+        if (param.has("width")) {
+            width = +param.get("width")!
+        }
+
+        return {
+            canvasSize: { width, height },
+            zoomCanvasSize: { width: Math.max(100, fullwidth - width), height },
+        }
     }
 
     return {
@@ -52,15 +65,5 @@ export let defaultState = (): State => {
         redraw: true,
 
         ...adaptiveCanvasSize(window),
-    }
-}
-
-let adaptiveCanvasSize = (w: Window) => {
-    let fullwidth = Math.ceil(w.innerWidth * 0.98 - 60)
-    let width = Math.ceil(fullwidth * 0.25) * 2
-    let height = Math.ceil(Math.min(width, Math.max(w.innerHeight * 0.25, 30))) * 2
-    return {
-        canvasSize: { width, height },
-        zoomCanvasSize: { width: fullwidth - width, height },
     }
 }

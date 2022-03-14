@@ -94,6 +94,7 @@ function main() {
             setQueryString(window, "rule", ruleName(rule))
             setQueryString(window, "seed", seed)
             setQueryString(window, "topologyKind", topology.kind)
+            setQueryString(window, "width", "" + topology.width)
             setQueryString(window, "genesis", presentTopBorder(topology.genesis))
             setQueryString(window, "borderLeft", presentSideBorder(topology.borderLeft))
             setQueryString(window, "borderRight", presentSideBorder(topology.borderRight))
