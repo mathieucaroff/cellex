@@ -123,7 +123,7 @@ export let RuleEditor = () => {
                     disabled={deepEqual(rule.transitionFunction, both.transitionFunction)}
                     onClick={() => {
                         context.updateState(({ rule }) => {
-                            rule.transitionFunction = symmetric.transitionFunction
+                            rule.transitionFunction = both.transitionFunction
                         })
                     }}
                 >

@@ -37,6 +37,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                         <Button
                             type="primary"
                             title="play"
+                            size="large"
                             icon={
                                 context.getState().play ? (
                                     <PauseCircleOutlined />
