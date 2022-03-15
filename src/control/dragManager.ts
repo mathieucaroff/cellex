@@ -38,6 +38,7 @@ export let createDragManager = (prop: DragManagerProp) => {
      */
     const handleDown = (ev: MouseEvent) => {
         let { x, y } = getDisplayInit()
+        ev.stopImmediatePropagation()
 
         init = {
             x: x + ev.pageX,
@@ -45,17 +46,17 @@ export let createDragManager = (prop: DragManagerProp) => {
         }
 
         if (state === "up") {
-            html.addEventListener("mousemove", handleMove, true)
-            html.addEventListener("mouseup", handleUp, true)
+            html.addEventListener("mousemove", handleMove, false)
+            html.addEventListener("mouseup", handleUp, false)
         }
         state = "down"
     }
 
-    element.addEventListener("mousedown", handleDown, true)
+    element.addEventListener("mousedown", handleDown, false)
 
     let remove = () => {
         handleUp()
-        element.removeEventListener("mousedown", handleDown, true)
+        element.removeEventListener("mousedown", handleDown, false)
     }
     // </handleDown>
 
@@ -76,8 +77,8 @@ export let createDragManager = (prop: DragManagerProp) => {
 
     const handleUp = () => {
         if (state == "down") {
-            html.removeEventListener("mousemove", handleMove, true)
-            html.removeEventListener("mouseup", handleUp, true)
+            html.removeEventListener("mousemove", handleMove, false)
+            html.removeEventListener("mouseup", handleUp, false)
         }
         state = "up"
     }
