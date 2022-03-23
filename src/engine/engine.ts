@@ -146,18 +146,7 @@ export let createAutomatonEngine = (
         return lineB
     }
 
-    let dereference = (indexLine: Uint16Array): Uint8Array =>
-        Uint8Array.from(indexLine, (v) => rule.transitionFunction[functionLength - 1 - v])
-
     return {
-        // getIndexLine: (t: number): Uint16Array => {
-        //     reset()
-        //     let line = lineA
-        //     Array.from({ length: t - 1 }, () => {
-        //         line = dereference(nextIndexLine(line))
-        //     })
-        //     return nextIndexLine(line)
-        // },
         getLine: (t: number): Uint8Array => {
             if (t < currentT) {
                 if (t < 0) {
