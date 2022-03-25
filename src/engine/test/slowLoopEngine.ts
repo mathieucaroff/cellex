@@ -1,7 +1,7 @@
 import { TopologyFinite } from "../../topologyType"
 import { Rule } from "../../type"
 import { mod } from "../../util/mod"
-import { getTopBorderValue } from "../engine"
+import { getTopBorderValue } from "../../control/engine"
 import { RandomMapper } from "../randomMapper"
 
 export let createAutomatonEngine = (

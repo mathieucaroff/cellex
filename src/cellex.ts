@@ -2,13 +2,14 @@ import "antd/dist/antd.css"
 
 import * as ReactDOM from "react-dom"
 import * as packageInfo from "../package.json"
-import { createAct } from "./control/act"
+import { createAct } from "./engine/act"
 import { createDragManager } from "./control/dragManager"
+import { createDiffModeManager } from "./engine/diffModeManager"
 import { createInfo } from "./control/info"
 import { keyboardBinding } from "./control/keyboardBinding"
 import { createKeyboardManager } from "./control/keyboardManager"
 import { createDisplay } from "./display/display"
-import { createAutomatonEngine } from "./engine/engine"
+import { createAutomatonEngine, Engine } from "./control/engine"
 import { createRandomMapper } from "./engine/randomMapper"
 import { parseRule, ruleName } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
@@ -86,11 +87,15 @@ function main() {
 
     // /\ display
     let display = createDisplay(context, canvas, zoomCanvas)
+    let engine: Engine
+
+    // engine-related change
     context
         .use(({ rule, seed, topology }) => ({ rule, seed, topology }))
         .for(({ rule, seed, topology }, state) => {
             let randomMapper = createRandomMapper({ seedString: seed })
-            let engine = createAutomatonEngine(rule, topology, randomMapper)
+            engine = createAutomatonEngine(rule, topology, randomMapper)
+
             setQueryString(window, "rule", ruleName(rule))
             setQueryString(window, "seed", seed)
             setQueryString(window, "topologyKind", topology.kind)
@@ -99,9 +104,18 @@ function main() {
             setQueryString(window, "borderLeft", presentSideBorder(topology.borderLeft))
             setQueryString(window, "borderRight", presentSideBorder(topology.borderRight))
             display.setEngine(engine)
+
             display.draw(state.posS, state.posT, true)
         })
 
+    context
+        .use(({ diffMode }) => ({ diffMode }))
+        .for(({ diffMode }, state) => {
+            engine.setDiffMode(diffMode)
+            display.draw(state.posS, state.posT, true)
+        })
+
+    // display-related change
     context
         .use(({ canvasSize, zoomCanvasSize, colorMap }) => ({
             canvasSize,
@@ -151,6 +165,7 @@ function main() {
             return xy
         },
     })
+
     mainResizeDragManager.onMove((xy) => {
         context.updateState((state) => {
             state.canvasSize.width = -xy.x
@@ -187,5 +202,14 @@ function main() {
         position.redraw = false
     })
     // \/ display
+
+    // /\ diff mode
+    let diffModeManager = createDiffModeManager({ context })
+
+    diffModeManager.addCanvas(zoomCanvas, (x, y) => {
+        // console.log("zoomCanvas", x, y)
+        return { s: x / state.zoom, t: y / state.zoom }
+    }) // todo
+    // \/ diff mode
 }
 main()

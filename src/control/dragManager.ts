@@ -1,6 +1,6 @@
 import { Pair } from "../type"
 
-// dragManager helps with implementing the panning feature
+// dragManager helps with implementing the panning and canvas resizing features
 
 export interface DragManagerProp {
     /**

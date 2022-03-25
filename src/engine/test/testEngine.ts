@@ -7,7 +7,7 @@ import {
     getStochastic,
     getTopBorderValue,
     runStochastic,
-} from "../engine"
+} from "../../control/engine"
 import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopEngine"
 import { createRandomMapper } from "../randomMapper"
 import { elementaryRule } from "../rule"

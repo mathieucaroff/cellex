@@ -1,8 +1,9 @@
 import { BorderGroup, SideBorder, StochasticState, TopBorder } from "../patternlang/BorderType"
 import { TopologyFinite } from "../topologyType"
-import { Rule } from "../type"
+import { DiffMode, Rule } from "../type"
 import { mod } from "../util/mod"
-import { PerfectRandom, RandomMapper } from "./randomMapper"
+import { getFutureTopology } from "../engine/futureTopology"
+import { PerfectRandom, RandomMapper } from "../engine/randomMapper"
 
 // getStochastic finds the stochastic associated with a position of a group
 export let getStochastic = (group: BorderGroup, position: number): StochasticState => {
@@ -83,6 +84,9 @@ export let createAutomatonEngine = (
 
     let functionLength = rule.transitionFunction.length
 
+    let diffEngine: Engine | null = null
+    let diffState: number = 0
+
     // reset set lineA to genesis values
     let reset = () => {
         currentT = 0
@@ -146,7 +150,26 @@ export let createAutomatonEngine = (
         return lineB
     }
 
-    return {
+    let me = {
+        setDiffMode: (diffMode: DiffMode) => {
+            diffEngine = null
+            if (diffMode === "off") {
+                return
+            }
+
+            let line = me.getLine(diffMode.t)
+
+            ;(typeof diffMode.s === "number" ? [diffMode.s] : diffMode.s).forEach((x) => {
+                line[x] = (line[x] + 1) % rule.stateCount
+            })
+
+            diffState = diffMode.diffState
+            diffEngine = createAutomatonEngine(
+                rule,
+                getFutureTopology(topology, diffMode.t, line),
+                randomMapper,
+            )
+        },
         getLine: (t: number): Uint8Array => {
             if (t < currentT) {
                 if (t < 0) {
@@ -158,9 +181,19 @@ export let createAutomatonEngine = (
             while (currentT < t) {
                 nextLine()
             }
+
+            if (diffEngine) {
+                let lineD = diffEngine.getLine(t)
+                let line = lineB.map((b, k) => {
+                    return b === lineD[k] ? b : diffState
+                })
+                return line
+            }
+
             return lineB
         },
     }
+    return me
 }
 
 export type Engine = ReturnType<typeof createAutomatonEngine>

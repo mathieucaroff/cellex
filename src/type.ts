@@ -24,6 +24,15 @@ export interface Rule {
     transitionFunction: number[]
 }
 
+export interface DiffModeSelection {
+    t: number
+    // s is a single number while the mouse is hovering. It becomes an array
+    // when the user clicks, locking the selection.
+    s: number | number[]
+    diffState: number
+}
+export type DiffMode = "off" | DiffModeSelection
+
 /**
  * @param postS Spatial position
  * @param postT Temporal position
@@ -38,6 +47,7 @@ export interface State {
     play: boolean
     zoom: number
     colorMap: Color[]
+    diffMode: DiffMode
     topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
     seed: string
 

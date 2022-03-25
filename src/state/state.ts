@@ -9,7 +9,8 @@ export let defaultColorMap = () => {
         { red: 180, green: 180, blue: 0 }, // 2 yellow
         { red: 127, green: 0, blue: 200 }, // 3 majenta
         { red: 10, green: 160, blue: 10 }, // 4 green
-        { red: 127, green: 30, blue: 30 }, // 4 red
+        { red: 127, green: 30, blue: 30 }, // 5 red
+        { red: 240, green: 180, blue: 0 }, // 6 orange
     ]
 }
 
@@ -42,6 +43,7 @@ export let defaultState = (): State => {
         posS: 0,
         posT: 0,
         play: false,
+        diffMode: "off",
         zoom: 4,
         colorMap: defaultColorMap(),
         topology: {

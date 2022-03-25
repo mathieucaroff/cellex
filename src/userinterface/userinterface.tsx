@@ -1,6 +1,6 @@
-import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, PageHeader, Space } from "antd"
-import { Act } from "../control/act"
+import { DiffOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
+import { Button, Collapse, PageHeader, Popover, Space, Switch } from "antd"
+import { Act } from "../engine/act"
 import { ruleName } from "../engine/rule"
 import { Context } from "../state/context"
 import { ReactContext } from "../state/reactcontext"
@@ -20,7 +20,7 @@ interface UserInterfaceProp {
 
 export let UserInterface = (prop: UserInterfaceProp) => {
     let { act, context, helpList, displayDiv } = prop
-    let { rule } = context.getState()
+    let { rule, diffMode } = context.getState()
     return (
         <ReactContext.Provider value={{ act, context }}>
             <PageHeader
@@ -33,25 +33,32 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             />
             <Space direction="vertical">
                 <Space>
-                    <Button.Group>
-                        <Button
-                            type="primary"
-                            title="play"
-                            size="large"
-                            icon={
-                                context.getState().play ? (
-                                    <PauseCircleOutlined />
-                                ) : (
-                                    <PlayCircleOutlined />
-                                )
-                            }
-                            onClick={() => {
-                                act.togglePlay()
-                                displayDiv.focus()
-                            }}
-                        />
-                    </Button.Group>
+                    <Button
+                        type="primary"
+                        title="play"
+                        size="large"
+                        icon={
+                            context.getState().play ? (
+                                <PauseCircleOutlined />
+                            ) : (
+                                <PlayCircleOutlined />
+                            )
+                        }
+                        onClick={() => {
+                            act.togglePlay()
+                            displayDiv.focus()
+                        }}
+                    />
                     <RuleInput />
+                    <Button
+                        type={diffMode !== "off" ? "primary" : "default"}
+                        title={"Toggle the Differential Mode" + (diffMode !== "off" ? "off" : "on")}
+                        icon={<DiffOutlined />}
+                        onClick={() => {
+                            act.toggleDifferentialMode()
+                        }}
+                    />
+
                     <TopMenu helpList={helpList} />
                 </Space>
 

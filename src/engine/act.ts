@@ -1,7 +1,7 @@
 import { Context } from "../state/context"
 import { State, StatePosition } from "../type"
 import { clamp } from "../util/clamp"
-import { Info } from "./info"
+import { Info } from "../control/info"
 
 export let createAct = (context: Context, info: Info) => {
     let action = (f: (state: State) => void) => (state?: State) => {
@@ -209,7 +209,18 @@ export let createAct = (context: Context, info: Info) => {
             })
         },
 
-        /** Width and Height */
+        /** Differential Mode */
+        toggleDifferentialMode: action((state) => {
+            if (state.diffMode === "off") {
+                state.diffMode = {
+                    t: 0,
+                    s: [] as number[],
+                    diffState: 6,
+                }
+            } else {
+                state.diffMode = "off"
+            }
+        }),
     }
     return act
 }
