@@ -82,10 +82,22 @@ export let createAutomatonEngine = (
     let lineA = Uint8Array.from({ length: topology.width }) // known
     let lineB = Uint8Array.from({ length: topology.width }) // being computed
 
+    // for diff mode
+    let lineC = Uint8Array.from({ length: topology.width }) // known
+    let lineD = Uint8Array.from({ length: topology.width }) // being computed
+
     let functionLength = rule.transitionFunction.length
 
-    let diffEngine: Engine | null = null
-    let diffState: number = 0
+    let diffMode: DiffMode = "off"
+
+    let applyDiffModeChange = (line: Uint8Array, modifiedSet: number[]) => {
+        return line.map((b, k) => {
+            if (modifiedSet.includes(k)) {
+                return (b + 1) % rule.stateCount
+            }
+            return b
+        })
+    }
 
     // reset set lineA to genesis values
     let reset = () => {
@@ -94,29 +106,20 @@ export let createAutomatonEngine = (
         for (let k = 0; k < topology.width; k++) {
             let v = getTopBorderValue(topology.genesis, k + left, randomMapper.top)
             lineB[k] = v
+            lineD[k] = v
         }
     }
 
     reset()
 
-    let nextLine = () => {
-        // swap the two lines and increase time
-        let oldLine = lineA
-        lineA = lineB
-        lineB = oldLine
-
-        // line A is known
-        // line B is being computed
-
-        currentT += 1
-
+    let nextLine = (known: Uint8Array, other: Uint8Array) => {
         // initialize the rolling result of the rule
         let index = 0
         for (let k = -neighborhoodMiddle; k < 0; k++) {
             index *= rule.stateCount
             if (topology.kind == "loop") {
                 // look on the other side: `lineA[topology.width + k]`
-                index += lineA[topology.width + k]
+                index += known[topology.width + k]
             } else if (topology.kind == "border") {
                 // read the border
                 index += getSideBorderValue(topology.borderLeft, currentT, randomMapper.left)
@@ -124,14 +127,14 @@ export let createAutomatonEngine = (
         }
         for (let k = 0; k < neighborhoodMiddle; k++) {
             index *= rule.stateCount
-            index += lineA[k]
+            index += known[k]
         }
 
         // main loop
         for (let k = 0; k + neighborhoodMiddle < topology.width; k++) {
             index = (index * rule.stateCount) % excessValue
-            index += lineA[k + neighborhoodMiddle]
-            lineB[k] = rule.transitionFunction[functionLength - 1 - index]
+            index += known[k + neighborhoodMiddle]
+            other[k] = rule.transitionFunction[functionLength - 1 - index]
         }
 
         // compute the last few values
@@ -139,36 +142,21 @@ export let createAutomatonEngine = (
             index = (index * rule.stateCount) % excessValue
             if (topology.kind == "loop") {
                 // look on the other side: `lineA[topology.width + k]`
-                index += lineA[k - (topology.width - neighborhoodMiddle)]
+                index += known[k - (topology.width - neighborhoodMiddle)]
             } else if (topology.kind == "border") {
                 index += getSideBorderValue(topology.borderRight, currentT, randomMapper.right)
             }
 
-            lineB[k] = rule.transitionFunction[functionLength - 1 - index]
+            other[k] = rule.transitionFunction[functionLength - 1 - index]
         }
 
-        return lineB
+        return other
     }
 
     let me = {
-        setDiffMode: (diffMode: DiffMode) => {
-            diffEngine = null
-            if (diffMode === "off") {
-                return
-            }
-
-            let line = me.getLine(diffMode.t)
-
-            ;(typeof diffMode.s === "number" ? [diffMode.s] : diffMode.s).forEach((x) => {
-                line[x] = (line[x] + 1) % rule.stateCount
-            })
-
-            diffState = diffMode.diffState
-            diffEngine = createAutomatonEngine(
-                rule,
-                getFutureTopology(topology, diffMode.t, line),
-                randomMapper,
-            )
+        setDiffMode: (otherDiffMode: DiffMode) => {
+            diffMode = otherDiffMode
+            reset()
         },
         getLine: (t: number): Uint8Array => {
             if (t < currentT) {
@@ -179,15 +167,40 @@ export let createAutomatonEngine = (
                 }
             }
             while (currentT < t) {
-                nextLine()
+                // increase time and swap the two lines
+                currentT += 1
+
+                let oldLine = lineA
+                lineA = lineB
+                lineB = oldLine
+
+                // line A is known
+                // line B is being computed
+                nextLine(lineA, lineB)
+
+                if (diffMode !== "off") {
+                    let oldLine = lineC
+                    lineC = lineD
+                    lineD = oldLine
+                    nextLine(lineC, lineD)
+                    if (diffMode.t === currentT) {
+                        let changeSet = typeof diffMode.s === "object" ? diffMode.s : [diffMode.s]
+                        lineD = applyDiffModeChange(lineD, changeSet)
+                    }
+                }
             }
 
-            if (diffEngine) {
-                let lineD = diffEngine.getLine(t)
-                let line = lineB.map((b, k) => {
+            if (diffMode !== "off") {
+                if (diffMode.t === 0 && currentT === 0) {
+                    let changeSet = typeof diffMode.s === "object" ? diffMode.s : [diffMode.s]
+                    lineD = applyDiffModeChange(lineD, changeSet)
+                }
+
+                let { diffState } = diffMode
+                let diffLine = lineB.map((b, k) => {
                     return b === lineD[k] ? b : diffState
                 })
-                return line
+                return diffLine
             }
 
             return lineB

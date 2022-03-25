@@ -207,8 +207,9 @@ function main() {
     let diffModeManager = createDiffModeManager({ context })
 
     diffModeManager.addCanvas(zoomCanvas, (x, y) => {
-        // console.log("zoomCanvas", x, y)
-        return { s: x / state.zoom, t: y / state.zoom }
+        let s = Math.floor(x / state.zoom)
+        let t = Math.floor(y / state.zoom)
+        return { s, t }
     }) // todo
     // \/ diff mode
 }
