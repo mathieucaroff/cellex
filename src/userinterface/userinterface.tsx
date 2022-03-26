@@ -52,7 +52,9 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                     <RuleInput />
                     <Button
                         type={diffMode !== "off" ? "primary" : "default"}
-                        title={"Toggle the Differential Mode" + (diffMode !== "off" ? "off" : "on")}
+                        title={
+                            "Toggle the Differential Mode " + (diffMode !== "off" ? "off" : "on")
+                        }
                         icon={<DiffOutlined />}
                         onClick={() => {
                             act.toggleDifferentialMode()
