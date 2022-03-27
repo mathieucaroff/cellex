@@ -7,6 +7,7 @@ import { colorToHexColor } from "../../engine/color"
 import { randomPalette } from "../../palette/randompalette"
 import { ReactContext } from "../../state/reactcontext"
 import { defaultColorMap } from "../../state/state"
+import { Color } from "../../type"
 import { OxInput } from "../component"
 
 export let PaletteInterface = () => {
@@ -43,10 +44,16 @@ export let PaletteInterface = () => {
                 <Button
                     onClick={() => {
                         context.updateState((state) => {
-                            state.colorMap = [
-                                state.colorMap[0],
-                                ...randomPalette(state.colorMap.length - 1),
-                            ]
+                            let palette = randomPalette(state.colorMap.length - 1)
+                            let reorderedPalette: Color[] = Array.from(palette, (_, k) => {
+                                let half = Math.floor(k / 2)
+                                if (k % 2 > 0) {
+                                    return palette[palette.length - 1 - half]
+                                } else {
+                                    return palette[half]
+                                }
+                            })
+                            state.colorMap = [state.colorMap[0], ...reorderedPalette]
                             state.redraw = true
                         })
                     }}
@@ -77,5 +84,6 @@ export let PaletteInterface = () => {
             </li>
         </ul>
     )
+
     return <div>{ul}</div>
 }
