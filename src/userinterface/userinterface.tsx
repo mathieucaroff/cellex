@@ -9,7 +9,7 @@ import { RuleEditor } from "./editor/ruleeditor"
 import { RuleInput } from "./ruleinput"
 import { TopMenu } from "./topmenu"
 import { getRuleInformation, RuleInfo } from "./ruleabout"
-import { Documentation } from "./documentation"
+import { Documentation } from "./markdown/documentation"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
@@ -22,6 +22,12 @@ interface UserInterfaceProp {
 export let UserInterface = (prop: UserInterfaceProp) => {
     let { act, context, helpList, displayDiv } = prop
     let { rule, diffMode } = context.getState()
+
+    let collapseProp = {}
+    if (window.location.hash) {
+        collapseProp["defaultActiveKey"] = 3
+    }
+
     return (
         <ReactContext.Provider value={{ act, context }}>
             <PageHeader
@@ -62,7 +68,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 {/* \/ -------------------- \/ */}
             </Space>
 
-            <Collapse accordion defaultActiveKey={3}>
+            <Collapse accordion {...collapseProp}>
                 <Panel className="ruleEditor" header={`Rule Editor (${ruleName(rule)})`} key={1}>
                     <RuleEditor />
                 </Panel>

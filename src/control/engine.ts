@@ -2,7 +2,6 @@ import { BorderGroup, SideBorder, StochasticState, TopBorder } from "../patternl
 import { TopologyFinite } from "../topologyType"
 import { DiffMode, Rule } from "../type"
 import { mod } from "../util/mod"
-import { getFutureTopology } from "../engine/futureTopology"
 import { PerfectRandom, RandomMapper } from "../engine/randomMapper"
 
 // getStochastic finds the stochastic associated with a position of a group
@@ -67,12 +66,18 @@ export let createAutomatonEngine = (
     topology: TopologyFinite,
     randomMapper: RandomMapper,
 ) => {
+    // Biggest supported combinations:
+    // - 2 colors and neighborhood of size 11
+    // - 3 colors and neighborhood of size 7
+    // - 5 colors and neighborhood of size 5
+    // - 7 colors and neighborhood of size 4
+    // - 16 colors and neighborhood of size 3
     if (rule.stateCount > 16) {
         throw `state count must be at most 16 (got ${rule.stateCount})`
     } else if (rule.neighborhoodSize % 2 != 1) {
         throw `neighborhood size must be odd (got ${rule.neighborhoodSize})`
     } else if (rule.stateCount ** rule.neighborhoodSize > 4096) {
-        throw `neighborhood too big (got ${rule.neighborhoodSize})`
+        throw `state count and neighborhood too big (got ${rule.stateCount} and ${rule.neighborhoodSize})`
     }
 
     let neighborhoodMiddle = Math.floor(rule.neighborhoodSize / 2)

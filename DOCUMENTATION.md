@@ -1,6 +1,6 @@
 # Cellex Documentation
 
-Cellex is a cellular automaton exploration tool. It works with monodimensional automaton only and allows automaton using up to six states, each represented by a color, with a neigboorhood size of three (left cell, self, right cell), though the engine can work with up to eleven states.
+Cellex is a cellular automaton exploration tool. It works with monodimensional automaton only and allows automaton using up to six states, each represented by a color, with a neighboorhood size of three (left cell, self, right cell), though the engine can work with up to sixteen states, or with a neighboorhood of size 11.
 
 # Content
 
@@ -8,7 +8,6 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
 - [Content](#content)
 - [Base interface](#base-interface)
   - [View](#view)
-  - [View header](#view-header)
     - [Rule Input](#rule-input)
     - [Genesis](#genesis)
   - [View footer](#view-footer)
@@ -33,7 +32,7 @@ Please note the theme of the application as well as that of the view can be chan
 
 The view displays the current cellular automaton.
 
-The view supports click and drag, allowing panning using the mouse. Note that when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the vertical component is considered.
+The view supports click and drag, allowing panning using the mouse. Note that when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered.
 
 The view, when selected, also supports the following keyboard actions:
 
@@ -45,14 +44,6 @@ The view, when selected, also supports the following keyboard actions:
 - The directional arrows move the camera in the given direction by a twelfth
   of the width or the height of the view
 - The Home / End / PageUp / PageDown keys move the camera by the full width or height of the view
-
-## View header
-
-The view header has three parts:
-
-- the **rule** input
-- the genesis selector
-- the autosizing buttons
 
 ### Rule Input
 
