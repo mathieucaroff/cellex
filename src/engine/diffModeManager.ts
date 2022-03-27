@@ -60,16 +60,13 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
                     // remove or add one cell
                     if (diffMode.s.includes(s)) {
                         diffMode.s = diffMode.s.filter((x) => x !== s)
-                        console.log("remove one")
                     } else {
                         diffMode.s.push(s)
-                        console.log("add one")
                     }
                 } else {
                     // unlock the cell, swith to the cell being hovered
                     diffMode.s = s
                     diffMode.t = t
-                    console.log("unlock")
                 }
             } else {
                 // mode: hovering
@@ -80,16 +77,13 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
                     }
                     // lock the cell
                     diffMode.s = [diffMode.s]
-                    console.log("lock")
                 } else if (eventKind === "leave") {
                     // reset
                     diffMode.s = []
-                    console.log("reset")
                 } else {
                     // move
                     diffMode.s = s
                     diffMode.t = t
-                    console.log("move")
                 }
             }
             context.updateState((state) => {

@@ -52,8 +52,10 @@ interface OxEnterInputProp {
     style?: CSSProperties
     present?: (x: any) => string
     parse?: (y: string) => any
-    // randomiser is a way to get a random state value for the user
+    // randomiser is a way to get a random value written to the state
     randomiser?: () => any
+    // randomiser2 is a second way to get a random value
+    randomiser2?: () => any
 }
 
 // OxEnterInput an input which maps to the value of the path of the state
@@ -68,6 +70,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         parse = (y) => y,
         style = {},
         randomiser,
+        randomiser2,
     } = prop
 
     let { context } = useContext(ReactContext)
@@ -89,6 +92,19 @@ export function OxEnterInput(prop: OxEnterInputProp) {
                 context.updateState((state) => {
                     let { piece, last } = readPath(path, state)
                     piece[last] = randomiser!()
+                    setValue(present(piece[last]))
+                })
+            }}
+        />
+    ) : null
+
+    let randomElement2 = randomiser2 ? (
+        <Button
+            icon={"🎲"}
+            onClick={() => {
+                context.updateState((state) => {
+                    let { piece, last } = readPath(path, state)
+                    piece[last] = randomiser2!()
                     setValue(present(piece[last]))
                 })
             }}
@@ -129,6 +145,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
                 onFocus={() => setIsFocused(true)}
             ></Input>
             {randomElement}
+            {randomElement2}
         </>
     )
 }
