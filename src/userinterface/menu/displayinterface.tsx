@@ -27,7 +27,7 @@ export let DisplayInterface = () => {
                 Space position: <OxInputNumber path="posS" />
             </li>
             <li>
-                Time position: <OxInputNumber path="posT" />
+                Time position (generation): <OxInputNumber path="posT" />
                 <Button onClick={() => act.gotoTop()}>Reset</Button>
             </li>
             <li>

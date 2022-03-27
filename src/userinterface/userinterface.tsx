@@ -1,4 +1,4 @@
-import { DiffOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
+import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
 import { Button, Collapse, PageHeader, Space } from "antd"
 import { Act } from "../engine/act"
 import { ruleName } from "../engine/rule"
@@ -51,18 +51,8 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                         }}
                     />
                     <RuleInput />
-                    <Button
-                        type={diffMode !== "off" ? "primary" : "default"}
-                        title={
-                            "Toggle the Differential Mode " + (diffMode !== "off" ? "off" : "on")
-                        }
-                        icon={<DiffOutlined />}
-                        onClick={() => {
-                            act.toggleDifferentialMode()
-                        }}
-                    />
 
-                    <TopMenu helpList={helpList} />
+                    <TopMenu diffMode={diffMode} helpList={helpList} act={act} />
                 </Space>
 
                 {/* /\ -------------------- /\ */}
