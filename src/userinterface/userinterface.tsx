@@ -1,5 +1,5 @@
 import { DiffOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, PageHeader, Popover, Space, Switch } from "antd"
+import { Button, Collapse, PageHeader, Space } from "antd"
 import { Act } from "../engine/act"
 import { ruleName } from "../engine/rule"
 import { Context } from "../state/context"
@@ -9,6 +9,7 @@ import { RuleEditor } from "./editor/ruleeditor"
 import { RuleInput } from "./ruleinput"
 import { TopMenu } from "./topmenu"
 import { getRuleInformation, RuleInfo } from "./ruleabout"
+import { Documentation } from "./documentation"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
@@ -71,17 +72,20 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 {/* \/ -------------------- \/ */}
             </Space>
 
-            <Collapse accordion>
+            <Collapse accordion defaultActiveKey={3}>
                 <Panel className="ruleEditor" header={`Rule Editor (${ruleName(rule)})`} key={1}>
                     <RuleEditor />
                 </Panel>
                 <Panel
-                    collapsible={getRuleInformation(rule) ? "header" : "disabled"}
+                    collapsible={getRuleInformation(rule) ? undefined : "disabled"}
                     className="ruleInfo"
                     header={`About this rule`}
                     key={2}
                 >
                     <RuleInfo />
+                </Panel>
+                <Panel header={`Documentation`} key={3}>
+                    <Documentation />
                 </Panel>
             </Collapse>
         </ReactContext.Provider>

@@ -15,19 +15,19 @@ export let TopMenu = (prop: TopMenuProp) => {
         <Space>
             <Popover
                 placement="bottomLeft"
-                title="Topology"
-                content={<TopologyInterface />}
-                trigger="click"
-            >
-                <Button>Topology</Button>
-            </Popover>
-            <Popover
-                placement="bottomLeft"
                 title="Display"
                 content={<DisplayInterface />}
                 trigger="click"
             >
                 <Button>Display</Button>
+            </Popover>
+            <Popover
+                placement="bottomLeft"
+                title="Topology"
+                content={<TopologyInterface />}
+                trigger="click"
+            >
+                <Button>Topology</Button>
             </Popover>
             <Popover
                 placement="bottomLeft"

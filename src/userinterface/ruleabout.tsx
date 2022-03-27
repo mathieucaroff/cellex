@@ -5,7 +5,7 @@ import { ReactContext } from "../state/reactcontext"
 import { Rule } from "../type"
 
 export const informationSet: Record<string, string> = {
-    b30: "is famous for its use in artistic projects and as a source of chaos to generate randomness in some Wofram products",
+    b30: "is famous for its use in artistic projects and as a source of chaos to generate randomness in some Wolfram products",
     b54: "is of Class 4. It is thought to be Turing Complete, though this remains to be proven.",
     b60: "ignores the value to the right of the cell and XOR-s the value of the cell with the one to its left. It is like it computes a tilted cellular automaton with a neighboorhood size of two",
     b90: "ignores the current value of the cell and set it to the result of XOR-ing the cell to the left and the cell to the right. Because it ignores its own value, it is like there are two distinct cellular automaton with a neighboorhood size of two being computed in parallel.",
