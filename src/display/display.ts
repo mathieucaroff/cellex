@@ -2,15 +2,12 @@ import { colorToHexColor, hexColorToColor } from "../engine/color"
 import { Engine } from "../control/engine"
 import { Context } from "../state/context"
 import { fillImage } from "./fill"
+import { Color } from "../type"
 
 export let presentColorMap = (colorMap) => colorMap.map((c) => colorToHexColor(c)).join(";")
 export let parseColorMap = (colorString) => colorString.split(";").map((h) => hexColorToColor(h))
 
-export let createDisplay = (
-    context: Context,
-    canvas: HTMLCanvasElement,
-    zoomCanvas: HTMLCanvasElement,
-) => {
+export let createDisplay = (canvas: HTMLCanvasElement, zoomCanvas: HTMLCanvasElement) => {
     let ctx = canvas.getContext("2d")!
     let zoomCtx = zoomCanvas.getContext("2d")!
     let engine: Engine
@@ -28,13 +25,12 @@ export let createDisplay = (
          * @param yy the y position of the camera (float)
          * @param redraw whether the display needs a full redraw
          */
-        draw(x: number, yy: number, redraw: boolean) {
+        draw(x: number, yy: number, zoom: number, colorMap: Color[], redraw: boolean) {
             // y is the integer y position
             let y = Math.floor(yy)
             // ey is the small y position (between 0 and 1)
             let ey = yy % 1
             let { width, height } = canvas
-            let { zoom, colorMap } = context.getState()
             let deltaX = x - lastX
             let deltaY = y - lastY
 

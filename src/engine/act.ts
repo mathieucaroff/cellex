@@ -1,5 +1,5 @@
 import { Context } from "../state/context"
-import { State, StatePosition } from "../type"
+import { State } from "../type"
 import { clamp } from "../util/clamp"
 import { Info } from "../control/info"
 

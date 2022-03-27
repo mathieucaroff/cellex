@@ -86,13 +86,18 @@ function main() {
     })
 
     // /\ display
-    let display = createDisplay(context, canvas, zoomCanvas)
+    let display = createDisplay(canvas, zoomCanvas)
     let engine: Engine
+
+    // local display.draw method
+    let drawDisplay = (redraw: boolean) => {
+        display.draw(state.posS, state.posT, state.zoom, state.colorMap, redraw)
+    }
 
     // engine-related change
     context
         .use(({ rule, seed, topology }) => ({ rule, seed, topology }))
-        .for(({ rule, seed, topology }, state) => {
+        .for(({ rule, seed, topology }) => {
             let randomMapper = createRandomMapper({ seedString: seed })
             engine = createAutomatonEngine(rule, topology, randomMapper)
 
@@ -105,14 +110,14 @@ function main() {
             setQueryString(window, "borderRight", presentSideBorder(topology.borderRight))
             display.setEngine(engine)
 
-            display.draw(state.posS, state.posT, true)
+            drawDisplay(true)
         })
 
     context
         .use(({ diffMode }) => ({ diffMode }))
-        .for(({ diffMode }, state) => {
+        .for(({ diffMode }) => {
             engine.setDiffMode(diffMode)
-            display.draw(state.posS, state.posT, true)
+            drawDisplay(true)
         })
 
     // display-related change
@@ -127,7 +132,7 @@ function main() {
             canvas.height = canvasSize.height
             zoomCanvas.width = zoomCanvasSize.width
             zoomCanvas.height = zoomCanvasSize.height
-            display.draw(state.posS, state.posT, true)
+            drawDisplay(true)
         })
 
     // main canvas panning
@@ -197,13 +202,13 @@ function main() {
             })
         }
     })
-    context.usePosition((position) => {
-        display.draw(position.posS, position.posT, position.redraw)
-        position.redraw = false
+    context.usePosition(() => {
+        drawDisplay(state.redraw)
+        state.redraw = false
     })
     // \/ display
 
-    // /\ diff mode
+    // /\ diff mode, "divine intervention"
     let diffModeManager = createDiffModeManager({ context })
 
     diffModeManager.addCanvas(canvas, (x, y) => {
