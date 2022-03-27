@@ -6,6 +6,7 @@ import { OxButton, OxInput, OxInputNumber } from "../component"
 
 export let DisplayInterface = () => {
     let { act, context } = useContext(ReactContext)
+    let { showZoomCanvasBoundary, redraw } = context.getState()
     let ul = (
         <ul>
             <li>
@@ -63,6 +64,16 @@ export let DisplayInterface = () => {
                 Zoom c. height: <OxButton half icon={"/2"} path="zoomCanvasSize.height" />
                 <OxInputNumber path="zoomCanvasSize.height" />
                 <OxButton double icon={"x2"} path="zoomCanvasSize.height" />
+            </li>
+            <li>
+                <Button
+                    type={showZoomCanvasBoundary || redraw ? "primary" : "default"}
+                    onClick={context.action((state) => {
+                        state.showZoomCanvasBoundary = !state.showZoomCanvasBoundary
+                    })}
+                >
+                    Show zoom area boundary
+                </Button>
             </li>
         </ul>
     )

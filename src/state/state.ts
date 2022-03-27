@@ -67,5 +67,6 @@ export let defaultState = (): State => {
         redraw: false,
 
         ...adaptiveCanvasSize(window),
+        showZoomCanvasBoundary: false,
     }
 }

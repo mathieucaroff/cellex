@@ -196,16 +196,16 @@ interface OxButtonProp {
     double?: boolean
 }
 
-// OxCheckbox a checkbox input tied to a boolean value of the state
+// OxButton
 export function OxButton(prop: OxButtonProp) {
     let { path, icon, disabled, half, double } = prop
     let { context } = useContext(ReactContext)
 
-    let contribution: any = { icon, disabled }
+    let buttonParameter: any = { icon, disabled }
 
     if (half || double) {
         let ratio = half ? 1 / 2 : 2
-        contribution.onClick = (ev) => {
+        buttonParameter.onClick = (ev) => {
             context.updateState((state) => {
                 let { piece, last } = readPath(path, state)
                 piece[last] *= ratio
@@ -213,7 +213,7 @@ export function OxButton(prop: OxButtonProp) {
         }
     }
 
-    return <Button {...contribution} />
+    return <Button {...buttonParameter} />
 }
 
 interface OxCheckboxProp {
@@ -221,7 +221,7 @@ interface OxCheckboxProp {
     disabled: boolean
 }
 
-// OxCheckbox a checkbox input tied to a boolean value of the state
+// OxCheckbox is a checkbox input tied to a boolean value of the state
 export function OxCheckbox(prop: OxCheckboxProp) {
     let { path, disabled } = prop
     let { context } = useContext(ReactContext)

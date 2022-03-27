@@ -92,6 +92,11 @@ function main() {
     // local display.draw method
     let drawDisplay = (redraw: boolean) => {
         display.draw(state.posS, state.posT, state.zoom, state.colorMap, redraw)
+        if (state.showZoomCanvasBoundary) {
+            display.drawZoomAreaBoundary(state.zoom)
+            state.showZoomCanvasBoundary = false
+            state.redraw = true
+        }
     }
 
     // engine-related change
@@ -203,8 +208,9 @@ function main() {
         }
     })
     context.usePosition(() => {
-        drawDisplay(state.redraw)
+        let redraw = state.redraw
         state.redraw = false
+        drawDisplay(redraw)
     })
     // \/ display
 

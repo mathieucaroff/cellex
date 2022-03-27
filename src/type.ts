@@ -53,6 +53,7 @@ export interface State {
 
     canvasSize: Size
     zoomCanvasSize: Size
+    showZoomCanvasBoundary: boolean
 }
 
 export interface StatePosition {

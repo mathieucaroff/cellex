@@ -74,5 +74,10 @@ export let createDisplay = (canvas: HTMLCanvasElement, zoomCanvas: HTMLCanvasEle
             zoomCtx.fillRect(0, 0, zoomCanvas.width, zoomCanvas.height)
             zoomCtx.drawImage(canvas, sx, sy, sw, sh, 1, 0, dw, dh)
         },
+        drawZoomAreaBoundary(zoom: number) {
+            let sx = (canvas.width - zoomCanvas.width / zoom) / 2
+            ctx.strokeStyle = "#00FF00" // green
+            ctx.strokeRect(sx, 0, zoomCanvas.width / zoom, zoomCanvas.height / zoom)
+        },
     }
 }
