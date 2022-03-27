@@ -111,35 +111,37 @@ replaces the empty seed by `_`.
 
 ### Simulation border fields
 
-**The border fields are multiline, and thus require pressing Shift+Enter to be validated**. Pressing enter adds a new line.
-
 The border top, border left and border right fields have a simple syntax inspired from regexes [(a programming text parsing tool)](https://en.wikipedia.org/wiki/Regular_expression). This syntax uses the following grouping ideas:
 
-- `()` parenthesis denote repetition of the pattern inside (and it's called a cycle)
+- `()` the pair of outermost parenthesis denotes *cycling* of the pattern inside it. The top border must contain exactly two of these outermost pairs. The side borders must contain exactly one.
+- `()` with the exception of the outermost pair, parenthesis represent *grouping*. This allows to repeat a specific pattern a certain number of time. e.g.  is a shortcut for the following pattern
 - `[]` square brackets denote randomness, though they can be deterministic if used with a single value
+- `{}` curly braces denote repetition
 
-Note that currently, the syntax does not support nesting groups of any kind. Top border should contain one or two groups. The side borders (left and right) should contain exactly one group.
+Example:
+
+- `1((01){9}[01]{2})` is equivalent to `1(010101010101010101[01][01])`
 
 Here are commented examples of valid top borders:
 
-- `(0)` This represents a deterministic initialization to a dead state, this is usually an uninteresting genesis.
-- `(1)` This represents a deterministic initialization to a live state, this is usually an uninteresting genesis.
-- `(0)1(0)` This represents the genesis of `Impulse 1`: A single one, and infinite zeros one each side
-- `(0)11(0)` This represents the genesis of `Impulse 3`.
-- `(0)101(0)` This represents the genesis of `Impulse 5`.
-- `([01])` This represents the genesis of `Random 50%`.
-- `([00000000001])` This represents the genesis of `Random 10%`.
-- `([01111111111])` This represents the genesis of `Random 90%`.
+- `(0)` represents a deterministic initialization to a dead state, this is usually an uninteresting genesis.
+- `(1)` represents a deterministic initialization to a live state, this is usually an uninteresting genesis.
+- `(0)1(0)` represents the genesis of `Impulse 1`: A single one, and infinite zeros one each side
+- `(0)11(0)` represents the genesis of `Impulse 3`.
+- `(0)101(0)` represents the genesis of `Impulse 5`.
+- `([01])` represents the genesis of `Random 50%`.
+- `([00000000001])` represents the genesis of `Random 10%`.
+- `([01111111111])` represents the genesis of `Random 90%`.
 
 Here are commented examples of valid side borders:
 
-- `(0)` This is the always-dead border.
-- `(1)` This is the always-living border.
-- `([01])` This is the border whose liveliness is random, with a probability of 50% for each cell. Note that the random values depend on the random seed, just like for the top border.
-- `111(0)` This is the border that is alive for the first three generations, then dead forever.
-- `(01)` This is the border that alternates between death and live at each generation.
-- `(0001)` This is the border that is alive only every four generations
-- `(000[01])` This is the border that has a 50% chance of being alive every 4 generations.
+- `(0)` is the always-dead border.
+- `(1)` is the always-living border.
+- `([01])` is the border whose liveliness is random, with a probability of 50% for each cell. Note that the random values depend on the random seed, just like for the top border.
+- `111(0)` is the border that is alive for the first three generations, then dead forever.
+- `(01)` is the border that alternates between death and live at each generation.
+- `(0001)` is the border that is alive only every four generations
+- `(000[01])` is the border that has a 50% chance of being alive every 4 generations.
 
 ## Display Controller
 
@@ -151,7 +153,6 @@ The display controller has 7 number inputs and a few more buttons. These are:
 - Width, Height
 - Generation, Spatial Position
 - Speed
-- Precise generation value
 - "Show all panning buttons" checkbox
 
 ### Zoom
@@ -167,11 +168,7 @@ Zoom must be a value between 0 excluded and 64 included.
 
 ### Width and Height
 
-The width and the height field allow reading and setting the size of the canvas, in pixel. Note that width and height can also be automatically adjusted
-to the window using the autoresize "Fit view to window" button of the header of
-the view.
-
-Constraints: These numbers must be positive.
+The width and the height field allow reading and setting the size of the canvas, in pixel. There also are resize handles in the bottom right corner of each canvas.
 
 ### Generation and spatial position
 
