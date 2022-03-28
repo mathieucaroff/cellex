@@ -15,7 +15,7 @@ export interface RandomMapperProp {
 export let createRandomMapper = (prop: RandomMapperProp) => {
     let { seedString } = prop
 
-    let count = 1
+    let count = 3
 
     let perfectRandomFunction = (k: number): PerfectRandom => {
         return (pos: number, size: number) => {
