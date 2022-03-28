@@ -1,8 +1,8 @@
 import { Button } from "antd"
 import { useContext } from "react"
 
-import { ReactContext } from "../../state/reactcontext"
-import { OxButton, OxInput, OxInputNumber } from "../component"
+import { ReactContext } from "../../state/ReactContext"
+import { OxButton, OxInputNumber } from "../component"
 
 export let DisplayUI = () => {
     let { act, context } = useContext(ReactContext)

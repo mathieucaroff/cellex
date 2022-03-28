@@ -2,8 +2,8 @@ import { Input, Select } from "antd"
 import { useContext } from "react"
 import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
 import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
-import { ReactContext } from "../../state/reactcontext"
-import { SideBorderCascader, TopBorderCascader } from "./topologycascader"
+import { ReactContext } from "../../state/ReactContext"
+import { SideBorderCascader, TopBorderCascader } from "./topologyCascader"
 import { OxEnterInput } from "../component"
 
 const { Option } = Select

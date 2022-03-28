@@ -1,6 +1,6 @@
 import { DiffOutlined } from "@ant-design/icons"
 import { Button, Popover, Space } from "antd"
-import { Act } from "../engine/act"
+import { Act } from "../control/Act"
 import { DiffMode } from "../type"
 import { DisplayUI } from "./menu/DisplayUI"
 import { EngineUI } from "./menu/EngineUI"

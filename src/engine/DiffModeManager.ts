@@ -1,6 +1,6 @@
 // hoverManager helps with implementing the diffing
 
-import { Context } from "../state/context"
+import { Context } from "../state/Context"
 
 export interface DiffModeManagerProp {
     context: Context

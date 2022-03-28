@@ -1,15 +1,15 @@
 import assert from "assert"
 import { TopBorder } from "../../patternlang/BorderType"
-import { group, rootGroup } from "../../patternlang/patternutil"
+import { group, rootGroup } from "../../patternlang/patternUtil"
 import {
     createAutomatonEngine,
     getSideBorderValue,
     getStochastic,
     getTopBorderValue,
     runStochastic,
-} from "../../control/engine"
+} from "../Engine"
 import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopEngine"
-import { createRandomMapper } from "../randomMapper"
+import { createRandomMapper } from "../RandomMapper"
 import { elementaryRule } from "../rule"
 
 const ts = { type: "state" as const }

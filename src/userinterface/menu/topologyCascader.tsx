@@ -2,7 +2,7 @@ import { Cascader } from "antd"
 import { DefaultOptionType } from "antd/lib/cascader"
 import { useContext, useState } from "react"
 import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
-import { ReactContext } from "../../state/reactcontext"
+import { ReactContext } from "../../state/ReactContext"
 
 let entry = (label: string, value: string, ...children: DefaultOptionType[]): DefaultOptionType => {
     if (value === "") {

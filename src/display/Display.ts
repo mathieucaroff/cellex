@@ -1,6 +1,5 @@
 import { colorToHexColor, hexColorToColor } from "../engine/color"
-import { Engine } from "../control/engine"
-import { Context } from "../state/context"
+import { Engine } from "../engine/Engine"
 import { fillImage } from "./fill"
 import { Color } from "../type"
 

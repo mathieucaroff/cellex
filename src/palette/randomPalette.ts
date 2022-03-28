@@ -1,5 +1,5 @@
 import { Color } from "../type"
-import { hslToRGB } from "./hsltohex"
+import { hslToRGB } from "./hslToHex"
 
 const baseLuminosity = 0.6
 const lumSpacing = 0.2

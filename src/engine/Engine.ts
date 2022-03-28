@@ -2,7 +2,7 @@ import { BorderGroup, SideBorder, StochasticState, TopBorder } from "../patternl
 import { TopologyFinite } from "../topologyType"
 import { DiffMode, Rule } from "../type"
 import { mod } from "../util/mod"
-import { PerfectRandom, RandomMapper } from "../engine/randomMapper"
+import { PerfectRandom, RandomMapper } from "./RandomMapper"
 
 // getStochastic finds the stochastic associated with a position of a group
 export let getStochastic = (group: BorderGroup, position: number): StochasticState => {

@@ -1,7 +1,7 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
-import { ReactContext } from "../state/reactcontext"
+import { ReactContext } from "../state/ReactContext"
 import { Rule } from "../type"
 
 export const informationSet: Record<string, string> = {

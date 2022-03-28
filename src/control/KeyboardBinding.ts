@@ -1,6 +1,6 @@
-import { KeyboardManager } from "./keyboardManager"
+import { KeyboardManager } from "./KeyboardManager"
 import { Remover } from "../type"
-import { Act } from "../engine/act"
+import { Act } from "./Act"
 
 export interface KeyboardBindingProp {
     act: Act

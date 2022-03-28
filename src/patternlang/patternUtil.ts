@@ -1,9 +1,4 @@
-import {
-    BorderElement,
-    BorderGroup,
-    BorderRootGroup,
-    StochasticState,
-} from "../patternlang/BorderType"
+import { BorderElement, BorderGroup, BorderRootGroup, StochasticState } from "./BorderType"
 
 export let group =
     (content: BorderElement[]) =>

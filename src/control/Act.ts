@@ -1,7 +1,7 @@
-import { Context } from "../state/context"
+import { Context } from "../state/Context"
 import { State } from "../type"
 import { clamp } from "../util/clamp"
-import { Info } from "../control/info"
+import { Info } from "./Info"
 
 export let createAct = (context: Context, info: Info) => {
     let action = (f: (state: State) => void) => (state?: State) => {

@@ -1,9 +1,9 @@
 import { Input } from "antd"
 import { useContext } from "react"
 import { nAryRule, parseRule, ruleName } from "../engine/rule"
-import { ReactContext } from "../state/reactcontext"
+import { ReactContext } from "../state/ReactContext"
 import { OxEnterInput } from "./component"
-import { RuleCascader } from "./rulecascader"
+import { RuleCascader } from "./RuleCascader"
 
 export let RuleInput = () => {
     let { context } = useContext(ReactContext)

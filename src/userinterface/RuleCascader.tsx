@@ -2,7 +2,7 @@ import { Cascader } from "antd"
 import { DefaultOptionType } from "antd/lib/cascader"
 import { useContext, useState } from "react"
 import { interestingElementaryRuleSet, parseRule, ruleSet } from "../engine/rule"
-import { ReactContext } from "../state/reactcontext"
+import { ReactContext } from "../state/ReactContext"
 import { limitLength } from "../util/limitLength"
 
 let labelValue = (s: string) => ({ label: s, value: s })
@@ -50,6 +50,7 @@ cascaderOptionSet.push({
         "Chaotic-veins t6_079__678_157_526",
         "Purple q41__486_840_995__337_752_706__623_540_468__650_612_112",
         "Roots q64__476_493_094__943_827_905__561_183_734__743_354_260",
+        "Tilted-roots q216__750_671_290__138_440_558__728_216_775__714_880_651",
         "Bicolor-triangles q328__039_792_891__114_456_057__847_307_533__829_314_572",
         "Red-verticales h11__491_573_592__086_365_046__158_023_435__163_933_985__119_657_979__133_649_228__687_148_535__307_197_049__105_705_668__859_273_072__928_929_698__053_728_509__869_362_339__830_362_831__746_952_964__904_896_329__372_146_169__408_700_940",
     ].map((text) => {
