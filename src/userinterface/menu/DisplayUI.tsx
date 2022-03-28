@@ -4,7 +4,7 @@ import { useContext } from "react"
 import { ReactContext } from "../../state/reactcontext"
 import { OxButton, OxInput, OxInputNumber } from "../component"
 
-export let DisplayInterface = () => {
+export let DisplayUI = () => {
     let { act, context } = useContext(ReactContext)
     let { showZoomCanvasBoundary, redraw } = context.getState()
     let ul = (

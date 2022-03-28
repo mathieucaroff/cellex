@@ -4,7 +4,7 @@ import { useContext } from "react"
 import { ReactContext } from "../../state/reactcontext"
 import { OxButton, OxInput, OxInputNumber } from "../component"
 
-export let EngineInterface = () => {
+export let EngineUI = () => {
     let { context } = useContext(ReactContext)
     let ul = (
         <ul>

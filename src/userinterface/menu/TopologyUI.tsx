@@ -9,7 +9,7 @@ import { OxEnterInput } from "../component"
 const { Option } = Select
 
 interface TopologyContentProp {}
-export let TopologyInterface = (prop: TopologyContentProp) => {
+export let TopologyUI = (prop: TopologyContentProp) => {
     let { context } = useContext(ReactContext)
 
     let topologyIsLoop = context.getState().topology.kind == "loop"

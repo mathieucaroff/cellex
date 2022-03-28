@@ -10,7 +10,7 @@ import { defaultColorMap } from "../../state/state"
 import { Color } from "../../type"
 import { OxInput } from "../component"
 
-export let PaletteInterface = () => {
+export let PaletteUI = () => {
     let { context } = useContext(ReactContext)
     let ul = (
         <ul>

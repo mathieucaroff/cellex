@@ -2,11 +2,11 @@ import { DiffOutlined } from "@ant-design/icons"
 import { Button, Popover, Space } from "antd"
 import { Act } from "../engine/act"
 import { DiffMode } from "../type"
-import { DisplayInterface } from "./menu/displayinterface"
-import { EngineInterface } from "./menu/engineinterface"
-import { HelpContent } from "./menu/help"
-import { PaletteInterface } from "./menu/palette"
-import { TopologyInterface } from "./menu/topology"
+import { DisplayUI } from "./menu/DisplayUI"
+import { EngineUI } from "./menu/EngineUI"
+import { HelpContent } from "./menu/HelpContent"
+import { PaletteUI } from "./menu/PaletteUI"
+import { TopologyUI } from "./menu/TopologyUI"
 
 export interface TopMenuProp {
     diffMode: DiffMode
@@ -19,36 +19,21 @@ export let TopMenu = (prop: TopMenuProp) => {
 
     return (
         <Space>
-            <Popover
-                placement="bottomLeft"
-                title="Display"
-                content={<DisplayInterface />}
-                trigger="click"
-            >
+            <Popover placement="bottomLeft" title="Display" content={<DisplayUI />} trigger="click">
                 <Button>Display</Button>
             </Popover>
             <Popover
                 placement="bottomLeft"
                 title="Topology"
-                content={<TopologyInterface />}
+                content={<TopologyUI />}
                 trigger="click"
             >
                 <Button>Topology</Button>
             </Popover>
-            <Popover
-                placement="bottomLeft"
-                title="Engine"
-                content={<EngineInterface />}
-                trigger="click"
-            >
+            <Popover placement="bottomLeft" title="Engine" content={<EngineUI />} trigger="click">
                 <Button>Engine</Button>
             </Popover>
-            <Popover
-                placement="bottomLeft"
-                title="Palette"
-                content={<PaletteInterface />}
-                trigger="click"
-            >
+            <Popover placement="bottomLeft" title="Palette" content={<PaletteUI />} trigger="click">
                 <Button>Palette</Button>
             </Popover>
             <Button
