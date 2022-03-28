@@ -31,15 +31,12 @@ let cascaderOptionSet: DefaultOptionType[] = Object.entries(interestingElementar
 cascaderOptionSet.unshift({
     ...labelValue("Grouped"),
     children: [
-        entryFrom("self-symmetric-self-color-complement (Single)", ruleSet.both),
-        multiEntryFrom("self-color-complement (Pair of left-right symmetrics)", ruleSet.color),
-        multiEntryFrom(
-            "self-left-right-symmetric (Pair of the color complements)",
-            ruleSet.leftright,
-        ),
-        multiEntryFrom("self-left-right-color (Pair)", ruleSet.leftrightcolor),
-        multiEntryFrom("ordinary (Four rules)", ruleSet.four_a),
-        multiEntryFrom("ordinary continued", ruleSet.four_b),
+        entryFrom("Single (fully-self-symmetric)", ruleSet.both),
+        multiEntryFrom("Pair of left-right symmetrics (color-self-symmetric)", ruleSet.leftright),
+        multiEntryFrom("Pair of color symmetrics (left-right-self-symmetric)", ruleSet.color),
+        multiEntryFrom("Pair (left-right-color-self-symmetric)", ruleSet.leftrightcolor),
+        multiEntryFrom("Group of four ordinary rules", ruleSet.four_a),
+        multiEntryFrom("Group of four ordinary continuation", ruleSet.four_b),
     ],
 })
 
