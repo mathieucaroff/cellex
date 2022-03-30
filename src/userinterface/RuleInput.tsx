@@ -18,8 +18,10 @@ export let RuleInput = () => {
                 style={{ width: "initial" }}
                 present={ruleName}
                 parse={parseRule}
-                randomiser={() => nAryRule(rule.stateCount)}
-                randomiser2={nAryRule}
+                randomizer={() => nAryRule(rule.stateCount)}
+                randomizer2={nAryRule}
+                randomElementTitle={`Random ${rule.stateCount}-state rule`}
+                randomElementTitle2={`Random rule (with up to six distinct states)`}
             />
         </Input.Group>
     )

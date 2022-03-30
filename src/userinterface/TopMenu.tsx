@@ -18,9 +18,12 @@ export let TopMenu = (prop: TopMenuProp) => {
     let { helpList, act, diffMode } = prop
 
     return (
-        <Space>
+        <Space className="topMenu">
             <Popover placement="bottomLeft" title="Display" content={<DisplayUI />} trigger="click">
-                <Button>Display</Button>
+                <Button>
+                    <i className="fa fa-television" />
+                    Display
+                </Button>
             </Popover>
             <Popover
                 placement="bottomLeft"
@@ -28,13 +31,21 @@ export let TopMenu = (prop: TopMenuProp) => {
                 content={<TopologyUI />}
                 trigger="click"
             >
-                <Button>Topology</Button>
+                <Button>
+                    <i className="fa fa-circle-o" />
+                    Topology
+                </Button>
             </Popover>
             <Popover placement="bottomLeft" title="Engine" content={<EngineUI />} trigger="click">
-                <Button>Engine</Button>
+                <Button>
+                    <i className="fa fa-arrows-alt" />
+                    Engine
+                </Button>
             </Popover>
             <Popover placement="bottomLeft" title="Palette" content={<PaletteUI />} trigger="click">
-                <Button>Palette</Button>
+                <Button>
+                    <i>🎨</i>Palette
+                </Button>
             </Popover>
             <Button
                 type={diffMode !== "off" ? "primary" : "default"}

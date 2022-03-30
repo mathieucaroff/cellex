@@ -1,5 +1,7 @@
 @import './style.ant.custom.css';
 
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+
 * {
    font-family: 'Segoe UI', Tahoma, sans-serif;
 }
@@ -82,4 +84,8 @@ ul {
     display: inline-block;
     margin-left: -20px;
     cursor: grab;
+}
+
+.topMenu i {
+    margin-right: 8px;
 }

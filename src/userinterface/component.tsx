@@ -52,10 +52,12 @@ interface OxEnterInputProp {
     style?: CSSProperties
     present?: (x: any) => string
     parse?: (y: string) => any
-    // randomiser is a way to get a random value written to the state
-    randomiser?: () => any
-    // randomiser2 is a second way to get a random value
-    randomiser2?: () => any
+    // randomizer is a way to get a random value written to the state
+    randomizer?: () => any
+    // randomizer2 is a second way to get a random value
+    randomizer2?: () => any
+    randomElementTitle?: string
+    randomElementTitle2?: string
 }
 
 // OxEnterInput an input which maps to the value of the path of the state
@@ -69,8 +71,10 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         present = (x) => x,
         parse = (y) => y,
         style = {},
-        randomiser,
-        randomiser2,
+        randomizer,
+        randomizer2,
+        randomElementTitle,
+        randomElementTitle2,
     } = prop
 
     let { context } = useContext(ReactContext)
@@ -85,26 +89,28 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         }
     }, [isFocused || (p = present(piece[last]))])
 
-    let randomElement = randomiser ? (
+    let randomElement = randomizer ? (
         <Button
             icon={"🎲"}
+            title={randomElementTitle}
             onClick={() => {
                 context.updateState((state) => {
                     let { piece, last } = readPath(path, state)
-                    piece[last] = randomiser!()
+                    piece[last] = randomizer!()
                     setValue(present(piece[last]))
                 })
             }}
         />
     ) : null
 
-    let randomElement2 = randomiser2 ? (
+    let randomElement2 = randomizer2 ? (
         <Button
             icon={"🎲"}
+            title={randomElementTitle2}
             onClick={() => {
                 context.updateState((state) => {
                     let { piece, last } = readPath(path, state)
-                    piece[last] = randomiser2!()
+                    piece[last] = randomizer2!()
                     setValue(present(piece[last]))
                 })
             }}

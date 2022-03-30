@@ -72,6 +72,7 @@ export let RuleCascader = () => {
     return (
         <>
             <Cascader
+                {...{ title: "Interesting elementary rules" }}
                 value={[]}
                 style={{ maxWidth: "34px" }}
                 options={"b30 b54 b60 b73 b90 b105 b106 b110 b150 b184".split(" ").map(labelValue)}
@@ -85,6 +86,7 @@ export let RuleCascader = () => {
                 }}
             />
             <Cascader
+                {...{ title: "Elementary rules by category" }}
                 open={isOpen}
                 value={[]}
                 onFocus={() => setIsOpen(true)}
