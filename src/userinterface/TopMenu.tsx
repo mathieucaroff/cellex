@@ -3,7 +3,6 @@ import { Button, Popover, Space } from "antd"
 import { Act } from "../control/Act"
 import { DiffMode } from "../type"
 import { DisplayUI } from "./menu/DisplayUI"
-import { EngineUI } from "./menu/EngineUI"
 import { HelpContent } from "./menu/HelpContent"
 import { PaletteUI } from "./menu/PaletteUI"
 import { TopologyUI } from "./menu/TopologyUI"
@@ -34,12 +33,6 @@ export let TopMenu = (prop: TopMenuProp) => {
                 <Button>
                     <i className="fa fa-circle-o" />
                     Topology
-                </Button>
-            </Popover>
-            <Popover placement="bottomLeft" title="Engine" content={<EngineUI />} trigger="click">
-                <Button>
-                    <i className="fa fa-arrows-alt" />
-                    Engine
                 </Button>
             </Popover>
             <Popover placement="bottomLeft" title="Palette" content={<PaletteUI />} trigger="click">
