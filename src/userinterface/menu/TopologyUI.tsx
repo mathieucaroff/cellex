@@ -32,7 +32,7 @@ export let TopologyUI = (prop: TopologyContentProp) => {
                     </Select>
                 </li>
                 <li>
-                    Genesis:
+                    ‴‴Genesis:
                     <Input.Group compact>
                         <TopBorderCascader />
                         <OxEnterInput
@@ -44,7 +44,7 @@ export let TopologyUI = (prop: TopologyContentProp) => {
                     </Input.Group>
                 </li>
                 <li>
-                    Side Border Left:
+                    |⧘… Side Border Left:
                     <Input.Group compact>
                         <SideBorderCascader side="borderLeft" disabled={topologyIsLoop} />
                         <OxEnterInput
@@ -57,7 +57,7 @@ export let TopologyUI = (prop: TopologyContentProp) => {
                     </Input.Group>
                 </li>
                 <li>
-                    Side Border Right:
+                    …⧙| Side Border Right:
                     <Input.Group compact>
                         <SideBorderCascader side="borderRight" disabled={topologyIsLoop} />
                         <OxEnterInput
@@ -85,7 +85,7 @@ export let TopologyUI = (prop: TopologyContentProp) => {
                     />
                 </li>
                 <li>
-                    Simulation width: <OxButton half icon={"/2"} path="topology.width" />
+                    ⟷Simulation width: <OxButton half icon={"/2"} path="topology.width" />
                     <OxInputNumber path="topology.width" />
                     <OxButton double icon={"x2"} path="topology.width" />
                     <br />
