@@ -93,7 +93,7 @@ export let createAutomatonEngine = (
 
     let functionLength = rule.transitionFunction.length
 
-    let diffMode: DiffMode = "off"
+    let diffMode: DiffMode = { status: "off" }
 
     let applyDiffModeChange = (line: Uint8Array, modifiedSet: number[]) => {
         return line.map((b, k) => {
@@ -183,21 +183,21 @@ export let createAutomatonEngine = (
                 // line B is being computed
                 nextLine(lineA, lineB)
 
-                if (diffMode !== "off") {
+                if (diffMode.status !== "off") {
                     let oldLine = lineC
                     lineC = lineD
                     lineD = oldLine
                     nextLine(lineC, lineD)
                     if (diffMode.t === currentT) {
-                        let changeSet = typeof diffMode.s === "object" ? diffMode.s : [diffMode.s]
+                        let changeSet = diffMode.status === "selection" ? diffMode.s : [diffMode.s]
                         lineD = applyDiffModeChange(lineD, changeSet)
                     }
                 }
             }
 
-            if (diffMode !== "off") {
+            if (diffMode.status !== "off") {
                 if (diffMode.t === 0 && currentT === 0) {
-                    let changeSet = typeof diffMode.s === "object" ? diffMode.s : [diffMode.s]
+                    let changeSet = diffMode.status === "selection" ? diffMode.s : [diffMode.s]
                     lineD = applyDiffModeChange(lineD, changeSet)
                 }
 

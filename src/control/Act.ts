@@ -211,14 +211,10 @@ export let createAct = (context: Context, info: Info) => {
 
         /** Differential Mode */
         toggleDifferentialMode: action((state) => {
-            if (state.diffMode === "off") {
-                state.diffMode = {
-                    t: 0,
-                    s: [] as number[],
-                    diffState: 6,
-                }
+            if (state.diffMode.status === "off") {
+                state.diffMode = { status: "selection", t: 0, s: [], diffState: 6 }
             } else {
-                state.diffMode = "off"
+                state.diffMode = { status: "off" }
             }
         }),
     }

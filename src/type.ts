@@ -24,14 +24,24 @@ export interface Rule {
     transitionFunction: number[]
 }
 
-export interface DiffModeSelection {
+export interface DiffModeOff {
+    status: "off"
+}
+// s is a single number while the mouse is hovering. It becomes an array
+// when the user clicks, locking the selection.
+export interface DiffModeFloating {
+    status: "floating"
     t: number
-    // s is a single number while the mouse is hovering. It becomes an array
-    // when the user clicks, locking the selection.
-    s: number | number[]
+    s: number
     diffState: number
 }
-export type DiffMode = "off" | DiffModeSelection
+export interface DiffModeSelection {
+    status: "selection"
+    t: number
+    s: number[]
+    diffState: number
+}
+export type DiffMode = DiffModeOff | DiffModeFloating | DiffModeSelection
 
 /**
  * @param postS Spatial position

@@ -43,7 +43,7 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
         ) =>
         (ev: MouseEvent) => {
             let { diffMode } = context.getState()
-            if (diffMode === "off") {
+            if (diffMode.status === "off") {
                 return
             }
 
@@ -51,7 +51,7 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
             var x = ev.clientX - rect.left
             var y = ev.clientY - rect.top
             let { s, t } = getST(x, y)
-            if (typeof diffMode.s === "object" && diffMode.s.length > 0) {
+            if (diffMode.status === "selection" && diffMode.s.length > 0) {
                 // mode: locking
                 if (eventKind !== "click") {
                     return
@@ -65,8 +65,7 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
                     }
                 } else {
                     // unlock the cell, swith to the cell being hovered
-                    diffMode.s = s
-                    diffMode.t = t
+                    diffMode = { status: "floating", s, t, diffState: diffMode.diffState }
                 }
             } else {
                 // mode: hovering

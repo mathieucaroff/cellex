@@ -1,9 +1,3 @@
-import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button } from "antd"
-import { useContext } from "react"
-
-import { ReactContext } from "../state/reactcontext"
-
 export interface HelpContentProp {
     helpList: [string, string][]
 }

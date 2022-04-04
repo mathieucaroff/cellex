@@ -43,7 +43,7 @@ export let defaultState = (): State => {
         posS: 0,
         posT: 0,
         play: false,
-        diffMode: "off",
+        diffMode: { status: "off" },
         zoom: 4,
         colorMap: defaultColorMap(),
         topology: {

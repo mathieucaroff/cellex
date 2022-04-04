@@ -41,8 +41,8 @@ export let TopMenu = (prop: TopMenuProp) => {
                 </Button>
             </Popover>
             <Button
-                type={diffMode !== "off" ? "primary" : "default"}
-                title={"Toggle the Differential Mode " + (diffMode !== "off" ? "off" : "on")}
+                type={diffMode.status !== "off" ? "primary" : "default"}
+                title={"Toggle the Differential Mode " + (diffMode.status !== "off" ? "off" : "on")}
                 icon={<DiffOutlined />}
                 onClick={() => act.toggleDifferentialMode()}
             />
