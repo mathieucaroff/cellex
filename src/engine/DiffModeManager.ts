@@ -3,6 +3,7 @@
 import { Context } from "../state/Context"
 
 export interface DiffModeManagerProp {
+    baseDiffState: number
     context: Context
 }
 
@@ -22,7 +23,7 @@ export let getPosition = (ev: MouseEvent, element: HTMLElement) => {
  * @returns
  */
 export let createDiffModeManager = (prop: DiffModeManagerProp) => {
-    let { context } = prop
+    let { baseDiffState, context } = prop
 
     // When diff mode is disabled, there's nothing to do.
     // When diff mode is enabled, we want to know whenever the mouse is over
@@ -31,9 +32,19 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
     // Clicking again anywhere but on the same line as the highlighted cell
     // should remove the lock.
     // Thus, there are three diff modes:
-    // - off, disabled
-    // - hovering, a single cell is selected
-    // - locking, the cells of a line can be selected
+    // - "off", disabled
+    // - "hovering", a single cell is selected
+    // - "selection" the cells of a line can be selected (locking)
+    // + "waiting", after the mode is toggled on, but before a cell is hovered
+    //
+    // When "off" there are no interaction with any canvas. Nothing to do.
+    // When "hovering", the pointer must be tracked and in case of a click, the
+    // must be selection locked, and if the mouse leaves, the mode must be
+    // switched to "waiting".
+    // When "waiting", in case of a move the mode must be switched to "hovering"
+    // and in case of a click, it must be switched to "selection".
+    // When "selection", in case of a *click* the time must be inspected to know
+    // whether to edit the selection or to switch to "hovering".
     let handler =
         (
             //
@@ -51,54 +62,29 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
             var x = ev.clientX - rect.left
             var y = ev.clientY - rect.top
             let { s, t } = getST(x, y)
-            if (diffMode.status === "selection" && diffMode.s.length > 0) {
+            if (diffMode.status === "selection") {
                 // mode: locking
                 if (eventKind !== "click") {
                     return
                 }
                 if (t === diffMode.t) {
-                    // remove or add one cell
+                    // edit the selection: remove or add one cell
                     if (diffMode.s.includes(s)) {
                         diffMode.s = diffMode.s.filter((x) => x !== s)
                     } else {
                         diffMode.s.push(s)
                     }
                 } else {
-                    // unlock the cell, swith to the cell being hovered
-                    diffMode = { status: "floating", s, t, diffState: diffMode.diffState }
-                }
-            } else if (diffMode.status === "waiting") {
-                if (eventKind === "move") {
-                    diffMode = {
-                        status: "floating",
-                        t,
-                        s,
-                        diffState: 6,
-                    }
-                } else if (eventKind === "click") {
-                    diffMode = { status: "selection", t, s: [s], diffState: 6 }
+                    // switch the mode to hovering
+                    diffMode = { status: "hovering", s, t, diffState: diffMode.diffState }
                 }
             } else {
-                // mode: hovering
-                if (eventKind === "click") {
-                    if (diffMode.status === "selection") {
-                        // we are not hovering over anything, there's nothing to do
-                        return
-                    }
-                    // lock the cell
-                    diffMode = {
-                        status: "selection",
-                        s: [diffMode.s],
-                        t: diffMode.t,
-                        diffState: diffMode.diffState,
-                    }
-                } else if (eventKind === "leave") {
-                    // reset
+                if (eventKind === "leave") {
                     diffMode = { status: "waiting" }
-                } else {
-                    // move
-                    diffMode.s = s
-                    diffMode.t = t
+                } else if (eventKind === "move") {
+                    diffMode = { status: "hovering", s, t, diffState: baseDiffState }
+                } else if (eventKind === "click") {
+                    diffMode = { status: "selection", s: [s], t, diffState: baseDiffState }
                 }
             }
             context.updateState((state) => {

@@ -215,7 +215,7 @@ function main() {
     // \/ display
 
     // /\ diff mode, "divine intervention"
-    let diffModeManager = createDiffModeManager({ context })
+    let diffModeManager = createDiffModeManager({ baseDiffState: 6, context })
 
     diffModeManager.addCanvas(canvas, (x, y) => {
         let s = Math.floor(x)

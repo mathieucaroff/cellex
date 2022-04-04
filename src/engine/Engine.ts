@@ -183,7 +183,7 @@ export let createAutomatonEngine = (
                 // line B is being computed
                 nextLine(lineA, lineB)
 
-                if (diffMode.status !== "off") {
+                if (diffMode.status !== "off" && diffMode.status !== "waiting") {
                     let oldLine = lineC
                     lineC = lineD
                     lineD = oldLine
@@ -195,7 +195,7 @@ export let createAutomatonEngine = (
                 }
             }
 
-            if (diffMode.status !== "off") {
+            if (diffMode.status !== "off" && diffMode.status !== "waiting") {
                 if (diffMode.t === 0 && currentT === 0) {
                     let changeSet = diffMode.status === "selection" ? diffMode.s : [diffMode.s]
                     lineD = applyDiffModeChange(lineD, changeSet)

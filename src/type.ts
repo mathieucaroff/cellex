@@ -32,8 +32,8 @@ export interface DiffModeOff {
 export interface DiffModeWaiting {
     status: "waiting"
 }
-export interface DiffModeFloating {
-    status: "floating"
+export interface DiffModeHovering {
+    status: "hovering"
     t: number
     s: number
     diffState: number
@@ -44,7 +44,7 @@ export interface DiffModeSelection {
     s: number[]
     diffState: number
 }
-export type DiffMode = DiffModeOff | DiffModeWaiting | DiffModeFloating | DiffModeSelection
+export type DiffMode = DiffModeOff | DiffModeWaiting | DiffModeHovering | DiffModeSelection
 
 /**
  * @param postS Spatial position
