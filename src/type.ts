@@ -29,6 +29,9 @@ export interface DiffModeOff {
 }
 // s is a single number while the mouse is hovering. It becomes an array
 // when the user clicks, locking the selection.
+export interface DiffModeWaiting {
+    status: "waiting"
+}
 export interface DiffModeFloating {
     status: "floating"
     t: number
@@ -41,7 +44,7 @@ export interface DiffModeSelection {
     s: number[]
     diffState: number
 }
-export type DiffMode = DiffModeOff | DiffModeFloating | DiffModeSelection
+export type DiffMode = DiffModeOff | DiffModeWaiting | DiffModeFloating | DiffModeSelection
 
 /**
  * @param postS Spatial position

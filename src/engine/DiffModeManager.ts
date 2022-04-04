@@ -67,18 +67,34 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
                     // unlock the cell, swith to the cell being hovered
                     diffMode = { status: "floating", s, t, diffState: diffMode.diffState }
                 }
+            } else if (diffMode.status === "waiting") {
+                if (eventKind === "move") {
+                    diffMode = {
+                        status: "floating",
+                        t,
+                        s,
+                        diffState: 6,
+                    }
+                } else if (eventKind === "click") {
+                    diffMode = { status: "selection", t, s: [s], diffState: 6 }
+                }
             } else {
                 // mode: hovering
                 if (eventKind === "click") {
-                    if (typeof diffMode.s === "object") {
+                    if (diffMode.status === "selection") {
                         // we are not hovering over anything, there's nothing to do
                         return
                     }
                     // lock the cell
-                    diffMode.s = [diffMode.s]
+                    diffMode = {
+                        status: "selection",
+                        s: [diffMode.s],
+                        t: diffMode.t,
+                        diffState: diffMode.diffState,
+                    }
                 } else if (eventKind === "leave") {
                     // reset
-                    diffMode.s = []
+                    diffMode = { status: "waiting" }
                 } else {
                     // move
                     diffMode.s = s
