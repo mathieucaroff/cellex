@@ -3,7 +3,7 @@ import "antd/dist/antd.css"
 import * as ReactDOM from "react-dom"
 import * as packageInfo from "../package.json"
 import { createAct } from "./control/Act"
-import { createDragManager } from "./control/DragManager"
+import { createDragManager } from "./control/dragmanager/DragManager"
 import { createDiffModeManager } from "./engine/DiffModeManager"
 import { createInfo } from "./control/Info"
 import { keyboardBinding } from "./control/KeyboardBinding"
@@ -20,6 +20,8 @@ import { defaultState } from "./state/state"
 import { UserInterface } from "./userinterface/UserInterface"
 import { emitterLoop } from "./util/emitterLoop"
 import { setQueryString } from "./util/setQueryString"
+import { getDesktopOrMobile } from "./util/isMobile"
+import { DesktopOrMobile } from "./type"
 
 function main() {
     // /\ github corner / package
@@ -28,6 +30,9 @@ function main() {
     })
     document.body.appendChild(cornerDiv)
     // \/ canvas
+
+    let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator.userAgent)
+    console.log("desktopOrMobile_", desktopOrMobile)
 
     let state = defaultState()
     let context = createContext(state)
@@ -147,6 +152,7 @@ function main() {
             let xy = { x: state.posS, y: state.posT }
             return xy
         },
+        desktopOrMobile,
     })
     panningDragManager.onMove((xy) => {
         context.updatePosition((position, state) => {
@@ -174,6 +180,7 @@ function main() {
             let xy = { x: -state.canvasSize.width, y: -state.canvasSize.height }
             return xy
         },
+        desktopOrMobile,
     })
 
     mainResizeDragManager.onMove((xy) => {
@@ -191,6 +198,7 @@ function main() {
             let xy = { x: -state.zoomCanvasSize.width, y: -state.zoomCanvasSize.height }
             return xy
         },
+        desktopOrMobile,
     })
     zoomResizeDragManager.onMove((xy) => {
         context.updateState((state) => {

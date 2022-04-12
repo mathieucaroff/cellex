@@ -1,4 +1,4 @@
-import { Pair } from "../type"
+import { Pair } from "../../type"
 
 // dragManager helps with implementing the panning and canvas resizing features
 
@@ -14,7 +14,7 @@ export interface DragManagerProp {
     getDisplayInit: () => Pair
 }
 
-export let createDragManager = (prop: DragManagerProp) => {
+export let createDesktopDragManager = (prop: DragManagerProp) => {
     let { element, getDisplayInit } = prop
     let nop = () => {}
 

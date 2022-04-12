@@ -78,3 +78,5 @@ export interface StatePosition {
 export interface Remover {
     remove: () => void
 }
+
+export type DesktopOrMobile = "desktop" | "mobile"

@@ -17,7 +17,7 @@ export let TopMenu = (prop: TopMenuProp) => {
     let { helpList, act, diffMode } = prop
 
     return (
-        <Space className="topMenu">
+        <div className="topMenu">
             <Popover placement="bottomLeft" title="Display" content={<DisplayUI />} trigger="click">
                 <Button>
                     <i className="fa fa-television" />
@@ -54,6 +54,6 @@ export let TopMenu = (prop: TopMenuProp) => {
             >
                 <Button>?</Button>
             </Popover>
-        </Space>
+        </div>
     )
 }

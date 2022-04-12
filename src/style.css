@@ -89,3 +89,7 @@ ul {
 .topMenu i {
     margin-right: 8px;
 }
+
+.topMenu > * {
+    margin-right: 8px;
+}

@@ -10,7 +10,6 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
   - [View](#view)
     - [Rule Input](#rule-input)
     - [Genesis](#genesis)
-  - [View footer](#view-footer)
   - [Rule Editor](#rule-editor)
     - [Simulation topology selector](#simulation-topology-selector)
     - [Simulation border fields](#simulation-border-fields)
@@ -57,25 +56,14 @@ The genesis selector allows to choose what the how the starting state of the aut
 
 - Random 10%, Random 50% and Random 90% are genesis states randomly generated states. The percentage is the likelihood to be alive, for each cell.
 
-  Please note that the random used in the simulator is generated with a seed. This allows the application's random to be deterministic. It makes the initial state of the application reproducible, given the seed. The seed parameter can be found in the Engine menu.
+  Please note that the random used in the simulator is generated with a seed. This allows the random of the application to be deterministic. It makes the initial state of the application reproducible, given the seed. The seed parameter can be found in the Topology menu.
 
-Next to the genesis selector is a dice button. This dice allows to randomly
+  Next to the seed selector is a dice button. This dice allows to randomly
 generate a new seed, to obtain a new initial state.
-
-## View footer
-
-The view footer has two parts:
-
-- the navigation block
-- the play block
-
-The navigation block allows zooming in and out, and panning using arrows.
-
-The play block allows starting and pausing the vertical autoscroll of the automaton, changing the play speed, and showing a single new generation.
 
 ## Rule Editor
 
-The rule editor shows the resulting cell of for each of all the possible combinations of states.
+The rule editor shows the resulting cell of for each of all the possible combinations of states. Click on a result cell or scrolling while hovering allows to change the rule.
 
 ### Simulation topology selector
 
@@ -83,9 +71,7 @@ This selector has two possible values: "loop" and "border". It controls the beha
 
 In the setting "loop" the borders behave as if the cell just out of the simulation, was the value of the other border, effectively making the space of the simulation a closed ribbon. In this setting, the "Border Left" and "Border Right" fields are disabled.
 
-In the setting "border" the borders ignore the values present at the other border of the simulation. Instead, their values are dictated by the "Border Left" and "Border Right" fields.
-
-The border fields are documented below.
+In the setting "border" the borders ignore the values present at the other border of the simulation. Instead, their values are dictated by the "Border Left" and "Border Right" fields. These two fields are documented in their own section, below.
 
 The width sets the length of the ribbon i.e. the size of the space the in which the simulation runs.
 
@@ -98,7 +84,7 @@ Math.random().toString(36).slice(2).toUpperCase()
 ```
 
 Constraints: None. The seed can be any string, though the seed text field always
-replaces the empty seed by `_`.
+replaces the empty seed by the single underscore (`_`).
 
 ### Simulation border fields
 
