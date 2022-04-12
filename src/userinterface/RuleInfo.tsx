@@ -1,5 +1,4 @@
-import { Button, Space } from "antd"
-import { useContext, useLayoutEffect, useRef } from "react"
+import { useContext } from "react"
 import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
 import { ReactContext } from "../state/ReactContext"
 import { Rule } from "../type"
@@ -14,6 +13,10 @@ export const informationSet: Record<string, string> = {
     b110: "is of Class 4 and it proven to be Turing Complete.",
     b150: "computes the result of XOR-ing all three cells.",
     b184: "is famous for being a simple simulation of objects moving to the right whenever there is room for them.",
+    // primary rules
+    b51: "is the negation rule. It swaps the state of each cell between alive and dead at each generation.",
+    b170: "is the shift-left rule. The state of each cell is shifted by one at each generation.",
+    b204: "is the identity rule. It leaves the world unchanged.",
 }
 
 interface Info {

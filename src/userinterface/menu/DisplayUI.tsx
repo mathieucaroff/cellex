@@ -27,13 +27,15 @@ export let DisplayUI = () => {
         <ul>
             Main / Zoom canvas ratio
             <li>
-                <Button onClick={setMainCanvasWidthTo(0.995)}>99% main 1% zoom</Button>
+                <Button onClick={setMainCanvasWidthTo(0.995)}>Main only (99% main 1% zoom)</Button>
             </li>
             <li>
-                <Button onClick={setMainCanvasWidthTo(0.5)}>50% main 50% zoom</Button>
+                <Button onClick={setMainCanvasWidthTo(0.5)}>
+                    Half of each (50% main 50% zoom)
+                </Button>
             </li>
             <li>
-                <Button onClick={setMainCanvasWidthTo(0.2)}>20% main 80% zoom</Button>
+                <Button onClick={setMainCanvasWidthTo(0.2)}>Zoomed up (20% main 80% zoom)</Button>
             </li>
             <li>
                 <Checkbox

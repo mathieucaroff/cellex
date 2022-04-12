@@ -5,7 +5,7 @@ import { DiffMode } from "../type"
 import { DisplayUI } from "./menu/DisplayUI"
 import { HelpContent } from "./menu/HelpContent"
 import { PaletteUI } from "./menu/PaletteUI"
-import { TopologyUI } from "./menu/TopologyUI"
+import { EngineUI } from "./menu/EngineUI"
 
 export interface TopMenuProp {
     diffMode: DiffMode
@@ -24,15 +24,10 @@ export let TopMenu = (prop: TopMenuProp) => {
                     Display
                 </Button>
             </Popover>
-            <Popover
-                placement="bottomLeft"
-                title="Topology"
-                content={<TopologyUI />}
-                trigger="click"
-            >
+            <Popover placement="bottomLeft" content={<EngineUI />} trigger="click">
                 <Button>
                     <i className="fa fa-circle-o" />
-                    Topology
+                    Engine
                 </Button>
             </Popover>
             <Popover placement="bottomLeft" title="Palette" content={<PaletteUI />} trigger="click">

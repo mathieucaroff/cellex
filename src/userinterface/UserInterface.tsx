@@ -8,7 +8,6 @@ import { DivGraft } from "./graft"
 import { RuleEditor } from "./editor/RuleEditor"
 import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
-import { getRuleInformation, RuleInfo } from "./RuleInfo"
 import { Documentation } from "./markdown/documentation"
 
 const { Panel } = Collapse
@@ -71,14 +70,6 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             <Collapse accordion {...collapseProp}>
                 <Panel className="ruleEditor" header={`Rule Editor (${ruleName(rule)})`} key={1}>
                     <RuleEditor />
-                </Panel>
-                <Panel
-                    collapsible={getRuleInformation(rule) ? undefined : "disabled"}
-                    className="ruleInfo"
-                    header={`About this rule`}
-                    key={2}
-                >
-                    <RuleInfo />
                 </Panel>
                 <Panel header={`Documentation`} key={3}>
                     <Documentation />

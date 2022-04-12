@@ -5,6 +5,7 @@ import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
 import { addOne, subtractOne } from "../../util/numberArray"
+import { RuleInfo } from "../RuleInfo"
 import { fillRuleEditor } from "./fillRuleEditor"
 
 export let RuleEditor = () => {
@@ -176,6 +177,7 @@ export let RuleEditor = () => {
                 onClick={changeColor(1, false)}
                 onWheel={(ev) => changeColor(ev.deltaY > 0 ? 1 : -1, true)(ev)}
             />
+            <RuleInfo />
         </Space>
     )
 }
