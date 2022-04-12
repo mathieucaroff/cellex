@@ -23,7 +23,7 @@ export let RuleEditor = () => {
 
     fillRuleEditor(smallCtx, rule, colorMap, xSpacing, ySpacing, iWidth, iHeight)
 
-    const zoom = 20
+    const zoom = Math.min(Math.floor(0.9 * (window.innerWidth / (8 * 4))), 24)
     // useLayoutEffect here because we need to wait for the canvas to be instanciated
     useLayoutEffect(() => {
         let canvas = canvasRef.current!
