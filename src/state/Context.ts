@@ -9,8 +9,10 @@ export let createContext = (state: State) => {
         unknown,
         (se: any, st: State) => unknown,
     ][] = []
+    let updatingState = false
 
     let positionShelf: ((s: StatePosition, st: State) => unknown)[] = []
+    let updatingPosition = false
 
     let me = {
         use<T>(selector: (s: State) => T) {
@@ -27,19 +29,28 @@ export let createContext = (state: State) => {
             }
         },
         updateState(changer: (s: State) => void) {
-            changer(state)
-            // we push work to the event queue so that the current thread finishes first
-            propertyUtilizationShelf.forEach((triplet) => {
-                let [selector, selection, runFunction] = triplet
-                let newSelection = selector(state)
-                if (!deepEqual(newSelection, selection)) {
-                    runFunction(newSelection, state)
-                    triplet[1] = deepCopy(newSelection)
-                }
-            })
-            positionShelf.forEach((f) => {
-                f(state, state)
-            })
+            if (updatingState) {
+                changer(state)
+                return
+            }
+            try {
+                updatingState = true
+                changer(state)
+            } finally {
+                updatingState = false
+                // we push work to the event queue so that the current thread finishes first
+                propertyUtilizationShelf.forEach((triplet) => {
+                    let [selector, selection, runFunction] = triplet
+                    let newSelection = selector(state)
+                    if (!deepEqual(newSelection, selection)) {
+                        runFunction(newSelection, state)
+                        triplet[1] = deepCopy(newSelection)
+                    }
+                })
+                positionShelf.forEach((f) => {
+                    f(state, state)
+                })
+            }
         },
         action(f: (s: State) => void) {
             return () => {
@@ -51,11 +62,19 @@ export let createContext = (state: State) => {
             positionShelf.push(runFunction)
         },
         updatePosition(changer: (p: StatePosition, st: State) => void) {
-            changer(state, state)
-
-            positionShelf.forEach((f) => {
-                f(state, state)
-            })
+            if (updatingPosition || updatingState) {
+                changer(state, state)
+                return
+            }
+            try {
+                updatingPosition = true
+                changer(state, state)
+            } finally {
+                updatingPosition = false
+                positionShelf.forEach((f) => {
+                    f(state, state)
+                })
+            }
         },
         getState() {
             return state

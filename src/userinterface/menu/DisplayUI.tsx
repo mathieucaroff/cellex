@@ -15,7 +15,9 @@ export let DisplayUI = () => {
             let fullwidth = Math.ceil(window.innerWidth * 0.98 - 60)
             let width = Math.ceil((fullwidth * ratio) / 2) * 2
 
-            state.topology.width = width
+            if (affectSimulationWidth) {
+                state.topology.width = width
+            }
             state.canvasSize.width = width
             state.zoomCanvasSize.width = fullwidth - width
         })
@@ -25,7 +27,7 @@ export let DisplayUI = () => {
         <ul>
             Main / Zoom canvas ratio
             <li>
-                <Button onClick={setMainCanvasWidthTo(0.9)}>90% main 10% zoom</Button>
+                <Button onClick={setMainCanvasWidthTo(0.995)}>99% main 1% zoom</Button>
             </li>
             <li>
                 <Button onClick={setMainCanvasWidthTo(0.5)}>50% main 50% zoom</Button>

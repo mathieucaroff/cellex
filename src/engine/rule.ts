@@ -8,7 +8,7 @@ export const interestingElementaryRuleSet = {
     "XOR":        [60, 90, 105, 150],
     "Triangle":   [18, 22, 26, 30, 122, 126, 146, 154],
     "Primitives": [0, 255, 204, 51, 170, 240],
-    "Twinkling":  [15, 41, 45, 51, 62, 73, 94, 105],
+    "Twinkling":  [15, 41, 45, 51, 62, 73, 91, 94, 105],
 }
 
 // elementaryRule produces a rule

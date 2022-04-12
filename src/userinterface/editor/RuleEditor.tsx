@@ -1,11 +1,10 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
-import { colorComplement, leftRightSymmetric, ruleName } from "../../engine/rule"
+import { colorComplement, leftRightSymmetric, ruleName, ruleSet } from "../../engine/rule"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
 import { addOne, subtractOne } from "../../util/numberArray"
-import { setQueryString } from "../../util/setQueryString"
 import { fillRuleEditor } from "./fillRuleEditor"
 
 export let RuleEditor = () => {
@@ -74,13 +73,23 @@ export let RuleEditor = () => {
         }
         context.updateState((state) => {
             transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
-            setQueryString(window, "rule", ruleName(rule))
         })
     }
 
     let complement = colorComplement(rule)
     let symmetric = leftRightSymmetric(rule)
     let both = leftRightSymmetric(complement)
+
+    let identityDifferenceCount = 0
+    let identityFunction = rule.transitionFunction.map((v, k) => {
+        let n = rule.transitionFunction.length - 1 - k
+        let centerPosition = Math.floor(rule.neighborhoodSize / 2)
+        let result = Math.floor(n / rule.stateCount ** centerPosition) % rule.stateCount
+        if (result !== v) {
+            identityDifferenceCount += 1
+        }
+        return result
+    })
 
     return (
         <Space direction="vertical">
@@ -98,6 +107,36 @@ export let RuleEditor = () => {
                     })}
                 >
                     +1
+                </Button>
+                <Button
+                    title="Simplify by 10%"
+                    disabled={identityDifferenceCount == 0}
+                    onClick={() => {
+                        context.updateState(({ rule }) => {
+                            if (identityDifferenceCount <= 1) {
+                                rule.transitionFunction = identityFunction
+                                return
+                            }
+                            let p = (0.1 * rule.transitionFunction.length) / identityDifferenceCount
+                            let changeCount = 0
+                            for (let retry = 9; changeCount == 0 && retry > 0; retry--) {
+                                rule.transitionFunction = rule.transitionFunction.map((v, k) => {
+                                    if (identityFunction[k] !== v) {
+                                        if (Math.random() < p) {
+                                            changeCount += 1
+                                            return identityFunction[k]
+                                        }
+                                    }
+                                    return v
+                                })
+                            }
+                            if (changeCount === 0) {
+                                console.warn("Failed to simplify the rule")
+                            }
+                        })
+                    }}
+                >
+                    Simplify
                 </Button>
                 <Button
                     disabled={deepEqual(rule.transitionFunction, complement.transitionFunction)}

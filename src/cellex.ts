@@ -19,7 +19,6 @@ import { createContext } from "./state/Context"
 import { defaultState } from "./state/state"
 import { UserInterface } from "./userinterface/UserInterface"
 import { emitterLoop } from "./util/emitterLoop"
-import { setQueryString } from "./util/setQueryString"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { DesktopOrMobile } from "./type"
 
@@ -111,13 +110,18 @@ function main() {
             let randomMapper = createRandomMapper({ seedString: seed })
             engine = createAutomatonEngine(rule, topology, randomMapper)
 
-            setQueryString(window, "rule", ruleName(rule))
-            setQueryString(window, "seed", seed)
-            setQueryString(window, "topologyKind", topology.kind)
-            setQueryString(window, "width", "" + topology.width)
-            setQueryString(window, "genesis", presentTopBorder(topology.genesis))
-            setQueryString(window, "borderLeft", presentSideBorder(topology.borderLeft))
-            setQueryString(window, "borderRight", presentSideBorder(topology.borderRight))
+            let param = new URLSearchParams(window.location.search)
+            param.set("rule", ruleName(rule))
+            param.set("seed", seed)
+            param.set("topologyKind", topology.kind)
+            param.set("width", "" + topology.width)
+            param.set("genesis", presentTopBorder(topology.genesis))
+            param.set("borderLeft", presentSideBorder(topology.borderLeft))
+            param.set("borderRight", presentSideBorder(topology.borderRight))
+            let url = new URL(window.location.href)
+            url.search = param.toString()
+            window.history.pushState({}, window.document.title, url)
+
             display.setEngine(engine)
 
             drawDisplay(true)
