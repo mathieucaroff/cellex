@@ -1,5 +1,5 @@
-import { Button } from "antd"
-import { useContext } from "react"
+import { Button, Checkbox, Divider } from "antd"
+import { useContext, useState } from "react"
 
 import { ReactContext } from "../../state/ReactContext"
 import { OxButton, OxInputNumber } from "../component"
@@ -7,7 +7,45 @@ import { OxButton, OxInputNumber } from "../component"
 export let DisplayUI = () => {
     let { act, context } = useContext(ReactContext)
     let { showZoomCanvasBoundary, redraw } = context.getState()
-    let ul = (
+
+    let [affectSimulationWidth, setAffectSimulationWidth] = useState(false)
+
+    let setMainCanvasWidthTo = (ratio: number) => () => {
+        context.updateState((state) => {
+            let fullwidth = Math.ceil(window.innerWidth * 0.98 - 60)
+            let width = Math.ceil((fullwidth * ratio) / 2) * 2
+
+            state.topology.width = width
+            state.canvasSize.width = width
+            state.zoomCanvasSize.width = fullwidth - width
+        })
+    }
+
+    let presetControlElement = (
+        <ul>
+            Main / Zoom canvas ratio
+            <li>
+                <Button onClick={setMainCanvasWidthTo(0.9)}>90% main 10% zoom</Button>
+            </li>
+            <li>
+                <Button onClick={setMainCanvasWidthTo(0.5)}>50% main 50% zoom</Button>
+            </li>
+            <li>
+                <Button onClick={setMainCanvasWidthTo(0.2)}>20% main 80% zoom</Button>
+            </li>
+            <li>
+                <Checkbox
+                    value={affectSimulationWidth}
+                    onChange={() => {
+                        setAffectSimulationWidth(!affectSimulationWidth)
+                    }}
+                >
+                    Also set simulation width
+                </Checkbox>
+            </li>
+        </ul>
+    )
+    let fineGrainControlElement = (
         <ul>
             <li>
                 Speed: <Button icon={"/2"} onClick={() => act.halfSpeed()} />
@@ -45,6 +83,7 @@ export let DisplayUI = () => {
                 <Button
                     onClick={context.action((state) => {
                         state.topology.width = state.canvasSize.width
+                        act.fixPosition()
                     })}
                 >
                     Write to simulation
@@ -78,5 +117,12 @@ export let DisplayUI = () => {
             </li>
         </ul>
     )
-    return <div>{ul}</div>
+    return (
+        <div>
+            {presetControlElement}
+            <Divider />
+            <p>Fine grain control</p>
+            {fineGrainControlElement}
+        </div>
+    )
 }
