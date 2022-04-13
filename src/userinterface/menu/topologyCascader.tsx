@@ -31,19 +31,20 @@ export let topCascaderOptionSet = [
         entry("Impulse 15", "(0)1111(0)"),
     ),
     entry(
-        "Random",
-        "",
-        entry("Random 50%", "([01])([01])"),
-        entry("Random 10%", "([0{9}1])([0{9}1])"),
-        entry("Random 90%", "([01{9}])([01{9}])"),
-        entry("Step 10%-90%", "([0{9}1])([01{9}])"),
-    ),
-    entry(
         "Pattern",
         "",
         entry("Rule 110 w14h7", "(1{5}000100110)(1{5}000100110)"),
         entry("Word (1110)", "(1110)(1110)"),
         entry("Word (1000)", "(1000)(1000)"),
+    ),
+    entry(
+        "Random",
+        "",
+        entry("Random 50%", "([01])([01])"),
+        entry("Random 10%", "([0{9}1])([0{9}1])"),
+        entry("Random 90%", "([01{9}])([01{9}])"),
+        entry("Step 25%-75%", "([0001])([0111])"),
+        entry("Step 10%-90%", "([0{9}1])([01{9}])"),
     ),
     entry(
         "Pattern with random",

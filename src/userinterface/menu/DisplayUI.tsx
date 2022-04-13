@@ -12,7 +12,7 @@ export let DisplayUI = () => {
 
     let setMainCanvasWidthTo = (ratio: number) => () => {
         context.updateState((state) => {
-            let fullwidth = Math.ceil(window.innerWidth * 0.98 - 60)
+            let fullwidth = Math.ceil(window.innerWidth - 56)
             let width = Math.ceil((fullwidth * ratio) / 2) * 2
 
             if (affectSimulationWidth) {
@@ -27,7 +27,7 @@ export let DisplayUI = () => {
         <ul>
             Main / Zoom canvas ratio
             <li>
-                <Button onClick={setMainCanvasWidthTo(0.995)}>Main only (99% main 1% zoom)</Button>
+                <Button onClick={setMainCanvasWidthTo(0.97)}>Main only (97% main 3% zoom)</Button>
             </li>
             <li>
                 <Button onClick={setMainCanvasWidthTo(0.5)}>
@@ -39,7 +39,7 @@ export let DisplayUI = () => {
             </li>
             <li>
                 <Checkbox
-                    value={affectSimulationWidth}
+                    checked={affectSimulationWidth}
                     onChange={() => {
                         setAffectSimulationWidth(!affectSimulationWidth)
                     }}

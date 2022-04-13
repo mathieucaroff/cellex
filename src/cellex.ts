@@ -206,9 +206,12 @@ function main() {
     })
     zoomResizeDragManager.onMove((xy) => {
         context.updateState((state) => {
-            state.zoomCanvasSize.width = -xy.x
             state.zoomCanvasSize.height = -xy.y
             state.canvasSize.height = -xy.y
+            if (xy.x > 0) {
+                return
+            }
+            state.zoomCanvasSize.width = -xy.x
         })
     })
 
