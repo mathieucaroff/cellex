@@ -141,11 +141,12 @@ function main() {
             zoomCanvasSize,
             colorMap,
         }))
-        .for(({ canvasSize, zoomCanvasSize, colorMap }, state) => {
+        .for(({ canvasSize, zoomCanvasSize, colorMap }) => {
             canvas.width = canvasSize.width
             canvas.height = canvasSize.height
             zoomCanvas.width = zoomCanvasSize.width
             zoomCanvas.height = zoomCanvasSize.height
+            act.fixPosition()
             drawDisplay(true)
         })
 
