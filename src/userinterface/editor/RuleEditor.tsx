@@ -81,13 +81,13 @@ export let RuleEditor = () => {
     let symmetric = leftRightSymmetric(rule)
     let both = leftRightSymmetric(complement)
 
-    let identityDifferenceCount = 0
+    let identityDifferenceArray: number[] = []
     let identityFunction = rule.transitionFunction.map((v, k) => {
         let n = rule.transitionFunction.length - 1 - k
         let centerPosition = Math.floor(rule.neighborhoodSize / 2)
         let result = Math.floor(n / rule.stateCount ** centerPosition) % rule.stateCount
         if (result !== v) {
-            identityDifferenceCount += 1
+            identityDifferenceArray.push(k)
         }
         return result
     })
@@ -110,30 +110,15 @@ export let RuleEditor = () => {
                     +1
                 </Button>
                 <Button
-                    title="Simplify by 10%"
-                    disabled={identityDifferenceCount == 0}
+                    title="Simplify 1 state"
+                    disabled={identityDifferenceArray.length == 0}
                     onClick={() => {
                         context.updateState(({ rule }) => {
-                            if (identityDifferenceCount <= 1) {
-                                rule.transitionFunction = identityFunction
-                                return
-                            }
-                            let p = (0.1 * rule.transitionFunction.length) / identityDifferenceCount
-                            let changeCount = 0
-                            for (let retry = 9; changeCount == 0 && retry > 0; retry--) {
-                                rule.transitionFunction = rule.transitionFunction.map((v, k) => {
-                                    if (identityFunction[k] !== v) {
-                                        if (Math.random() < p) {
-                                            changeCount += 1
-                                            return identityFunction[k]
-                                        }
-                                    }
-                                    return v
-                                })
-                            }
-                            if (changeCount === 0) {
-                                console.warn("Failed to simplify the rule")
-                            }
+                            let index =
+                                identityDifferenceArray[
+                                    Math.floor(Math.random() * identityDifferenceArray.length)
+                                ]
+                            rule.transitionFunction[index] = identityFunction[index]
                         })
                     }}
                 >
