@@ -8,8 +8,9 @@
     "scripts": {
         "check": "tsc --noEmit",
         "checkwatch": "tsc --noEmit --watch",
-        "build": "parcel build src/cellex.html --public-url cellex.d",
-        "serve": "parcel src/cellex.html"
+        "build": "parcel build src/index.html --dist-dir public",
+        "mcabuild": "parcel build src/index.html --public-url cellex.d",
+        "serve": "parcel src/index.html"
     },
     "devDependencies": {
         "@types/nearley": "^2.11.1",
