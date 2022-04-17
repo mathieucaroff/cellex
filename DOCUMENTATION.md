@@ -8,7 +8,9 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
 - [Content](#content)
 - [Base interface](#base-interface)
   - [View](#view)
-    - [Rule Input](#rule-input)
+  - [Top Toolbar](#top-toolbar)
+    - [Rule Input Widget](#rule-input-widget)
+  - [Top Menu](#top-menu)
     - [Genesis](#genesis)
   - [Rule Editor](#rule-editor)
     - [Simulation topology selector](#simulation-topology-selector)
@@ -22,31 +24,35 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
 
 The application includes the following parts:
 
-- The **view**, or display -- this is where the cellular automaton is displayed.
-- The **view header** and the **view footer** provide some controls for the view.
-
-Please note the theme of the application as well as that of the view can be changed via a dropdown selector at the bottom of the `Controls` section, in the `Theme` subsection. This feature [is documented in this page](#theme-selector).
+- The **view**, or display -- this is where the cellular automaton is displayed
+- The **top toolbar**, followed by the **top menu**. They provide some controls for the view.
+- The **rule editor**
 
 ## View
 
-The view displays the current cellular automaton.
+The view displays the current cellular automaton. It is composed of a **main canvas**, to the left, as well as a **zoom canvas**, on the right. The main canvas displays the automaton at a scale of one pixel per cell. The zoom canvas zooms on a part of the main canvas. The zoom factor can be adjusted in the **Display menu**.
 
-The view supports click and drag, allowing panning using the mouse. Note that when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered.
+Both canvas of the view support click and drag, allowing panning using the mouse. They also support resizing by clicking and dragging the bottom right corner. Note that when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered. Also note that the heights of the two canvas are tied together.
 
 The view, when selected, also supports the following keyboard actions:
 
 - Space does play/pause
-- Enter does a single step
+- Enter plays a single step of cellular automaton
 - `-` and `+` do zoom decrease and increase (`_` and `=` work too)
-- `[` and `]` do halving and doubling the speed
-- `{`, `|` and `}` do go to the left end, the right end or the center
+- `[` and `]` do halving and doubling the play speed
+- `{`, `|` and `}` do go to the left end, the center or the right end
 - The directional arrows move the camera in the given direction by a twelfth
-  of the width or the height of the view
+  of the width or of the height of the view
 - The Home / End / PageUp / PageDown keys move the camera by the full width or height of the view
 
-### Rule Input
+## Top Toolbar
+
+The top toolbar is composed of a **play/pause** button, as well as a **rule input widget**
+### Rule Input Widget
 
 The rule input allows to choose an elementary rule between 0 and 255, to be displayed.
+
+## Top Menu
 
 ### Genesis
 
