@@ -40,9 +40,9 @@ function main() {
 
     // /\ canvas
     let displayDiv = h("div", { tabIndex: 0 })
-    let canvas = h("canvas")
+    let canvas = h("canvas", { className: "mainCanvas" })
     let canvasResizeHandle = h("div", { className: "canvasResizeHandle" })
-    let zoomCanvas = h("canvas")
+    let zoomCanvas = h("canvas", { className: "zoomCanvas" })
     let zoomCanvasResizeHandle = h("div", { className: "zoomCanvasResizeHandle" })
     displayDiv.appendChild(canvas)
     displayDiv.appendChild(canvasResizeHandle)
