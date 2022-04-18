@@ -17,7 +17,7 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
     - [Simulation border fields](#simulation-border-fields)
   - [Display Controller](#display-controller)
     - [Zoom](#zoom)
-    - [Width and Height](#width-and-height)
+    - [Canvas width and height and Zoom canvas width and height](#canvas-width-and-height-and-zoom-canvas-width-and-height)
     - [Generation and spatial position](#generation-and-spatial-position)
 
 # Base interface
@@ -140,29 +140,26 @@ The display controller has 7 number inputs and a few more buttons. These are:
 
 ### Zoom
 
-The zoom field controls how big cells are. The size of a single square cell will be `S x S` where S is a sixth of the zoom value. Please note that the zoom value displayed in the view footer is `S`, it is the value of zoom divided by 6.
-
-This field is redundant with the zoom controls at of the display footer, but it
-provides a much finer control. In most web browsers, the zoom field allows scrolling on it to change the value.
+The zoom field controls how big cells are in the zoomed up view. The size of a single square cell will be `S x S` S is the zoom value.
 
 Constraints:
 
-Zoom must be a value between 0 excluded and 64 included.
+The zoom must be a value between 2 and 64 included.
 
-### Width and Height
+### Canvas width and height and Zoom canvas width and height
 
-The width and the height field allow reading and setting the size of the canvas, in pixel. There also are resize handles in the bottom right corner of each canvas.
+The width and the height field allow reading and setting the size of each of the two canvas, in pixel. There also are resize handles in the bottom right corner of each canvas.
 
 ### Generation and spatial position
 
 In the context of 1d cellular automaton, the generation is the equivalent to the
 temporal position.
 
-The temporal position corresponds to the Y axis, the vertical axis.
+The temporal axis corresponds to the Y axis, the vertical axis.
 
-The spatial position corresponds to the X axis, the horizontal axis.
+The spatial axis corresponds to the X axis, the horizontal axis.
 
-The generation field shows what the exact value of the current generation at the top of the view is. The spatial position allows to show and set the position of the leftmost visible cell on the automaton's ribbon. Note that the origin of the spatial axis is the center of the automaton, so this coordinate is negative most of the time.
+The generation field shows what the exact value of the current generation at the top of the view is. The spatial position is the x coordinate of the cell at the center of the view. Note that the origin of the spatial axis is the center of the automaton, so this coordinate can be negative.
 
 This fields are redundant with the panning feature of the view, but it allows
 precise reading and setting of the spatial position and the generation.
@@ -170,5 +167,4 @@ precise reading and setting of the spatial position and the generation.
 Constraints:
 
 - The generation must be a positive number
-- The position must belong to a range that is dynamically computed, depending on
-  the simulation width and the canvas width.
+- The spatial position must belong to a range that is dynamically computed, depending on the simulation width and the canvas width. That range is centered on 0 and the size of the range is the difference between the simulation width and the canvas width. If that difference is negative, then the size of the range is 0.
