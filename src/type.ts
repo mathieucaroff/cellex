@@ -64,8 +64,11 @@ export interface State {
     topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
     seed: string
 
-    canvasSize: Size
-    zoomCanvasSize: Size
+    canvasSize: {
+        width: number
+        fullwidth: number
+        height: number
+    }
     showZoomCanvasBoundary: boolean
 }
 

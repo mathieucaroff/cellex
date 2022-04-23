@@ -30,10 +30,7 @@ export let defaultState = (): State => {
             width = +param.get("width")!
         }
 
-        return {
-            canvasSize: { width, height },
-            zoomCanvasSize: { width: Math.max(100, fullwidth - width), height },
-        }
+        return { width, height, fullwidth }
     }
 
     return {
@@ -53,7 +50,7 @@ export let defaultState = (): State => {
                 (x) => x as any,
                 () => "border",
             ),
-            width: adaptiveCanvasSize(window).canvasSize.width,
+            width: adaptiveCanvasSize(window).width,
             genesis: getOr("genesis", parseTopBorder, () => parseTopBorder("([0001])([0111])")),
             borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("011([01])")),
             borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("011([01])")),
@@ -66,7 +63,7 @@ export let defaultState = (): State => {
 
         redraw: false,
 
-        ...adaptiveCanvasSize(window),
+        canvasSize: adaptiveCanvasSize(window),
         showZoomCanvasBoundary: false,
     }
 }

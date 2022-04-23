@@ -19,7 +19,7 @@ export let DisplayUI = () => {
                 state.topology.width = width
             }
             state.canvasSize.width = width
-            state.zoomCanvasSize.width = fullwidth - width
+            state.canvasSize.fullwidth = fullwidth
         })
     }
 
@@ -94,19 +94,14 @@ export let DisplayUI = () => {
                 </Button>
             </li>
             <li>
-                ⟷Zoom c. width: <OxButton half icon={"/2"} path="zoomCanvasSize.width" />
-                <OxInputNumber path="zoomCanvasSize.width" />
-                <OxButton double icon={"x2"} path="zoomCanvasSize.width" />
+                ⟷Full display width: <OxButton half icon={"/2"} path="canvasSize.fullwidth" />
+                <OxInputNumber path="canvasSize.fullwidth" />
+                <OxButton double icon={"x2"} path="canvasSize.fullwidth" />
             </li>
             <li>
                 ⭥Canvas height: <OxButton half icon={"/2"} path="canvasSize.height" />
                 <OxInputNumber path="canvasSize.height" />
                 <OxButton double icon={"x2"} path="canvasSize.height" />
-            </li>
-            <li>
-                ⭥Zoom c. height: <OxButton half icon={"/2"} path="zoomCanvasSize.height" />
-                <OxInputNumber path="zoomCanvasSize.height" />
-                <OxButton double icon={"x2"} path="zoomCanvasSize.height" />
             </li>
             <li>
                 <i className="fa fa-arrows-alt"></i>{" "}

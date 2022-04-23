@@ -136,16 +136,18 @@ function main() {
 
     // display-related change
     context
-        .use(({ canvasSize, zoomCanvasSize, colorMap }) => ({
-            canvasSize,
-            zoomCanvasSize,
-            colorMap,
-        }))
-        .for(({ canvasSize, zoomCanvasSize, colorMap }) => {
+        .use(({ colorMap }) => ({ colorMap }))
+        .for(() => {
+            drawDisplay(true)
+        })
+
+    context
+        .use(({ canvasSize }) => ({ canvasSize }))
+        .for(({ canvasSize }) => {
             canvas.width = canvasSize.width
             canvas.height = canvasSize.height
-            zoomCanvas.width = zoomCanvasSize.width
-            zoomCanvas.height = zoomCanvasSize.height
+            zoomCanvas.width = canvasSize.fullwidth - canvasSize.width
+            zoomCanvas.height = canvasSize.height
             act.fixPosition()
             drawDisplay(true)
         })
@@ -187,12 +189,10 @@ function main() {
         },
         desktopOrMobile,
     })
-
     mainResizeDragManager.onMove((xy) => {
         context.updateState((state) => {
             state.canvasSize.width = -xy.x
             state.canvasSize.height = -xy.y
-            state.zoomCanvasSize.height = -xy.y
         })
     })
 
@@ -200,19 +200,18 @@ function main() {
     let zoomResizeDragManager = createDragManager({
         element: zoomCanvasResizeHandle,
         getDisplayInit: () => {
-            let xy = { x: -state.zoomCanvasSize.width, y: -state.zoomCanvasSize.height }
+            let xy = { x: -state.canvasSize.fullwidth, y: -state.canvasSize.height }
             return xy
         },
         desktopOrMobile,
     })
     zoomResizeDragManager.onMove((xy) => {
         context.updateState((state) => {
-            state.zoomCanvasSize.height = -xy.y
             state.canvasSize.height = -xy.y
             if (xy.x > 0) {
                 return
             }
-            state.zoomCanvasSize.width = -xy.x
+            state.canvasSize.fullwidth = Math.max(state.canvasSize.width + 5, -xy.x)
         })
     })
 
