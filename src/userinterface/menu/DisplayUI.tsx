@@ -8,7 +8,7 @@ export let DisplayUI = () => {
     let { act, context } = useContext(ReactContext)
     let { showZoomCanvasBoundary, redraw } = context.getState()
 
-    let [affectSimulationWidth, setAffectSimulationWidth] = useState(false)
+    let [affectSimulationWidth, setAffectSimulationWidth] = useState(true)
 
     let setMainCanvasWidthTo = (ratio: number) => () => {
         context.updateState((state) => {
