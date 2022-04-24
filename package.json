@@ -8,7 +8,7 @@
     "scripts": {
         "check": "tsc --noEmit",
         "checkwatch": "tsc --noEmit --watch",
-        "build": "parcel build src/index.html --dist-dir public",
+        "build": "parcel build src/index.html",
         "mcabuild": "parcel build src/index.html --public-url cellex.d",
         "serve": "parcel src/index.html"
     },
