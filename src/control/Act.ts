@@ -1,6 +1,8 @@
+import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { Context } from "../state/Context"
 import { State } from "../type"
 import { clamp } from "../util/clamp"
+import { randomSeed } from "../util/randomSeed"
 import { Info } from "./Info"
 
 export let createAct = (context: Context, info: Info) => {
@@ -216,6 +218,23 @@ export let createAct = (context: Context, info: Info) => {
             } else {
                 state.diffMode = { status: "off" }
             }
+        }),
+
+        /** Quick settings */
+        setImpulseMode: (genesis: string) => {
+            return action((state) => {
+                state.topology.kind = "loop"
+                state.topology.genesis = parseTopBorder(genesis)
+                state.topology.borderLeft = parseSideBorder("(0)")
+                state.topology.borderRight = parseSideBorder("(0)")
+            })
+        },
+        setRandomMode: action((state) => {
+            state.topology.kind = "border"
+            state.topology.genesis = parseTopBorder("([0001])([0111])")
+            state.topology.borderLeft = parseSideBorder("([0001])")
+            state.topology.borderRight = parseSideBorder("([0111])")
+            state.seed = randomSeed()
         }),
     }
     return act

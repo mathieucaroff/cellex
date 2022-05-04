@@ -8,14 +8,32 @@ import { SideBorderCascader, TopBorderCascader } from "./topologyCascader"
 
 const { Option } = Select
 
-interface TopologyContentProp {}
-export let EngineUI = (prop: TopologyContentProp) => {
-    let { context } = useContext(ReactContext)
+export let EngineUI = () => {
+    let { context, act } = useContext(ReactContext)
 
     let topologyIsLoop = context.getState().topology.kind == "loop"
 
     let div = (
         <div>
+            <p>Quick Settings</p>
+            <ul>
+                <li>
+                    <Button
+                        style={{ marginRight: "10px" }}
+                        onClick={() => act.setImpulseMode("(0)1(0)")()}
+                    >
+                        Impulse Mode 1
+                    </Button>
+                    <Button
+                        style={{ marginRight: "10px" }}
+                        onClick={() => act.setImpulseMode("(0)11(0)")()}
+                    >
+                        Impulse Mode 3
+                    </Button>
+                    <Button onClick={() => act.setRandomMode()}>Random Mode</Button>
+                </li>
+            </ul>
+            <Divider />
             <p>Engine</p>
             <ul>
                 <li>
@@ -37,16 +55,18 @@ export let EngineUI = (prop: TopologyContentProp) => {
                     <Button
                         onClick={context.action((state) => {
                             state.topology.width = state.canvasSize.width
+                            act.fixPosition(state)
+                            state.redraw = true
                         })}
                     >
-                        Copy from canvas
+                        Copy canvas width
                     </Button>
                     <Button
                         onClick={context.action((state) => {
                             state.canvasSize.width = state.topology.width
                         })}
                     >
-                        Write to canvas
+                        Write width to canvas
                     </Button>
                 </li>
             </ul>

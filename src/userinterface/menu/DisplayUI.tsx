@@ -82,15 +82,16 @@ export let DisplayUI = () => {
                         state.canvasSize.width = state.topology.width
                     })}
                 >
-                    Copy from simulation
+                    Copy simulation width
                 </Button>
                 <Button
                     onClick={context.action((state) => {
                         state.topology.width = state.canvasSize.width
-                        act.fixPosition()
+                        act.fixPosition(state)
+                        state.redraw = true
                     })}
                 >
-                    Write to simulation
+                    Write width to simulation
                 </Button>
             </li>
             <li>
