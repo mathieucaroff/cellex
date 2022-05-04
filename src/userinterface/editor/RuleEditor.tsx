@@ -66,7 +66,8 @@ export let RuleEditor = () => {
         return [position, ""]
     }
 
-    let changeColor = (delta, exact) => (ev) => {
+    let changeColor = (delta, exact) => (ev: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+        ev.preventDefault()
         let { stateCount, transitionFunction } = rule
         let [position, error] = getPosition(ev, exact)
         if (error) {
@@ -189,8 +190,7 @@ export let RuleEditor = () => {
                 className="ruleEditorCanvas"
                 style={{ display: "table" }}
                 ref={canvasRef}
-                onClick={changeColor(1, false)}
-                onWheel={(ev) => changeColor(ev.deltaY > 0 ? 1 : -1, true)(ev)}
+                onMouseDown={(ev) => changeColor(ev.button === 1 ? 1 : -1, true)(ev)}
             />
             <RuleInfo />
         </Space>
