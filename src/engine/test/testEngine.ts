@@ -2,11 +2,11 @@ import assert from "assert"
 import { TopBorder } from "../../patternlang/BorderType"
 import { group, rootGroup } from "../../patternlang/patternUtil"
 import {
-    createAutomatonEngine,
-    getSideBorderValue,
-    getStochastic,
-    getTopBorderValue,
-    runStochastic,
+  createAutomatonEngine,
+  getSideBorderValue,
+  getStochastic,
+  getTopBorderValue,
+  runStochastic,
 } from "../Engine"
 import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopEngine"
 import { createRandomMapper } from "../RandomMapper"
@@ -18,7 +18,7 @@ const r1 = (x) => 0 // "random 1"
 const r2 = (x) => ((x % 2) + 2) % 2 // "random 2"
 const r10 = (x) => ((x % 10) + 10) % 10 // "random 10"
 let cMap = (cumulativeMap: number[]) => {
-    return { cumulativeMap, total: cumulativeMap.slice(-1)[0] }
+  return { cumulativeMap, total: cumulativeMap.slice(-1)[0] }
 }
 
 let zero = { ...ts, ...qw1, ...cMap([1]) }
@@ -39,9 +39,9 @@ assert(runStochastic({ ...ts, ...qw1, ...cMap([9, 10]) }, 9) == 1)
 
 // getTopBorderValue
 let genesisA = {
-    center: rootGroup([random01, random01, random01]),
-    cycleLeft: rootGroup([zero]),
-    cycleRight: rootGroup([one]),
+  center: rootGroup([random01, random01, random01]),
+  cycleLeft: rootGroup([zero]),
+  cycleRight: rootGroup([one]),
 }
 // (always zero)
 assert(getTopBorderValue(genesisA, -2, r10) == 0)
@@ -78,29 +78,29 @@ let width = content.length
 
 // createAutomatonEngine
 let genesisB: TopBorder = {
-    center: { content: [], quantity: 1, type: "group", width: 0 },
-    cycleLeft: { content, quantity: 1, type: "group", width },
-    cycleRight: { content, quantity: 1, type: "group", width },
+  center: { content: [], quantity: 1, type: "group", width: 0 },
+  cycleLeft: { content, quantity: 1, type: "group", width },
+  cycleRight: { content, quantity: 1, type: "group", width },
 }
 let engineB = createAutomatonEngine(
-    elementaryRule(110),
-    {
-        kind: "loop",
-        finitness: "finite",
-        width: 10,
-        genesis: genesisB,
-    },
-    createRandomMapper({ seedString: "_" }),
+  elementaryRule(110),
+  {
+    kind: "loop",
+    finitness: "finite",
+    width: 10,
+    genesis: genesisB,
+  },
+  createRandomMapper({ seedString: "_" }),
 )
 let engineC = createSlowLoopEngine(
-    elementaryRule(110),
-    {
-        kind: "loop",
-        finitness: "finite",
-        width: 10,
-        genesis: genesisB,
-    },
-    createRandomMapper({ seedString: "_" }),
+  elementaryRule(110),
+  {
+    kind: "loop",
+    finitness: "finite",
+    width: 10,
+    genesis: genesisB,
+  },
+  createRandomMapper({ seedString: "_" }),
 )
 
 assert.deepStrictEqual(engineB.getLine(0), engineC.getLine(0), "line 0")

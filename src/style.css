@@ -1,100 +1,106 @@
-@import './style.ant.custom.css';
+@import "./style.ant.custom.css";
 
-@import '../node_modules/font-awesome/css/font-awesome.min.css';
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
 
 * {
-   font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-h1, h2, h3 {
-   font-weight: 300;
+h1,
+h2,
+h3 {
+  font-weight: 300;
 }
 
-h4, h5, h6 {
-   font-weight: 400;
+h4,
+h5,
+h6 {
+  font-weight: 400;
 }
 
 input {
-   width: 135px;
+  width: 135px;
 }
 
 code {
-   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-   background-color: rgba(160, 160, 160, 0.6);
-   padding: 1px 4px;
-   border-radius: 4px;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  background-color: rgba(160, 160, 160, 0.6);
+  padding: 1px 4px;
+  border-radius: 4px;
 }
 
 ul {
-    list-style: none !important ;
+  list-style: none !important ;
 }
 
 .bodyDiv {
-   margin-left: 16px;
-   margin-right: 16px;
-   padding-top: 1px;
-   padding-bottom: 12px;
+  margin-left: 16px;
+  margin-right: 16px;
+  padding-top: 1px;
+  padding-bottom: 12px;
 }
 
 .inline {
-   display: inline;
+  display: inline;
 }
 
 .title {
-   display: inline-block;
-   font-size: 2.5em;
-   margin-left: 10px;
-   margin-bottom: 8px;
+  display: inline-block;
+  font-size: 2.5em;
+  margin-left: 10px;
+  margin-bottom: 8px;
 }
 
 .subtitle {
-   display: inline-block;
-   margin-top: 8px;
-   margin-left: 40px;
-   font-style: italic;
-   font-size: 20px;
-   font-weight: 400;
+  display: inline-block;
+  margin-top: 8px;
+  margin-left: 40px;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 400;
 }
 
 .appInfo {
-   position: absolute;
-   top: 10px;
-   right: 10px;
-   text-align: right;
-   line-height: 12px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: right;
+  line-height: 12px;
 }
 
 .ruleEditor {
-    /* rule names can be extremely long */
-    word-break: break-word;
+  /* rule names can be extremely long */
+  word-break: break-word;
 }
 
 .ruleEditor button {
-    margin: 4px;
+  margin: 4px;
 }
 
 .ruleEditorCanvas {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* canvas */
-.mainCanvas:active, .zoomCanvas:active {
-    cursor: move;
+.mainCanvas:active,
+.zoomCanvas:active {
+  cursor: move;
 }
 
 /* canvas resize handle */
-.canvasResizeHandle, .zoomCanvasResizeHandle {
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    margin-left: -20px;
-    cursor: grab;
+.canvasResizeHandle,
+.zoomCanvasResizeHandle {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-left: -20px;
+  cursor: grab;
 }
 
 .topMenu i {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 .topMenu > * {
-    margin-right: 8px;
+  margin-right: 8px;
 }

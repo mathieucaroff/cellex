@@ -9,10 +9,8 @@ const markdownContent = fs.readFileSync(__dirname + "/../../../DOCUMENTATION.md"
 let promise = md2react(markdownContent, { ...autoHashLinkingTitleSet })
 
 export let Documentation = () => {
-    let tree = usePromise(() => "", promise)
-    return (
-        <section style={{ maxWidth: "700px", marginLeft: "60px", marginTop: "50px" }}>
-            {tree}
-        </section>
-    )
+  let tree = usePromise(() => "", promise)
+  return (
+    <section style={{ maxWidth: "700px", marginLeft: "60px", marginTop: "50px" }}>{tree}</section>
+  )
 }

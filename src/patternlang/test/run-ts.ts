@@ -1,3 +1,3 @@
 export default function (argv) {
-    require(`./${argv[0]}`)
+  require(`./${argv[0]}`)
 }

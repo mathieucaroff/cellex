@@ -18,38 +18,38 @@
  * to, or which has already been discarded will result in an error being throw
  */
 export let emitterLoop = (schedulingFunction: (f: () => any) => any) => {
-   let f = () => {}
-   let status: 'empty' | 'inUse' | 'discarded' = 'empty'
+  let f = () => {}
+  let status: "empty" | "inUse" | "discarded" = "empty"
 
-   let loop = () => {
-      schedulingFunction(loop)
-      f()
-   }
+  let loop = () => {
+    schedulingFunction(loop)
+    f()
+  }
 
-   loop()
+  loop()
 
-   let link = (subscriber: () => any) => {
-      if (status === 'empty') {
-         f = subscriber
-         status = 'inUse'
-         return {
-            discard,
-         }
-      } else if (status === 'inUse') {
-         throw new Error('This emitter loop has already been subsribed to')
-      } else {
-         throw new Error('This emitter loop has already been used and unlinked')
+  let link = (subscriber: () => any) => {
+    if (status === "empty") {
+      f = subscriber
+      status = "inUse"
+      return {
+        discard,
       }
-   }
+    } else if (status === "inUse") {
+      throw new Error("This emitter loop has already been subsribed to")
+    } else {
+      throw new Error("This emitter loop has already been used and unlinked")
+    }
+  }
 
-   let discard = () => {
-      f = () => {}
-      loop = () => {}
-      status = 'discarded'
-   }
+  let discard = () => {
+    f = () => {}
+    loop = () => {}
+    status = "discarded"
+  }
 
-   return {
-      discard,
-      link,
-   }
+  return {
+    discard,
+    link,
+  }
 }
