@@ -4,13 +4,15 @@
     "description": "Unidimensional cellular automaton explorer to highlight their unique properties",
     "repository": "https://github.com/mathieucaroff/cellex",
     "author": "Mathieu CAROFF <mathieu.caroff@free.fr>",
-    "license": "NTP",
+    "license": "JAM",
+    "type": "module",
+    "packageManager": "yarn@3.5.1",
     "scripts": {
         "check": "tsc --noEmit",
         "checkwatch": "tsc --noEmit --watch",
         "build": "parcel build src/index.html",
         "mcabuild": "parcel build src/index.html --public-url cellex.d",
-        "serve": "parcel src/index.html"
+        "dev": "parcel src/index.html"
     },
     "devDependencies": {
         "@types/nearley": "^2.11.1",
