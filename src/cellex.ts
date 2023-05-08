@@ -1,6 +1,6 @@
 import "antd/dist/antd.css"
-
 import * as ReactDOM from "react-dom"
+
 import * as packageInfo from "../package.json"
 import { createAct } from "./control/Act"
 import { createDragManager } from "./control/dragmanager/DragManager"
@@ -91,7 +91,7 @@ function main() {
 
   // local display.draw method
   let drawDisplay = (redraw: boolean) => {
-    display.draw(state.posS, state.posT, state.zoom, state.colorMap, redraw)
+    display.draw(state.posS, state.posT, state.zoom, state.zoom, state.colorMap, redraw)
   }
 
   // engine-related change
@@ -133,17 +133,17 @@ function main() {
   let panningDragManager = createDragManager({
     element: displayDiv,
     getDisplayInit: () => {
-      let xy = { x: state.posS, y: state.posT }
+      let xy = { x: state.posS * state.zoom, y: state.posT * state.zoom }
       return xy
     },
     desktopOrMobile,
   })
   panningDragManager.onMove((xy) => {
     context.updatePosition((position, state) => {
-      position.posS = xy.x
+      position.posS = xy.x / state.zoom
       act.fixPosition()
       if (!state.play) {
-        position.posT = Math.max(xy.y, 0)
+        position.posT = Math.max(xy.y / state.zoom, 0)
       }
     })
   })
@@ -191,15 +191,15 @@ function main() {
   let diffModeManager = createDiffModeManager({ baseDiffState: 6, context })
 
   diffModeManager.addCanvas(canvas, (x, y) => {
-    let s = Math.floor(x)
-    let t = Math.floor(y + state.posT)
+    let s = Math.floor(x / state.zoom + (state.topology.width - canvas.width / state.zoom) / 2)
+    let t = Math.floor(y / state.zoom + state.posT)
     return { s, t }
   })
   // \/ diff mode
 
   // /\ presentation mode
-  context.usePosition(({ posT }) => {
-    if (state.presentationMode === "present" && posT >= state.canvasSize.height) {
+  context.usePosition(({ posT }, { zoom }) => {
+    if (state.presentationMode === "present" && posT * zoom >= state.canvasSize.height) {
       context.updateState((state) => {
         state.rule = parseRule(randomChoice(interestingElementaryRuleArray).toString())
         state.redraw = true

@@ -1,21 +1,33 @@
-import { Cascader } from "antd"
-import { DefaultOptionType } from "antd/lib/cascader"
+import { Select } from "antd"
+import { DefaultOptionType } from "antd/lib/select"
 import { useContext, useState } from "react"
+
 import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
 import { ReactContext } from "../../state/ReactContext"
 
-let entry = (label: string, value: string, ...children: DefaultOptionType[]): DefaultOptionType => {
-  if (value === "") {
-    value = label
-  }
-  let result: DefaultOptionType = { label, value }
-  if (children.length > 0) {
-    result.children = children
+let entry = (label: string, value: string, ...options: DefaultOptionType[]): DefaultOptionType => {
+  let result: DefaultOptionType = { label }
+  if (options.length > 0) {
+    result.options = options
+  } else {
+    if (value === "") {
+      value = label
+    }
+    result.value = value
   }
   return result
 }
 
 export let topCascaderOptionSet = [
+  entry(
+    "Random",
+    "",
+    entry("Random 50%", "([01])([01])"),
+    entry("Random 10%", "([0{9}1])([0{9}1])"),
+    entry("Random 90%", "([01{9}])([01{9}])"),
+    entry("Step 25%-75%", "([0001])([0111])"),
+    entry("Step 10%-90%", "([0{9}1])([01{9}])"),
+  ),
   entry(
     "Impulse",
     "",
@@ -38,15 +50,6 @@ export let topCascaderOptionSet = [
     entry("Word (1000)", "(1000)(1000)"),
   ),
   entry(
-    "Random",
-    "",
-    entry("Random 50%", "([01])([01])"),
-    entry("Random 10%", "([0{9}1])([0{9}1])"),
-    entry("Random 90%", "([01{9}])([01{9}])"),
-    entry("Step 25%-75%", "([0001])([0111])"),
-    entry("Step 10%-90%", "([0{9}1])([01{9}])"),
-  ),
-  entry(
     "Pattern with random",
     "",
     entry("Rule 73 starter (0[01])", "(0[01])(0[01])"),
@@ -65,25 +68,26 @@ export let sideCascaderOptionSet = [
   entry("Alternate nine 1 one 0", "(1{9}0)"),
 ]
 
-export let TopBorderCascader = () => {
-  let { context } = useContext(ReactContext)
+export let TopBorderSelect = () => {
+  let { act, context } = useContext(ReactContext)
 
   let [isOpen, setIsOpen] = useState(false)
 
   return (
-    <Cascader
+    <Select<string, { label: any }>
+      value={""}
       open={isOpen}
-      value={[]}
       onFocus={() => setIsOpen(true)}
       onBlur={() => setIsOpen(false)}
       style={{ maxWidth: "34px" }}
+      dropdownStyle={{ minWidth: "200px" }}
       options={topCascaderOptionSet}
-      onChange={(array) => {
-        if (!array) {
-          return
-        }
+      onChange={(value, option) => {
         context.updateState((state) => {
-          state.topology.genesis = parseTopBorder(array.slice(-1)[0])
+          if (!Array.isArray(option) && option.label.includes("Random")) {
+            act.randomizeSeed(state)
+          }
+          state.topology.genesis = parseTopBorder(value)
         })
       }}
     />
@@ -100,17 +104,15 @@ export let SideBorderCascader = (prop: SideBorderCascaderProp) => {
   let { context } = useContext(ReactContext)
 
   return (
-    <Cascader
+    <Select
       disabled={disabled}
-      value={[]}
+      value={""}
       style={{ maxWidth: "34px" }}
+      dropdownStyle={{ minWidth: "200px" }}
       options={sideCascaderOptionSet}
-      onChange={(array) => {
-        if (!array) {
-          return
-        }
+      onChange={(value) => {
         context.updateState((state) => {
-          state.topology[side] = parseSideBorder(array.slice(-1)[0])
+          state.topology[side] = parseSideBorder(value)
         })
       }}
     />

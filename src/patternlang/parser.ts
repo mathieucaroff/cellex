@@ -26,7 +26,7 @@ export let parse = <T>(input: string, name: string, parser: nearley.Parser, defa
   }
 
   // Aquire results
-  if (parser.results.length == 0) {
+  if (parser.results === undefined || parser.results.length === 0) {
     return defaultValue
   }
   if (parser.results.length > 1) {

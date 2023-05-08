@@ -60,7 +60,7 @@ export interface State {
   play: boolean
   zoom: number
   colorMap: Color[]
-  presentationMode: 'present' | 'off'
+  presentationMode: "present" | "off"
   diffMode: DiffMode
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
   seed: string

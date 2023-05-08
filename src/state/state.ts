@@ -39,7 +39,7 @@ export let defaultState = (): State => {
   return {
     rule: getOr("rule", parseRule, nAryRule),
 
-    speed: 1,
+    speed: 0.5,
     posS: 0,
     posT: 0,
     play: true,

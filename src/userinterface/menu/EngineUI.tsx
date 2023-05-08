@@ -4,7 +4,7 @@ import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
 import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
 import { ReactContext } from "../../state/ReactContext"
 import { OxButton, OxEnterInput, OxInput, OxInputNumber } from "../component"
-import { SideBorderCascader, TopBorderCascader } from "./topologyCascader"
+import { SideBorderCascader, TopBorderSelect } from "./topologySelect"
 
 const { Option } = Select
 
@@ -32,14 +32,7 @@ export let EngineUI = () => {
       <ul>
         <li>
           Seed: <OxInput path="seed" />
-          <Button
-            icon={"🎲"}
-            onClick={() => {
-              context.updateState((state) => {
-                state.seed = Math.random().toString(36).slice(2)
-              })
-            }}
-          />
+          <Button icon={"🎲"} onClick={() => act.randomizeSeed()} />
         </li>
         <li>
           ⟷Simulation width: <OxButton half icon={"/2"} path="topology.width" />
@@ -84,7 +77,7 @@ export let EngineUI = () => {
         <li>
           ‴‴Genesis:
           <Input.Group compact>
-            <TopBorderCascader />
+            <TopBorderSelect />
             <OxEnterInput
               path="topology.genesis"
               style={{ width: "initial" }}

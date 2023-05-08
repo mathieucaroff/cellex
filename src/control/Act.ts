@@ -236,6 +236,9 @@ export let createAct = (context: Context, info: Info) => {
       state.topology.borderRight = parseSideBorder("([0111])")
       state.seed = randomSeed()
     }),
+    randomizeSeed: action((state) => {
+      state.seed = Math.random().toString(36).slice(2)
+    }),
   }
   return act
 }
