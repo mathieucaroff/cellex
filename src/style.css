@@ -68,6 +68,7 @@ ul {
   line-height: 12px;
 }
 
+/* rule editor */
 .ruleEditor {
   /* rule names can be extremely long */
   word-break: break-word;
@@ -82,21 +83,11 @@ ul {
 }
 
 /* canvas */
-.mainCanvas:active,
-.zoomCanvas:active {
-  cursor: move;
-}
-
-/* canvas resize handle */
-.canvasResizeHandle,
-.zoomCanvasResizeHandle {
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  margin-left: -20px;
+.mainCanvas {
   cursor: grab;
 }
 
+/* top menu */
 .topMenu i {
   margin-right: 8px;
 }

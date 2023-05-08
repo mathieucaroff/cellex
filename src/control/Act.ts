@@ -49,7 +49,7 @@ export let createAct = (context: Context, info: Info) => {
   })
 
   let fixZoom = action((state) => {
-    state.zoom = clamp(state.zoom, 2, 64)
+    state.zoom = clamp(state.zoom, 1, 64)
   })
 
   let act = {

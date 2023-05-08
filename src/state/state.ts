@@ -22,15 +22,18 @@ export let defaultState = (): State => {
   }
 
   let adaptiveCanvasSize = (w: Window) => {
-    let fullwidth = Math.ceil(w.innerWidth * 0.98 - 60)
-    let width = Math.ceil(fullwidth * 0.25) * 2
-    let height = Math.ceil(Math.min(width, Math.max(w.innerHeight * 0.25, 30))) * 2
+    let width = getOr<number>(
+      "width",
+      (x) => +x,
+      () => w.innerWidth - 40,
+    )
+    let height = w.innerHeight - 150
 
     if (param.has("width")) {
       width = +param.get("width")!
     }
 
-    return { width, height, fullwidth }
+    return { width, height }
   }
 
   return {
@@ -39,7 +42,8 @@ export let defaultState = (): State => {
     speed: 1,
     posS: 0,
     posT: 0,
-    play: false,
+    play: true,
+    presentationMode: "present",
     diffMode: { status: "off" },
     zoom: 4,
     colorMap: defaultColorMap(),
@@ -64,6 +68,5 @@ export let defaultState = (): State => {
     redraw: false,
 
     canvasSize: adaptiveCanvasSize(window),
-    showZoomCanvasBoundary: false,
   }
 }

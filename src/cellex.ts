@@ -11,16 +11,16 @@ import { createKeyboardManager } from "./control/KeyboardManager"
 import { createDisplay } from "./display/Display"
 import { createAutomatonEngine, Engine } from "./engine/Engine"
 import { createRandomMapper } from "./engine/RandomMapper"
-import { parseRule, ruleName } from "./engine/rule"
+import { interestingElementaryRuleArray, parseRule } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
-import { presentSideBorder, presentTopBorder } from "./patternlang/presenter"
 import { createContext } from "./state/Context"
 import { defaultState } from "./state/state"
 import { UserInterface } from "./userinterface/UserInterface"
 import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { DesktopOrMobile } from "./type"
+import { randomChoice } from "./util/randomChoice"
 
 function main() {
   // /\ github corner / package
@@ -42,12 +42,8 @@ function main() {
   let displayDiv = h("div", { tabIndex: 0 })
   let canvas = h("canvas", { className: "mainCanvas" })
   let canvasResizeHandle = h("div", { className: "canvasResizeHandle" })
-  let zoomCanvas = h("canvas", { className: "zoomCanvas" })
-  let zoomCanvasResizeHandle = h("div", { className: "zoomCanvasResizeHandle" })
   displayDiv.appendChild(canvas)
-  displayDiv.appendChild(canvasResizeHandle)
-  displayDiv.appendChild(zoomCanvas)
-  displayDiv.appendChild(zoomCanvasResizeHandle)
+  displayDiv.focus()
   // \/ canvas
 
   // /\ control
@@ -90,17 +86,12 @@ function main() {
   })
 
   // /\ display
-  let display = createDisplay(canvas, zoomCanvas)
+  let display = createDisplay(canvas)
   let engine: Engine
 
   // local display.draw method
   let drawDisplay = (redraw: boolean) => {
     display.draw(state.posS, state.posT, state.zoom, state.colorMap, redraw)
-    if (state.showZoomCanvasBoundary) {
-      display.drawZoomAreaBoundary(state.zoom)
-      state.showZoomCanvasBoundary = false
-      state.redraw = true
-    }
   }
 
   // engine-related change
@@ -109,18 +100,6 @@ function main() {
     .for(({ rule, seed, topology }) => {
       let randomMapper = createRandomMapper({ seedString: seed })
       engine = createAutomatonEngine(rule, topology, randomMapper)
-
-      let param = new URLSearchParams(window.location.search)
-      param.set("rule", ruleName(rule))
-      param.set("seed", seed)
-      param.set("topologyKind", topology.kind)
-      param.set("width", "" + topology.width)
-      param.set("genesis", presentTopBorder(topology.genesis))
-      param.set("borderLeft", presentSideBorder(topology.borderLeft))
-      param.set("borderRight", presentSideBorder(topology.borderRight))
-      let url = new URL(window.location.href)
-      url.search = param.toString()
-      window.history.pushState({}, window.document.title, url)
 
       display.setEngine(engine)
 
@@ -146,8 +125,6 @@ function main() {
     .for(({ canvasSize }) => {
       canvas.width = canvasSize.width
       canvas.height = canvasSize.height
-      zoomCanvas.width = canvasSize.fullwidth - canvasSize.width
-      zoomCanvas.height = canvasSize.height
       act.fixPosition()
       drawDisplay(true)
     })
@@ -196,25 +173,6 @@ function main() {
     })
   })
 
-  // zoom canvas resize
-  let zoomResizeDragManager = createDragManager({
-    element: zoomCanvasResizeHandle,
-    getDisplayInit: () => {
-      let xy = { x: -state.canvasSize.fullwidth, y: -state.canvasSize.height }
-      return xy
-    },
-    desktopOrMobile,
-  })
-  zoomResizeDragManager.onMove((xy) => {
-    context.updateState((state) => {
-      state.canvasSize.height = -xy.y
-      if (xy.x > 0) {
-        return
-      }
-      state.canvasSize.fullwidth = Math.max(state.canvasSize.width + 5, -xy.x)
-    })
-  })
-
   emitterLoop(requestAnimationFrame).link(() => {
     if (state.play) {
       context.updatePosition((position) => {
@@ -237,12 +195,29 @@ function main() {
     let t = Math.floor(y + state.posT)
     return { s, t }
   })
-
-  diffModeManager.addCanvas(zoomCanvas, (x, y) => {
-    let s = Math.floor(x / state.zoom + (state.topology.width - zoomCanvas.width / state.zoom) / 2)
-    let t = Math.floor(y / state.zoom + state.posT)
-    return { s, t }
-  })
   // \/ diff mode
+
+  // /\ presentation mode
+  context.usePosition(({ posT }) => {
+    if (state.presentationMode === "present" && posT >= state.canvasSize.height) {
+      context.updateState((state) => {
+        state.rule = parseRule(randomChoice(interestingElementaryRuleArray).toString())
+        state.redraw = true
+        state.posT = 0
+      })
+    }
+  })
+  const { body } = document
+  function disablePresentationMode() {
+    context.updateState((state) => {
+      state.presentationMode = "off"
+    })
+    body.removeEventListener("click", disablePresentationMode)
+    body.removeEventListener("keydown", disablePresentationMode)
+  }
+  body.addEventListener("click", disablePresentationMode, true)
+  body.addEventListener("keydown", disablePresentationMode, true)
+  // \/ presentation mode
 }
+
 main()

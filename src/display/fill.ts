@@ -15,7 +15,7 @@ import { Color } from "../type"
  * @param colorMap The color to give to each engine state
  */
 export function fillImage(
-  engine: Engine,
+  engine: Engine | undefined,
   ctx: CanvasRenderingContext2D,
   canvasWidth: number,
   width: number,

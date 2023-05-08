@@ -111,14 +111,14 @@ export let createAutomatonEngine = (
 
   reset()
 
-  let nextLine = (known: Uint8Array, other: Uint8Array) => {
+  let nextLine = (input: Uint8Array, output: Uint8Array) => {
     // initialize the rolling result of the rule
     let index = 0
     for (let k = -neighborhoodMiddle; k < 0; k++) {
       index *= rule.stateCount
       if (topology.kind == "loop") {
         // look on the other side: `lineA[topology.width + k]`
-        index += known[topology.width + k]
+        index += input[topology.width + k]
       } else if (topology.kind == "border") {
         // read the border
         index += getSideBorderValue(topology.borderLeft, currentT, randomMapper.left)
@@ -126,14 +126,14 @@ export let createAutomatonEngine = (
     }
     for (let k = 0; k < neighborhoodMiddle; k++) {
       index *= rule.stateCount
-      index += known[k]
+      index += input[k]
     }
 
     // main loop
     for (let k = 0; k + neighborhoodMiddle < topology.width; k++) {
       index = (index * rule.stateCount) % excessValue
-      index += known[k + neighborhoodMiddle]
-      other[k] = rule.transitionFunction[functionLength - 1 - index]
+      index += input[k + neighborhoodMiddle]
+      output[k] = rule.transitionFunction[functionLength - 1 - index]
     }
 
     // compute the last few values
@@ -141,15 +141,15 @@ export let createAutomatonEngine = (
       index = (index * rule.stateCount) % excessValue
       if (topology.kind == "loop") {
         // look on the other side: `lineA[topology.width + k]`
-        index += known[k - (topology.width - neighborhoodMiddle)]
+        index += input[k - (topology.width - neighborhoodMiddle)]
       } else if (topology.kind == "border") {
         index += getSideBorderValue(topology.borderRight, currentT, randomMapper.right)
       }
 
-      other[k] = rule.transitionFunction[functionLength - 1 - index]
+      output[k] = rule.transitionFunction[functionLength - 1 - index]
     }
 
-    return other
+    return output
   }
 
   let me = {

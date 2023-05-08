@@ -84,7 +84,7 @@ export let RuleCascader = () => {
             return
           }
           context.updateState((state) => {
-            state.rule = parseRule(array.slice(-1)[0])
+            state.rule = parseRule(array.slice(-1)[0].toString())
           })
         }}
       />
@@ -101,7 +101,7 @@ export let RuleCascader = () => {
             return
           }
           context.updateState((state) => {
-            state.rule = parseRule(array.slice(-1)[0])
+            state.rule = parseRule(array.slice(-1)[0].toString())
           })
         }}
       />
