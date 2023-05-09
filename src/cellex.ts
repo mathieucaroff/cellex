@@ -43,7 +43,6 @@ function main() {
   let canvas = h("canvas", { className: "mainCanvas" })
   let canvasResizeHandle = h("div", { className: "canvasResizeHandle" })
   displayDiv.appendChild(canvas)
-  displayDiv.focus()
   // \/ canvas
 
   // /\ control
@@ -84,6 +83,7 @@ function main() {
   context.usePosition(() => {
     ReactDOM.render(UserInterface({ act, context, helpList, displayDiv }), span)
   })
+  displayDiv.focus()
 
   // /\ display
   let display = createDisplay(canvas)
