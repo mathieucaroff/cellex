@@ -39,13 +39,13 @@ export let defaultState = (): State => {
   return {
     rule: getOr("rule", parseRule, nAryRule),
 
-    speed: 0.5,
+    speed: 1,
     posS: 0,
     posT: 0,
     play: true,
     presentationMode: "present",
     diffMode: { status: "off" },
-    zoom: 4,
+    zoom: 1,
     colorMap: defaultColorMap(),
     topology: {
       finitness: "finite",

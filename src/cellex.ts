@@ -182,7 +182,7 @@ function main() {
   emitterLoop(requestAnimationFrame).link(() => {
     if (state.play) {
       context.updatePosition((position) => {
-        position.posT += state.speed
+        position.posT += state.speed / state.zoom
       })
     }
   })
