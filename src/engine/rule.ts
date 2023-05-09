@@ -6,7 +6,7 @@ export const interestingElementaryRuleSet = {
   "Famous":     [30, 90, 110, 184],
   "Class 4":    [54, 106, 110],
   "XOR":        [60, 90, 105, 150],
-  "Triangle":   [18, 22, 26, 30, 122, 126, 146, 154],
+  "Triangle":   [18, 22, 26, 30, 122, 126, 146, 150, 154],
   "Primitives": [0, 255, 204, 51, 170, 240],
   "Twinkling":  [15, 41, 45, 51, 62, 73, 91, 94, 105],
 }
@@ -17,7 +17,7 @@ export const interestingElementaryRuleArray = ([] as number[]).concat(
   set["Class 4"],
   set.XOR,
   set.Triangle,
-  set.Twinkling,
+  set.Twinkling.filter((x) => ![15, 51, 91, 94].includes(x)),
 )
 
 // elementaryRule produces a rule

@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react"
 
-export interface DivGraphProp {
+export interface DivGraftProp {
   element: HTMLElement
 }
 
-export let DivGraft = (prop: DivGraphProp) => {
+export let DivGraft = (prop: DivGraftProp) => {
   let { element } = prop
   let ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -13,11 +13,11 @@ export let DivGraft = (prop: DivGraphProp) => {
   return <div ref={ref}></div>
 }
 
-export interface SpanGraphProp {
+export interface SpanGraftProp {
   element: HTMLElement
 }
 
-export let SpanGraft = (prop: SpanGraphProp) => {
+export let SpanGraft = (prop: SpanGraftProp) => {
   let { element } = prop
   let ref = useRef<HTMLSpanElement>(null)
   useEffect(() => {

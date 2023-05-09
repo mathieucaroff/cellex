@@ -1,7 +1,7 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 
-import { colorComplement, leftRightSymmetric, ruleName, ruleSet } from "../../engine/rule"
+import { colorComplement, leftRightSymmetric, ruleName } from "../../engine/rule"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
@@ -15,10 +15,10 @@ export let RuleEditor = () => {
   let canvasRef = useRef<HTMLCanvasElement>(null)
   let smallCanvas = document.createElement("canvas")
   let smallCtx = smallCanvas.getContext("2d")!
-  // xSpacing, ySpacing tell the spacing between the occurences of the function's entries
+  // xSpacing and ySpacing define the spacing between the occurences of the function's entries
   const xSpacing = rule.neighborhoodSize + 1
   const ySpacing = 3
-  // iWidth, iHeight tell how many occurences of entry per row or column
+  // iWidth and iHeight define how many occurences of entry per row or column
   const iWidth = 8
   const iHeight = Math.ceil(rule.transitionFunction.length / iWidth)
 
@@ -74,7 +74,7 @@ export let RuleEditor = () => {
     if (error) {
       return
     }
-    context.updateState((state) => {
+    context.updateState(() => {
       transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
     })
   }
