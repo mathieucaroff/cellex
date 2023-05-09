@@ -123,6 +123,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
       <Input
         style={style}
         title={title}
+        name={path}
         disabled={disabled}
         value={localValue}
         onChange={(ev) => {

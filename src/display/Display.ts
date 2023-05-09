@@ -21,20 +21,19 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
   /**
    * preDraw -- draw to the preCanvas
    */
-  function preDraw(
+  const preDraw = (
     x: number,
     y: number,
     zoomX: number,
     zoomY: number,
     colorMap: Color[],
     redraw: boolean,
-  ) {
+  ) => {
     // size
     let { width, height } = canvas
     let preWidth = Math.ceil(width / zoomX) + 1
     let preHeight = Math.ceil(height / zoomY) + 1
     if (preCanvas.width !== preWidth || preCanvas.height !== preHeight) {
-      console.log(preCanvas.width, preWidth, preCanvas.height, preHeight)
       preCanvas.width = preWidth
       preCanvas.height = preHeight
       redraw = true
@@ -76,7 +75,7 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
   /**
    * preDraw -- draw to the precanvas
    */
-  function scaleUpDraw(fx: number, fy: number, zoomX: number, zoomY: number) {
+  const scaleUpDraw = (fx: number, fy: number, zoomX: number, zoomY: number) => {
     ctx.imageSmoothingEnabled = false
     ctx.drawImage(
       preCanvas,

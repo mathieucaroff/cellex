@@ -30,8 +30,7 @@ function main() {
   document.body.appendChild(cornerDiv)
   // \/ canvas
 
-  let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator.userAgent)
-  console.log("desktopOrMobile_", desktopOrMobile)
+  let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
 
   let state = defaultState()
   let context = createContext(state)
