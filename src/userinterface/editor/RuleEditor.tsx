@@ -29,6 +29,10 @@ export let RuleEditor = () => {
   // useLayoutEffect here because we need to wait for the canvas to be instanciated
   useLayoutEffect(() => {
     let canvas = canvasRef.current!
+    if (rule.transitionFunction.length > 32) {
+      canvas.height = 0
+      return
+    }
     canvas.width = smallCanvas.width * zoom
     canvas.height = smallCanvas.height * zoom
     let ctx = canvas.getContext("2d")!
