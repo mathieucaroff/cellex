@@ -7,11 +7,12 @@ import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
 import { addOne, subtractOne } from "../../util/numberArray"
 import { RuleInfo } from "../RuleInfo"
+import { useStateSelection } from "../hooks"
 import { fillRuleEditor } from "./fillRuleEditor"
 
 export let RuleEditor = () => {
   let { context } = useContext(ReactContext)
-  let { rule, colorMap } = context.getState()
+  let { rule, colorMap } = useStateSelection(({ rule, colorMap }) => ({ rule, colorMap }))
   let canvasRef = useRef<HTMLCanvasElement>(null)
   let smallCanvas = document.createElement("canvas")
   let smallCtx = smallCanvas.getContext("2d")!

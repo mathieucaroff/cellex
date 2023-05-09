@@ -1,8 +1,6 @@
-import { useContext } from "react"
-
 import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
-import { ReactContext } from "../state/ReactContext"
 import { Rule } from "../type"
+import { useStateSelection } from "./hooks"
 
 export const informationSet: Record<string, string> = {
   b30: "is famous for its use in artistic projects and as a source of chaos to generate randomness in some Wolfram products",
@@ -53,8 +51,7 @@ export let getRuleInformation = (rule: Rule): Info | undefined => {
 }
 
 export let RuleInfo = () => {
-  let { context } = useContext(ReactContext)
-  let { rule } = context.getState()
+  let rule = useStateSelection(({ rule }) => rule)
   let name = ruleName(rule)
   let info = getRuleInformation(rule)!
   if (!info) {

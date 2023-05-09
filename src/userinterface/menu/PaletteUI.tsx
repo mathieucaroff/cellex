@@ -9,12 +9,14 @@ import { ReactContext } from "../../state/ReactContext"
 import { defaultColorMap } from "../../state/state"
 import { Color } from "../../type"
 import { OxInput } from "../component"
+import { useStateSelection } from "../hooks"
 
 export let PaletteUI = () => {
   let { context } = useContext(ReactContext)
+  let colorMap = useStateSelection(({ colorMap }) => colorMap)
   let ul = (
     <ul>
-      {context.getState().colorMap.map((c, k) => (
+      {colorMap.map((c, k) => (
         <li key={k}>
           Color #{k}:{" "}
           <Popover

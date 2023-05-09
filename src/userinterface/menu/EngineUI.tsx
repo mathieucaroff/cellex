@@ -5,14 +5,15 @@ import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
 import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
 import { ReactContext } from "../../state/ReactContext"
 import { OxButton, OxEnterInput, OxInput, OxInputNumber } from "../component"
+import { useStateSelection } from "../hooks"
 import { SideBorderCascader, TopBorderSelect } from "./topologySelect"
 
 const { Option } = Select
 
 export let EngineUI = () => {
   let { context, act } = useContext(ReactContext)
-
-  let topologyIsLoop = context.getState().topology.kind == "loop"
+  let topologyKind = useStateSelection(({ topology: { kind } }) => kind)
+  let topologyIsLoop = topologyKind == "loop"
 
   let div = (
     <div>
@@ -64,7 +65,7 @@ export let EngineUI = () => {
         <li>
           Topology kind:{" "}
           <Select
-            value={context.getState().topology.kind}
+            value={topologyKind}
             onChange={(value) => {
               context.updateState((state) => {
                 state.topology.kind = value

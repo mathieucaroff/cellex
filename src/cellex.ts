@@ -1,4 +1,5 @@
 import "antd/dist/antd.css"
+import * as React from "react"
 import * as ReactDOM from "react-dom"
 
 import * as packageInfo from "../package.json"
@@ -15,6 +16,7 @@ import { interestingElementaryRuleArray, parseRule } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
 import { createContext } from "./state/Context"
+import { ReactContext } from "./state/ReactContext"
 import { defaultState } from "./state/state"
 import { DesktopOrMobile } from "./type"
 import { UserInterface } from "./userinterface/UserInterface"
@@ -79,9 +81,14 @@ function main() {
   let helpList = keyboardBindingReference.getHelp()
   let span = h("span")
   appRoot.appendChild(span)
-  context.usePosition(() => {
-    ReactDOM.render(UserInterface({ act, context, helpList, displayDiv }), span)
-  })
+
+  ReactDOM.render(
+    React.createElement(ReactContext.Provider, {
+      value: { act, context },
+      children: React.createElement(UserInterface, { helpList, displayDiv }),
+    }),
+    span,
+  )
   displayDiv.focus()
 
   // /\ display

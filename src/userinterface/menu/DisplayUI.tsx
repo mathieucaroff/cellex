@@ -1,10 +1,10 @@
-import { Button, Checkbox, Divider } from "antd"
-import { useContext, useState } from "react"
+import { Button, InputNumber } from "antd"
+import { useContext, useEffect, useState } from "react"
 
 import { ReactContext } from "../../state/ReactContext"
 import { OxButton, OxInputNumber } from "../component"
 
-export let DisplayUI = () => {
+export function DisplayUI() {
   let { act, context } = useContext(ReactContext)
 
   return (
@@ -27,7 +27,7 @@ export let DisplayUI = () => {
         ⌖Space position: <OxInputNumber path="posS" />
       </li>
       <li>
-        ⌖Time position (generation): <OxInputNumber path="posT" />
+        ⌖Time position (generation): <TimePositionInputNumber />
         <Button onClick={() => act.gotoTop()}>Reset</Button>
       </li>
       <li>
@@ -58,5 +58,26 @@ export let DisplayUI = () => {
         <OxButton double icon={"x2"} path="canvasSize.height" />
       </li>
     </ul>
+  )
+}
+
+export function TimePositionInputNumber() {
+  let { context } = useContext(ReactContext)
+  let [value, setValue] = useState(0)
+
+  useEffect(() => {
+    let remove = context.usePosition(({ posT }) => {
+      setValue(posT)
+    })
+    return remove
+  }, [])
+
+  return (
+    <InputNumber
+      value={value}
+      onChange={(posT) => {
+        context.updatePosition((position) => ({ ...position, posT }))
+      }}
+    />
   )
 }

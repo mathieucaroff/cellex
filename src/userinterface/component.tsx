@@ -3,19 +3,9 @@ import Checkbox from "antd/lib/checkbox/Checkbox"
 import { CSSProperties, useContext, useEffect, useState } from "react"
 
 import { ReactContext } from "../state/ReactContext"
-import { State } from "../type"
+import { readPath, useStatePath } from "./hooks"
 
 const { Option } = Select
-
-function readPath(path: string, state: State) {
-  let piece = state
-  let nameList = path.split(".")
-  let last = nameList.pop()!
-  nameList.forEach((name) => {
-    piece = piece[name]
-  })
-  return { piece, last }
-}
 
 interface OxInputProp {
   path: string
@@ -29,7 +19,7 @@ interface OxInputProp {
 export function OxInput(prop: OxInputProp) {
   let { disabled, path, present = (x) => x, parse = (y) => y, style = {} } = prop
   let { context } = useContext(ReactContext)
-  let { piece, last } = readPath(path, context.getState())
+  let { piece, last } = useStatePath(path)
 
   return (
     <Input
@@ -79,7 +69,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
   } = prop
 
   let { context } = useContext(ReactContext)
-  let { piece, last } = readPath(path, context.getState())
+  let { piece, last } = useStatePath(path)
   let [localValue, setValue] = useState(() => present(piece[last]))
   let [isFocused, setIsFocused] = useState(false)
 
@@ -166,7 +156,7 @@ interface OxInputNumberProp {
 export function OxInputNumber(prop: OxInputNumberProp) {
   let { path } = prop
   let { context } = useContext(ReactContext)
-  let { piece, last } = readPath(path, context.getState())
+  let { piece, last } = useStatePath(path)
 
   return (
     <InputNumber
@@ -191,7 +181,7 @@ interface OxSelectProp {
 export function OxSelect(prop: OxSelectProp) {
   let { path, disabled, valueArray } = prop
   let { context } = useContext(ReactContext)
-  let { piece, last } = readPath(path, context.getState())
+  let { piece, last } = useStatePath(path)
 
   return (
     <Select
@@ -250,7 +240,7 @@ interface OxCheckboxProp {
 export function OxCheckbox(prop: OxCheckboxProp) {
   let { path, disabled } = prop
   let { context } = useContext(ReactContext)
-  let { piece, last } = readPath(path, context.getState())
+  let { piece, last } = useStatePath(path)
 
   return (
     <Checkbox

@@ -1,27 +1,30 @@
 import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
 import { Button, Collapse, PageHeader, Space } from "antd"
+import { useContext } from "react"
 
-import { Act } from "../control/Act"
 import { ruleName } from "../engine/rule"
-import { Context } from "../state/Context"
 import { ReactContext } from "../state/ReactContext"
 import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
 import { RuleEditor } from "./editor/RuleEditor"
 import { DivGraft } from "./graft"
+import { useStateSelection } from "./hooks"
 import { Documentation } from "./markdown/documentation"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
-  act: Act
-  context: Context
   helpList: [string, string][]
   displayDiv: HTMLDivElement
 }
 
 export let UserInterface = (prop: UserInterfaceProp) => {
-  let { act, context, helpList, displayDiv } = prop
-  let { rule, diffMode } = context.getState()
+  let { helpList, displayDiv } = prop
+  let { act } = useContext(ReactContext)
+  let { rule, diffMode, play } = useStateSelection(({ rule, diffMode, play }) => ({
+    rule,
+    diffMode,
+    play,
+  }))
 
   let collapseProp = {}
   if (window.location.hash) {
@@ -29,7 +32,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
   }
 
   return (
-    <ReactContext.Provider value={{ act, context }}>
+    <>
       <PageHeader
         className="site-page-header"
         onBack={() => {
@@ -44,7 +47,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             type="primary"
             title="play"
             size="large"
-            icon={context.getState().play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+            icon={play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
             onClick={() => {
               act.togglePlay()
               displayDiv.focus()
@@ -70,6 +73,6 @@ export let UserInterface = (prop: UserInterfaceProp) => {
           <Documentation />
         </Panel>
       </Collapse>
-    </ReactContext.Provider>
+    </>
   )
 }

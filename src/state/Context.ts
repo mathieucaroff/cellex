@@ -81,6 +81,9 @@ export let createContext = (state: State) => {
     usePosition(runFunction: (pos: StatePosition, st: State) => unknown) {
       runFunction(state, state)
       positionShelf.push(runFunction)
+      return () => {
+        positionShelf = positionShelf.filter((fn) => fn !== runFunction)
+      }
     },
     updatePosition(changer: (p: StatePosition, st: State) => void) {
       if (updatingPosition || updatingState) {

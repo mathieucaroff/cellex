@@ -1,14 +1,12 @@
 import { Input } from "antd"
-import { useContext } from "react"
 
 import { nAryRule, parseRule, ruleName } from "../engine/rule"
-import { ReactContext } from "../state/ReactContext"
 import { RuleCascader } from "./RuleCascader"
 import { OxEnterInput } from "./component"
+import { useStateSelection } from "./hooks"
 
 export let RuleInput = () => {
-  let { context } = useContext(ReactContext)
-  let { rule } = context.getState()
+  let rule = useStateSelection(({ rule }) => rule)
 
   return (
     <Input.Group compact>
