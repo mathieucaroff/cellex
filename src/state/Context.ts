@@ -1,4 +1,4 @@
-import { StatePosition, State } from "../type"
+import { State, StatePosition } from "../type"
 import { deepEqual } from "../util/deepEqual"
 
 let deepCopy = (value: any) => JSON.parse(JSON.stringify(value))

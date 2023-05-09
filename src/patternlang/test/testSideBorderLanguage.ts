@@ -1,6 +1,6 @@
+import { BorderRootGroup, SideBorder, StochasticState } from "../BorderType"
 import { createSideBorderParser } from "./compileParser"
-import { testEngine, Case, failure, success } from "./lib/languageTestEngine"
-import { SideBorder, StochasticState, BorderRootGroup } from "../BorderType"
+import { Case, failure, success, testEngine } from "./lib/languageTestEngine"
 
 /**
  * Note how the cumulative map is [1, 1] for 0 and is [0, 1] for 1.

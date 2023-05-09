@@ -1,10 +1,9 @@
 import fs from "fs"
-import path from "path"
-
 import { default as nearley } from "nearley"
 import { default as neCompile } from "nearley/lib/compile"
 import { default as neGenerate } from "nearley/lib/generate"
 import { default as nearleyGrammar } from "nearley/lib/nearley-language-bootstrapped"
+import path from "path"
 
 let compile = (sourceCode) => {
   // Move to directory of the source files, for @include-s to work

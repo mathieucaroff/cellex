@@ -1,4 +1,4 @@
-import { randrange, Randrange } from "./randrange"
+import { randrange } from "./randrange"
 
 export type PerfectRandom = (pos: number, rangeSize: number) => number
 

@@ -1,8 +1,8 @@
-import { colorToHexColor, hexColorToColor } from "../engine/color"
 import { Engine } from "../engine/Engine"
-import { fillImage } from "./fill"
+import { colorToHexColor, hexColorToColor } from "../engine/color"
 import { Color } from "../type"
 import { mod } from "../util/mod"
+import { fillImage } from "./fill"
 
 export let presentColorMap = (colorMap) => colorMap.map((c) => colorToHexColor(c)).join(";")
 export let parseColorMap = (colorString) => colorString.split(";").map((h) => hexColorToColor(h))

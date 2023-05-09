@@ -1,6 +1,6 @@
 import { default as nearley } from "nearley"
-import { SideBorder, TopBorder } from "./BorderType"
 
+import { SideBorder, TopBorder } from "./BorderType"
 import patternGrammar from "./patternLanguage.ne"
 import sideBorderGrammar from "./sideBorderLanguage.ne"
 import topBorderGrammar from "./topBorderLanguage.ne"

@@ -1,13 +1,14 @@
 import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
 import { Button, Collapse, PageHeader, Space } from "antd"
+
 import { Act } from "../control/Act"
 import { ruleName } from "../engine/rule"
 import { Context } from "../state/Context"
 import { ReactContext } from "../state/ReactContext"
-import { DivGraft } from "./graft"
-import { RuleEditor } from "./editor/RuleEditor"
 import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
+import { RuleEditor } from "./editor/RuleEditor"
+import { DivGraft } from "./graft"
 import { Documentation } from "./markdown/documentation"
 
 const { Panel } = Collapse

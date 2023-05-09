@@ -1,5 +1,6 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
+
 import { colorComplement, leftRightSymmetric, ruleName, ruleSet } from "../../engine/rule"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"

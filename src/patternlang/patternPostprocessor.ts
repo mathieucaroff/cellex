@@ -1,5 +1,5 @@
-import { totalWidth } from "./borderPostprocessor"
 import { Pattern, PatternElement, PatternGroup, PatternRootGroup, PatternSet } from "./PatternType"
+import { totalWidth } from "./borderPostprocessor"
 
 export let zero = () => 0
 export let one = () => 1

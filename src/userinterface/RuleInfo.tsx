@@ -1,4 +1,5 @@
 import { useContext } from "react"
+
 import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
 import { ReactContext } from "../state/ReactContext"
 import { Rule } from "../type"

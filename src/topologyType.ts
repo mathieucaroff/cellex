@@ -1,4 +1,4 @@
-import { TopBorder, SideBorder } from "./patternlang/BorderType"
+import { SideBorder, TopBorder } from "./patternlang/BorderType"
 
 export interface TopologyFiniteBorder {
   genesis: TopBorder

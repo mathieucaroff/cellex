@@ -1,6 +1,6 @@
+import { BorderRootGroup, StochasticState, TopBorder } from "../BorderType"
 import { createTopBorderParser } from "./compileParser"
-import { testEngine, Case, success, failure } from "./lib/languageTestEngine"
-import { TopBorder, StochasticState, BorderRootGroup } from "../BorderType"
+import { Case, failure, success, testEngine } from "./lib/languageTestEngine"
 
 /**
  * Note how the cumulative map are [1] for 0 and is [0, 1] for 1.

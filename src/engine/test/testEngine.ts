@@ -1,4 +1,5 @@
 import assert from "assert"
+
 import { TopBorder } from "../../patternlang/BorderType"
 import { group, rootGroup } from "../../patternlang/patternUtil"
 import {
@@ -8,9 +9,9 @@ import {
   getTopBorderValue,
   runStochastic,
 } from "../Engine"
-import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopEngine"
 import { createRandomMapper } from "../RandomMapper"
 import { elementaryRule } from "../rule"
+import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopEngine"
 
 const ts = { type: "state" as const }
 const qw1 = { quantity: 1, width: 1 }

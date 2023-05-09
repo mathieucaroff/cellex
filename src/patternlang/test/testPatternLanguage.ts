@@ -1,6 +1,6 @@
+import { Pattern, PatternGroup, PatternRootGroup, PatternSet } from "../PatternType"
 import { createPatternParser } from "./compileParser"
-import { testEngine, Case } from "./lib/languageTestEngine"
-import { Pattern, PatternSet, PatternRootGroup, PatternGroup } from "../PatternType"
+import { Case, testEngine } from "./lib/languageTestEngine"
 
 type Qwvc1 = {
   quantity: 1

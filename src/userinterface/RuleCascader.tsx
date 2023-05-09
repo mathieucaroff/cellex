@@ -1,6 +1,7 @@
 import { Cascader } from "antd"
 import { DefaultOptionType } from "antd/lib/cascader"
 import { useContext, useState } from "react"
+
 import { interestingElementaryRuleSet, parseRule, ruleSet } from "../engine/rule"
 import { ReactContext } from "../state/ReactContext"
 import { limitLength } from "../util/limitLength"
