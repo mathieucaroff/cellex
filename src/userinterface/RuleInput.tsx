@@ -1,11 +1,14 @@
 import { Input } from "antd"
+import { useContext } from "react"
 
 import { nAryRule, parseRule, ruleName } from "../engine/rule"
+import { ReactContext } from "../state/ReactContext"
 import { RuleCascader } from "./RuleCascader"
 import { OxEnterInput } from "./component"
 import { useStateSelection } from "./hooks"
 
 export let RuleInput = () => {
+  let { act } = useContext(ReactContext)
   let rule = useStateSelection(({ rule }) => rule)
 
   return (
@@ -13,6 +16,7 @@ export let RuleInput = () => {
       <RuleCascader />
       <OxEnterInput
         path="rule"
+        id="ruleInput"
         title="set rule"
         style={{ width: "initial" }}
         present={ruleName}
@@ -21,6 +25,7 @@ export let RuleInput = () => {
         randomizer2={nAryRule}
         randomElementTitle={`Random ${rule.stateCount}-state rule`}
         randomElementTitle2={`Random rule (with up to six distinct states)`}
+        extraOnPressEnter={act.focus("displayDiv")}
       />
     </Input.Group>
   )

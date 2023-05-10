@@ -1,12 +1,10 @@
-import "antd/dist/antd.css"
 import * as React from "react"
-import * as ReactDOM from "react-dom"
+import * as ReactDOM from "react-dom/client"
 
 import * as packageInfo from "../package.json"
 import { createAct } from "./control/Act"
 import { createInfo } from "./control/Info"
 import { keyboardBinding } from "./control/KeyboardBinding"
-import { createKeyboardManager } from "./control/KeyboardManager"
 import { createDragManager } from "./control/dragmanager/DragManager"
 import { createDisplay } from "./display/Display"
 import { createDiffModeManager } from "./engine/DiffModeManager"
@@ -40,26 +38,17 @@ function main() {
   let act = createAct(context, info)
 
   // /\ canvas
-  let displayDiv = h("div", { tabIndex: 0 })
+  let displayDiv = h("div", { id: "displayDiv", tabIndex: 0 })
   let canvas = h("canvas", { className: "mainCanvas" })
   let canvasResizeHandle = h("div", { className: "canvasResizeHandle" })
   displayDiv.appendChild(canvas)
+  setTimeout(() => {
+    displayDiv.focus()
+  })
   // \/ canvas
 
   // /\ control
-  let keyboardBindingReference = keyboardBinding({
-    act,
-    keyKb: createKeyboardManager({
-      element: displayDiv,
-      evPropName: "key",
-      capture: false,
-    }),
-    codeKb: createKeyboardManager({
-      element: displayDiv,
-      evPropName: "code",
-      capture: false,
-    }),
-  })
+  let keyboardBindingReference = keyboardBinding({ act, element: displayDiv })
 
   window.addEventListener("hashchange", () => {
     if (location.hash.length > 1) {
@@ -82,14 +71,13 @@ function main() {
   let span = h("span")
   appRoot.appendChild(span)
 
-  ReactDOM.render(
+  let reactRoot = ReactDOM.createRoot(span)
+  reactRoot.render(
     React.createElement(ReactContext.Provider, {
       value: { act, context },
       children: React.createElement(UserInterface, { helpList, displayDiv }),
     }),
-    span,
   )
-  displayDiv.focus()
 
   // /\ display
   let display = createDisplay(canvas)

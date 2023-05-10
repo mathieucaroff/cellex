@@ -38,6 +38,7 @@ export function OxInput(prop: OxInputProp) {
 
 interface OxEnterInputProp {
   path: string
+  id?: string
   title?: string
   disabled?: boolean
   style?: CSSProperties
@@ -49,6 +50,7 @@ interface OxEnterInputProp {
   randomizer2?: () => any
   randomElementTitle?: string
   randomElementTitle2?: string
+  extraOnPressEnter?: () => void
 }
 
 // OxEnterInput an input which maps to the value of the path of the state
@@ -57,6 +59,7 @@ interface OxEnterInputProp {
 export function OxEnterInput(prop: OxEnterInputProp) {
   let {
     path,
+    id,
     title,
     disabled,
     present = (x) => x,
@@ -66,6 +69,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     randomizer2,
     randomElementTitle,
     randomElementTitle2,
+    extraOnPressEnter,
   } = prop
 
   let { context } = useContext(ReactContext)
@@ -111,6 +115,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
   return (
     <>
       <Input
+        id={id}
         style={style}
         title={title}
         name={path}
@@ -137,6 +142,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
             let { piece, last } = readPath(path, state)
             piece[last] = parse(localValue)
             setValue(present(piece[last]))
+            extraOnPressEnter?.()
           })
         }}
         onBlur={() => setIsFocused(false)}

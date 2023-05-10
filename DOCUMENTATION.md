@@ -85,7 +85,7 @@ The seed is the value used to generate any random value if the generation of top
 
 Pressing the "Random seed" button will generate a random seed from a non-deterministic source of random (the browser's `Math.random` function). To be specific, the random seed button uses the following:
 
-```cs
+```js
 Math.random().toString(36).slice(2).toUpperCase()
 ```
 

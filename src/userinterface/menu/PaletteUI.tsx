@@ -13,7 +13,7 @@ import { useStateSelection } from "../hooks"
 
 export let PaletteUI = () => {
   let { context } = useContext(ReactContext)
-  let colorMap = useStateSelection(({ colorMap }) => colorMap)
+  let { colorMap } = useStateSelection(({ colorMap }) => ({ colorMap }))
   let ul = (
     <ul>
       {colorMap.map((c, k) => (
@@ -38,7 +38,16 @@ export let PaletteUI = () => {
             }
             trigger="click"
           >
-            <Button style={{ backgroundColor: colorToHexColor(c) }}>✏️</Button>
+            <Button
+              style={{
+                borderRadius: 20,
+                borderWidth: 2,
+                borderColor: "#FFF",
+                backgroundColor: colorToHexColor(c),
+              }}
+            >
+              {" "}
+            </Button>
           </Popover>
         </li>
       ))}

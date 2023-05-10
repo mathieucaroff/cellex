@@ -4,6 +4,7 @@ export interface KeyboardManagerProp {
   element: Element
   evPropName: keyof KeyboardEvent
   capture: boolean
+  normalize?: (key: string) => string
 }
 
 export interface KeyboardManager {
@@ -12,7 +13,7 @@ export interface KeyboardManager {
 }
 
 export let createKeyboardManager = (prop: KeyboardManagerProp) => {
-  let { element, evPropName, capture } = prop
+  let { element, evPropName, capture, normalize = (key) => key } = prop
 
   type EventMap = Record<string, (() => void) | undefined>
   let onKeydownMap: EventMap = {}
@@ -20,6 +21,7 @@ export let createKeyboardManager = (prop: KeyboardManagerProp) => {
 
   let eventHandler = (closureName: string, onEventMap: EventMap) => (ev) => {
     let key = "" + ev[evPropName]
+    key = normalize(key)
     let handler = onEventMap[key]
     if (handler !== undefined) {
       handler()
@@ -40,6 +42,7 @@ export let createKeyboardManager = (prop: KeyboardManagerProp) => {
 
   return {
     onKeydown: (key: string, callback: () => void) => {
+      key = normalize(key)
       if (onKeydownMap[key] !== undefined) {
         throw new Error(`keyboard event ${key}(down) assigned twice`)
       }

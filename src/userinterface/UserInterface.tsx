@@ -1,5 +1,5 @@
 import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, PageHeader, Space } from "antd"
+import { Button, Collapse, Space } from "antd"
 import { useContext } from "react"
 
 import { ruleName } from "../engine/rule"
@@ -33,14 +33,10 @@ export let UserInterface = (prop: UserInterfaceProp) => {
 
   return (
     <>
-      <PageHeader
-        className="site-page-header"
-        onBack={() => {
-          location.assign(".")
-        }}
-        title="Cellex"
-        subTitle="Monodimensional Cellular Automaton Explorer"
-      />
+      <h1 className="site-page-header" title="Cellex">
+        Cellex
+      </h1>
+      <p>Monodimensional Cellular Automaton Explorer</p>
       <Space direction="vertical">
         <Space>
           <Button
@@ -48,10 +44,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             title="play"
             size="large"
             icon={play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
-            onClick={() => {
-              act.togglePlay()
-              displayDiv.focus()
-            }}
+            onClick={() => act.togglePlay()}
           />
           <RuleInput />
 

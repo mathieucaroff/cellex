@@ -49,10 +49,7 @@ export let createAct = (context: Context, info: Info) => {
   })
 
   let fixZoom = action((state) => {
-    state.zoom = clamp(state.zoom, 0, 64)
-    if (state.zoom === 0) {
-      state.zoom = 0.125
-    }
+    state.zoom = clamp(state.zoom, 0.25, 64)
   })
 
   let act = {
@@ -214,6 +211,14 @@ export let createAct = (context: Context, info: Info) => {
       })
     },
 
+    /** Focus */
+    focus: (id: string) => () => {
+      document.getElementById(id)?.focus()
+    },
+    select: (id: string) => () => {
+      ;(document.getElementById(id) as HTMLInputElement)?.select()
+    },
+
     /** Differential Mode */
     toggleDifferentialMode: action((state) => {
       if (state.diffMode.status === "off") {
@@ -224,7 +229,7 @@ export let createAct = (context: Context, info: Info) => {
     }),
 
     /** Quick settings */
-    setImpulseMode: (genesis: string) => {
+    setGenesis: (genesis: string) => {
       return action((state) => {
         state.topology.kind = "loop"
         state.topology.genesis = parseTopBorder(genesis)
@@ -240,7 +245,7 @@ export let createAct = (context: Context, info: Info) => {
       state.seed = randomSeed()
     }),
     randomizeSeed: action((state) => {
-      state.seed = Math.random().toString(36).slice(2)
+      state.seed = randomSeed()
     }),
   }
   return act
