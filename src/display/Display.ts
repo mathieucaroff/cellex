@@ -15,8 +15,9 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
   let preCtx = preCanvas.getContext("2d")!
   let engine: Engine
 
-  let lastX: number = 0
-  let lastY: number = 0
+  let lastX = 0
+  let lastY = 0
+  let lastZoomX = Infinity
 
   /**
    * preDraw -- draw to the preCanvas
@@ -108,6 +109,12 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
       let fx = mod(xx, 1)
       let fy = mod(yy, 1)
 
+      if (zoomX < lastZoomX) {
+        ctx.fillStyle = "#111"
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      }
+
+      lastZoomX = zoomX
       preDraw(x, y, zoomX, zoomY, colorMap, redraw)
       scaleUpDraw(fx, fy, zoomX, zoomY)
     },

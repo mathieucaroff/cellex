@@ -25,7 +25,7 @@ export let defaultState = (): State => {
     let width = getOr<number>(
       "width",
       (x) => +x,
-      () => w.innerWidth - 40,
+      () => w.innerWidth - 70,
     )
     let height = w.innerHeight - 150
 

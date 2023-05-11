@@ -33,10 +33,12 @@ export let UserInterface = (prop: UserInterfaceProp) => {
 
   return (
     <>
-      <h1 className="site-page-header" title="Cellex">
-        Cellex
-      </h1>
-      <p>Monodimensional Cellular Automaton Explorer</p>
+      <div>
+        <h1 className="title" title="Cellex">
+          Cellex
+        </h1>
+        <p className="subtitle">Monodimensional Cellular Automaton Explorer</p>
+      </div>
       <Space direction="vertical">
         <Space>
           <Button

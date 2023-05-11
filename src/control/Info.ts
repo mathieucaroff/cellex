@@ -1,35 +1,6 @@
 import { State } from "../type"
 
-export interface Info {
-  minSpeed(): number
-  maxSpeed(): number
-  passingMinSpeed(): boolean
-  passingMaxSpeed(): boolean
-
-  horizontalPage(): number
-  horizontalMove(): number
-  maxLeft(): number
-  maxRight(): number
-  center(): number
-  isBigEnough(): boolean
-  pockingLeft(): boolean
-  pockingRight(): boolean
-
-  atLeftBorder(): boolean
-  atRightBorder(): boolean
-  atCenter(): boolean
-  passingLeftBorder(): boolean
-  passingRightBorder(): boolean
-
-  verticalPage(): number
-  verticalMove(): number
-  top(): number
-
-  atTop(): boolean
-  passingTop(): boolean
-}
-
-export let createInfo = (state: State): Info => {
+export let createInfo = (state: State) => {
   let info = {
     /*****************/
     /* Autoscrolling */
@@ -54,7 +25,7 @@ export let createInfo = (state: State): Info => {
     /** ** Horizontal ** **/
     /** Sizes */
     horizontalPage() {
-      return state.canvasSize.width
+      return state.canvasSize.width / state.zoom
     },
     horizontalMove() {
       return Math.floor(info.horizontalPage() / 12)
@@ -62,16 +33,16 @@ export let createInfo = (state: State): Info => {
 
     /** Positions */
     maxLeft() {
-      return Math.floor((state.canvasSize.width - state.topology.width) / 2)
+      return Math.ceil((state.topology.width / state.zoom - state.canvasSize.width) / 2)
     },
     maxRight() {
-      return Math.ceil((state.topology.width - state.canvasSize.width) / 2)
+      return Math.floor((state.canvasSize.width - state.topology.width / state.zoom) / 2)
     },
     center() {
       return 0
     },
     isBigEnough() {
-      return state.canvasSize.width < state.topology.width
+      return state.canvasSize.width > state.topology.width / state.zoom
     },
     /** Position tests */
     pockingLeft() {
@@ -101,7 +72,7 @@ export let createInfo = (state: State): Info => {
     /** ** Vertical ** **/
     /** Sizes */
     verticalPage() {
-      return state.canvasSize.height
+      return state.canvasSize.height / state.zoom
     },
     verticalMove() {
       return Math.floor(info.verticalPage() / 12)
@@ -123,3 +94,5 @@ export let createInfo = (state: State): Info => {
 
   return info
 }
+
+export type Info = ReturnType<typeof createInfo>
