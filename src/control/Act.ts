@@ -122,7 +122,7 @@ export let createAct = (context: Context, info: Info) => {
     halfZoom: action((state) => {
       state.zoom /= 2
       fixZoom(state)
-      fixPosition()
+      fixPosition(state)
     }),
     doubleZoom: action((state) => {
       state.zoom *= 2

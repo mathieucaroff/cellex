@@ -34,6 +34,7 @@ ul {
 }
 
 .bodyDiv {
+  margin-top: 0px;
   margin-left: 16px;
   margin-right: 16px;
   padding-top: 1px;
@@ -47,13 +48,14 @@ ul {
 .title {
   display: inline-block;
   font-size: 2.5em;
+  margin-top: 0px;
   margin-left: 10px;
   margin-bottom: 8px;
 }
 
 .subtitle {
   display: inline-block;
-  margin-top: 8px;
+  margin-top: 0px;
   margin-left: 40px;
   font-style: italic;
   font-size: 20px;
