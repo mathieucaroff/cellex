@@ -1,4 +1,4 @@
-import { Button, Divider, Input, Select } from "antd"
+import { Button, Checkbox, Divider, Input, Select } from "antd"
 import { useContext } from "react"
 
 import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
@@ -12,7 +12,9 @@ const { Option } = Select
 
 export let EngineUI = () => {
   let { context, act } = useContext(ReactContext)
-  let topologyKind = useStateSelection(({ topology: { kind } }) => kind)
+  let [topologyKind, presentationMode] = useStateSelection(
+    ({ topology: { kind }, presentationMode }) => [kind, presentationMode],
+  )
   let topologyIsLoop = topologyKind == "loop"
 
   let div = (
@@ -29,6 +31,17 @@ export let EngineUI = () => {
           <Button onClick={() => act.setRandomMode()}>Random Mode</Button>
         </li>
       </ul>
+      <p>
+        <Checkbox
+          checked={presentationMode === "present"}
+          onChange={(e) => {
+            context.updateState(
+              (state) => (state.presentationMode = e.target.checked ? "present" : "off"),
+            )
+          }}
+        />{" "}
+        Presentation mode
+      </p>
       <Divider />
       <p>Engine</p>
       <ul>
