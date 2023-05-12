@@ -206,8 +206,8 @@ function main() {
     context.updateState((state) => {
       state.presentationMode = "off"
     })
-    body.removeEventListener("click", disablePresentationMode)
-    body.removeEventListener("keydown", disablePresentationMode)
+    body.removeEventListener("click", disablePresentationMode, true)
+    body.removeEventListener("keydown", disablePresentationMode, true)
   }
   body.addEventListener("click", disablePresentationMode, true)
   body.addEventListener("keydown", disablePresentationMode, true)
