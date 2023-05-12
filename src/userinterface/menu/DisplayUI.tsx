@@ -34,23 +34,6 @@ export function DisplayUI() {
         ⟷Canvas width: <OxButton half icon={"/2"} path="canvasSize.width" />
         <OxInputNumber path="canvasSize.width" />
         <OxButton double icon={"x2"} path="canvasSize.width" />
-        <br />
-        <Button
-          onClick={context.action((state) => {
-            state.canvasSize.width = state.topology.width
-          })}
-        >
-          Copy simulation width
-        </Button>
-        <Button
-          onClick={context.action((state) => {
-            state.topology.width = state.canvasSize.width
-            act.fixPosition(state)
-            state.redraw = true
-          })}
-        >
-          Write width to simulation
-        </Button>
       </li>
       <li>
         ⭥Canvas height: <OxButton half icon={"/2"} path="canvasSize.height" />
