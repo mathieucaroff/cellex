@@ -5,7 +5,7 @@ import { ReactContext } from "../../state/ReactContext"
 import { OxButton, OxInputNumber } from "../component"
 
 export function DisplayUI() {
-  let { act, context } = useContext(ReactContext)
+  let { act } = useContext(ReactContext)
 
   return (
     <ul>

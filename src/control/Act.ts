@@ -168,12 +168,15 @@ export let createAct = (context: Context, info: Info) => {
     /** Goto */
     gotoMaxLeft: posAction((position) => {
       position.posS = info.maxLeft()
+      fixPosition(position)
     }),
     gotoCenter: posAction((position) => {
       position.posS = info.center()
+      fixPosition(position)
     }),
     gotoMaxRight: posAction((position) => {
       position.posS = info.maxRight()
+      fixPosition(position)
     }),
 
     /** Relative move */
