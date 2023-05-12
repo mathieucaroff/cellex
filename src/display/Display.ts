@@ -9,10 +9,13 @@ export let parseColorMap = (colorString) => colorString.split(";").map((h) => he
 
 export let createDisplay = (canvas: HTMLCanvasElement) => {
   let ctx = canvas.getContext("2d")!
+  ctx.imageSmoothingEnabled = false
   // the precanvas is used for the non-zoomed-up rendering, after which its
   // content is then scaled up and written to the visible canvas
   let preCanvas = document.createElement("canvas")
   let preCtx = preCanvas.getContext("2d")!
+  preCtx.imageSmoothingEnabled = false
+
   let engine: Engine
 
   let lastX = 0
@@ -77,7 +80,6 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
    * preDraw -- draw to the precanvas
    */
   const scaleUpDraw = (fx: number, fy: number, zoomX: number, zoomY: number) => {
-    ctx.imageSmoothingEnabled = false
     ctx.drawImage(
       preCanvas,
       -fx * zoomX,
