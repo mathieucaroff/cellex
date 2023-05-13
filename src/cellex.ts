@@ -218,6 +218,21 @@ function main() {
   body.addEventListener("click", disablePresentationMode, true)
   body.addEventListener("keydown", disablePresentationMode, true)
   // \/ presentation mode
+
+  // prevent shortcuts from interfering with typing in text inputs or textareas
+  document.documentElement.addEventListener(
+    "keydown",
+    (ev) => {
+      if (
+        ev.target &&
+        (ev.target instanceof HTMLTextAreaElement ||
+          (ev.target instanceof HTMLInputElement && (!ev.target.type || ev.target.type === "text")))
+      ) {
+        ev.stopPropagation()
+      }
+    },
+    true,
+  )
 }
 
 main()
