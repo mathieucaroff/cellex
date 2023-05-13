@@ -62,7 +62,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onSymbol("End", act.pageRight, "[end]", "move camera right one page*")
   onSymbol("PageUp", act.pageUp, "[page up]", "move camera up one page")
   onSymbol("PageDown", act.pageDown, "[page down]", "move camera down one page")
-  onSymbol("Backspace", act.gotoTop, "[backspace]", "go back to the top")
+  onSymbol("Backspace", act.backspace, "[backspace]", "erease the current rule")
 
   onSymbol("[", act.halfSpeed, "[", "half the speed")
   onSymbol("]", act.doubleSpeed, "]", "double the speed")
@@ -80,23 +80,36 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   )
 
   onKeypress("Digit1", act.setGenesis("(0)1(0)"), "1", "set the genesis to impulse 010")
-  onKeypress("Digit2", act.setGenesis("(1)(0)"), "2", "set the genesis to step (1)(0)")
   onKeypress("Digit3", act.setGenesis("(0)11(0)"), "3", "set the genesis to impulse 0110")
-  onKeypress("Digit4", act.setGenesis("(0)(1)"), "4", "set the genesis to step (0)(1)")
   onKeypress("Digit5", act.setGenesis("(0)101(0)"), "5", "set the genesis to impulse 01010")
-
-  description = "set the genesis to random with 90% of 0 and 10% of 1"
-  onKeypress("Digit6", act.setGenesis("([0{9}1])([0{9}1])"), "6", description)
   onKeypress("Digit7", act.setGenesis("(0)111(0)"), "7", "set the genesis to impulse 01110")
 
-  description = "set the genesis to random step from 10% of 1 to 90% of 1"
-  onKeypress("Digit8", act.setGenesis("([0{9}1])([01{9}])"), "8", description)
+  onKeypress(
+    "Digit2",
+    act.setRandomGenesis("(0[01])(0[01])"),
+    "2",
+    "set the genesis to 50% random but only on every other index",
+  )
+  onKeypress(
+    "Digit4",
+    act.setRandomGenesis("(000[01])(000[01])"),
+    "4",
+    "set the genesis to 50% random but only on four indices",
+  )
+  onKeypress(
+    "Digit6",
+    act.setRandomGenesis("(0{5}[01])(0{5}[01])"),
+    "6",
+    "set the genesis to 50% random but only on six indices",
+  )
 
-  description = "set the genesis to random with 10% of 0 and 90% of 1"
-  onKeypress("Digit9", act.setGenesis("([01{9}])([01{9}])"), "9", description)
+  description = "set the genesis to random step from 10% of 1 to 90% of 1"
+  onKeypress("Digit8", act.setRandomGenesis("([0{9}1])([01{9}])"), "8", description)
 
   description = "set the genesis to random with 50% of 0 and 50% of 1"
-  onKeypress("Digit0", act.setGenesis("([01])([01])"), "0", description)
+  onKeypress("Digit9", act.setRandomGenesis("([01])([01])"), "9", description)
+
+  onKeypress("Digit0", act.gotoTop, "0", "go back to the top")
 
   onKeypress("Minus", act.halfZoom, "-", "half the zoom level")
   onKeypress("Equal", act.doubleZoom, "+", "double the zoom level")
