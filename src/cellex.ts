@@ -1,3 +1,4 @@
+import { ConfigProvider, theme as antdTheme } from "antd"
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
 
@@ -73,10 +74,15 @@ function main() {
 
   let reactRoot = ReactDOM.createRoot(span)
   reactRoot.render(
-    React.createElement(ReactContext.Provider, {
-      value: { act, context },
-      children: React.createElement(UserInterface, { helpList, displayDiv }),
-    }),
+    React.createElement(
+      ReactContext.Provider,
+      { value: { act, context } },
+      React.createElement(
+        ConfigProvider,
+        { theme: { algorithm: [antdTheme.darkAlgorithm] } },
+        React.createElement(UserInterface, { helpList, displayDiv }),
+      ),
+    ),
   )
 
   // /\ display

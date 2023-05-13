@@ -1,5 +1,5 @@
 import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Space } from "antd"
+import { Button, Collapse, ConfigProvider, Space, theme as antdTheme } from "antd"
 import { useContext } from "react"
 
 import { ruleName } from "../engine/rule"
@@ -32,7 +32,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
   }
 
   return (
-    <>
+    <ConfigProvider theme={{ algorithm: [antdTheme.darkAlgorithm] }}>
       <div>
         <h1 className="title" title="Cellex">
           Cellex
@@ -68,6 +68,6 @@ export let UserInterface = (prop: UserInterfaceProp) => {
           <Documentation />
         </Panel>
       </Collapse>
-    </>
+    </ConfigProvider>
   )
 }
