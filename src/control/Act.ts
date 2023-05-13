@@ -232,21 +232,23 @@ export let createAct = (context: Context, info: Info) => {
     }),
 
     /** Quick settings */
-    setGenesis: (genesis: string) => {
-      return action((state) => {
+    backspace: action((state) => {
+      act.setPause(state)
+      act.gotoTop(state)
+      document.querySelector<HTMLInputElement>("#ruleInput")!.select()
+    }),
+    setGenesis: (genesis: string) =>
+      action((state) => {
         state.topology.kind = "loop"
         state.topology.genesis = parseTopBorder(genesis)
         state.topology.borderLeft = parseSideBorder("(0)")
         state.topology.borderRight = parseSideBorder("(0)")
-      })
-    },
-    setRandomMode: action((state) => {
-      state.topology.kind = "border"
-      state.topology.genesis = parseTopBorder("([0001])([0111])")
-      state.topology.borderLeft = parseSideBorder("([0001])")
-      state.topology.borderRight = parseSideBorder("([0111])")
-      state.seed = randomSeed()
-    }),
+      }),
+    setRandomGenesis: (genesis: string) =>
+      action((state) => {
+        state.topology.genesis = parseTopBorder(genesis)
+        state.seed = randomSeed()
+      }),
     randomizeSeed: action((state) => {
       state.seed = randomSeed()
     }),

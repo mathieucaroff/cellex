@@ -28,7 +28,7 @@ export let EngineUI = () => {
           <Button style={{ marginRight: "10px" }} onClick={() => act.setGenesis("(0)11(0)")()}>
             Impulse Mode 3
           </Button>
-          <Button onClick={() => act.setRandomMode()}>Random Mode</Button>
+          <Button onClick={() => act.setRandomGenesis("([0001])([0111])")()}>Random Mode</Button>
         </li>
       </ul>
       <p>
