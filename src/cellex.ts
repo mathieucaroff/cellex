@@ -49,7 +49,11 @@ function main() {
   // \/ canvas
 
   // /\ control
-  let keyboardBindingReference = keyboardBinding({ act, element: displayDiv })
+  let keyboardBindingReference = keyboardBinding({
+    act,
+    globalElement: document.documentElement,
+    specificElement: displayDiv,
+  })
 
   window.addEventListener("hashchange", () => {
     if (location.hash.length > 1) {
@@ -226,7 +230,9 @@ function main() {
       if (
         ev.target &&
         (ev.target instanceof HTMLTextAreaElement ||
-          (ev.target instanceof HTMLInputElement && (!ev.target.type || ev.target.type === "text")))
+          (ev.target instanceof HTMLInputElement &&
+            (!ev.target.type || ev.target.type === "text") &&
+            ev.key !== "Enter"))
       ) {
         ev.stopPropagation()
       }
