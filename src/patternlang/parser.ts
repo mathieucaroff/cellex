@@ -1,9 +1,9 @@
 import { default as nearley } from "nearley"
 
 import { SideBorder, TopBorder } from "./BorderType"
-import patternGrammar from "./patternLanguage.ne"
-import sideBorderGrammar from "./sideBorderLanguage.ne"
-import topBorderGrammar from "./topBorderLanguage.ne"
+import { default as patternGrammar } from "./patternLanguage.ne"
+import { default as sideBorderGrammar } from "./sideBorderLanguage.ne"
+import { default as topBorderGrammar } from "./topBorderLanguage.ne"
 
 export let createSideBorderParser = () => {
   return new nearley.Parser(sideBorderGrammar)

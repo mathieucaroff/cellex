@@ -7,8 +7,6 @@ const {
     pattern,
     flag,
     group,
-    visible,
-    hidden,
     patternSet,
 } = require('./patternPostprocessor')
 %}

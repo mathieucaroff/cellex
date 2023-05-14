@@ -8,11 +8,13 @@ The following entries all describe rule 110:
 
 - `1d, ns3, 2c, r110`
 - `1d,ns3,2c,r110`
+- `r110`
 - `e110`
 
 They are the compact version of the following entries:
 
 - `1 dimension, neighborhood size 3, 2 colors, rule 110`
+- `rule 110`
 - `elementary 110`
 
 Cellex handles only monodimensional rules, so rule descriptions beginning by `2d` or `3d` will be rejected.
