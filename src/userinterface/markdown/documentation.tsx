@@ -1,11 +1,9 @@
-import fs from "fs"
-import * as React from "react"
-
+import markdownContent from "../../../DOCUMENTATION.md?raw"
 import { md2react } from "../../lib/md2react"
 import { autoHashLinkingTitleSet } from "./autoHashLinkTitleSet"
 import { usePromise } from "./usePromise"
 
-const markdownContent = fs.readFileSync(__dirname + "/../../../DOCUMENTATION.md", "utf-8")
+// const markdownContent = fs.readFileSync(__dirname + "/../../../DOCUMENTATION.md", "utf-8")
 
 let promise = md2react(markdownContent, { ...autoHashLinkingTitleSet })
 
