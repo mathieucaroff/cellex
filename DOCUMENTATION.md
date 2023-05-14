@@ -1,6 +1,6 @@
 # Cellex Documentation
 
-Cellex is a cellular automaton exploration tool. It works with monodimensional automaton only and allows automaton using up to six states, each represented by a color, with a neighboorhood size of three (left cell, self, right cell), though the engine can work with up to sixteen states, or with a neighboorhood of size 11.
+Cellex is a cellular automaton exploration tool. It works with monodimensional automaton only and allows automaton using up to six states, each represented by a color, with a neighborhood size of three (left cell, self, right cell), though the engine can work with up to sixteen states, or with a neighborhood of size 11.
 
 # Content
 
@@ -48,6 +48,7 @@ The view, when selected, also supports the following keyboard actions:
 ## Top Toolbar
 
 The top toolbar is composed of a **play/pause** button, as well as a **rule input widget**
+
 ### Rule Input Widget
 
 The rule input allows to choose an elementary rule between 0 and 255, to be displayed.
@@ -65,7 +66,7 @@ The genesis selector allows to choose what the how the starting state of the aut
   Please note that the random used in the simulator is generated with a seed. This allows the random of the application to be deterministic. It makes the initial state of the application reproducible, given the seed. The seed parameter can be found in the Topology menu.
 
   Next to the seed selector is a dice button. This dice allows to randomly
-generate a new seed, to obtain a new initial state.
+  generate a new seed, to obtain a new initial state.
 
 ## Rule Editor
 
@@ -96,8 +97,8 @@ replaces the empty seed by the single underscore (`_`).
 
 The border top, border left and border right fields have a simple syntax inspired from regexes [(a programming text parsing tool)](https://en.wikipedia.org/wiki/Regular_expression). This syntax uses the following grouping ideas:
 
-- `()` the pair of outermost parenthesis denotes *cycling* of the pattern inside it. The top border must contain exactly two of these outermost pairs. The side borders must contain exactly one.
-- `()` with the exception of the outermost pair, parenthesis represent *grouping*. This allows to repeat a specific pattern a certain number of time. e.g.  is a shortcut for the following pattern
+- `()` the pair of outermost parenthesis denotes _cycling_ of the pattern inside it. The top border must contain exactly two of these outermost pairs. The side borders must contain exactly one.
+- `()` with the exception of the outermost pair, parenthesis represent _grouping_. This allows to repeat a specific pattern a certain number of time. e.g. is a shortcut for the following pattern
 - `[]` square brackets denote randomness, though they can be deterministic if used with a single value
 - `{}` curly braces denote repetition
 

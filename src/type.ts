@@ -19,8 +19,10 @@ export interface Color {
 }
 
 export interface Rule {
-  stateCount: number
+  dimension: number
   neighborhoodSize: number
+  stateCount: number
+  transitionNumber: bigint
   transitionFunction: number[]
 }
 

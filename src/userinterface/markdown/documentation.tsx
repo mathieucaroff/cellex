@@ -1,3 +1,4 @@
+// @ts-ignore
 import markdownContent from "../../../DOCUMENTATION.md?raw"
 import { md2react } from "../../lib/md2react"
 import { autoHashLinkingTitleSet } from "./autoHashLinkTitleSet"

@@ -1,6 +1,6 @@
-# Automaton naming
+# Nomenclature
 
-_Automaton description format_
+_Automaton naming_
 
 ## Examples
 
@@ -22,7 +22,7 @@ Cellex handles only monodimensional rules, so rule descriptions beginning by `2d
 By default, Cellex assumes the following:
 
 - The dimension is one
-- The neighboor size is three
+- The neighbor size is three
 - The number of colors is two
 - The rule number has no default value and must always be specified
 
@@ -36,7 +36,7 @@ Therefore, the following entries are all recognised and also refer to rule 110:
 - `2c,r110`
 - `r110`
 
-Note that the order of the fields is must be preserved.
+Note that the order of the fields must be preserved.
 
 Upon pressing enter, the rule text input will normalize the entry and compact it, removing unecessary parameters and setting all letters to lowercase.
 

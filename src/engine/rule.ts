@@ -27,8 +27,10 @@ export let elementaryRule = (ruleNumberValue: number): Rule => {
   })
 
   return {
+    dimension: 1,
     stateCount: 2,
     neighborhoodSize: 3,
+    transitionNumber: BigInt(ruleNumberValue),
     transitionFunction,
   }
 }
@@ -53,10 +55,26 @@ export let hexaryRule = (transitionNumber?: number | bigint): Rule => {
   return nAryRule(6, transitionNumber)
 }
 
+export function computeTransitionFunction(
+  neighborhoodSize: number,
+  stateCount: number,
+  transitionNumber: bigint,
+) {
+  let colorCount = BigInt(stateCount)
+
+  let transitionFunction = Array.from({ length: stateCount ** neighborhoodSize }, () => {
+    let mod = transitionNumber % colorCount
+    transitionNumber = (transitionNumber - mod) / colorCount
+    return Number(mod)
+  }).reverse()
+
+  return { transitionNumber, transitionFunction }
+}
+
 // randomNAryRule produces a random rule whose state count is given or randomly
 // taken between 2 and 6 inclusive and whose neighborhood size is 3.
 export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint): Rule => {
-  let colorCount
+  let colorCount: bigint
   if (!stateCount) {
     stateCount = 2 + Math.floor(5 * Math.random() * Math.random())
     colorCount = BigInt(stateCount)
@@ -74,30 +92,31 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
   if (transitionNumber !== undefined) {
     // use the provided transitionNumber
     let transition = BigInt(transitionNumber)
-    var transitionFunction = Array.from({ length: stateCount ** 3 }, (_, k) => {
-      let mod = transition % colorCount
-      transition = (transition - mod) / colorCount
-      if (mod > 6) {
-        throw "mod > 6"
-      }
-      return Number(mod)
-    }).reverse()
+    var { transitionFunction } = computeTransitionFunction(3, stateCount, transition)
   } else {
     // use random values
+    let transition = 0n
+    let count = Number(colorCount)
     transitionFunction = Array.from({ length: stateCount ** 3 }, (_, k) => {
-      return Math.floor(Number(colorCount) * Math.random())
+      let random = Math.floor(count * Math.random())
+      transition *= colorCount
+      transition += BigInt(random)
+      return random
     })
+    transitionNumber = transition
   }
 
   return {
+    dimension: 1,
     stateCount: Number(colorCount),
     neighborhoodSize: 3,
+    transitionNumber: BigInt(transitionNumber),
     transitionFunction,
   }
 }
 
 // thousandSplit add billion markers (__) and thousand markers (_)
-let thousandSplit = (integer: string) => {
+export let thousandSplit = (integer: string) => {
   let reverse = integer.split("").reverse().join("")
   reverse = reverse.replace(/([0-9]{9})/g, "$1_")
   reverse = reverse.replace(/([0-9]{3})/g, "$1_")
