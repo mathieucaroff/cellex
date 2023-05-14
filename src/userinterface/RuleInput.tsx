@@ -1,4 +1,4 @@
-import { Input } from "antd"
+import { Space } from "antd"
 import { useContext } from "react"
 
 import { nAryRule, parseRule, ruleName } from "../engine/rule"
@@ -12,7 +12,7 @@ export let RuleInput = () => {
   let rule = useStateSelection(({ rule }) => rule)
 
   return (
-    <Input.Group compact>
+    <Space.Compact>
       <RuleCascader />
       <OxEnterInput
         path="rule"
@@ -27,6 +27,6 @@ export let RuleInput = () => {
         randomElementTitle2={`Random rule (with up to six distinct states)`}
         extraOnPressEnter={act.focus("displayDiv")}
       />
-    </Input.Group>
+    </Space.Compact>
   )
 }

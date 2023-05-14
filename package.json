@@ -1,48 +1,48 @@
 {
-    "name": "cellex",
-    "version": "0.1.0",
-    "description": "Unidimensional cellular automaton explorer to highlight their unique properties",
-    "repository": "https://github.com/mathieucaroff/cellex",
-    "author": "Mathieu CAROFF <mathieu.caroff@free.fr>",
-    "license": "JAM",
-    "type": "module",
-    "packageManager": "yarn@3.5.1",
-    "scripts": {
-        "check": "tsc --noEmit",
-        "checkwatch": "tsc --noEmit --watch",
-        "build": "parcel build src/index.html",
-        "mcabuild": "parcel build src/index.html --public-url cellex.d",
-        "dev": "parcel src/index.html"
-    },
-    "devDependencies": {
-        "@trivago/prettier-plugin-sort-imports": "^4.1.1",
-        "@types/nearley": "^2.11.1",
-        "@types/node": "^13.1.1",
-        "@types/react": "^18.0.2",
-        "@types/react-dom": "^18.0.2",
-        "prettier": "^2.0.5",
-        "ts-node": "^10.5.0",
-        "typescript": "^5.0.4"
-    },
-    "dependencies": {
-        "@ant-design/icons": "^4.7.0",
-        "antd": "^5.4.7",
-        "font-awesome": "^4.7.0",
-        "js-xxhash": "^1.0.4",
-        "nearley": "^2.19.1",
-        "parcel": "^2.3.2",
-        "parcel-transformer-nearley": "^1.0.4",
-        "react": "^18.2.0",
-        "react-color": "^2.19.3",
-        "react-dom": "^18.0.2",
-        "rehype-react": "^4.0.1",
-        "remark-parse": "^7.0.2",
-        "remark-rehype": "^5.0.0",
-        "unified": "^8.4.2"
-    },
-    "alias": {
-        "process": {
-            "global": "process"
-        }
+  "name": "cellex",
+  "version": "0.1.0",
+  "description": "Unidimensional cellular automaton explorer to highlight their unique properties",
+  "repository": "https://github.com/mathieucaroff/cellex",
+  "author": "Mathieu CAROFF <mathieu.caroff@free.fr>",
+  "license": "JAM",
+  "type": "module",
+  "packageManager": "yarn@3.5.1",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "checkwatch": "tsc --noEmit --watch",
+    "build": "parcel build src/index.html",
+    "mcabuild": "parcel build src/index.html --public-url cellex.d",
+    "dev": "parcel src/index.html"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/nearley": "^2.11.1",
+    "@types/node": "^13.1.1",
+    "@types/react": "^18.0.2",
+    "@types/react-dom": "^18.0.2",
+    "prettier": "^2.0.5",
+    "ts-node": "^10.5.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "antd": "^5.4.7",
+    "font-awesome": "^4.7.0",
+    "js-xxhash": "^1.0.4",
+    "nearley": "^2.19.1",
+    "parcel": "^2.8.3",
+    "parcel-transformer-nearley": "^1.0.4",
+    "react": "^18.2.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^18.0.2",
+    "rehype-react": "^4.0.1",
+    "remark-parse": "^7.0.2",
+    "remark-rehype": "^5.0.0",
+    "unified": "^8.4.2"
+  },
+  "alias": {
+    "process": {
+      "global": "process"
     }
+  }
 }

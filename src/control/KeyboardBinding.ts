@@ -4,7 +4,8 @@ import { KeyboardManager, createKeyboardManager } from "./KeyboardManager"
 
 export interface KeyboardBindingProp {
   act: Act
-  element: Element
+  globalElement: Element
+  specificElement: Element
 }
 
 export interface KeyboardBinding extends Remover {
@@ -12,21 +13,21 @@ export interface KeyboardBinding extends Remover {
 }
 
 export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
-  let { act, element } = prop
+  let { act, globalElement, specificElement } = prop
 
   /**
    * keyKb operates on keyboard configured symbol inputs,
    * while codeKb operates on keyboard key positions
    */
   let keyKb = createKeyboardManager({
-    element,
+    element: globalElement,
     evPropName: "key",
     capture: false,
     normalize: (s) => s.toUpperCase(),
   })
-  let codeKb = createKeyboardManager({ element, evPropName: "code", capture: false })
-  let keyKbAnywhere = createKeyboardManager({
-    element: document.documentElement,
+  let codeKb = createKeyboardManager({ element: globalElement, evPropName: "code", capture: false })
+  let specificKeyKb = createKeyboardManager({
+    element: specificElement,
     evPropName: "key",
     capture: false,
     normalize: (s) => s.toUpperCase(),
@@ -35,8 +36,6 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   let removerList = [] as (() => void)[]
 
   let help: [string, string][] = []
-
-  let description = ""
 
   let onKeydownForKb =
     (kb: KeyboardManager) =>
@@ -48,10 +47,10 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
 
   let onSymbol = onKeydownForKb(keyKb)
   let onKeypress = onKeydownForKb(codeKb)
-  let onSymbolAnywhere = onKeydownForKb(keyKbAnywhere)
+  let onSpecificSymbol = onKeydownForKb(specificKeyKb)
 
-  onSymbol(" ", act.togglePlay, "[space]", "toggle play / pause")
-  onSymbol("Enter", act.singleStep, "[enter]", "process one time generation")
+  onSpecificSymbol(" ", act.togglePlay, "[space]", "toggle play / pause")
+  onSpecificSymbol("Enter", act.singleStep, "[enter]", "process one time generation")
 
   onSymbol("ArrowLeft", act.goLeft, "[left]", "move camera left*")
   onSymbol("ArrowRight", act.goRight, "[right]", "move camera right*")
@@ -72,12 +71,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onSymbol("}", act.gotoMaxRight, "}", "move the camera to the right end of the simulation*")
 
   onSymbol("R", act.select("ruleInput"), "R", "select the *R*ule input")
-  onSymbolAnywhere(
-    "C",
-    act.focus("displayDiv"),
-    "C",
-    "select the *C*anvas of the *C*elular automaton",
-  )
+  onSymbol("C", act.focus("displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
 
   onKeypress("Digit1", act.setGenesis("(0)1(0)"), "1", "set the genesis to impulse 010")
   onKeypress("Digit3", act.setGenesis("(0)11(0)"), "3", "set the genesis to impulse 0110")

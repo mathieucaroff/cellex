@@ -32,7 +32,7 @@ export function OxInput(prop: OxInputProp) {
           piece[last] = parse(ev.target.value)
         })
       }}
-    ></Input>
+    />
   )
 }
 
@@ -141,13 +141,13 @@ export function OxEnterInput(prop: OxEnterInputProp) {
           context.updateState((state) => {
             let { piece, last } = readPath(path, state)
             piece[last] = parse(localValue)
-            setValue(present(piece[last]))
-            extraOnPressEnter?.()
           })
+          setValue(present(piece[last]))
+          extraOnPressEnter?.()
         }}
         onBlur={() => setIsFocused(false)}
         onFocus={() => setIsFocused(true)}
-      ></Input>
+      />
       {randomElement}
       {randomElement2}
     </>

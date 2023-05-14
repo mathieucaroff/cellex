@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, Input, Select } from "antd"
+import { Button, Checkbox, Divider, Select, Space } from "antd"
 import { useContext } from "react"
 
 import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
@@ -91,7 +91,7 @@ export let EngineUI = () => {
         </li>
         <li>
           ‴‴Genesis:
-          <Input.Group compact>
+          <Space.Compact>
             <TopBorderSelect />
             <OxEnterInput
               path="topology.genesis"
@@ -99,11 +99,11 @@ export let EngineUI = () => {
               present={presentTopBorder}
               parse={parseTopBorder}
             />
-          </Input.Group>
+          </Space.Compact>
         </li>
         <li>
           |⧘… Side Border Left:
-          <Input.Group compact>
+          <Space.Compact>
             <SideBorderCascader side="borderLeft" disabled={topologyIsLoop} />
             <OxEnterInput
               path="topology.borderLeft"
@@ -112,11 +112,11 @@ export let EngineUI = () => {
               present={presentSideBorder}
               parse={parseSideBorder}
             />
-          </Input.Group>
+          </Space.Compact>
         </li>
         <li>
           …⧙| Side Border Right:
-          <Input.Group compact>
+          <Space.Compact>
             <SideBorderCascader side="borderRight" disabled={topologyIsLoop} />
             <OxEnterInput
               disabled={topologyIsLoop}
@@ -125,7 +125,7 @@ export let EngineUI = () => {
               present={presentSideBorder}
               parse={parseSideBorder}
             />
-          </Input.Group>
+          </Space.Compact>
         </li>
       </ul>
     </div>
