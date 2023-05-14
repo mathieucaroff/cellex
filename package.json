@@ -12,7 +12,7 @@
     "checkwatch": "tsc --noEmit --watch",
     "build": "vite build",
     "mcabuild": "vite build --base /cellex.d",
-    "dev": "vite"
+    "dev": "vite --port 1111"
   },
   "devDependencies": {
     "@rollup/pluginutils": "^5.0.2",
