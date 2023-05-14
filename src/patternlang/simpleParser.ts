@@ -1,10 +1,7 @@
 import { default as nearley } from "nearley"
 
-// @ts-ignore
 import sideBorderGrammar from "../patternLang.ne"
-// @ts-ignore
 import topBorderGrammar from "../sideBorderLang.ne"
-// @ts-ignore
 import patternGrammar from "../topBorderLang.ne"
 
 export let createSideBorderParser = () => {
