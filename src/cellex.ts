@@ -11,9 +11,10 @@ import { createDisplay } from "./display/Display"
 import { createDiffModeManager } from "./engine/DiffModeManager"
 import { Engine, createAutomatonEngine } from "./engine/Engine"
 import { createRandomMapper } from "./engine/RandomMapper"
-import { interestingElementaryRuleArray, parseRule } from "./engine/rule"
+import { interestingElementaryRuleArray } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
+import { parseNomenclature } from "./nomenclature/nomenclature"
 import { createContext } from "./state/Context"
 import { ReactContext } from "./state/ReactContext"
 import { defaultState } from "./state/state"
@@ -58,7 +59,7 @@ function main() {
   window.addEventListener("hashchange", () => {
     if (location.hash.length > 1) {
       context.updateState((state) => {
-        state.rule = parseRule(location.hash.slice(1))
+        state.rule = parseNomenclature(location.hash.slice(1))
       })
     }
   })
@@ -129,6 +130,8 @@ function main() {
     .for(({ canvasSize }) => {
       canvas.width = canvasSize.width
       canvas.height = canvasSize.height
+      let ctx = canvas.getContext("2d")
+      ;(ctx as any).imageSmoothingEnabled = false
       act.fixPosition()
       drawDisplay(true)
     })
@@ -205,7 +208,7 @@ function main() {
   context.usePosition(({ posT }, { zoom }) => {
     if (state.presentationMode === "present" && posT * zoom >= state.canvasSize.height) {
       context.updateState((state) => {
-        state.rule = parseRule(randomChoice(interestingElementaryRuleArray).toString())
+        state.rule = parseNomenclature(randomChoice(interestingElementaryRuleArray).toString())
         state.redraw = true
         state.posT = 0
       })

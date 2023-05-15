@@ -1,6 +1,6 @@
 import { default as nearley } from "nearley"
 
-import { computeTransitionFunction, thousandSplit } from "../engine/rule"
+import { computeTransitionFunction, computeTransitionNumber, thousandSplit } from "../engine/rule"
 import { Rule } from "../type"
 import nomenclatureGrammar from "./nomenclature.ne"
 
@@ -17,7 +17,14 @@ export function parseNomenclature(descriptor: string): Rule {
     throw new Error("invalid automaton descriptor (no results after parsing)")
   }
 
-  let r: string | Partial<Rule> = parser.results[0]
+  let r:
+    | string
+    | {
+        dimension?: [string]
+        neighborhoodSize?: [string]
+        colors?: [string]
+        transitionString: [string]
+      } = parser.results[0]
 
   // Manage the case where the rule descriptor contains no letter
   if (typeof r === "string") {
@@ -36,29 +43,54 @@ export function parseNomenclature(descriptor: string): Rule {
       dimension: 1,
       neighborhoodSize: 3,
       stateCount,
-      ...computeTransitionFunction(3, stateCount, BigInt(transitionNumber)),
+      transitionFunction: computeTransitionFunction(3, stateCount, BigInt(transitionNumber)),
     }
   }
 
-  // The grammar guarantees that a transition number was specified
-  let transition = BigInt(r.transitionNumber!)
+  // The grammar guarantees that a transition number is specified
+  let transition = BigInt(r.transitionString[0])
 
   let result: Rule = {
-    dimension: 1,
-    neighborhoodSize: 3,
-    stateCount: 2,
-    ...r,
-    ...computeTransitionFunction(r.neighborhoodSize ?? 3, r.stateCount ?? 2, transition),
+    dimension: +(r.dimension?.[0] ?? 1),
+    neighborhoodSize: +(r.neighborhoodSize?.[0] ?? 3),
+    stateCount: +(r.colors?.[0] ?? 2),
+    transitionFunction: [],
   }
+  result.transitionFunction = computeTransitionFunction(
+    result.neighborhoodSize,
+    result.stateCount,
+    transition,
+  )
 
   return result
 }
 
 export function presentNomenclature(rule: Rule) {
-  let tn = thousandSplit(String(rule.transitionNumber))
+  let tn = thousandSplit(String(computeTransitionNumber(rule)))
+  let regular: string[] = []
+  let long: string[] = []
+  if (rule.dimension !== 1) {
+    regular.push(`${rule.dimension}d`)
+    long.push(`${rule.dimension} dimensions`)
+  }
+  if (rule.neighborhoodSize !== 3) {
+    regular.push(`ns${rule.neighborhoodSize}`)
+    long.push(`neighborhood size ${rule.neighborhoodSize}`)
+  }
+  if (rule.stateCount !== 2) {
+    regular.push(`${rule.stateCount}c`)
+    long.push(`${rule.stateCount} colors`)
+  }
+  if (regular.length === 0) {
+    regular.push(`e${tn}`)
+    long.push(`elementary ${tn}`)
+  } else {
+    regular.push(`r${tn}`)
+    long.push(`rule ${tn}`)
+  }
   return {
-    descriptor: `ns${rule.neighborhoodSize},${rule.stateCount}c,r${tn}`,
-    longDescriptor: `neighborhood size ${rule.neighborhoodSize}, ${rule.stateCount} colors, rule ${tn}`,
+    descriptor: regular.join(","),
+    longDescriptor: long.join(", "),
   }
 }
 

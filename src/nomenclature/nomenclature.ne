@@ -10,7 +10,7 @@ let compose =
     return res
   }
 
-let readRule = compose(third, (x) => x.join('').replace('_', ''))
+let readRule = compose(third, (x) => x.join('').replace(/_/g, ''))
 %}
 
 
@@ -18,10 +18,10 @@ main -> _ (a | b) _ {% ([_, [x]]) => x%}
 a -> [0-9]:+ {% ([x]) => +x.join('') %}
 b -> _ (dimension:? neighborhood_size:? colors:? rule) _ {%
   ([_, [dimension, neighborhoodSize, colors, rule]]) => ({
-	  dimension: dimension,
-	  neighborhoodSize: neighborhoodSize,
-	  colors: colors,
-	  transitionRule: rule,
+	  dimension,
+	  neighborhoodSize,
+	  colors,
+	  transitionString: rule,
   })
 %}
 

@@ -1,4 +1,4 @@
-import { Button, Input, InputNumber, Select } from "antd"
+import { Button, Input, InputNumber, Select, Space } from "antd"
 import Checkbox from "antd/lib/checkbox/Checkbox"
 import { CSSProperties, useContext, useEffect, useState } from "react"
 
@@ -113,7 +113,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
   ) : null
 
   return (
-    <>
+    <Space.Compact>
       <Input
         id={id}
         style={style}
@@ -150,7 +150,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
       />
       {randomElement}
       {randomElement2}
-    </>
+    </Space.Compact>
   )
 }
 

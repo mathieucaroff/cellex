@@ -22,7 +22,6 @@ export interface Rule {
   dimension: number
   neighborhoodSize: number
   stateCount: number
-  transitionNumber: bigint
   transitionFunction: number[]
 }
 
