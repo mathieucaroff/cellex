@@ -1,4 +1,5 @@
-import { colorComplement, leftRightSymmetric, ruleName } from "../engine/rule"
+import { colorComplement, leftRightSymmetric } from "../engine/rule"
+import { presentNomenclature } from "../nomenclature/nomenclature"
 import { Rule } from "../type"
 import { useStateSelection } from "./hooks"
 
@@ -37,7 +38,7 @@ export let getRuleInformation = (rule: Rule): Info | undefined => {
   ]
 
   for (let k = 0; k < alternativeArray.length; k++) {
-    let name = ruleName(alternativeArray[k])
+    let name = presentNomenclature(alternativeArray[k]).descriptor
     let information = informationSet[name]
     if (information) {
       return {
@@ -52,7 +53,7 @@ export let getRuleInformation = (rule: Rule): Info | undefined => {
 
 export let RuleInfo = () => {
   let rule = useStateSelection(({ rule }) => rule)
-  let name = ruleName(rule)
+  let name = presentNomenclature(rule).longDescriptor
   let info = getRuleInformation(rule)!
   if (!info) {
     return <span></span>

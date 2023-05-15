@@ -2,7 +2,7 @@ import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
 import { Button, Collapse, ConfigProvider, Space, theme as antdTheme } from "antd"
 import { useContext } from "react"
 
-import { ruleName } from "../engine/rule"
+import { presentNomenclature } from "../nomenclature/nomenclature"
 import { ReactContext } from "../state/ReactContext"
 import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
@@ -26,7 +26,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
     play,
   }))
 
-  let collapseProp = {}
+  let collapseProp: any = {}
   if (window.location.hash) {
     collapseProp["defaultActiveKey"] = 3
   }
@@ -61,7 +61,11 @@ export let UserInterface = (prop: UserInterfaceProp) => {
       </Space>
 
       <Collapse accordion {...collapseProp}>
-        <Panel className="ruleEditor" header={`Rule Editor (${ruleName(rule)})`} key={1}>
+        <Panel
+          className="ruleEditor"
+          header={`Rule Editor (${presentNomenclature(rule).longDescriptor})`}
+          key={1}
+        >
           <RuleEditor />
         </Panel>
         <Panel header={`Documentation`} key={3}>

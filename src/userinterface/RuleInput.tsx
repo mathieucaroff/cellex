@@ -1,8 +1,10 @@
 import { Space } from "antd"
 import { useContext } from "react"
 
-import { nAryRule, parseRule, ruleName } from "../engine/rule"
+import { nAryRule } from "../engine/rule"
+import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
 import { ReactContext } from "../state/ReactContext"
+import { Rule } from "../type"
 import { RuleCascader } from "./RuleCascader"
 import { OxEnterInput } from "./component"
 import { useStateSelection } from "./hooks"
@@ -19,8 +21,8 @@ export let RuleInput = () => {
         id="ruleInput"
         title="set rule"
         style={{ width: "initial" }}
-        present={ruleName}
-        parse={parseRule}
+        present={(rule: Rule) => presentNomenclature(rule).descriptor}
+        parse={parseNomenclature}
         randomizer={() => nAryRule(rule.stateCount)}
         randomizer2={nAryRule}
         randomElementTitle={`Random ${rule.stateCount}-state rule`}

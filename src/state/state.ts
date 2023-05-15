@@ -1,4 +1,5 @@
-import { nAryRule, parseRule } from "../engine/rule"
+import { nAryRule } from "../engine/rule"
+import { parseNomenclature } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../type"
 
@@ -37,7 +38,7 @@ export let defaultState = (): State => {
   }
 
   return {
-    rule: getOr("rule", parseRule, nAryRule),
+    rule: getOr("rule", parseNomenclature, nAryRule),
 
     speed: 1,
     posS: 0,

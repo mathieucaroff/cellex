@@ -30,7 +30,6 @@ export let elementaryRule = (ruleNumberValue: number): Rule => {
     dimension: 1,
     stateCount: 2,
     neighborhoodSize: 3,
-    transitionNumber: BigInt(ruleNumberValue),
     transitionFunction,
   }
 }
@@ -55,22 +54,6 @@ export let hexaryRule = (transitionNumber?: number | bigint): Rule => {
   return nAryRule(6, transitionNumber)
 }
 
-export function computeTransitionFunction(
-  neighborhoodSize: number,
-  stateCount: number,
-  transitionNumber: bigint,
-) {
-  let colorCount = BigInt(stateCount)
-
-  let transitionFunction = Array.from({ length: stateCount ** neighborhoodSize }, () => {
-    let mod = transitionNumber % colorCount
-    transitionNumber = (transitionNumber - mod) / colorCount
-    return Number(mod)
-  }).reverse()
-
-  return { transitionNumber, transitionFunction }
-}
-
 // randomNAryRule produces a random rule whose state count is given or randomly
 // taken between 2 and 6 inclusive and whose neighborhood size is 3.
 export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint): Rule => {
@@ -92,12 +75,12 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
   if (transitionNumber !== undefined) {
     // use the provided transitionNumber
     let transition = BigInt(transitionNumber)
-    var { transitionFunction } = computeTransitionFunction(3, stateCount, transition)
+    var transitionFunction = computeTransitionFunction(3, stateCount, transition)
   } else {
     // use random values
     let transition = 0n
     let count = Number(colorCount)
-    transitionFunction = Array.from({ length: stateCount ** 3 }, (_, k) => {
+    transitionFunction = Array.from({ length: stateCount ** 3 }, () => {
       let random = Math.floor(count * Math.random())
       transition *= colorCount
       transition += BigInt(random)
@@ -110,7 +93,6 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
     dimension: 1,
     stateCount: Number(colorCount),
     neighborhoodSize: 3,
-    transitionNumber: BigInt(transitionNumber),
     transitionFunction,
   }
 }
@@ -124,7 +106,23 @@ export let thousandSplit = (integer: string) => {
   return reverse.split("").reverse().join("")
 }
 
-export let ruleNumber = (rule: Rule): BigInt => {
+export function computeTransitionFunction(
+  neighborhoodSize: number,
+  stateCount: number,
+  transitionNumber: bigint,
+) {
+  let colorCount = BigInt(stateCount)
+
+  let transitionFunction = Array.from({ length: stateCount ** neighborhoodSize }, () => {
+    let mod = transitionNumber % colorCount
+    transitionNumber = (transitionNumber - mod) / colorCount
+    return Number(mod)
+  }).reverse()
+
+  return transitionFunction
+}
+
+export let computeTransitionNumber = (rule: Rule): BigInt => {
   let value = 0n // bigint
   let stateCount = BigInt(rule.stateCount)
   rule.transitionFunction.forEach((v) => {
@@ -133,42 +131,6 @@ export let ruleNumber = (rule: Rule): BigInt => {
   })
   value /= stateCount
   return value
-}
-
-// ruleName gives a unique string name to a rule
-export let ruleName = (rule: Rule): string => {
-  if (rule.stateCount > 6) {
-    throw "rule naming is limited to 6 states"
-  }
-  if (rule.neighborhoodSize != 3) {
-    throw "rule naming is limited to neighborhood of size 3"
-  }
-  let letter = "__btqph"[rule.stateCount]
-  let value = ruleNumber(rule)
-  return `${letter}${thousandSplit("" + value)}`
-}
-
-export let parseRule = (input: string): Rule => {
-  if (input.match(/^[btqph][_0-9]+$/)) {
-    let value = input.replace(/_/g, "")
-    return nAryRule("__btqph".indexOf(value[0]), BigInt(value.slice(1)))
-  } else if (input.match(/^[0-9]+$/)) {
-    return nAryRule(2, BigInt(input))
-  } else if (input.match(/^[btqph]r(a(n(d(om?)?)?)?)?/)) {
-    if (input.slice(1) === "random") {
-      return nAryRule("__btqph".indexOf(input[0]))
-    } else {
-      return nAryRule(2, 0)
-    }
-  } else if (input.match(/^$|^r(a(n(d(om?)?)?)?)?$/)) {
-    if (input === "random") {
-      return nAryRule()
-    } else {
-      return nAryRule(2, 0)
-    }
-  } else {
-    throw "unrecognized input"
-  }
 }
 
 // leftRightSymmetric of the given rule
@@ -206,9 +168,9 @@ let generateRuleSet = () => {
     let rule = elementaryRule(value)
 
     let complementRule = colorComplement(rule)
-    let complement = Number(ruleNumber(complementRule))
-    let symmetric = Number(ruleNumber(leftRightSymmetric(rule)))
-    let both = Number(ruleNumber(leftRightSymmetric(complementRule)))
+    let complement = Number(computeTransitionNumber(complementRule))
+    let symmetric = Number(computeTransitionNumber(leftRightSymmetric(rule)))
+    let both = Number(computeTransitionNumber(leftRightSymmetric(complementRule)))
 
     if (value === symmetric && value === complement) {
       ruleGroup.both.push(value)

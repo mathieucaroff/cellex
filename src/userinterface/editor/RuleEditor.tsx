@@ -1,7 +1,8 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 
-import { colorComplement, leftRightSymmetric, ruleName } from "../../engine/rule"
+import { colorComplement, leftRightSymmetric } from "../../engine/rule"
+import { presentNomenclature } from "../../nomenclature/nomenclature"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
@@ -72,17 +73,18 @@ export let RuleEditor = () => {
     return [position, ""]
   }
 
-  let changeColor = (delta, exact) => (ev: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
-    ev.preventDefault()
-    let { stateCount, transitionFunction } = rule
-    let [position, error] = getPosition(ev, exact)
-    if (error) {
-      return
+  let changeColor =
+    (delta: number, exact: boolean) => (ev: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+      ev.preventDefault()
+      let { stateCount, transitionFunction } = rule
+      let [position, error] = getPosition(ev, exact)
+      if (error) {
+        return
+      }
+      context.updateState(() => {
+        transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
+      })
     }
-    context.updateState(() => {
-      transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
-    })
-  }
 
   let complement = colorComplement(rule)
   let symmetric = leftRightSymmetric(rule)
@@ -167,7 +169,7 @@ export let RuleEditor = () => {
             })
           }}
         >
-          Switch to color complement: {ruleName(complement)}
+          Switch to color complement: {presentNomenclature(complement).descriptor}
         </Button>
         <Button
           disabled={deepEqual(rule.transitionFunction, symmetric.transitionFunction)}
@@ -177,7 +179,7 @@ export let RuleEditor = () => {
             })
           }}
         >
-          Switch to left-right symmetric: {ruleName(symmetric)}
+          Switch to left-right symmetric: {presentNomenclature(symmetric).descriptor}
         </Button>
         <Button
           disabled={deepEqual(rule.transitionFunction, both.transitionFunction)}
@@ -187,7 +189,7 @@ export let RuleEditor = () => {
             })
           }}
         >
-          Switch both: {ruleName(both)}
+          Switch both: {presentNomenclature(both).descriptor}
         </Button>
       </div>
       <canvas
