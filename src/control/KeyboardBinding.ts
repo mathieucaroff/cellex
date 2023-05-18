@@ -21,16 +21,24 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
    */
   let keyKb = createKeyboardManager({
     element: globalElement,
-    evPropName: "key",
+    evKeyPropName: "key",
     capture: false,
     normalize: (s) => s.toUpperCase(),
+    ignoreEvent: (ev) => ev.ctrlKey,
   })
-  let codeKb = createKeyboardManager({ element: globalElement, evPropName: "code", capture: false })
+  let codeKb = createKeyboardManager({
+    element: globalElement,
+    evKeyPropName: "code",
+    capture: false,
+    normalize: (s) => s,
+    ignoreEvent: () => false,
+  })
   let specificKeyKb = createKeyboardManager({
     element: specificElement,
-    evPropName: "key",
+    evKeyPropName: "key",
     capture: false,
     normalize: (s) => s.toUpperCase(),
+    ignoreEvent: () => false,
   })
 
   let removerList = [] as (() => void)[]
@@ -61,7 +69,14 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onSymbol("End", act.pageRight, "[end]", "move camera right one page*")
   onSymbol("PageUp", act.pageUp, "[page up]", "move camera up one page")
   onSymbol("PageDown", act.pageDown, "[page down]", "move camera down one page")
-  onSymbol("Backspace", act.backspace, "[backspace]", "erease the current rule")
+  onSymbol(
+    "Backspace",
+    act.backspace,
+    "[backspace]",
+    "go back to the top and select the rule input box",
+  )
+
+  onKeypress("Digit0", act.gotoTop, "0", "go back to the top")
 
   onSymbol("[", act.halfSpeed, "[", "half the speed")
   onSymbol("]", act.doubleSpeed, "]", "double the speed")
@@ -108,8 +123,6 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     "6",
     "set the genesis to 50% random but only on six indices",
   )
-
-  onKeypress("Digit0", act.gotoTop, "0", "go back to the top")
 
   onKeypress("Minus", act.halfZoom, "-", "half the zoom level")
   onKeypress("Equal", act.doubleZoom, "+", "double the zoom level")
