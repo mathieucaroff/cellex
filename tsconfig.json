@@ -16,7 +16,7 @@
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false, // set to false because VSCode already greys down unused variables
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
