@@ -2,9 +2,14 @@ import { Remover } from "../type"
 
 export interface KeyboardManagerProp {
   element: Element
-  evPropName: keyof KeyboardEvent
+  evKeyPropName: keyof KeyboardEvent
   capture: boolean
-  normalize?: (key: string) => string
+  /** Whether the event should be ignored */
+  ignoreEvent: (ev: KeyboardEvent) => boolean
+  /** Normalize the key before it is used to lookup the handler. It is usually
+   * used to perform .toLowerCase() or .toUpperCase()
+   */
+  normalize: (key: string) => string
 }
 
 export interface KeyboardManager {
@@ -13,15 +18,18 @@ export interface KeyboardManager {
 }
 
 export let createKeyboardManager = (prop: KeyboardManagerProp) => {
-  let { element, evPropName, capture, normalize = (key) => key } = prop
+  let { element, evKeyPropName, capture, normalize, ignoreEvent } = prop
 
   type EventMap = Record<string, (() => void) | undefined>
   let onKeydownMap: EventMap = {}
   let onKeyupMap: EventMap = {}
 
-  let eventHandler = (closureName: string, onEventMap: EventMap) => (ev) => {
-    let key = "" + ev[evPropName]
-    key = normalize(key)
+  let eventHandler = (closureName: string, onEventMap: EventMap) => (evt: Event) => {
+    let ev = evt as KeyboardEvent
+    if (ignoreEvent(ev)) {
+      return
+    }
+    let key = normalize(String(ev[evKeyPropName]))
     let handler = onEventMap[key]
     if (handler !== undefined) {
       handler()
@@ -55,7 +63,7 @@ export let createKeyboardManager = (prop: KeyboardManagerProp) => {
       }
     },
 
-    onBoth: (prop) => {
+    onBoth: (prop: { key: string; keydown: () => void; keyup: () => void }) => {
       let { key, keydown, keyup } = prop
       if (onKeydownMap[key] !== undefined) {
         throw new Error(`keyboard event ${key}(down) assigned twice`)
