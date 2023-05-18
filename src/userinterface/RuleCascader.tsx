@@ -11,13 +11,13 @@ let labelValue = (s: string) => ({ label: s, value: s })
 let entryFrom = (label: string, ruleArray: number[]) => ({
   label,
   value: label,
-  children: ruleArray.map((rule) => labelValue("b" + rule)),
+  children: ruleArray.map((rule) => labelValue("e" + rule)),
 })
 let multiEntryFrom = (label: string, deepRuleArray: number[][]) => ({
   ...labelValue(label),
   children: deepRuleArray.map((ruleArray) => ({
     ...labelValue("" + ruleArray[0]),
-    children: ruleArray.map((rule) => labelValue("b" + rule)),
+    children: ruleArray.map((rule) => labelValue("e" + rule)),
   })),
 })
 
@@ -25,7 +25,7 @@ let cascaderOptionSet: DefaultOptionType[] = Object.entries(interestingElementar
   ([name, valueArray]) => {
     return {
       ...labelValue(name),
-      children: valueArray.map((v) => labelValue("b" + v)),
+      children: valueArray.map((v) => labelValue("e" + v)),
     }
   },
 )
@@ -80,7 +80,7 @@ export let RuleCascader = () => {
         {...{ title: "Interesting elementary rules" }}
         value={[]}
         style={{ maxWidth: "34px" }}
-        options={"b30 b54 b60 b73 b90 b105 b106 b110 b150 b184".split(" ").map(labelValue)}
+        options={"e30 e54 e60 e73 e90 e105 e106 e110 e150 e184".split(" ").map(labelValue)}
         onChange={(array) => {
           if (!array) {
             return
