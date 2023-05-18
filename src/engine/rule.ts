@@ -137,9 +137,11 @@ export let computeTransitionNumber = (rule: Rule): BigInt => {
 export let leftRightSymmetric = (rule: Rule): Rule => {
   return {
     ...rule,
-    transitionFunction: rule.transitionFunction.map((_, k) => {
+    transitionFunction: Array.from({ length: rule.transitionFunction.length }, (_, k) => {
       let text = k.toString(rule.stateCount).padStart(rule.neighborhoodSize, "0")
-      return rule.transitionFunction[parseInt(text.split("").reverse().join(""), rule.stateCount)]
+      let reversedText = text.split("").reverse().join("")
+      let m = Number.parseInt(reversedText, rule.stateCount)
+      return rule.transitionFunction[m]
     }),
   }
 }

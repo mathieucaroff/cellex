@@ -4,31 +4,30 @@ export interface HelpContentProp {
 
 export let HelpContent = (prop: HelpContentProp) => {
   let { helpList } = prop
-  let ul = (
-    <ul>
-      {helpList.map((row, k) => {
-        let [key, description] = row
-        return (
-          <li key={k}>
-            <kbd>{key}</kbd> {description}
-          </li>
-        )
-      })}
-    </ul>
-  )
-  let ul2 = (
-    <ul>
-      <li>b binary (2)</li>
-      <li>t ternary (3)</li>
-      <li>q quad (4)</li>
-      <li>p penta (5)</li>
-      <li>h hexa (6)</li>
-    </ul>
-  )
+  let longShortcutTableContent: React.ReactNode[] = []
+  let shortShortcutTableContent: React.ReactNode[] = []
+  let table = longShortcutTableContent
+
+  helpList.forEach((row, k) => {
+    let [key, description] = row
+    if (key.length === 1) {
+      table = shortShortcutTableContent
+    }
+    table.push(
+      <tr key={k}>
+        <td>
+          <kbd>{key}</kbd>
+        </td>
+        <td>{description}</td>
+      </tr>,
+    )
+  })
+
   return (
     <div style={{ width: "600px" }}>
       <p>While the display is selected, the following shortcuts are available:</p>
-      {ul}
+      <table>{longShortcutTableContent}</table>
+      <table>{shortShortcutTableContent}</table>
       <p>
         [*]moving the camera horizontally is only possible when the simulation is bigger than the
         camera. You can set the camera size (canvas size) in the Display menu, and set the
@@ -38,10 +37,6 @@ export let HelpContent = (prop: HelpContentProp) => {
         At the bottom right corner of each canvas, there is a hidden handle which allows to resize
         the canvas.
       </p>
-      <p>
-        The rules can have from <b>two</b> to <b>six</b> distinct states:
-      </p>
-      {ul2}
     </div>
   )
 }
