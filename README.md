@@ -7,17 +7,21 @@ A monodimensional cellular automaton explorer. Unlike CellexP, it supports
 
 ## Features
 
-Cellex supports panning, moving around with the mouse or the keyboard as well as autoscroll down and varying the autoscroll speed. It also features an adjustable zoomed up view.
+Cellex supports panning, moving around with the mouse or the keyboard as well as autoscroll down and varying the autoscroll speed. It also features an adjustable zoomed up view. It also supports user-based differential propagation view.
 
-The engine supports up to 16 states and a transition function of size 4096 at most. Thus, neighborhood size can go up to 11 when the number of state is 2. Note that the current user interface does not allow to set such automata.
+The engine supports up to 16 states and a transition function of size 4096 at most. Thus, neighborhood size can go up to 11 when the number of state is 2.
 
 ## Other cellular automata explorers
 
 _All the below explorers are limited to elementary automata_
 
 - [Cellexp](https://mathieucaroff.com/cellexp) – Autoscrolling, Speed, Impuse, Zoom, Size, Navigation, Border, Random, Properties, Symmetrics
-- [Celldemo](http://devinacker.github.io/celldemo/) – Autoscrolling, Impuse, Random proportion,
+- [Celldemo](http://devinacker.github.io/celldemo/) – Autoscrolling, Impuse, Random, Start patterns (three),
 - [ECAX](https://www.xanxys.net/ecax/) – Zoom, Navigation, Compute-on-demand
-- [ECA Canvas](http://www.cs.swan.ac.uk/~csandy/research/play/ca/) – Size, Border, Random
-- [ECA EmergentMind](http://www.emergentmind.com/elementary-cellular-automata) - Zoom, Board of 256 rules
+- ~~[ECA Canvas](http://www.cs.swan.ac.uk/~csandy/research/play/ca/) – Size, Border, Random~~ csandy has been removed D:
+- ~~[ECA EmergentMind](http://www.emergentmind.com/elementary-cellular-automata) - Zoom, Board of 256 rules~~ has been removed as well
 - [WolframAlpha](https://www.wolframalpha.com/input/?i=rule+110) – Description (symmetries, properties, classes), Differential propagation examples
+
+## License
+
+See [JAM license](https://opensource.org/license/jam/)
