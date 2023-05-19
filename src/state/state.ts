@@ -1,7 +1,7 @@
 import { nAryRule } from "../engine/rule"
 import { parseNomenclature } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
-import { State } from "../type"
+import { State } from "../stateType"
 
 export let defaultColorMap = () => {
   return [

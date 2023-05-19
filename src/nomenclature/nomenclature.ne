@@ -36,5 +36,5 @@ neighborhood_size -> ("ns" | ("neighborhood" _ "size")) _ [0-9]:+ _ "," _ {% ([_
 colors -> [0-9]:+ _ ("c" | "colors") _ "," _ {% first %}
 
 rule -> generic_rule | totalistic_code
-generic_rule -> ("r" | "rule") _ [0-9_]:+ _ {% ([_a, _b, x]) => ruleNumber(x) %}
-totalistic_code -> ("c" | "code") _ [0-9_]:+ _ {% ([_a, _b, x]) => ruleNumber(x) %}
+generic_rule -> ("r" | "rule") _ [0-9_]:+ _ {% ([_a, _b, x]) => ["rule", ruleNumber(x)] %}
+totalistic_code -> ("c" | "code") _ [0-9_]:+ _ {% ([_a, _b, x]) => ["code", ruleNumber(x)] %}

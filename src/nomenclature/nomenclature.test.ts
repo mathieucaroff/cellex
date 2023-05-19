@@ -1,7 +1,7 @@
 import { it } from "vitest"
 
 import { Case, failure, success } from "../lib/languageTestEngine"
-import { Rule } from "../type"
+import { Rule } from "../ruleType"
 import { parseNomenclature } from "./nomenclature"
 
 function elementaryRule(ruleNumber: number): Rule {

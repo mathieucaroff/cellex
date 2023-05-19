@@ -1,6 +1,6 @@
 import { colorComplement, leftRightSymmetric } from "../engine/rule"
 import { presentNomenclature } from "../nomenclature/nomenclature"
-import { Rule } from "../type"
+import { Rule } from "../ruleType"
 import { useStateSelection } from "./hooks"
 
 export const informationSet: Record<string, string> = {

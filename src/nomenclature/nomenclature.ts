@@ -1,7 +1,7 @@
 import { default as nearley } from "nearley"
 
 import { computeTransitionFunction, computeTransitionNumber, thousandSplit } from "../engine/rule"
-import { Rule } from "../type"
+import { Rule } from "../ruleType"
 import nomenclatureGrammar from "./nomenclature.ne"
 
 type NomenclatureOutput =
@@ -13,7 +13,7 @@ type NomenclatureOutput =
         dimension?: [string]
         neighborhoodSize?: [string]
         colors?: [string]
-        transitionString: [string]
+        transitionString: ["rule" | "code", [string]]
       },
     ]
 
@@ -28,7 +28,7 @@ export function parseNomenclature(descriptor: string): Rule {
     throw ne
   }
   if (parser.results.length === 0) {
-    throw new Error("invalid automaton descriptor (no results after parsing)")
+    throw new Error("invalid automaton descriptor (no result after parsing)")
   }
 
   let parserOutput: NomenclatureOutput = parser.results[0]
@@ -76,7 +76,7 @@ export function parseNomenclature(descriptor: string): Rule {
       stateCount: 2,
       transitionFunction: computeTransitionFunction(3, 2, transitionNumber),
     }
-  } else {
+  } else if (parserOutput[1].transitionString[0] === "rule") {
     // The grammar guarantees that a transition number is specified
     transitionNumber = BigInt(parserOutput[1].transitionString[0])
 
@@ -96,10 +96,10 @@ export function parseNomenclature(descriptor: string): Rule {
       throw new Error("the state count must be at least 1")
     }
   }
-
-  // if (transitionNumber >= BigInt(result.stateCount) ** (BigInt(result.stateCount) ** 3n)) {
-  //   throw new Error("the transition number is too big")
+  // else {
+  //   let codeNumber = BigInt(parserOutput[1].transitionString[1][0])
   // }
+
   return result
 }
 

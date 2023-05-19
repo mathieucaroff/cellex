@@ -1,4 +1,4 @@
-import { State } from "../type"
+import { State } from "../stateType"
 
 export let createInfo = (state: State) => {
   let info = {

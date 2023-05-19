@@ -1,6 +1,6 @@
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { Context } from "../state/Context"
-import { State } from "../type"
+import { State } from "../stateType"
 import { clamp } from "../util/clamp"
 import { randomSeed } from "../util/randomSeed"
 import { Info } from "./Info"
