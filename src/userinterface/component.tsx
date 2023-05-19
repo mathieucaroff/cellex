@@ -129,7 +129,9 @@ export function OxEnterInput(prop: OxEnterInputProp) {
           try {
             p = parse(v)
             pv = present(p)
-          } catch {}
+          } catch (e) {
+            console.error(e)
+          }
           if (pv === v) {
             context.updateState((state) => {
               let { piece, last } = readPath(path, state)

@@ -38,7 +38,7 @@ export let fillRuleEditor = (
     let text = (rule.transitionFunction.length - 1 - i).toString(rule.stateCount)
     text = text.padStart(rule.neighborhoodSize, "0")
     text.split("").forEach((c, dp) => {
-      writeColor(image.data, q + 4 * dp, colorMap[parseInt(c, 16)])
+      writeColor(image.data, q + 4 * dp, colorMap[Number.parseInt(c, 16)])
     })
 
     writeColor(image.data, q2, colorMap[rule.transitionFunction[i]])
