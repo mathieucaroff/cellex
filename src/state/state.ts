@@ -53,12 +53,12 @@ export let defaultState = (): State => {
       kind: getOr(
         "topologyKind",
         (x) => x as any,
-        () => "border",
+        () => "loop",
       ),
       width: adaptiveCanvasSize(window).width,
-      genesis: getOr("genesis", parseTopBorder, () => parseTopBorder("([0001])([0111])")),
-      borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("011([01])")),
-      borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("011([01])")),
+      genesis: getOr("genesis", parseTopBorder, () => parseTopBorder("(0)1(0)")),
+      borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("(0)")),
+      borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("(0)")),
     },
     seed: getOr(
       "seed",
