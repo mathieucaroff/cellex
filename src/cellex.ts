@@ -103,8 +103,10 @@ function main() {
   context
     .use(({ rule, seed, topology }) => ({ rule, seed, topology }))
     .for(({ rule, seed, topology }) => {
-      if (rule.stateCount > 7) {
-        console.error(`Cannot procses rule with ${rule.stateCount} states`)
+      if (rule.stateCount > state.colorMap.length) {
+        console.error(
+          `Cannot display rules ${rule.stateCount} states with a palette of only ${state.colorMap.length} colors`,
+        )
         return
       }
 
