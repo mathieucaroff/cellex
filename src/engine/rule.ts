@@ -138,6 +138,13 @@ export let randomGoodRule = (): Rule => {
   return randomRule()
 }
 
+export let randomGoodRuleFromDomain = (domain: Domain): Rule => {
+  if (domain.neighborhoodSize === 3 && domain.stateCount === 2 && Math.random() < 0.8) {
+    return elementaryRule(randomChoice(interestingElementaryRuleArray))
+  }
+  return randomRuleFromDomain(domain)
+}
+
 // thousandSplit add billion markers (__) and thousand markers (_)
 export let thousandSplit = (integer: string) => {
   let reverse = integer.split("").reverse().join("")
