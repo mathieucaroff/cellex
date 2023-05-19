@@ -1,4 +1,4 @@
-import { Domain, Rule } from "../type"
+import { Domain, Rule } from "../ruleType"
 import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
 // prettier-ignore

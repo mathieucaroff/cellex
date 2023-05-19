@@ -1,6 +1,7 @@
+import { DiffMode } from "../diffType"
 import { BorderGroup, SideBorder, StochasticState, TopBorder } from "../patternlang/BorderType"
+import { Rule } from "../ruleType"
 import { TopologyFinite } from "../topologyType"
-import { DiffMode, Rule } from "../type"
 import { mod } from "../util/mod"
 import { PerfectRandom, RandomMapper } from "./RandomMapper"
 

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 
 import { ReactContext } from "../state/ReactContext"
-import { State } from "../type"
+import { State } from "../stateType"
 
 export function useStateSelection<T>(selector: (s: State) => T): T {
   let { context } = useContext(ReactContext)

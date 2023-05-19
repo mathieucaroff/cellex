@@ -1,5 +1,5 @@
+import { Rule } from "../../ruleType"
 import { TopologyFinite } from "../../topologyType"
-import { Rule } from "../../type"
 import { mod } from "../../util/mod"
 import { getTopBorderValue } from "../Engine"
 import { RandomMapper } from "../RandomMapper"
