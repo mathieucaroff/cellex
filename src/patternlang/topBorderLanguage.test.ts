@@ -1,6 +1,13 @@
-import { BorderRootGroup, StochasticState, TopBorder } from "../BorderType"
-import { createTopBorderParser } from "./compileParser"
-import { Case, failure, success, testEngine } from "./lib/languageTestEngine"
+import { default as nearley } from "nearley"
+import { it } from "vitest"
+
+import { Case, failure, success, testEngine } from "../lib/languageTestEngine.ts"
+import { BorderRootGroup, StochasticState, TopBorder } from "./BorderType"
+import topBorderGrammar from "./sideBorderLanguage.ne"
+
+export let createTopBorderParser = () => {
+  return new nearley.Parser(topBorderGrammar)
+}
 
 /**
  * Note how the cumulative map are [1] for 0 and is [0, 1] for 1.
@@ -51,8 +58,4 @@ let borderPatternList: Case<string, TopBorder>[] = [
   failure("1{3}(11(01))"),
 ]
 
-let main = () => {
-  testEngine(borderPatternList, createTopBorderParser)
-}
-
-main()
+testEngine(borderPatternList, createTopBorderParser, it)

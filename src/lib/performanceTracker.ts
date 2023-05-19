@@ -4,7 +4,7 @@ interface TimeObject {
   name?: string
 }
 
-const w = ((window as any).w = window as any)
+const w = ((globalThis as any).w = globalThis as any)
 const timedDataStore: Record<string, TimeObject> = (w.timeStore = {})
 
 /**
@@ -13,7 +13,7 @@ const timedDataStore: Record<string, TimeObject> = (w.timeStore = {})
  * @param f The function being timed
  * @returns
  */
-export let timed = <K extends any>(title, f: () => K): K => {
+export let timed = <K extends any>(title: string, f: () => K): K => {
   let stat = (timedDataStore[title] ??= {
     totalTime: 0,
     count: 0,

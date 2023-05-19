@@ -1,7 +1,7 @@
 import { Space } from "antd"
 import { useContext } from "react"
 
-import { nAryRule } from "../engine/rule"
+import { randomGoodRule, randomRuleFromDomain } from "../engine/rule"
 import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
 import { ReactContext } from "../state/ReactContext"
 import { Rule } from "../type"
@@ -23,8 +23,8 @@ export let RuleInput = () => {
         style={{ width: "initial" }}
         present={(rule: Rule) => presentNomenclature(rule).descriptor}
         parse={parseNomenclature}
-        randomizer={() => nAryRule(rule.stateCount)}
-        randomizer2={nAryRule}
+        randomizer={() => randomRuleFromDomain(rule)}
+        randomizer2={randomGoodRule}
         randomElementTitle={`Random ${rule.stateCount}-state rule`}
         randomElementTitle2={`Random rule (with up to six distinct states)`}
         extraOnPressEnter={act.focus("displayDiv")}

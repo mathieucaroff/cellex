@@ -1,6 +1,13 @@
-import { Pattern, PatternGroup, PatternRootGroup, PatternSet } from "../PatternType"
-import { createPatternParser } from "./compileParser"
-import { Case, testEngine } from "./lib/languageTestEngine"
+import { default as nearley } from "nearley"
+import { it } from "vitest"
+
+import { Case, testEngine } from "../lib/languageTestEngine"
+import { Pattern, PatternElement, PatternGroup, PatternRootGroup, PatternSet } from "./PatternType"
+import patternGrammar from "./topBorderLanguage.ne"
+
+export let createPatternParser = () => {
+  return new nearley.Parser(patternGrammar)
+}
 
 type Qwvc1 = {
   quantity: 1
@@ -49,7 +56,7 @@ let set = (p: number, q = 1): PatternSet => {
 
 let pattern0: PatternRootGroup = { type: "group", content: [zero], ...qwvc1 }
 
-let group = (visib: number, quantity: number, ...content): PatternGroup => {
+let group = (visib: number, quantity: number, ...content: PatternElement[]): PatternGroup => {
   return {
     type: "group",
     content,
@@ -148,8 +155,4 @@ let patternList: Case<string, Pattern>[] = [
   },
 ]
 
-let main = () => {
-  testEngine(patternList, createPatternParser)
-}
-
-main()
+testEngine(patternList, createPatternParser, it)

@@ -103,6 +103,11 @@ function main() {
   context
     .use(({ rule, seed, topology }) => ({ rule, seed, topology }))
     .for(({ rule, seed, topology }) => {
+      if (rule.stateCount > 7) {
+        console.error(`Cannot procses rule with ${rule.stateCount} states`)
+        return
+      }
+
       let randomMapper = createRandomMapper({ seedString: seed })
       engine = createAutomatonEngine(rule, topology, randomMapper)
 

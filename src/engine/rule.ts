@@ -1,5 +1,5 @@
-import { Rule } from "../type"
-import { randomChoice } from "../util/randomChoice"
+import { Domain, Rule } from "../type"
+import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
 // prettier-ignore
 export const interestingElementaryRuleSet = {
@@ -34,36 +34,14 @@ export let elementaryRule = (ruleNumberValue: number): Rule => {
   }
 }
 
-// ternaryRule produces a rule whose state count is 3
-export let ternaryRule = (transitionNumber?: number | bigint): Rule => {
-  return nAryRule(3, transitionNumber)
-}
-
-// quaternaryRule produces a rule whose state count is 4
-export let quaternaryRule = (transitionNumber?: number | bigint): Rule => {
-  return nAryRule(4, transitionNumber)
-}
-
-// pentenaryRule produces a rule whose state count is 5
-export let pentenaryRule = (transitionNumber?: number | bigint): Rule => {
-  return nAryRule(5, transitionNumber)
-}
-
-// hexaryRule produces a rule whose state count is 6
-export let hexaryRule = (transitionNumber?: number | bigint): Rule => {
-  return nAryRule(6, transitionNumber)
-}
-
+// /!\ nAryRule is legacy code
 // randomNAryRule produces a random rule whose state count is given or randomly
 // taken between 2 and 6 inclusive and whose neighborhood size is 3.
 export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint): Rule => {
-  let colorCount: bigint
   if (!stateCount) {
     stateCount = 2 + Math.floor(5 * Math.random() * Math.random())
-    colorCount = BigInt(stateCount)
-  } else {
-    colorCount = BigInt(stateCount)
   }
+  let colorCount = BigInt(stateCount)
 
   if (transitionNumber === undefined && stateCount === 2 && Math.random() < 0.67) {
     let s = interestingElementaryRuleSet
@@ -72,21 +50,12 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
     )
   }
 
+  let transitionFunction: number[]
   if (transitionNumber !== undefined) {
     // use the provided transitionNumber
-    let transition = BigInt(transitionNumber)
-    var transitionFunction = computeTransitionFunction(3, stateCount, transition)
+    transitionFunction = computeTransitionFunction(3, stateCount, BigInt(transitionNumber))
   } else {
-    // use random values
-    let transition = 0n
-    let count = Number(colorCount)
-    transitionFunction = Array.from({ length: stateCount ** 3 }, () => {
-      let random = Math.floor(count * Math.random())
-      transition *= colorCount
-      transition += BigInt(random)
-      return random
-    })
-    transitionNumber = transition
+    transitionFunction = randomTransition({ neighborhoodSize: 3, stateCount }).transitionFunction
   }
 
   return {
@@ -95,6 +64,78 @@ export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint):
     neighborhoodSize: 3,
     transitionFunction,
   }
+}
+
+export let randomDomain = (): Domain => {
+  let [neighborhoodSize, stateCount] = weightedRandomChoice([
+    // weight, [neighborhoodSize, colorCount]
+    [1, [3, 2]], // elementary automaton
+    [1, [5, 2]],
+    [1, [7, 2]],
+    [1, [9, 2]],
+    [1, [11, 2]],
+    // [1, [12, 2]],
+    [1, [3, 3]],
+    [1, [5, 3]],
+    [1, [7, 3]],
+    [1, [3, 4]],
+    [1, [5, 4]],
+    [1, [3, 5]],
+    [1, [5, 5]],
+    [1, [3, 6]],
+    // [1, [3, 7]],
+    // [1, [3, 8]],
+    // [1, [3, 9]],
+    // [1, [3, 10]],
+    // [1, [3, 11]],
+    // [1, [3, 12]],
+    // [1, [3, 13]],
+    // [1, [3, 14]],
+    // [1, [3, 15]],
+    // [1, [3, 16]],
+    // [1, [2, 16]],
+    // ...
+    // [1, [2, 64]],
+  ])
+  return { dimension: 1, neighborhoodSize, stateCount }
+}
+
+export let randomTransition = (domain: Omit<Domain, "dimension">) => {
+  let { neighborhoodSize, stateCount } = domain
+  let count = BigInt(stateCount)
+  let transition = 0n
+  let transitionFunction = Array.from({ length: stateCount ** neighborhoodSize }, () => {
+    let random = Math.floor(stateCount * Math.random())
+    transition *= count
+    transition += BigInt(random)
+    return random
+  })
+  // let transitionNumber = transition
+  return {
+    transitionFunction,
+    transitionNumber: transition,
+  }
+}
+
+export let randomRule = () => {
+  return randomRuleFromDomain(randomDomain())
+}
+
+export let randomRuleFromDomain = (domain: Domain): Rule => {
+  let { neighborhoodSize, stateCount } = domain
+  return {
+    dimension: 1,
+    neighborhoodSize,
+    stateCount,
+    transitionFunction: randomTransition({ neighborhoodSize, stateCount }).transitionFunction,
+  }
+}
+
+export let randomGoodRule = (): Rule => {
+  if (Math.random() < 0.8) {
+    return elementaryRule(randomChoice(interestingElementaryRuleArray))
+  }
+  return randomRule()
 }
 
 // thousandSplit add billion markers (__) and thousand markers (_)
@@ -203,4 +244,4 @@ let generateRuleSet = () => {
 }
 
 export const ruleSet = generateRuleSet()
-;(window as any).ruleSet = ruleSet
+;(globalThis as any).ruleSet = ruleSet

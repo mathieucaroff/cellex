@@ -11,6 +11,10 @@ Cellex supports panning, moving around with the mouse or the keyboard as well as
 
 The engine supports up to 16 states and a transition function of size 4096 at most. Thus, neighborhood size can go up to 11 when the number of state is 2.
 
+## Limits
+
+The current UI limits the number of states to seven because for now the palette is composed of seven colors.
+
 ## Other cellular automata explorers
 
 _All the below explorers are limited to elementary automata_
