@@ -35,6 +35,6 @@ dimension -> [0-9]:+ _ ("d" | "dimension") _ "," _ {% first %}
 neighborhood_size -> ("ns" | ("neighborhood" _ "size")) _ [0-9]:+ _ "," _ {% ([_a, _b, x]) => x.join('') %}
 colors -> [0-9]:+ _ ("c" | "colors") _ "," _ {% first %}
 
-rule -> generic_rule | totalistic_code
+rule -> generic_rule  {% first %} | totalistic_code {% first %}
 generic_rule -> ("r" | "rule") _ [0-9_]:+ _ {% ([_a, _b, x]) => ["rule", ruleNumber(x)] %}
 totalistic_code -> ("c" | "code") _ [0-9_]:+ _ {% ([_a, _b, x]) => ["code", ruleNumber(x)] %}

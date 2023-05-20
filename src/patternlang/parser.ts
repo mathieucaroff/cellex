@@ -73,3 +73,5 @@ export let parseTopBorder = (input: string): TopBorder => {
   }
   return parse(input, "top border", createTopBorderParser(), defaultValue)
 }
+;(globalThis as any).parseTopBorder = parseTopBorder
+;(globalThis as any).parseSideBorder = parseSideBorder
