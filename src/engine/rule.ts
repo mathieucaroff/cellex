@@ -34,38 +34,6 @@ export let elementaryRule = (ruleNumberValue: number): Rule => {
   }
 }
 
-// /!\ nAryRule is legacy code
-// randomNAryRule produces a random rule whose state count is given or randomly
-// taken between 2 and 6 inclusive and whose neighborhood size is 3.
-export let nAryRule = (stateCount?: number, transitionNumber?: number | bigint): Rule => {
-  if (!stateCount) {
-    stateCount = 2 + Math.floor(5 * Math.random() * Math.random())
-  }
-  let colorCount = BigInt(stateCount)
-
-  if (transitionNumber === undefined && stateCount === 2 && Math.random() < 0.67) {
-    let s = interestingElementaryRuleSet
-    transitionNumber = randomChoice(
-      ([] as number[]).concat(s["Class 4"], s.Famous, s.Triangle, s.Twinkling, s.XOR),
-    )
-  }
-
-  let transitionFunction: number[]
-  if (transitionNumber !== undefined) {
-    // use the provided transitionNumber
-    transitionFunction = computeTransitionFunction(3, stateCount, BigInt(transitionNumber))
-  } else {
-    transitionFunction = randomTransition({ neighborhoodSize: 3, stateCount }).transitionFunction
-  }
-
-  return {
-    dimension: 1,
-    stateCount: Number(colorCount),
-    neighborhoodSize: 3,
-    transitionFunction,
-  }
-}
-
 export let randomDomain = (): Domain => {
   let [neighborhoodSize, stateCount] = weightedRandomChoice([
     // weight, [neighborhoodSize, colorCount]
@@ -132,14 +100,14 @@ export let randomRuleFromDomain = (domain: Domain): Rule => {
 }
 
 export let randomGoodRule = (): Rule => {
-  if (Math.random() < 0.8) {
+  if (Math.random() < 0.6) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
   return randomRule()
 }
 
 export let randomGoodRuleFromDomain = (domain: Domain): Rule => {
-  if (domain.neighborhoodSize === 3 && domain.stateCount === 2 && Math.random() < 0.8) {
+  if (domain.neighborhoodSize === 3 && domain.stateCount === 2 && Math.random() < 0.6) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
   return randomRuleFromDomain(domain)
