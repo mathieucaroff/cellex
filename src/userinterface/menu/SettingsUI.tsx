@@ -36,16 +36,12 @@ export let SettingsUI = () => {
           <ul>
             <li>
               Speed: <Button icon={"/2"} onClick={() => act.halfSpeed()} />
-              <Button icon={"-"} onClick={() => act.decreaseSpeed()} />
               <OxInputNumber path="speed" />
-              <Button icon={"+"} onClick={() => act.increaseSpeed()} />
               <Button icon={"x2"} onClick={() => act.doubleSpeed()} />
             </li>
             <li>
               🔎 Zoom: <Button icon={"/2"} onClick={() => act.halfZoom()} />
-              <Button icon={"-"} onClick={() => act.decreaseZoom()} />
               <OxInputNumber path="zoom" />
-              <Button icon={"+"} onClick={() => act.increaseZoom()} />
               <Button icon={"x2"} onClick={() => act.doubleZoom()} />
             </li>
             <li>
@@ -100,7 +96,9 @@ export let SettingsUI = () => {
       </div>
       <div className="settingui-menu-column">
         <div>
-          <p>Quick Settings</p>
+          <p>
+            <i className="fa fa-circle-o" /> Topology
+          </p>
           <ul>
             <li>
               <Button style={{ marginRight: "10px" }} onClick={() => act.setGenesis("(0)1(0)")()}>
@@ -126,9 +124,6 @@ export let SettingsUI = () => {
             Presentation mode
           </p>
           <Divider />
-          <p>
-            <i className="fa fa-circle-o" /> Topology
-          </p>
           <ul>
             <li>
               Topology kind:{" "}

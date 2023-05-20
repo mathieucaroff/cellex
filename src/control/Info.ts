@@ -41,8 +41,8 @@ export let createInfo = (state: State) => {
     center() {
       return 0
     },
-    isBigEnough() {
-      return state.canvasSize.width > state.topology.width / state.zoom
+    zoomedSimulationIsBiggerThanCanvas() {
+      return state.topology.width * state.zoom > state.canvasSize.width
     },
     /** Position tests */
     pockingLeft() {

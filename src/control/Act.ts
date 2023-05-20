@@ -25,17 +25,20 @@ export let createAct = (context: Context, info: Info) => {
   // //
 
   let fixLeft = posAction((position) => {
-    if (info.pockingLeft() && info.isBigEnough()) {
+    if (info.pockingLeft() && info.zoomedSimulationIsBiggerThanCanvas()) {
       position.posS = info.maxLeft()
     }
   })
   let fixRight = posAction((position) => {
-    if (info.pockingRight() && info.isBigEnough()) {
+    if (info.pockingRight() && info.zoomedSimulationIsBiggerThanCanvas()) {
       position.posS = info.maxRight()
     }
   })
   let fixPosition = posAction((position) => {
-    if (info.isBigEnough()) {
+    // There are four cases to handle:
+    // - The canvas is bigger than the view of the simulation
+    // - The view of the simulation is bigger than the canvas
+    if (info.zoomedSimulationIsBiggerThanCanvas()) {
       fixLeft(position)
       fixRight(position)
     } else {
