@@ -3,10 +3,8 @@ import { Button, Popover } from "antd"
 
 import { Act } from "../control/Act"
 import { DiffMode } from "../diffType"
-import { DisplayUI } from "./menu/DisplayUI"
-import { EngineUI } from "./menu/EngineUI"
 import { HelpContent } from "./menu/HelpContent"
-import { PaletteUI } from "./menu/PaletteUI"
+import { SettingsUI } from "./menu/SettingsUI"
 
 export interface TopMenuProp {
   diffMode: DiffMode
@@ -19,27 +17,10 @@ export let TopMenu = (prop: TopMenuProp) => {
 
   return (
     <div className="topMenu">
-      <Popover
-        placement="bottomLeft"
-        title="Display"
-        content={<DisplayUI />}
-        trigger="click"
-        destroyTooltipOnHide
-      >
+      <Popover placement="bottomLeft" title="Settings" content={<SettingsUI />} trigger="click">
         <Button>
-          <i className="fa fa-television" />
-          Display
-        </Button>
-      </Popover>
-      <Popover placement="bottomLeft" content={<EngineUI />} trigger="click">
-        <Button>
-          <i className="fa fa-circle-o" />
-          Engine
-        </Button>
-      </Popover>
-      <Popover placement="bottomLeft" title="Palette" content={<PaletteUI />} trigger="click">
-        <Button>
-          <i>🎨</i>Palette
+          <i className="fa fa-cog" />
+          Settings
         </Button>
       </Popover>
       <Button
