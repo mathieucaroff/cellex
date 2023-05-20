@@ -220,3 +220,4 @@ let generateRuleSet = () => {
 
 export const ruleSet = generateRuleSet()
 ;(globalThis as any).ruleSet = ruleSet
+;(globalThis as any).interestingElementaryRuleArray = interestingElementaryRuleArray
