@@ -13,7 +13,7 @@ type NomenclatureOutput =
         dimension?: [string]
         neighborhoodSize?: [string]
         colors?: [string]
-        transitionString: ["rule" | "code", [string]]
+        transitionString: ["rule" | "code", string]
       },
     ]
 
@@ -23,17 +23,21 @@ export function parseNomenclature(descriptor: string): Rule {
   try {
     parser.feed(descriptor)
   } catch (e) {
+    console.log("the nomenclature grammar threw:", e)
     let ne = new Error("invalid automaton descriptor (the grammar threw)")
     ne.message += String(e)
     throw ne
   }
   if (parser.results.length === 0) {
+    console.log("no result after parsing nomenclature")
     throw new Error("invalid automaton descriptor (no result after parsing)")
   }
 
   let parserOutput: NomenclatureOutput = parser.results[0]
   let transitionNumber: bigint
   let result: Rule
+
+  console.log("parserOutput", parserOutput)
 
   // Manage the case where the rule descriptor contains no letter
   // In that case, we want to produce a rule with a neigborhood size of three
@@ -70,6 +74,10 @@ export function parseNomenclature(descriptor: string): Rule {
   } else if (parserOutput[0] === "elementary") {
     transitionNumber = BigInt(parserOutput[1])
 
+    if (transitionNumber >= 256n) {
+      throw new Error("elementary transition numbers must be strictly less than 256")
+    }
+
     result = {
       dimension: 1,
       neighborhoodSize: 3,
@@ -78,12 +86,12 @@ export function parseNomenclature(descriptor: string): Rule {
     }
   } else if (parserOutput[1].transitionString[0] === "rule") {
     // The grammar guarantees that a transition number is specified
-    transitionNumber = BigInt(parserOutput[1].transitionString[0])
+    transitionNumber = BigInt(parserOutput[1].transitionString[1])
 
     result = {
       dimension: +(parserOutput[1].dimension ?? 1),
       neighborhoodSize: +(parserOutput[1].neighborhoodSize ?? 3),
-      stateCount: +(parserOutput[1].colors ?? 2),
+      stateCount: +(parserOutput[1].colors ?? [2])[0],
       transitionFunction: [],
     }
     result.transitionFunction = computeTransitionFunction(
@@ -91,14 +99,16 @@ export function parseNomenclature(descriptor: string): Rule {
       result.stateCount,
       transitionNumber,
     )
-
-    if (result.stateCount < 1) {
-      throw new Error("the state count must be at least 1")
-    }
+  } else if (parserOutput[1].transitionString[0] === "code") {
+    // let codeNumber = BigInt(parserOutput[1].transitionString[1][0])
+    throw new Error("totalistic code rules are not yet supported")
+  } else {
+    throw new Error("unrecognized parse output: " + JSON.stringify(parserOutput))
   }
-  // else {
-  //   let codeNumber = BigInt(parserOutput[1].transitionString[1][0])
-  // }
+
+  if (result.stateCount < 1) {
+    throw new Error("the state count must be at least 1")
+  }
 
   return result
 }
