@@ -97,3 +97,11 @@ ul {
 .topMenu > * {
   margin-right: 8px;
 }
+
+/* settings ui */
+.settingui-menu-column {
+  display: inline-flex;
+  align-content: start;
+  margin: 10px;
+  margin-top: 0;
+}
