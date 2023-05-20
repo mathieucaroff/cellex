@@ -1,4 +1,4 @@
-import { randomRule } from "../engine/rule"
+import { randomGoodRule } from "../engine/rule"
 import { parseNomenclature } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../stateType"
@@ -37,8 +37,11 @@ export let defaultState = (): State => {
     return { width, height }
   }
 
+  let rule = getOr("rule", parseNomenclature, randomGoodRule)
+  let isElementary = rule.neighborhoodSize === 3 && rule.stateCount === 2
+
   return {
-    rule: getOr("rule", parseNomenclature, randomRule),
+    rule,
 
     speed: 1,
     posS: 0,
@@ -56,7 +59,9 @@ export let defaultState = (): State => {
         () => "loop",
       ),
       width: adaptiveCanvasSize(window).width,
-      genesis: getOr("genesis", parseTopBorder, () => parseTopBorder("(0)1(0)")),
+      genesis: getOr("genesis", parseTopBorder, () =>
+        parseTopBorder(isElementary ? "([01])" : "(0)1(0)"),
+      ),
       borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("(0)")),
       borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("(0)")),
     },

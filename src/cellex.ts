@@ -15,6 +15,7 @@ import { interestingElementaryRuleArray } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
 import { parseNomenclature } from "./nomenclature/nomenclature"
+import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
 import { ReactContext } from "./state/ReactContext"
 import { defaultState } from "./state/state"
@@ -213,11 +214,28 @@ function main() {
 
   // /\ presentation mode
   context.usePosition(({ posT }, { zoom }) => {
-    if (state.presentationMode === "present" && posT * zoom >= state.canvasSize.height) {
+    if (state.presentationMode === "present" && posT * zoom >= state.canvasSize.height / 6) {
       context.updateState((state) => {
-        state.rule = parseNomenclature(randomChoice(interestingElementaryRuleArray).toString())
-        state.redraw = true
-        state.posT = 0
+        let newRuleNumber = randomChoice(interestingElementaryRuleArray)
+        let newRule = parseNomenclature(newRuleNumber.toString())
+        if (state.rule !== newRule) {
+          state.rule = newRule
+          state.redraw = true
+          state.posT = 0
+
+          if (
+            [18, 22, 26, 30, 45, 60, 62, 73, 90, 105, 110, 126, 146, 150, 154].includes(
+              newRuleNumber,
+            ) &&
+            Math.random() < 0.5
+          ) {
+            // impulse genesis
+            state.topology.genesis = parseTopBorder("(0)1(0)")
+          } else {
+            // random genesis
+            state.topology.genesis = parseTopBorder("([01])")
+          }
+        }
       })
     }
   })
