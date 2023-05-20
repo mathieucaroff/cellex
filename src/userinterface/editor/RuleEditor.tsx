@@ -1,8 +1,9 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 
-import { colorComplement, leftRightSymmetric } from "../../engine/rule"
+import { colorComplement, computeTransitionNumber, leftRightSymmetric } from "../../engine/rule"
 import { presentNomenclature } from "../../nomenclature/nomenclature"
+import { Rule } from "../../ruleType"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
@@ -10,6 +11,12 @@ import { addOne, subtractOne } from "../../util/numberArray"
 import { RuleInfo } from "../RuleInfo"
 import { useStateSelection } from "../hooks"
 import { fillRuleEditor } from "./fillRuleEditor"
+import {
+  getMathworldLink as getMathWorldLink,
+  getWikipediaDedicatedPageLink,
+  getWikipediaLink,
+  getWolframAlphaLink,
+} from "./link"
 
 export let RuleEditor = () => {
   let { context } = useContext(ReactContext)
@@ -100,6 +107,30 @@ export let RuleEditor = () => {
     }
     return result
   })
+
+  let ruleNumber = -1
+  let mathWorldLink = ""
+  let wikipediaLink = ""
+  let wikipediaDedicatedPageLink = ""
+  let ulContent: React.ReactNode[] = []
+  if (rule.neighborhoodSize === 3 && rule.stateCount === 2) {
+    ruleNumber = Number(computeTransitionNumber(rule))
+    ;[
+      [getMathWorldLink(ruleNumber), "on Wolfram MathWorld"],
+      [getWikipediaLink(ruleNumber), "on Wikipedia"],
+      [getWikipediaDedicatedPageLink(ruleNumber), "on its dedicated Wikipedia page"],
+    ].forEach(([link, pageName]) => {
+      if (link) {
+        ulContent.push(
+          <a href={link} key={pageName}>
+            <li>
+              {pageName} <i className="fa fa-external-link" />
+            </li>
+          </a>,
+        )
+      }
+    })
+  }
 
   return (
     <Space direction="vertical">
@@ -199,6 +230,18 @@ export let RuleEditor = () => {
         onMouseDown={(ev) => changeColor(ev.button === 1 ? 1 : -1, true)(ev)}
       />
       <RuleInfo />
+      <ul>
+        <a href={getWolframAlphaLink(rule)} target="_blank">
+          <li>
+            See this rule on WolframAlpha <i className="fa fa-external-link" />
+          </li>
+        </a>
+        {ulContent.length > 0 && (
+          <li>
+            Also read about rule {ruleNumber}:<ul>{ulContent}</ul>
+          </li>
+        )}
+      </ul>
     </Space>
   )
 }
