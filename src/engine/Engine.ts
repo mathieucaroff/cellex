@@ -73,7 +73,7 @@ export let createAutomatonEngine = (
   } else if (rule.neighborhoodSize % 2 != 1) {
     throw `neighborhood size must be odd (got ${rule.neighborhoodSize})`
   } else if (length > 4096) {
-    throw `rule length too big (stateCount ** neighborhoodSize) is (${length}, which is above 4096)`
+    throw `rule length too big (stateCount ** neighborhoodSize) is (${length}), which is above 4096`
   } else if (rule.stateCount < 1) {
     throw `state count must be at least 1`
   }

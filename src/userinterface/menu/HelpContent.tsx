@@ -25,7 +25,7 @@ export let HelpContent = (prop: HelpContentProp) => {
 
   return (
     <div style={{ width: "600px" }}>
-      <p>While the display is selected, the following shortcuts are available:</p>
+      <p>The following shortcuts are available:</p>
       <table>{longShortcutTableContent}</table>
       <table>{shortShortcutTableContent}</table>
       <p>
@@ -33,10 +33,7 @@ export let HelpContent = (prop: HelpContentProp) => {
         camera. You can set the camera size (canvas size) in the Display menu, and set the
         simulation size in the Engine menu.
       </p>
-      <p>
-        At the bottom right corner of each canvas, there is a hidden handle which allows to resize
-        the canvas.
-      </p>
+      <p>[**]The space and enter shortcuts are only available while the display is selected.</p>
     </div>
   )
 }

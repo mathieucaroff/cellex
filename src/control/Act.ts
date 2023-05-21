@@ -25,19 +25,16 @@ export let createAct = (context: Context, info: Info) => {
   // //
 
   let fixLeft = posAction((position) => {
-    if (info.pockingLeft() && info.zoomedSimulationIsBiggerThanCanvas()) {
-      position.posS = info.maxLeft()
+    if (info.zoomedSimulationIsBiggerThanCanvas()) {
+      position.posS = Math.max(position.posS, info.maxLeft())
     }
   })
   let fixRight = posAction((position) => {
-    if (info.pockingRight() && info.zoomedSimulationIsBiggerThanCanvas()) {
-      position.posS = info.maxRight()
+    if (info.zoomedSimulationIsBiggerThanCanvas()) {
+      position.posS = Math.min(position.posS, info.maxRight())
     }
   })
   let fixPosition = posAction((position) => {
-    // There are four cases to handle:
-    // - The canvas is bigger than the view of the simulation
-    // - The view of the simulation is bigger than the canvas
     if (info.zoomedSimulationIsBiggerThanCanvas()) {
       fixLeft(position)
       fixRight(position)
@@ -219,10 +216,10 @@ export let createAct = (context: Context, info: Info) => {
 
     /** Focus */
     focus: (id: string) => () => {
-      document.getElementById(id)?.focus()
+      document.querySelector<HTMLElement>(id)?.focus()
     },
     select: (id: string) => () => {
-      ;(document.getElementById(id) as HTMLInputElement)?.select()
+      document.querySelector<HTMLInputElement>(id)?.select()
     },
 
     /** Differential Mode */

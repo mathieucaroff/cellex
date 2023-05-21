@@ -31,14 +31,14 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     evKeyPropName: "code",
     capture: false,
     normalize: (s) => s,
-    ignoreEvent: () => false,
+    ignoreEvent: (ev) => ev.ctrlKey,
   })
   let specificKeyKb = createKeyboardManager({
     element: specificElement,
     evKeyPropName: "key",
     capture: false,
     normalize: (s) => s.toUpperCase(),
-    ignoreEvent: () => false,
+    ignoreEvent: (ev) => ev.ctrlKey,
   })
 
   let removerList = [] as (() => void)[]
@@ -57,8 +57,8 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   let onKeypress = onKeydownForKb(codeKb)
   let onSpecificSymbol = onKeydownForKb(specificKeyKb)
 
-  onSpecificSymbol(" ", act.togglePlay, "[space]", "toggle play / pause")
-  onSpecificSymbol("Enter", act.singleStep, "[enter]", "process one time generation")
+  onSpecificSymbol(" ", act.togglePlay, "[space]**", "toggle play / pause")
+  onSpecificSymbol("Enter", act.singleStep, "[enter]**", "process a single generation")
 
   onSymbol("ArrowLeft", act.goLeft, "[left]", "move camera left*")
   onSymbol("ArrowRight", act.goRight, "[right]", "move camera right*")
@@ -85,8 +85,15 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onSymbol("|", act.gotoCenter, "|", "center the camera*")
   onSymbol("}", act.gotoMaxRight, "}", "move the camera to the right end of the simulation*")
 
-  onSymbol("R", act.select("ruleInput"), "R", "select the *R*ule input")
-  onSymbol("C", act.focus("displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
+  onSymbol("P", act.togglePlay, "P", "toggle *P*lay / *P*ause")
+  onSymbol("R", act.select("#ruleInput"), "R", "select the *R*ule input")
+  onSymbol("C", act.focus("#displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
+  onSymbol(
+    "E",
+    act.focus(".ruleEditor__controlButtonDiv button"),
+    "E",
+    "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
+  )
 
   onKeypress("Digit1", act.setGenesis("1(0)"), "1", "set the genesis to impulse 010")
   onKeypress("Digit3", act.setGenesis("11(0)"), "3", "set the genesis to impulse 0110")

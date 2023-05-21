@@ -240,6 +240,7 @@ function main() {
     }
   })
   const { body } = document
+  // -- /\ Disable the presentation mode on the first interaction the user has with the page
   function disablePresentationMode() {
     context.updateState((state) => {
       state.presentationMode = "off"
@@ -249,6 +250,7 @@ function main() {
   }
   body.addEventListener("click", disablePresentationMode, true)
   body.addEventListener("keydown", disablePresentationMode, true)
+  // -- \/
   // \/ presentation mode
 
   // prevent shortcuts from interfering with typing in text inputs or textareas
