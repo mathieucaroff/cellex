@@ -37,8 +37,6 @@ export function parseNomenclature(descriptor: string): Rule {
   let transitionNumber: bigint
   let result: Rule
 
-  console.log("parserOutput", parserOutput)
-
   // Manage the case where the rule descriptor contains no letter
   // In that case, we want to produce a rule with a neigborhood size of three
   // and with sufficiently many colors that the number makes sense in that rule
