@@ -4,8 +4,8 @@ export let presentTopBorder = (border: TopBorder): string => {
   let a = presentGroup(border.cycleLeft)
   let b = presentGroup(border.center)
   let c = presentGroup(border.cycleRight)
-  if (a === c && b === "") {
-    return `(${a})`
+  if (a === c) {
+    return `${b}(${c})`
   }
   return `(${a})${b}(${c})`
 }
