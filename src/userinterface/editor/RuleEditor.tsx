@@ -6,9 +6,9 @@ import { presentNomenclature } from "../../nomenclature/nomenclature"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
-import { addOne, subtractOne } from "../../util/numberArray"
 import { randomChoice } from "../../util/randomChoice"
 import { RuleInfo } from "../RuleInfo"
+import { NumberVariator } from "../components/NumberVariator/NumberVariator"
 import { useStateSelection } from "../hooks"
 import { fillRuleEditor } from "./fillRuleEditor"
 import {
@@ -24,23 +24,28 @@ export let RuleEditor = () => {
   let canvasRef = useRef<HTMLCanvasElement>(null)
   let smallCanvas = document.createElement("canvas")
   let smallCtx = smallCanvas.getContext("2d")!
+  let { length } = rule.transitionFunction
+  let iWidthPeriodicity = rule.stateCount
+  if (iWidthPeriodicity <= 2) {
+    iWidthPeriodicity = 4
+  }
+  let minimumIWidth = (iWidthPeriodicity < 6 ? 2 : 1) * iWidthPeriodicity
   // xSpacing and ySpacing define the spacing between the occurences of the function's entries
   const xSpacing = rule.neighborhoodSize + 1
   const ySpacing = 3
   // iWidth and iHeight define how many occurences of entry per row or column
-  const iWidth = 8
-  const iHeight = Math.ceil(rule.transitionFunction.length / iWidth)
+  const iWidth = Math.max(
+    minimumIWidth,
+    iWidthPeriodicity * Math.floor((8 * length ** 0.5) / (xSpacing * iWidthPeriodicity)),
+  )
+  const iHeight = Math.ceil(length / iWidth)
 
   fillRuleEditor(smallCtx, rule, colorMap, xSpacing, ySpacing, iWidth, iHeight)
 
-  const zoom = Math.min(Math.floor(0.9 * (window.innerWidth / (8 * 4))), 24)
+  const zoom = Math.min(Math.floor(0.9 * (window.innerWidth / smallCanvas.width)), 24)
   // useLayoutEffect here because we need to wait for the canvas to be instanciated
   useLayoutEffect(() => {
     let canvas = canvasRef.current!
-    if (rule.transitionFunction.length > 32) {
-      canvas.height = 0
-      return
-    }
     canvas.width = smallCanvas.width * zoom
     canvas.height = smallCanvas.height * zoom
     let ctx = canvas.getContext("2d")!
@@ -74,7 +79,7 @@ export let RuleEditor = () => {
     let ix = Math.floor(mouseX / zoom / xSpacing)
     let iy = Math.floor(mouseY / zoom / ySpacing)
     let position = iy * iWidth + ix
-    if (position >= rule.transitionFunction.length) {
+    if (position >= length) {
       return [position, "clicking out of range"]
     }
     return [position, ""]
@@ -99,7 +104,7 @@ export let RuleEditor = () => {
 
   let identityDifferenceArray: number[] = []
   let identityFunction = rule.transitionFunction.map((v, k) => {
-    let n = rule.transitionFunction.length - 1 - k
+    let n = length - 1 - k
     let centerPosition = Math.floor(rule.neighborhoodSize / 2)
     let result = Math.floor(n / rule.stateCount ** centerPosition) % rule.stateCount
     if (result !== v) {
@@ -131,21 +136,7 @@ export let RuleEditor = () => {
 
   return (
     <Space direction="vertical">
-      <div>
-        <Button
-          onClick={context.action((state) => {
-            subtractOne(state.rule.transitionFunction, state.rule.stateCount)
-          })}
-        >
-          -1
-        </Button>
-        <Button
-          onClick={context.action((state) => {
-            addOne(state.rule.transitionFunction, state.rule.stateCount)
-          })}
-        >
-          +1
-        </Button>
+      <div className="ruleEditor__controlButtonDiv">
         <Button
           title="Simplify 1 step towards identity"
           disabled={identityDifferenceArray.length == 0}
@@ -189,6 +180,40 @@ export let RuleEditor = () => {
           Switch both: {presentNomenclature(both).descriptor}
         </Button>
       </div>
+      {length > 512 ? (
+        <></>
+      ) : (
+        <div>
+          <NumberVariator
+            valueArray={rule.transitionFunction}
+            onChange={(array) => {
+              context.updateState((state) => {
+                let base = rule.stateCount
+                for (let k = array.length - 1; k >= 0; k--) {
+                  let quotient: number
+                  if (array[k] >= 0) {
+                    quotient = Math.floor(array[k] / base)
+                  } else {
+                    quotient = -Math.floor((base - array[k]) / base)
+                  }
+                  array[k] -= quotient * base
+                  if (k > 0) {
+                    // apply the carry
+                    array[k - 1] += quotient
+                  }
+                }
+                if (array.some((v) => isNaN(v))) {
+                  return
+                }
+
+                state.rule.transitionFunction = array
+              })
+            }}
+            titleIncreaseFunction={(k) => `+ ${rule.stateCount ** k}`}
+            titleDecreaseFunction={(k) => `- ${rule.stateCount ** k}`}
+          />
+        </div>
+      )}
       <canvas
         className="ruleEditorCanvas"
         style={{ display: "table" }}

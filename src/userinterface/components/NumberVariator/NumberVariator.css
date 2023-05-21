@@ -1,0 +1,26 @@
+.singleVariator {
+  display: inline-block;
+}
+
+.singleVariator__input {
+  text-align: center;
+}
+
+.singleVariator .ant-btn {
+  padding: 0;
+  height: 16px;
+}
+
+.singleVariator .ant-btn span {
+  position: relative;
+  bottom: 5px;
+}
+
+.singleVariator__input,
+.singleVariator__plusButton,
+.singleVariator__minusButton {
+  display: block;
+  padding: 0;
+  margin: 0;
+  width: 20px;
+}

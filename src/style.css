@@ -76,8 +76,15 @@ ul {
   word-break: break-word;
 }
 
-.ruleEditor button {
+.ruleEditor__controlButtonDiv {
   margin: 4px;
+  max-width: 1080px;
+}
+
+.ruleEditor__controlButtonDiv button {
+  margin: 4px;
+  max-width: calc(100vw - 120px);
+  overflow-x: hidden;
 }
 
 .ruleEditorCanvas {

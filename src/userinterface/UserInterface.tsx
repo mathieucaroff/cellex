@@ -1,5 +1,5 @@
 import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, ConfigProvider, Space, theme as antdTheme } from "antd"
+import { Button, Collapse, Space } from "antd"
 import { useContext } from "react"
 
 import { presentNomenclature } from "../nomenclature/nomenclature"
@@ -36,7 +36,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
   }
 
   return (
-    <ConfigProvider theme={{ algorithm: [antdTheme.darkAlgorithm] }}>
+    <>
       <div>
         <h1 className="title" title="Cellex">
           Cellex
@@ -78,14 +78,14 @@ export let UserInterface = (prop: UserInterfaceProp) => {
         <Panel
           className="ruleEditor"
           header={`Rule Editor (${presentNomenclature(rule).longDescriptor})`}
-          key={1}
+          key="ruleEditor"
         >
           <RuleEditor />
         </Panel>
-        <Panel header={`Documentation`} key={3}>
+        <Panel header={`Documentation`} key="documentation">
           <Documentation />
         </Panel>
       </Collapse>
-    </ConfigProvider>
+    </>
   )
 }
