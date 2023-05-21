@@ -12,8 +12,8 @@ left_central_right -> "(" group ")" group:? "(" group ")" {%
    })
 %}
 
-single_cycle -> "(" group ")" {% ([_, cycle]) => ({
-  center: emptyGroup,
+single_cycle -> group:? "(" group ")" {% ([center, _a, cycle, _b]) => ({
+  center: center || emptyGroup,
   cycleLeft: cycle,
   cycleRight: cycle,
 }) %}

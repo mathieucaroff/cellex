@@ -10,6 +10,7 @@
   "scripts": {
     "check": "tsc --noEmit",
     "checkwatch": "tsc --noEmit --watch",
+    "test": "vitest",
     "build": "vite build",
     "mcabuild": "vite build --base /cellex.d",
     "dev": "vite --port 1111"

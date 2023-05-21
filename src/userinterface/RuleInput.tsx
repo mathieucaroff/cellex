@@ -25,8 +25,8 @@ export let RuleInput = () => {
         parse={parseNomenclature}
         randomizer={() => randomGoodRuleFromDomain(rule)}
         randomizer2={randomGoodRule}
-        randomElementTitle={`Random ${rule.stateCount}-state rule`}
-        randomElementTitle2={`Random rule (with up to six distinct states)`}
+        randomElementTitle={`Random rule on the same domain (ns${rule.neighborhoodSize},${rule.stateCount}c)`}
+        randomElementTitle2={`Fully random rule`}
         extraOnPressEnter={act.focus("displayDiv")}
       />
     </Space.Compact>

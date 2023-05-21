@@ -11,7 +11,7 @@ import { createDisplay } from "./display/Display"
 import { createDiffModeManager } from "./engine/DiffModeManager"
 import { Engine, createAutomatonEngine } from "./engine/Engine"
 import { createRandomMapper } from "./engine/RandomMapper"
-import { interestingElementaryRuleArray } from "./engine/rule"
+import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
 import { parseNomenclature } from "./nomenclature/nomenclature"
@@ -214,11 +214,11 @@ function main() {
 
   // /\ presentation mode
   context.usePosition(({ posT }, { zoom }) => {
-    if (state.presentationMode === "present" && posT * zoom >= state.canvasSize.height / 6) {
+    if (state.presentationMode === "present" && posT * zoom >= state.canvasSize.height) {
       context.updateState((state) => {
         let newRuleNumber = randomChoice(interestingElementaryRuleArray)
         let newRule = parseNomenclature(newRuleNumber.toString())
-        if (state.rule !== newRule) {
+        if (Number(computeTransitionNumber(state.rule)) !== newRuleNumber) {
           state.rule = newRule
           state.redraw = true
           state.posT = 0
