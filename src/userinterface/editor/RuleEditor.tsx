@@ -3,11 +3,11 @@ import { useContext, useLayoutEffect, useRef } from "react"
 
 import { colorComplement, computeTransitionNumber, leftRightSymmetric } from "../../engine/rule"
 import { presentNomenclature } from "../../nomenclature/nomenclature"
-import { Rule } from "../../ruleType"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
 import { addOne, subtractOne } from "../../util/numberArray"
+import { randomChoice } from "../../util/randomChoice"
 import { RuleInfo } from "../RuleInfo"
 import { useStateSelection } from "../hooks"
 import { fillRuleEditor } from "./fillRuleEditor"
@@ -109,9 +109,6 @@ export let RuleEditor = () => {
   })
 
   let ruleNumber = -1
-  let mathWorldLink = ""
-  let wikipediaLink = ""
-  let wikipediaDedicatedPageLink = ""
   let ulContent: React.ReactNode[] = []
   if (rule.neighborhoodSize === 3 && rule.stateCount === 2) {
     ruleNumber = Number(computeTransitionNumber(rule))
@@ -122,7 +119,7 @@ export let RuleEditor = () => {
     ].forEach(([link, pageName]) => {
       if (link) {
         ulContent.push(
-          <a href={link} key={pageName}>
+          <a href={link} target="_blank" key={pageName}>
             <li>
               {pageName} <i className="fa fa-external-link" />
             </li>
@@ -150,47 +147,16 @@ export let RuleEditor = () => {
           +1
         </Button>
         <Button
-          title="Simplify 1 state"
+          title="Simplify 1 step towards identity"
           disabled={identityDifferenceArray.length == 0}
           onClick={() => {
             context.updateState(({ rule }) => {
-              let index =
-                identityDifferenceArray[Math.floor(Math.random() * identityDifferenceArray.length)]
+              let index = randomChoice(identityDifferenceArray)
               rule.transitionFunction[index] = identityFunction[index]
             })
           }}
         >
           Simplify
-        </Button>
-        <Button
-          disabled={rule.stateCount >= 6}
-          onClick={() => {
-            context.updateState(({ rule }) => {
-              let oldLength = rule.transitionFunction.length
-              let osc = rule.stateCount // old state count
-
-              rule.stateCount += 1
-
-              let sc = rule.stateCount
-              let length = sc ** 3
-              let tf = Array.from({ length }, (_, k) => {
-                let n = length - 1 - k
-                let left = Math.floor(n / sc ** 2)
-                let middle = Math.floor(n / sc) % sc
-                let right = n % sc
-                // if any of left, middle or right too big for the old rule,
-                // we should default to the highest acceptable value
-                left = Math.min(left, osc - 1)
-                middle = Math.min(middle, osc - 1)
-                right = Math.min(right, osc - 1)
-                let index = left * osc ** 2 + middle * osc + right
-                return rule.transitionFunction[oldLength - 1 - index]
-              })
-              rule.transitionFunction = tf
-            })
-          }}
-        >
-          Upgrade state count to {rule.stateCount + 1} ({"__btqph_"[rule.stateCount + 1]})
         </Button>
         <Button
           disabled={deepEqual(rule.transitionFunction, complement.transitionFunction)}
