@@ -3,13 +3,17 @@ import { Button, Collapse, ConfigProvider, Space, theme as antdTheme } from "ant
 import { useContext } from "react"
 
 import { presentNomenclature } from "../nomenclature/nomenclature"
+import { parseTopBorder } from "../patternlang/parser"
+import { presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/ReactContext"
 import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
+import { OxEnterInput } from "./component"
 import { RuleEditor } from "./editor/RuleEditor"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
 import { Documentation } from "./markdown/documentation"
+import { TopBorderSelect } from "./menu/topologySelect"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
@@ -49,6 +53,16 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             onClick={() => act.togglePlay()}
           />
           <RuleInput />
+
+          <Space.Compact>
+            <TopBorderSelect />
+            <OxEnterInput
+              path="topology.genesis"
+              style={{ width: "initial" }}
+              present={presentTopBorder}
+              parse={parseTopBorder}
+            />
+          </Space.Compact>
 
           <TopMenu diffMode={diffMode} helpList={helpList} act={act} />
         </Space>
