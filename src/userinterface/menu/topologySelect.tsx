@@ -20,6 +20,13 @@ let entry = (label: string, value: string, ...options: DefaultOptionType[]): Def
 
 export let topCascaderOptionSet = [
   entry(
+    "Simple",
+    "",
+    entry("Random 50%", "([01])"),
+    entry("Impulse 1", "(0)1(0)"),
+    entry("Impulse 3", "(0)11(0)"),
+  ),
+  entry(
     "Random",
     "",
     entry("Random 50%", "([01])"),
@@ -39,10 +46,6 @@ export let topCascaderOptionSet = [
     entry("Impulse -3", "(1)00(1)"),
     entry("Impulse 5", "(0)101(0)"),
     entry("Impulse 7", "(0)111(0)"),
-    entry("Impulse 9", "(0)1001(0)"),
-    entry("Impulse 11", "(0)1011(0)"),
-    entry("Impulse 13", "(0)1101(0)"),
-    entry("Impulse 15", "(0)1111(0)"),
   ),
   entry(
     "Pattern",

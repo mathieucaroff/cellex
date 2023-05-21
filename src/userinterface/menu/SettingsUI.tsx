@@ -5,15 +5,15 @@ import { SketchPicker } from "react-color"
 import { parseColorMap, presentColorMap } from "../../display/Display"
 import { colorToHexColor } from "../../engine/color"
 import { randomPalette } from "../../palette/randomPalette"
-import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
-import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
+import { parseSideBorder } from "../../patternlang/parser"
+import { presentSideBorder } from "../../patternlang/presenter"
 import { ReactContext } from "../../state/ReactContext"
 import { defaultColorMap } from "../../state/state"
 import { Color } from "../../type"
 import { OxButton, OxEnterInput, OxInput, OxInputNumber } from "../component"
 import { useStateSelection } from "../hooks"
 import { TimePositionInputNumber } from "./input/TimePositionInputNumber"
-import { SideBorderCascader, TopBorderSelect } from "./topologySelect"
+import { SideBorderCascader } from "./topologySelect"
 
 const { Option } = Select
 
@@ -138,18 +138,6 @@ export let SettingsUI = () => {
                 <Option value="border">Border</Option>
                 <Option value="loop">Loop</Option>
               </Select>
-            </li>
-            <li>
-              ‴‴Genesis:
-              <Space.Compact>
-                <TopBorderSelect />
-                <OxEnterInput
-                  path="topology.genesis"
-                  style={{ width: "initial" }}
-                  present={presentTopBorder}
-                  parse={parseTopBorder}
-                />
-              </Space.Compact>
             </li>
             <li>
               |⧘… Side Border Left:
