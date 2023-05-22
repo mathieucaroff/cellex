@@ -18,7 +18,7 @@ import { parseNomenclature } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
 import { ReactContext } from "./state/ReactContext"
-import { defaultState } from "./state/state"
+import { initialState } from "./state/state"
 import { DesktopOrMobile } from "./type"
 import { UserInterface } from "./userinterface/UserInterface"
 import { emitterLoop } from "./util/emitterLoop"
@@ -35,7 +35,7 @@ function main() {
 
   let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
 
-  let state = defaultState()
+  let state = initialState()
   let context = createContext(state)
   let info = createInfo(state)
   let act = createAct(context, info)
@@ -239,18 +239,20 @@ function main() {
       })
     }
   })
-  const { body } = document
-  // -- /\ Disable the presentation mode on the first interaction the user has with the page
-  function disablePresentationMode() {
-    context.updateState((state) => {
-      state.presentationMode = "off"
-    })
-    body.removeEventListener("click", disablePresentationMode, true)
-    body.removeEventListener("keydown", disablePresentationMode, true)
+  if (state.presentationMode === "present") {
+    const { body } = document
+    // -- /\ Disable the presentation mode on the first interaction the user has with the page
+    function disablePresentationMode() {
+      context.updateState((state) => {
+        state.presentationMode = "off"
+      })
+      body.removeEventListener("click", disablePresentationMode, true)
+      body.removeEventListener("keydown", disablePresentationMode, true)
+    }
+    body.addEventListener("click", disablePresentationMode, true)
+    body.addEventListener("keydown", disablePresentationMode, true)
+    // -- \/
   }
-  body.addEventListener("click", disablePresentationMode, true)
-  body.addEventListener("keydown", disablePresentationMode, true)
-  // -- \/
   // \/ presentation mode
 
   // prevent shortcuts from interfering with typing in text inputs or textareas

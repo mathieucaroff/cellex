@@ -1,3 +1,8 @@
 .ant-cascader-dropdown .ant-cascader-menus .ant-cascader-menu {
   height: initial;
 }
+
+.ant-input-number {
+  position: relative;
+  bottom: 4px;
+}

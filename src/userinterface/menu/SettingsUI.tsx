@@ -4,9 +4,10 @@ import { SketchPicker } from "react-color"
 
 import { parseColorMap, presentColorMap } from "../../display/Display"
 import { colorToHexColor } from "../../engine/color"
+import { presentNomenclature } from "../../nomenclature/nomenclature"
 import { randomPalette } from "../../palette/randomPalette"
 import { parseSideBorder } from "../../patternlang/parser"
-import { presentSideBorder } from "../../patternlang/presenter"
+import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
 import { ReactContext } from "../../state/ReactContext"
 import { defaultColorMap } from "../../state/state"
 import { Color } from "../../type"
@@ -35,61 +36,87 @@ export let SettingsUI = () => {
           </p>
           <ul>
             <li>
-              Speed: <Button icon={"/2"} onClick={() => act.halfSpeed()} />
-              <OxInputNumber path="speed" />
-              <Button icon={"x2"} onClick={() => act.doubleSpeed()} />
+              Speed:{" "}
+              <div>
+                <Button icon={"/2"} onClick={() => act.halfSpeed()} />
+                <OxInputNumber path="speed" />
+                <Button icon={"x2"} onClick={() => act.doubleSpeed()} />
+              </div>
             </li>
             <li>
-              🔎 Zoom: <Button icon={"/2"} onClick={() => act.halfZoom()} />
-              <OxInputNumber path="zoom" />
-              <Button icon={"x2"} onClick={() => act.doubleZoom()} />
+              🔎 Zoom:{" "}
+              <div>
+                <Button icon={"/2"} onClick={() => act.halfZoom()} />
+                <OxInputNumber path="zoom" />
+                <Button icon={"x2"} onClick={() => act.doubleZoom()} />
+              </div>
             </li>
             <li>
-              ⌖Space position: <OxInputNumber path="posS" />
+              ⌖Space position:{" "}
+              <div>
+                <OxInputNumber path="posS" />
+              </div>
             </li>
             <li>
-              ⌖Time position (generation): <TimePositionInputNumber />
-              <Button onClick={() => act.gotoTop()}>Reset</Button>
+              ⌖Time position (generation):{" "}
+              <div>
+                <TimePositionInputNumber />
+                <Button onClick={() => act.gotoTop()}>Reset</Button>
+              </div>
             </li>
             <li>
-              ⟷Canvas width: <OxButton half icon={"/2"} path="canvasSize.width" />
-              <OxInputNumber path="canvasSize.width" />
-              <OxButton double icon={"x2"} path="canvasSize.width" />
+              ⟷Canvas width:{" "}
+              <div>
+                <OxButton half icon={"/2"} path="canvasSize.width" />
+                <OxInputNumber path="canvasSize.width" />
+                <OxButton double icon={"x2"} path="canvasSize.width" />
+              </div>
             </li>
             <li>
-              ⭥Canvas height: <OxButton half icon={"/2"} path="canvasSize.height" />
-              <OxInputNumber path="canvasSize.height" />
-              <OxButton double icon={"x2"} path="canvasSize.height" />
+              ⭥Canvas height:{" "}
+              <div>
+                <OxButton half icon={"/2"} path="canvasSize.height" />
+                <OxInputNumber path="canvasSize.height" />
+                <OxButton double icon={"x2"} path="canvasSize.height" />
+              </div>
             </li>
           </ul>
           <Divider />
           <p>Engine</p>
           <ul>
             <li>
-              Seed: <OxInput path="seed" />
-              <Button icon={"🎲"} onClick={() => act.randomizeSeed()} />
+              Seed:{" "}
+              <div>
+                <OxInput path="seed" />
+                <Button icon={"🎲"} onClick={() => act.randomizeSeed()} />
+              </div>
             </li>
             <li>
-              ⟷Simulation width: <OxButton half icon={"/2"} path="topology.width" />
-              <OxInputNumber path="topology.width" />
-              <OxButton double icon={"x2"} path="topology.width" />
+              ⟷Simulation width:{" "}
+              <div>
+                <OxButton half icon={"/2"} path="topology.width" />
+                <OxInputNumber path="topology.width" />
+                <OxButton double icon={"x2"} path="topology.width" />
+              </div>
               <br />
-              <Button
-                onClick={context.action((state) => {
-                  state.topology.width = state.canvasSize.width
-                  act.fixPosition(state)
-                  state.redraw = true
-                })}
-              >
-                Copy canvas width
-              </Button>
-              <Button
-                onClick={context.action((state) => {
-                  state.canvasSize.width = state.topology.width
-                })}
-              >
-                Write width to canvas
-              </Button>
+              <div>
+                <Button
+                  onClick={context.action((state) => {
+                    state.topology.width = state.canvasSize.width
+                    act.fixPosition(state)
+                    state.redraw = true
+                  })}
+                >
+                  Copy canvas width
+                </Button>
+                <Button
+                  onClick={context.action((state) => {
+                    state.canvasSize.width = state.topology.width
+                  })}
+                >
+                  Write width to canvas
+                </Button>
+              </div>
             </li>
           </ul>
         </div>
@@ -112,6 +139,57 @@ export let SettingsUI = () => {
               </Button>
             </li>
           </ul>
+          <Divider />
+          <ul>
+            <li>
+              Topology kind:{" "}
+              <div>
+                <Select
+                  value={topologyKind}
+                  onChange={(value) => {
+                    context.updateState((state) => {
+                      state.topology.kind = value
+                    })
+                  }}
+                >
+                  <Option value="border">Border</Option>
+                  <Option value="loop">Loop</Option>
+                </Select>
+              </div>
+            </li>
+            <li>
+              |⧘… Side Border Left:
+              <div>
+                <Space.Compact>
+                  <SideBorderCascader side="borderLeft" disabled={topologyIsLoop} />
+                  <OxEnterInput
+                    path="topology.borderLeft"
+                    style={{ width: "initial" }}
+                    disabled={topologyIsLoop}
+                    present={presentSideBorder}
+                    parse={parseSideBorder}
+                  />
+                </Space.Compact>
+              </div>
+            </li>
+            <li>
+              …⧙| Side Border Right:
+              <div>
+                <Space.Compact>
+                  <SideBorderCascader side="borderRight" disabled={topologyIsLoop} />
+                  <OxEnterInput
+                    disabled={topologyIsLoop}
+                    style={{ width: "initial" }}
+                    path="topology.borderRight"
+                    present={presentSideBorder}
+                    parse={parseSideBorder}
+                  />
+                </Space.Compact>
+              </div>
+            </li>
+          </ul>
+          <Divider />
+          <p>Misc</p>
           <p>
             <Checkbox
               checked={presentationMode === "present"}
@@ -123,49 +201,19 @@ export let SettingsUI = () => {
             />{" "}
             Presentation mode
           </p>
-          <Divider />
-          <ul>
-            <li>
-              Topology kind:{" "}
-              <Select
-                value={topologyKind}
-                onChange={(value) => {
-                  context.updateState((state) => {
-                    state.topology.kind = value
-                  })
-                }}
-              >
-                <Option value="border">Border</Option>
-                <Option value="loop">Loop</Option>
-              </Select>
-            </li>
-            <li>
-              |⧘… Side Border Left:
-              <Space.Compact>
-                <SideBorderCascader side="borderLeft" disabled={topologyIsLoop} />
-                <OxEnterInput
-                  path="topology.borderLeft"
-                  style={{ width: "initial" }}
-                  disabled={topologyIsLoop}
-                  present={presentSideBorder}
-                  parse={parseSideBorder}
-                />
-              </Space.Compact>
-            </li>
-            <li>
-              …⧙| Side Border Right:
-              <Space.Compact>
-                <SideBorderCascader side="borderRight" disabled={topologyIsLoop} />
-                <OxEnterInput
-                  disabled={topologyIsLoop}
-                  style={{ width: "initial" }}
-                  path="topology.borderRight"
-                  present={presentSideBorder}
-                  parse={parseSideBorder}
-                />
-              </Space.Compact>
-            </li>
-          </ul>
+          <Button
+            onClick={() => {
+              const state = context.getState()
+              const ruleName = presentNomenclature(state.rule).descriptor
+              const genesis = presentTopBorder(state.topology.genesis)
+              let url = new URL(location.href)
+              url.searchParams.set("genesis", genesis)
+              url.searchParams.set("rule", ruleName)
+              history.pushState(null, "", url)
+            }}
+          >
+            Export config to URL
+          </Button>
         </div>
       </div>
       <div className="settingui-menu-column">
