@@ -15,11 +15,17 @@ export let defaultColorMap = () => {
   ]
 }
 
-export let defaultState = (): State => {
+export let initialState = (): State => {
   let param = new URLSearchParams(location.search)
 
   let getOr = <T>(key: string, parse: (v: string) => T, alt: () => T) => {
-    return param.has(key) ? parse(param.get(key)!) : alt()
+    if (param.has(key)) {
+      try {
+        return parse(param.get(key)!)
+      } catch {}
+    } else {
+      return alt()
+    }
   }
 
   let adaptiveCanvasSize = (w: Window) => {
@@ -39,6 +45,7 @@ export let defaultState = (): State => {
 
   let rule = getOr("rule", parseNomenclature, randomGoodRule)
   let isElementary = rule.neighborhoodSize === 3 && rule.stateCount === 2
+  const presentationMode = new URLSearchParams(location.search).has("rule") ? "off" : "present"
 
   return {
     rule,
@@ -47,7 +54,7 @@ export let defaultState = (): State => {
     posS: 0,
     posT: 0,
     play: true,
-    presentationMode: "present",
+    presentationMode,
     diffMode: { status: "off" },
     zoom: 1,
     colorMap: defaultColorMap(),

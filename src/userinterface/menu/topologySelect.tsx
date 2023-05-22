@@ -23,14 +23,12 @@ export let topCascaderOptionSet = [
     "Simple",
     "",
     entry("Random 50%", "([01])"),
-    entry("Impulse 1", "(0)1(0)"),
-    entry("Impulse 3", "(0)11(0)"),
+    entry("Random 10%", "([0{9}1])"),
+    entry("Impulse 1", "1(0)"),
   ),
   entry(
     "Random",
     "",
-    entry("Random 50%", "([01])"),
-    entry("Random 10%", "([0{9}1])"),
     entry("Random 90%", "([01{9}])"),
     entry("Step 25%-75%", "([0001])([0111])"),
     entry("Step 10%-90%", "([0{9}1])([01{9}])"),
@@ -40,12 +38,11 @@ export let topCascaderOptionSet = [
     "",
     entry("Step 0-1", "(0)(1)"),
     entry("Step 1-0", "(1)(0)"),
-    entry("Impulse 1", "(0)1(0)"),
-    entry("Impulse -1", "(1)0(1)"),
-    entry("Impulse 3", "(0)11(0)"),
-    entry("Impulse -3", "(1)00(1)"),
-    entry("Impulse 5", "(0)101(0)"),
-    entry("Impulse 7", "(0)111(0)"),
+    entry("Impulse -1", "0(1)"),
+    entry("Impulse 3", "11(0)"),
+    entry("Impulse -3", "00(1)"),
+    entry("Impulse 5", "101(0)"),
+    entry("Impulse 7", "111(0)"),
   ),
   entry(
     "Pattern",
@@ -89,8 +86,13 @@ export let TopBorderSelect = () => {
       options={topCascaderOptionSet}
       onChange={(value, option) => {
         context.updateState((state) => {
-          if (!Array.isArray(option) && option.label.includes("Random")) {
-            act.randomizeSeed(state)
+          if (!Array.isArray(option)) {
+            let lowerLabel = option.label.toLowerCase()
+            if (lowerLabel.includes("random") || lowerLabel.includes("%")) {
+              // Randomize the seed whenever the clicked option label contains
+              // random values
+              act.randomizeSeed(state)
+            }
           }
           state.topology.genesis = parseTopBorder(value)
         })
