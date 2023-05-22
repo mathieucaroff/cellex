@@ -122,13 +122,13 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     "Digit4",
     act.setRandomGenesis("(000[01])"),
     "4",
-    "set the genesis to 50% random but only on four indices",
+    "set the genesis to 50% random but only on every fourth indices",
   )
   onKeypress(
     "Digit6",
     act.setRandomGenesis("(0{5}[01])"),
     "6",
-    "set the genesis to 50% random but only on six indices",
+    "set the genesis to 50% random but only on every sixth indices",
   )
 
   onKeypress("Minus", act.halfZoom, "-", "half the zoom level")

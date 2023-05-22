@@ -113,15 +113,6 @@ export let randomGoodRuleFromDomain = (domain: Domain): Rule => {
   return randomRuleFromDomain(domain)
 }
 
-// thousandSplit add billion markers (__) and thousand markers (_)
-export let thousandSplit = (integer: string) => {
-  let reverse = integer.split("").reverse().join("")
-  reverse = reverse.replace(/([0-9]{9})/g, "$1_")
-  reverse = reverse.replace(/([0-9]{3})/g, "$1_")
-  reverse = reverse.replace(/_+$/, "")
-  return reverse.split("").reverse().join("")
-}
-
 export function computeTransitionFunction(
   neighborhoodSize: number,
   stateCount: number,
@@ -167,6 +158,20 @@ export let colorComplement = (rule: Rule): Rule => {
   return {
     ...rule,
     transitionFunction: rule.transitionFunction.map((c) => rule.stateCount - 1 - c).reverse(),
+  }
+}
+
+export let baseComplement = (rule: Rule): Rule => {
+  return {
+    ...rule,
+    transitionFunction: rule.transitionFunction.map((c) => rule.stateCount - 1 - c),
+  }
+}
+
+export let baseDigitOrderReverse = (rule: Rule): Rule => {
+  return {
+    ...rule,
+    transitionFunction: [...rule.transitionFunction].reverse(),
   }
 }
 

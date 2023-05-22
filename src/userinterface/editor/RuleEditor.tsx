@@ -1,12 +1,19 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 
-import { colorComplement, computeTransitionNumber, leftRightSymmetric } from "../../engine/rule"
+import {
+  baseComplement,
+  baseDigitOrderReverse,
+  colorComplement,
+  computeTransitionNumber,
+  leftRightSymmetric,
+} from "../../engine/rule"
 import { presentNomenclature } from "../../nomenclature/nomenclature"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
 import { randomChoice } from "../../util/randomChoice"
+import { numberToStringWithThousandSplit } from "../../util/thousandSplit"
 import { RuleInfo } from "../RuleInfo"
 import { NumberVariator } from "../components/NumberVariator/NumberVariator"
 import { useStateSelection } from "../hooks"
@@ -101,6 +108,8 @@ export let RuleEditor = () => {
   let complement = colorComplement(rule)
   let symmetric = leftRightSymmetric(rule)
   let both = leftRightSymmetric(complement)
+  let baseXComplement = baseComplement(rule)
+  let baseXReverse = baseDigitOrderReverse(rule)
 
   let identityDifferenceArray: number[] = []
   let identityFunction = rule.transitionFunction.map((v, k) => {
@@ -179,6 +188,27 @@ export let RuleEditor = () => {
         >
           Switch both: {presentNomenclature(both).descriptor}
         </Button>
+        <Button
+          disabled={deepEqual(rule.transitionFunction, baseXComplement.transitionFunction)}
+          onClick={() => {
+            context.updateState(({ rule }) => {
+              rule.transitionFunction = baseXComplement.transitionFunction
+            })
+          }}
+        >
+          Toggle twinkliness: {presentNomenclature(baseXComplement).descriptor}
+        </Button>
+        <Button
+          disabled={deepEqual(rule.transitionFunction, baseXReverse.transitionFunction)}
+          onClick={() => {
+            context.updateState(({ rule }) => {
+              rule.transitionFunction = baseXReverse.transitionFunction
+            })
+          }}
+        >
+          Switch to base ({rule.stateCount}) digit order reverse:{" "}
+          {presentNomenclature(baseXReverse).descriptor}
+        </Button>
       </div>
       {length > 512 ? (
         <></>
@@ -209,8 +239,12 @@ export let RuleEditor = () => {
                 state.rule.transitionFunction = array
               })
             }}
-            titleIncreaseFunction={(k) => `+ ${rule.stateCount ** k}`}
-            titleDecreaseFunction={(k) => `- ${rule.stateCount ** k}`}
+            titleIncreaseFunction={(k) =>
+              `+ ${numberToStringWithThousandSplit(rule.stateCount ** k)}`
+            }
+            titleDecreaseFunction={(k) =>
+              `- ${numberToStringWithThousandSplit(rule.stateCount ** k)}`
+            }
           />
         </div>
       )}

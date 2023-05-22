@@ -1,7 +1,8 @@
 import { default as nearley } from "nearley"
 
-import { computeTransitionFunction, computeTransitionNumber, thousandSplit } from "../engine/rule"
+import { computeTransitionFunction, computeTransitionNumber } from "../engine/rule"
 import { Rule } from "../ruleType"
+import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
 type NomenclatureOutput =

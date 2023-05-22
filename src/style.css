@@ -76,11 +76,6 @@ ul {
   word-break: break-word;
 }
 
-.ruleEditor__controlButtonDiv {
-  margin: 4px;
-  max-width: 1080px;
-}
-
 .ruleEditor__controlButtonDiv button {
   margin: 4px;
   max-width: calc(100vw - 120px);
@@ -103,6 +98,15 @@ ul {
 
 .topMenu > * {
   margin-right: 8px;
+}
+
+/* help table */
+th {
+  text-align: left;
+}
+
+.shortShortcutTable th {
+  width: 16px;
 }
 
 /* settings ui */

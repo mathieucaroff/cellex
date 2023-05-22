@@ -15,9 +15,9 @@ export let HelpContent = (prop: HelpContentProp) => {
     }
     table.push(
       <tr key={k}>
-        <td>
+        <th>
           <kbd>{key}</kbd>
-        </td>
+        </th>
         <td>{description}</td>
       </tr>,
     )
@@ -26,8 +26,8 @@ export let HelpContent = (prop: HelpContentProp) => {
   return (
     <div style={{ width: "600px" }}>
       <p>The following shortcuts are available:</p>
-      <table>{longShortcutTableContent}</table>
-      <table>{shortShortcutTableContent}</table>
+      <table className="longShortcutTable">{longShortcutTableContent}</table>
+      <table className="shortShortcutTable">{shortShortcutTableContent}</table>
       <p>
         [*]moving the camera horizontally is only possible when the simulation is bigger than the
         camera. You can set the camera size (canvas size) in the Display menu, and set the
