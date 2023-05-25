@@ -1,5 +1,5 @@
-import { Cascader } from "antd"
-import { DefaultOptionType } from "antd/lib/cascader"
+import { Cascader, Select } from "antd"
+import { DefaultOptionType } from "antd/lib/select"
 import { useContext, useState } from "react"
 
 import { interestingElementaryRuleSet, ruleSet } from "../engine/rule"
@@ -77,22 +77,39 @@ export let RuleCascader = () => {
 
   return (
     <>
-      <Cascader
-        {...{ title: "Interesting elementary rules" }}
-        value={[]}
-        style={{ maxWidth: "34px" }}
-        options={"e30 e54 e60 e73 e90 e105 e106 e110 e150 e184".split(" ").map(labelValue)}
-        onChange={(array) => {
-          if (!array) {
-            return
-          }
+      <Select
+        title="Select a configuration"
+        value=""
+        style={{ width: "34px" }}
+        dropdownStyle={{ minWidth: "340px", height: "" }}
+        options={generateSupportedConfigurationArray()}
+        listHeight={400}
+        onChange={(value) => {
           context.updateState((state) => {
-            state.rule = parseNomenclature(array.slice(-1)[0].toString())
+            state.rule = parseNomenclature(value)
+          })
+        }}
+      />
+      <Select
+        title="Interesting elementary rules"
+        value=""
+        style={{ width: "34px" }}
+        dropdownStyle={{ minWidth: "110px", height: "" }}
+        options={[
+          {
+            label: "Interesting elementary rules",
+            options: "e30 e54 e60 e73 e90 e105 e106 e110 e150 e184".split(" ").map(labelValue),
+          },
+        ]}
+        listHeight={400}
+        onChange={(value) => {
+          context.updateState((state) => {
+            state.rule = parseNomenclature(value)
           })
         }}
       />
       <Cascader
-        {...{ title: "Elementary rules by category" }}
+        title="Elementary rules by category"
         open={isOpen}
         value={[]}
         onFocus={() => setIsOpen(true)}
@@ -100,14 +117,54 @@ export let RuleCascader = () => {
         style={{ maxWidth: "34px" }}
         options={cascaderOptionSet}
         onChange={(array) => {
-          if (!array) {
-            return
-          }
           context.updateState((state) => {
-            state.rule = parseNomenclature(array.slice(-1)[0].toString())
+            state.rule = parseNomenclature(array.slice(-1)[0])
           })
         }}
       />
     </>
   )
+}
+
+function generateSupportedConfigurationArray() {
+  const labelValue = (s: string) => ({ label: s, value: `${s}, rule 1` })
+
+  const configurationArray: DefaultOptionType[] = []
+
+  let degenerateArray: DefaultOptionType[]
+
+  // iterate on the neighborhood sizes
+  Array.from({ length: 12 }, (_, ns) => {
+    /* prettier-ignore */
+    if (
+      false
+      || ns < 1 || ns > 11 // ns out of bound
+      || ns % 2 === 0 // ns must be odd
+    ) {
+      return
+    }
+
+    const subArray: DefaultOptionType[] = []
+    Array.from({ length: 8 }, (_, c) => {
+      /* prettier-ignore */
+      if (
+        false
+        || c < 2 || c > 7 // c out of bound
+        || c ** ns > 4096 // rule too big
+      ) {
+        return
+      }
+      subArray.push(labelValue(`neighborhood size ${ns}, ${c} colors`))
+    })
+    if (ns === 1) {
+      degenerateArray = subArray
+    } else {
+      let suffix = ns > 3 ? ` (ns ${ns})` : ""
+      configurationArray.push({ label: `Supported configurations${suffix}`, options: subArray })
+    }
+  })
+
+  configurationArray.push({ label: "Degenerate configurations", options: degenerateArray })
+
+  return configurationArray
 }

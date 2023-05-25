@@ -18,7 +18,7 @@ let entry = (label: string, value: string, ...options: DefaultOptionType[]): Def
   return result
 }
 
-export let topCascaderOptionSet = [
+export let topSelectOptionSet = [
   entry(
     "Simple",
     "",
@@ -81,9 +81,9 @@ export let TopBorderSelect = () => {
       open={isOpen}
       onFocus={() => setIsOpen(true)}
       onBlur={() => setIsOpen(false)}
-      style={{ maxWidth: "34px" }}
+      style={{ width: "34px" }}
       dropdownStyle={{ minWidth: "200px" }}
-      options={topCascaderOptionSet}
+      options={topSelectOptionSet}
       onChange={(value, option) => {
         context.updateState((state) => {
           if (!Array.isArray(option)) {
