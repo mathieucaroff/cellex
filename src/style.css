@@ -33,6 +33,16 @@ ul {
   list-style: none !important ;
 }
 
+html.dark {
+  background-color: black;
+  color: white;
+}
+
+html.light {
+  background-color: white;
+  color: black;
+}
+
 .bodyDiv {
   margin-top: 0px;
   margin-left: 16px;

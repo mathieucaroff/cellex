@@ -57,6 +57,7 @@ export let initialState = (): State => {
     presentationMode,
     diffMode: { status: "off" },
     zoom: 1,
+    darkMode: "dark",
     colorMap: defaultColorMap(),
     topology: {
       finitness: "finite",
