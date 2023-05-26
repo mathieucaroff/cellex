@@ -1,8 +1,8 @@
-import { ConfigProvider, theme as antdTheme } from "antd"
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
 
 import * as packageInfo from "../package.json"
+import { App } from "./app"
 import { createAct } from "./control/Act"
 import { createInfo } from "./control/Info"
 import { keyboardBinding } from "./control/KeyboardBinding"
@@ -79,17 +79,7 @@ function main() {
   appRoot.appendChild(span)
 
   let reactRoot = ReactDOM.createRoot(span)
-  reactRoot.render(
-    React.createElement(
-      ReactContext.Provider,
-      { value: { act, context } },
-      React.createElement(
-        ConfigProvider,
-        { theme: { algorithm: [antdTheme.darkAlgorithm] } },
-        React.createElement(UserInterface, { helpList, displayDiv }),
-      ),
-    ),
-  )
+  reactRoot.render(React.createElement(App, { act, context, helpList, displayDiv }))
 
   // /\ display
   let display = createDisplay(canvas)

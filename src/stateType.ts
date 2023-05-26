@@ -9,6 +9,8 @@ export interface StatePosition {
   redraw: boolean
 }
 
+export type DarkMode = "dark" | "light"
+
 /**
  * @param postS Spatial position
  * @param postT Temporal position
@@ -19,6 +21,7 @@ export interface State extends StatePosition {
   speed: number
   play: boolean
   zoom: number
+  darkMode: DarkMode
   colorMap: Color[]
   presentationMode: "present" | "off"
   diffMode: DiffMode

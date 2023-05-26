@@ -29,13 +29,8 @@ export let TopMenu = (prop: TopMenuProp) => {
         icon={<DiffOutlined />}
         onClick={() => act.toggleDifferentialMode()}
       />
-      <Popover
-        placement="bottomLeft"
-        title="Help"
-        content={<HelpContent helpList={helpList} />}
-        trigger="click"
-      >
-        <Button>?</Button>
+      <Popover placement="bottomLeft" content={<HelpContent helpList={helpList} />} trigger="click">
+        <Button title="Help">?</Button>
       </Popover>
     </div>
   )
