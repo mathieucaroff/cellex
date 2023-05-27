@@ -220,7 +220,7 @@ function main() {
             Math.random() < 0.5
           ) {
             // impulse genesis
-            state.topology.genesis = parseTopBorder("(0)1(0)")
+            state.topology.genesis = parseTopBorder("1(0)")
           } else {
             // random genesis
             state.topology.genesis = parseTopBorder("([01])")

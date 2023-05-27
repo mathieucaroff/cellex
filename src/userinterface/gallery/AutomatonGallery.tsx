@@ -26,14 +26,11 @@ export function AutomatonGallery() {
     label: k,
     value: k,
   }))
-  elementaryAutomataFilterOptionArray.unshift(labelValue("Interesting"))
   elementaryAutomataFilterOptionArray.unshift(labelValue("All"))
 
   let currentEAFilterSet: number[]
   if (currentEAFilter === "All") {
     currentEAFilterSet = Array.from({ length: 256 }, (_, k) => k)
-  } else if (currentEAFilter === "Interesting") {
-    currentEAFilterSet = [30, 54, 60, 73, 90, 105, 106, 110, 150, 184]
   } else if (interestingElementaryRuleSet[currentEAFilter]) {
     currentEAFilterSet = interestingElementaryRuleSet[currentEAFilter]
   } else {

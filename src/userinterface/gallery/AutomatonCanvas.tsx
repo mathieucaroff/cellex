@@ -40,7 +40,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
 
     // draw
     fillImage(engine, ctx, canvas.width, canvas.width, canvas.height, 0, 0, 0, 0, colorMap)
-  }, [seedString])
+  }, [seedString, JSON.stringify(colorMap)])
 
   // set the state on click
   const handleClick = () => {
