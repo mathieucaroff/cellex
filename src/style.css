@@ -134,7 +134,13 @@ th {
   margin: 1px;
 }
 
-.elementaryAutomatonOverview > div {
+.automatonPreview p {
+  margin: 0;
+  margin-bottom: 2px;
+}
+
+.elementaryAutomatonOverview > div,
+.curatedLargeAutomata > div {
   display: inline-block;
   margin: 8px;
 }
