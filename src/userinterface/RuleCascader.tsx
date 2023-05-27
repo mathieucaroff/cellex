@@ -78,11 +78,11 @@ export let RuleCascader = () => {
   return (
     <>
       <Select
-        title="Select a configuration"
+        title="Select a domain"
         value=""
         style={{ width: "34px" }}
         dropdownStyle={{ minWidth: "340px", height: "" }}
-        options={generateSupportedConfigurationArray()}
+        options={generateSupportedDomainArray()}
         listHeight={400}
         onChange={(value) => {
           context.updateState((state) => {
@@ -126,10 +126,10 @@ export let RuleCascader = () => {
   )
 }
 
-function generateSupportedConfigurationArray() {
+function generateSupportedDomainArray() {
   const labelValue = (s: string) => ({ label: s, value: `${s}, rule 1` })
 
-  const configurationArray: DefaultOptionType[] = []
+  const domainArray: DefaultOptionType[] = []
 
   let degenerateArray: DefaultOptionType[]
 
@@ -159,12 +159,12 @@ function generateSupportedConfigurationArray() {
     if (ns === 1) {
       degenerateArray = subArray
     } else {
-      let suffix = ns > 3 ? ` (ns ${ns})` : ""
-      configurationArray.push({ label: `Supported configurations${suffix}`, options: subArray })
+      let suffix = ns > 3 ? ` of neighborhood size ${ns}` : ""
+      domainArray.push({ label: `Domains${suffix}`, options: subArray })
     }
   })
 
-  configurationArray.push({ label: "Degenerate configurations", options: degenerateArray })
+  domainArray.push({ label: "Degenerate domains", options: degenerateArray })
 
-  return configurationArray
+  return domainArray
 }
