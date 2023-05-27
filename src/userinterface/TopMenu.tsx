@@ -3,7 +3,6 @@ import { Button, Popover } from "antd"
 
 import { Act } from "../control/Act"
 import { DiffMode } from "../diffType"
-import { GalleryButton } from "./gallery/GalleryButton"
 import { HelpContent } from "./menu/HelpContent"
 import { SettingsUI } from "./menu/SettingsUI"
 
@@ -18,8 +17,6 @@ export let TopMenu = (prop: TopMenuProp) => {
 
   return (
     <div className="topMenu">
-      <GalleryButton />
-
       <Popover placement="bottom" title="Settings" content={<SettingsUI />} trigger="click">
         <Button>
           <i className="fa fa-cog" />

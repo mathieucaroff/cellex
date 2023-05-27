@@ -1,10 +1,13 @@
 import { Collapse, Select } from "antd"
 import { ReactNode, useState } from "react"
 
-import { interestingElementaryRuleSet, ruleSet } from "../../engine/rule"
+import {
+  curatedLargeAutomatonArray,
+  interestingElementaryRuleSet,
+  ruleSet,
+} from "../../engine/rule"
 import { wolframClassInfo } from "../../engine/wolframClassInfo"
 import { labelValue } from "../../util/labelValue"
-import { curatedLargeAutomatonArray } from "../RuleCascader"
 import { AutomatonPreview } from "./AutomatonPreview"
 
 const { Panel } = Collapse
@@ -18,15 +21,24 @@ export function AutomatonGallery() {
   }
 
   // Filtering
-  let [currentEAFilter, setEAFilter] = useState("All")
+  let [currentEAFilter, setEAFilter] = useState("Interesting")
   let elementaryAutomataFilterOptionArray = Object.keys(interestingElementaryRuleSet).map((k) => ({
     label: k,
     value: k,
   }))
-  elementaryAutomataFilterOptionArray.unshift({ label: "All", value: "All" })
+  elementaryAutomataFilterOptionArray.unshift(labelValue("Interesting"))
+  elementaryAutomataFilterOptionArray.unshift(labelValue("All"))
 
-  let currentEAFilterSet: number[] =
-    interestingElementaryRuleSet[currentEAFilter] ?? Array.from({ length: 256 }, (_, k) => k)
+  let currentEAFilterSet: number[]
+  if (currentEAFilter === "All") {
+    currentEAFilterSet = Array.from({ length: 256 }, (_, k) => k)
+  } else if (currentEAFilter === "Interesting") {
+    currentEAFilterSet = [30, 54, 60, 73, 90, 105, 106, 110, 150, 184]
+  } else if (interestingElementaryRuleSet[currentEAFilter]) {
+    currentEAFilterSet = interestingElementaryRuleSet[currentEAFilter]
+  } else {
+    throw new Error("unknown filter " + currentEAFilter)
+  }
 
   // Grouping
   let [currentEAGrouping, setEAGrouping] = useState("None")
@@ -112,7 +124,6 @@ export function AutomatonGallery() {
             value={currentEAFilter}
             options={elementaryAutomataFilterOptionArray}
             onChange={(value) => {
-              console.log("value", value)
               setEAFilter(value)
             }}
             style={{ width: 120 }}

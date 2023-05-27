@@ -34,7 +34,7 @@ export function GalleryButton() {
 
   return (
     <>
-      <Button onClick={setGalleryOpen}>🎨Gallery</Button>
+      <Button onClick={setGalleryOpen}>🎨 Gallery</Button>
       <Modal
         open
         title="Automaton Gallery"
