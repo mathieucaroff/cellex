@@ -62,7 +62,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             <Space.Compact>
               <TopBorderSelect />
               <OxEnterInput
-                title="genesis: set the initial generation"
+                title="Set the simluation genesis"
                 path="topology.genesis"
                 style={{ width: "initial" }}
                 present={presentTopBorder}

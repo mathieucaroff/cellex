@@ -15,9 +15,8 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
   - [Rule Editor](#rule-editor)
     - [Simulation topology selector](#simulation-topology-selector)
     - [Simulation border fields](#simulation-border-fields)
-  - [Display Controller](#display-controller)
     - [Zoom](#zoom)
-    - [Canvas width and height and Zoom canvas width and height](#canvas-width-and-height-and-zoom-canvas-width-and-height)
+    - [Canvas width and height](#canvas-width-and-height)
     - [Generation and spatial position](#generation-and-spatial-position)
 
 # Base interface
@@ -30,24 +29,32 @@ The application includes the following parts:
 
 ## View
 
-The view displays the current cellular automaton. It is composed of a **main canvas**, to the left, as well as a **zoom canvas**, on the right. The main canvas displays the automaton at a scale of one pixel per cell. The zoom canvas zooms on a part of the main canvas. The zoom factor can be adjusted in the **Display menu**.
+The view canvas supports click and drag, allowing panning using the mouse. It also supports resizing by clicking and dragging the bottom right corner.
 
-Both canvas of the view support click and drag, allowing panning using the mouse. They also support resizing by clicking and dragging the bottom right corner. Note that when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered. Also note that the heights of the two canvas are tied together.
+Please note that:
+- when the zoomed simulation is of the same width or of smaller width than the canvas, the view of the simulation is locked in the center of the canvas and the horizontal canvas moves are not possible
+- when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered. Also note that the heights of the two canvas are tied together.
 
-The view, when selected, also supports the following keyboard actions:
+The following shortcuts are available:
 
-- Space does play/pause
-- Enter plays a single step of cellular automaton
-- `-` and `+` do zoom decrease and increase (`_` and `=` work too)
-- `[` and `]` do halving and doubling the play speed
-- `{`, `|` and `}` do go to the left end, the center or the right end
+- Arrows to pan the camera by small steps
+- Page up/down and home/end to pan the camera by large steps
+- `-` and `+` to decrease and increase the zoom level (`_` and `=` work too)
+- `[` and `]` to half and double the play speed
+- `{`, `|` and `}` to move the camera to the left end, the center or the right end of the simulation
+- `0` to reset the simulation to the beginning
 - The directional arrows move the camera in the given direction by a twelfth
   of the width or of the height of the view
 - The Home / End / PageUp / PageDown keys move the camera by the full width or height of the view
 
+When the view is selected, it also supports the following keyboard actions:
+
+- Space does play/pause
+- Enter plays a single step of cellular automaton
+
 ## Top Toolbar
 
-The top toolbar is composed of a **play/pause** button, as well as a **rule input widget**
+The top toolbar is composed of a **play/pause** button, a **rule input widget** and a **genesis selector**.
 
 ### Rule Input Widget
 
@@ -127,29 +134,15 @@ Here are commented examples of valid side borders:
 - `(0001)` is the border that is alive only every four generations
 - `(000[01])` is the border that has a 50% chance of being alive every 4 generations.
 
-## Display Controller
-
-All the controls in this pane influence the values used for displaying the computation, but none influence the way it is computed.
-
-The display controller has 7 number inputs and a few more buttons. These are:
-
-- Zoom
-- Width, Height
-- Generation, Spatial Position
-- Speed
-- "Show all panning buttons" checkbox
-
 ### Zoom
 
 The zoom field controls how big cells are in the zoomed up view. The size of a single square cell will be `S x S` S is the zoom value.
 
-Constraints:
+Note the `x2` and `/2` buttons will refuse to go past 0.25 or past 64.
 
-The zoom must be a value between 2 and 64 included.
+### Canvas width and height
 
-### Canvas width and height and Zoom canvas width and height
-
-The width and the height field allow reading and setting the size of each of the two canvas, in pixel. There also are resize handles in the bottom right corner of each canvas.
+The width and the height field allow reading and setting the size the canvas, in pixel. There is a resize handle in the bottom right corner of the canvas.
 
 ### Generation and spatial position
 
@@ -168,4 +161,4 @@ precise reading and setting of the spatial position and the generation.
 Constraints:
 
 - The generation must be a positive number
-- The spatial position must belong to a range that is dynamically computed, depending on the simulation width and the canvas width. That range is centered on 0 and the size of the range is the difference between the simulation width and the canvas width. If that difference is negative, then the size of the range is 0.
+- The spatial position must belong to a range that is dynamically computed, depending on the simulation width and the canvas width. That range is centered on 0 and the size of the range is the difference between the simulation width and the canvas width, taking zoom into account. If that difference turns out to be negative, then the size of the range is 0.

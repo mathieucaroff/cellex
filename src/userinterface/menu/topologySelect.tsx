@@ -77,6 +77,7 @@ export let TopBorderSelect = () => {
 
   return (
     <Select<string, { label: any }>
+      title="Select a genesis"
       value={""}
       open={isOpen}
       onFocus={() => setIsOpen(true)}
