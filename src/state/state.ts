@@ -53,7 +53,7 @@ export let initialState = (): State => {
     speed: 1,
     posS: 0,
     posT: 0,
-    play: true,
+    play: false,
     presentationMode,
     diffMode: { status: "off" },
     zoom: 1,

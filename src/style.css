@@ -120,9 +120,21 @@ th {
 }
 
 /* settings ui */
-.settingui-menu-column {
+.settingsUiMenuColumn {
   display: inline-flex;
   align-content: start;
   margin: 10px;
   margin-top: 0;
+}
+
+/* automaton preview */
+.automatonOverview {
+  border: solid 1px #444;
+  cursor: pointer;
+  margin: 1px;
+}
+
+.elementaryAutomatonOverview > div {
+  display: inline-block;
+  margin: 8px;
 }

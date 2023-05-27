@@ -8,6 +8,7 @@ import { presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/ReactContext"
 import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
+import { ElementaryAutomatonOverview } from "./automatonOverview/ElementaryAutomatonOverview"
 import { OxEnterInput, OxSelect } from "./component"
 import { RuleEditor } from "./editor/RuleEditor"
 import { DivGraft } from "./graft"
@@ -87,6 +88,9 @@ export let UserInterface = (prop: UserInterfaceProp) => {
           key="ruleEditor"
         >
           <RuleEditor />
+        </Panel>
+        <Panel header={`Elementary Automaton Overview`} key="elementary-automaton-preview">
+          <ElementaryAutomatonOverview />
         </Panel>
         <Panel header={`Documentation`} key="documentation">
           <Documentation />
