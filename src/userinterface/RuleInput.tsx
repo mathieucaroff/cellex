@@ -1,10 +1,8 @@
 import { Space } from "antd"
-import { useContext } from "react"
 
 import { randomGoodRule, randomGoodRuleFromDomain } from "../engine/rule"
 import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
 import { Rule } from "../ruleType"
-import { ReactContext } from "../state/ReactContext"
 import { DomainSelect } from "./DomainSelect"
 import { OxEnterInput } from "./component"
 import { useStateSelection } from "./hooks"
@@ -18,7 +16,7 @@ export let RuleInput = () => {
       <OxEnterInput
         path="rule"
         id="ruleInput"
-        title="set rule"
+        title="Set the simulated rule"
         style={{ width: "initial" }}
         present={(rule: Rule) => presentNomenclature(rule).descriptor}
         parse={parseNomenclature}

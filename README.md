@@ -3,7 +3,13 @@
 A monodimensional cellular automaton explorer. Unlike CellexP, it supports
 **arbitrary rules**, not just the elementary cellular automata.
 
+### Cellex main view
+
 [![Cellex screencap](doc/img/cellex-screencap.png)](https://mathieucaroff.com/cellex)
+
+### Cellex Gallery
+
+[![Cellex gallery screencap](doc/img/cellex-gallery-screencap.png)](https://mathieucaroff.com/cellex)
 
 ## Features
 
