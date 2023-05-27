@@ -1,4 +1,5 @@
 import { Domain, Rule } from "../ruleType"
+import { labelValue } from "../util/labelValue"
 import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
 // prettier-ignore
@@ -176,7 +177,7 @@ export let baseDigitOrderReverse = (rule: Rule): Rule => {
 }
 
 // Generate the elementary automata rule set, classifying each of them according to their symmetries
-let generateRuleSet = () => {
+function generateRuleSet() {
   let ruleGroup = {
     both: [] as number[],
     color: [] as number[][],
@@ -212,7 +213,7 @@ let generateRuleSet = () => {
     } else if (value < complement && value < symmetric && value < both) {
       let entry = [value, symmetric, complement, both]
       ruleGroup.four.push(entry)
-      if (value <= 42) {
+      if (value <= 41) {
         ruleGroup.fourA.push(entry)
       } else {
         ruleGroup.fourB.push(entry)

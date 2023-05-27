@@ -47,6 +47,8 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
     context.updateState((s) => {
       s.rule = rule
       s.topology.genesis = genesis
+      s.posT = 0
+      s.posS = 0
       s.galleryIsOpen = false
     })
   }

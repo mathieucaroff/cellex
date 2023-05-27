@@ -5,9 +5,19 @@ import { useContext, useState } from "react"
 import { interestingElementaryRuleSet, ruleSet } from "../engine/rule"
 import { parseNomenclature } from "../nomenclature/nomenclature"
 import { ReactContext } from "../state/ReactContext"
+import { labelValue } from "../util/labelValue"
 import { limitLength } from "../util/limitLength"
 
-let labelValue = (s: string) => ({ label: s, value: s })
+let cascaderOptionSet: DefaultOptionType[] = Object.entries(interestingElementaryRuleSet).map(
+  ([name, valueArray]) => {
+    return {
+      ...labelValue(name),
+      children: valueArray.map((v) => labelValue("e" + v)),
+    }
+  },
+)
+
+// compute and add groupedOptions to cascaderOptionSet
 let entryFrom = (label: string, ruleArray: number[]) => ({
   label,
   value: label,
@@ -21,16 +31,7 @@ let multiEntryFrom = (label: string, deepRuleArray: number[][]) => ({
   })),
 })
 
-let cascaderOptionSet: DefaultOptionType[] = Object.entries(interestingElementaryRuleSet).map(
-  ([name, valueArray]) => {
-    return {
-      ...labelValue(name),
-      children: valueArray.map((v) => labelValue("e" + v)),
-    }
-  },
-)
-
-cascaderOptionSet.unshift({
+const groupedOptions = {
   ...labelValue("Grouped"),
   children: [
     entryFrom("Single (fully-self-symmetric)", ruleSet.both),
@@ -40,7 +41,9 @@ cascaderOptionSet.unshift({
     multiEntryFrom("Group of four ordinary rules", ruleSet.fourA),
     multiEntryFrom("Group of four ordinary continuation", ruleSet.fourB),
   ],
-})
+}
+
+cascaderOptionSet.unshift(groupedOptions)
 
 export const curatedLargeAutomatonArray = [
   "Cascade 3c,r4_880__842_232_460",
