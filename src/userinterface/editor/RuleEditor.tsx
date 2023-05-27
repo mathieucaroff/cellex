@@ -92,18 +92,19 @@ export let RuleEditor = () => {
     return [position, ""]
   }
 
-  let changeColor =
-    (delta: number, exact: boolean) => (ev: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
-      ev.preventDefault()
-      let { stateCount, transitionFunction } = rule
-      let [position, error] = getPosition(ev, exact)
-      if (error) {
-        return
-      }
-      context.updateState(() => {
-        transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
-      })
+  let clickChangeColor = (ev: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+    let delta = ev.button === 0 ? 1 : -1
+    let exact = true
+    ev.preventDefault()
+    let { stateCount, transitionFunction } = rule
+    let [position, error] = getPosition(ev, exact)
+    if (error) {
+      return
     }
+    context.updateState(() => {
+      transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
+    })
+  }
 
   let complement = colorComplement(rule)
   let symmetric = leftRightSymmetric(rule)
@@ -252,7 +253,7 @@ export let RuleEditor = () => {
         className="ruleEditorCanvas"
         style={{ display: "table" }}
         ref={canvasRef}
-        onMouseDown={(ev) => changeColor(ev.button === 1 ? 1 : -1, true)(ev)}
+        onMouseDown={clickChangeColor}
       />
       <RuleInfo />
       <ul>

@@ -17,7 +17,7 @@ export let TopMenu = (prop: TopMenuProp) => {
 
   return (
     <div className="topMenu">
-      <Popover placement="bottomLeft" title="Settings" content={<SettingsUI />} trigger="click">
+      <Popover placement="bottom" title="Settings" content={<SettingsUI />} trigger="click">
         <Button>
           <i className="fa fa-cog" />
           Settings
