@@ -1,5 +1,5 @@
 import { Button, Modal } from "antd"
-import { useContext, useLayoutEffect, useRef } from "react"
+import { useContext, useLayoutEffect } from "react"
 
 import { ReactContext } from "../../state/ReactContext"
 import { useStateSelection } from "../hooks"
@@ -25,8 +25,10 @@ export function GalleryButton() {
     let modalRoot = document.querySelector<HTMLDivElement>(".ant-modal-root")
     if (isOpen) {
       modalRoot.classList.add("oxModalIsOpen")
+      document.body.classList.remove("overflowYAuto")
     } else {
       modalRoot.classList.remove("oxModalIsOpen")
+      document.body.classList.add("overflowYAuto")
     }
   }, [isOpen])
 

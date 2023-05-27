@@ -146,7 +146,8 @@ th {
 }
 
 .elementaryAutomatonOverview > div,
-.curatedLargeAutomata > div {
+.curatedLargeAutomata > div,
+.groupedElementaryAutomata .ant-collapse-content-box > div > div {
   display: inline-block;
   margin: 8px;
 }
@@ -172,4 +173,8 @@ th {
 .ant-modal-root.oxModalIsOpen .ant-modal {
   transform: translateY(0) scale(1);
   transition: 0.4s;
+}
+
+.overflowYAuto {
+  overflow-y: auto;
 }

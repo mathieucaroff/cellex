@@ -41,7 +41,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
         <h1 className="title" title="Cellex">
           Cellex
         </h1>
-        <p className="subtitle">Monodimensional Cellular Automaton Explorer</p>
+        <p className="subtitle">Unidimensional Cellular Automaton Explorer</p>
       </div>
       <Space direction="vertical">
         <div>
