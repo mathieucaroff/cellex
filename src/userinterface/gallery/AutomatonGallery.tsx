@@ -2,6 +2,7 @@ import { Collapse, Select } from "antd"
 import { ReactNode, useState } from "react"
 
 import { interestingElementaryRuleSet, ruleSet } from "../../engine/rule"
+import { wolframClassInfo } from "../../engine/wolframClassInfo"
 import { labelValue } from "../../util/labelValue"
 import { curatedLargeAutomatonArray } from "../RuleCascader"
 import { AutomatonPreview } from "./AutomatonPreview"
@@ -70,6 +71,16 @@ export function AutomatonGallery() {
         </Panel>
       </Collapse>
     )
+  } else if (currentEAGrouping === "Wolfram Classes") {
+    groupedElementaryAutomata = (
+      <Collapse className="groupedElementaryAutomataWolframClasses">
+        {Object.entries(wolframClassInfo).map(([name, ruleArray]) => (
+          <Panel key={name} header={`${name} (${ruleArray.length} rules)`}>
+            {ruleArray.map(elementaryAutomatonPreview)}
+          </Panel>
+        ))}
+      </Collapse>
+    )
   }
 
   return (
@@ -86,12 +97,12 @@ export function AutomatonGallery() {
         <strong>Grouping </strong>
         <Select
           value={currentEAGrouping}
-          options={["None", "Symmetries"].map(labelValue)}
+          options={["None", "Symmetries", "Wolfram Classes"].map(labelValue)}
           onChange={(value) => {
             console.log("value", value)
             setEAGrouping(value)
           }}
-          style={{ width: 120 }}
+          style={{ width: 160 }}
         />
       </div>
       {currentEAGrouping === "None" && (
