@@ -1,25 +1,22 @@
 import { Domain, Rule } from "../ruleType"
-import { labelValue } from "../util/labelValue"
 import { limitLength } from "../util/limitLength"
 import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
 // prettier-ignore
 export const interestingElementaryRuleSet = {
-  "Famous":     [30, 90, 110, 184],
-  "Class 4":    [54, 106, 110],
-  "XOR":        [60, 90, 105, 150],
-  "Triangle":   [18, 22, 26, 30, 122, 126, 146, 150, 154],
-  "Primitives": [0, 255, 204, 51, 170, 240],
-  "Twinkling":  [15, 41, 45, 51, 62, 73, 91, 94, 105],
+  "Interesting": [30, 54, 60, 73, 90, 105, 106, 110, 150, 184],
+  "Triangle":    [18, 22, 26, 30, 122, 126, 146, 150, 154],
+  "Twinkling":   [15, 41, 45, 51, 62, 73, 91, 94, 105],
+  "XOR":         [60, 90, 105, 150],
+  "Primitives":  [0, 255, 204, 51, 170, 240],
 }
 
 let set = interestingElementaryRuleSet
 export const interestingElementaryRuleArray = ([] as number[]).concat(
-  set.Famous,
-  set["Class 4"],
-  set.XOR,
+  set.Interesting,
   set.Triangle,
   set.Twinkling.filter((x) => ![15, 51, 91, 94].includes(x)),
+  set.XOR,
 )
 
 // elementaryRule produces a rule

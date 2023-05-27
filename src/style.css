@@ -167,7 +167,7 @@ th {
 
 
 .ant-modal-root .ant-modal {
-  transform: translateY(-45vh) scale(0);
+  transform: translate(-45vw, -45vh) scale(0);
   transition: 0.4s;
 }
 
