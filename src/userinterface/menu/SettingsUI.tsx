@@ -29,7 +29,7 @@ export let SettingsUI = () => {
 
   return (
     <div>
-      <div className="settingui-menu-column">
+      <div className="settingsUiMenuColumn">
         <div>
           <p>
             <i className="fa fa-television" /> Display
@@ -121,7 +121,7 @@ export let SettingsUI = () => {
           </ul>
         </div>
       </div>
-      <div className="settingui-menu-column">
+      <div className="settingsUiMenuColumn">
         <div>
           <p>
             <i className="fa fa-circle-o" /> Topology
@@ -216,7 +216,7 @@ export let SettingsUI = () => {
           </Button>
         </div>
       </div>
-      <div className="settingui-menu-column">
+      <div className="settingsUiMenuColumn">
         <div>
           <p>
             <i>🎨</i> Palette
