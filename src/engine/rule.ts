@@ -183,8 +183,8 @@ let generateRuleSet = () => {
     leftright: [] as number[][],
     leftrightcolor: [] as number[][],
     four: [] as number[][],
-    four_a: [] as number[][],
-    four_b: [] as number[][],
+    fourA: [] as number[][],
+    fourB: [] as number[][],
   }
 
   Array.from({ length: 256 }, (_, value) => {
@@ -213,9 +213,9 @@ let generateRuleSet = () => {
       let entry = [value, symmetric, complement, both]
       ruleGroup.four.push(entry)
       if (value <= 42) {
-        ruleGroup.four_a.push(entry)
+        ruleGroup.fourA.push(entry)
       } else {
-        ruleGroup.four_b.push(entry)
+        ruleGroup.fourB.push(entry)
       }
     }
   })

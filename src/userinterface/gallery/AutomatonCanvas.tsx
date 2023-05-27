@@ -15,7 +15,7 @@ export interface AutomatonOverviewProp {
   height: number
 }
 
-export function AutomatonOverview(prop: AutomatonOverviewProp) {
+export function AutomatonCanvas(prop: AutomatonOverviewProp) {
   let { context } = useContext(ReactContext)
   let [seedString, colorMap] = useStateSelection((s) => [s.seed, s.colorMap])
 
@@ -40,7 +40,7 @@ export function AutomatonOverview(prop: AutomatonOverviewProp) {
 
     // draw
     fillImage(engine, ctx, canvas.width, canvas.width, canvas.height, 0, 0, 0, 0, colorMap)
-  }, [])
+  }, [seedString])
 
   // set the state on click
   const handleClick = () => {
