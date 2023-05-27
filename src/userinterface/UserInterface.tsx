@@ -10,7 +10,6 @@ import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
 import { OxEnterInput, OxSelect } from "./component"
 import { RuleEditor } from "./editor/RuleEditor"
-import { AutomatonGallery } from "./gallery/AutomatonGallery"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
 import { Documentation } from "./markdown/documentation"
@@ -88,9 +87,6 @@ export let UserInterface = (prop: UserInterfaceProp) => {
           key="ruleEditor"
         >
           <RuleEditor />
-        </Panel>
-        <Panel header={`Automaton Gallery`} key="automatonGallery">
-          <AutomatonGallery />
         </Panel>
         <Panel header={`Documentation`} key="documentation">
           <Documentation />

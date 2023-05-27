@@ -127,7 +127,13 @@ th {
   margin-top: 0;
 }
 
-/* automaton preview */
+/* automaton gallery */
+.automatonGalleryModal {
+  min-height: 75vh;
+  max-height: 75vh;
+  overflow-y: scroll;
+}
+
 .automatonOverview {
   border: solid 1px #444;
   cursor: pointer;
@@ -143,4 +149,27 @@ th {
 .curatedLargeAutomata > div {
   display: inline-block;
   margin: 8px;
+}
+
+/* modal override */
+
+.ant-modal-root {
+  visibility: hidden;
+  transition: 0.4s linear;
+}
+
+.ant-modal-root.oxModalIsOpen {
+  visibility: visible;
+  transition: 0.4s linear;
+}
+
+
+.ant-modal-root .ant-modal {
+  transform: translateY(-45vh) scale(0);
+  transition: 0.4s;
+}
+
+.ant-modal-root.oxModalIsOpen .ant-modal {
+  transform: translateY(0) scale(1);
+  transition: 0.4s;
 }
