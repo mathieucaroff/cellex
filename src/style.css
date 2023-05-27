@@ -131,7 +131,7 @@ th {
 .automatonGalleryModal {
   min-height: 75vh;
   max-height: 75vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .automatonOverview {
@@ -147,7 +147,8 @@ th {
 
 .elementaryAutomatonOverview > div,
 .curatedLargeAutomata > div,
-.groupedElementaryAutomata .ant-collapse-content-box > div > div {
+.groupedElementaryAutomata .ant-collapse-content-box > div > div,
+.groupedElementaryAutomataWolframClasses .ant-collapse-content-box > div {
   display: inline-block;
   margin: 8px;
 }
