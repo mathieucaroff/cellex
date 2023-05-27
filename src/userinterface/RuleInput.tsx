@@ -5,17 +5,16 @@ import { randomGoodRule, randomGoodRuleFromDomain } from "../engine/rule"
 import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
 import { Rule } from "../ruleType"
 import { ReactContext } from "../state/ReactContext"
-import { RuleCascader } from "./RuleCascader"
+import { DomainSelect } from "./DomainSelect"
 import { OxEnterInput } from "./component"
 import { useStateSelection } from "./hooks"
 
 export let RuleInput = () => {
-  let { act } = useContext(ReactContext)
   let rule = useStateSelection(({ rule }) => rule)
 
   return (
     <Space.Compact>
-      <RuleCascader />
+      <DomainSelect />
       <OxEnterInput
         path="rule"
         id="ruleInput"

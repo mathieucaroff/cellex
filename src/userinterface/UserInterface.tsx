@@ -10,6 +10,7 @@ import { RuleInput } from "./RuleInput"
 import { TopMenu } from "./TopMenu"
 import { OxEnterInput, OxSelect } from "./component"
 import { RuleEditor } from "./editor/RuleEditor"
+import { GalleryButton } from "./gallery/GalleryButton"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
 import { Documentation } from "./markdown/documentation"
@@ -53,6 +54,9 @@ export let UserInterface = (prop: UserInterfaceProp) => {
               icon={play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
               onClick={() => act.togglePlay()}
             />
+
+            <GalleryButton />
+
             <RuleInput />
 
             <Space.Compact>
