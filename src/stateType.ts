@@ -32,4 +32,6 @@ export interface State extends StatePosition {
     width: number
     height: number
   }
+
+  galleryIsOpen: boolean
 }

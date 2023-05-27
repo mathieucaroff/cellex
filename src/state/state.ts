@@ -82,5 +82,7 @@ export let initialState = (): State => {
     redraw: false,
 
     canvasSize: adaptiveCanvasSize(window),
+
+    galleryIsOpen: false,
   }
 }
