@@ -2,7 +2,7 @@ import * as React from "react"
 import * as ReactDOM from "react-dom/client"
 
 import * as packageInfo from "../package.json"
-import { App } from "./Epp"
+import { App } from "./App"
 import { createAct } from "./control/Act"
 import { createInfo } from "./control/Info"
 import { keyboardBinding } from "./control/KeyboardBinding"
