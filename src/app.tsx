@@ -2,6 +2,7 @@ import { ConfigProvider, theme as antdTheme } from "antd"
 import { useEffect, useState } from "react"
 
 import { Act } from "./control/Act"
+import { Info } from "./control/Info"
 import { Context } from "./state/Context"
 import { ReactContext } from "./state/ReactContext"
 import { DarkMode } from "./stateType"
@@ -10,12 +11,13 @@ import { UserInterface } from "./userinterface/UserInterface"
 export interface AppProp {
   act: Act
   context: Context
+  info: Info
   helpList: [string, string][]
   displayDiv: HTMLDivElement
 }
 
 export function App(prop: AppProp) {
-  const { act, context, helpList, displayDiv } = prop
+  const { act, context, info, helpList, displayDiv } = prop
 
   let [darkMode, setDarkMode] = useState<DarkMode>(() => context.getState().darkMode)
   useEffect(() => {
@@ -28,7 +30,7 @@ export function App(prop: AppProp) {
   }, [])
 
   return (
-    <ReactContext.Provider value={{ act, context }}>
+    <ReactContext.Provider value={{ act, context, info }}>
       <ConfigProvider theme={{ algorithm: darkMode === "dark" ? [antdTheme.darkAlgorithm] : [] }}>
         <UserInterface helpList={helpList} displayDiv={displayDiv} />
       </ConfigProvider>

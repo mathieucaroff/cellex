@@ -37,6 +37,10 @@ export let createContext = (state: State) => {
             propertyUtilizationShelf.push([selector, deepCopy(selection), runFunction])
             done = true
           }
+          // return the removal function
+          return () => {
+            propertyUtilizationShelf.filter(([s, dc, f]) => s !== selector || f !== runFunction)
+          }
         },
       }
     },
@@ -79,8 +83,10 @@ export let createContext = (state: State) => {
       }
     },
     usePosition(runFunction: (pos: StatePosition, st: State) => unknown) {
-      runFunction(state, state)
       positionShelf.push(runFunction)
+      runFunction(state, state)
+
+      // return the removal function
       return () => {
         positionShelf = positionShelf.filter((fn) => fn !== runFunction)
       }
