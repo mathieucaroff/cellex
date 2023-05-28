@@ -4,7 +4,7 @@ import { randomGoodRule, randomGoodRuleFromDomain } from "../engine/rule"
 import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
 import { Rule } from "../ruleType"
 import { DomainSelect } from "./DomainSelect"
-import { OxEnterInput } from "./component"
+import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
 import { useStateSelection } from "./hooks"
 
 export let RuleInput = () => {
