@@ -21,7 +21,7 @@ export function AutomatonGallery() {
   }
 
   // Filtering
-  let [currentEAFilter, setEAFilter] = useState("Interesting")
+  let [currentEAFilter, setEAFilter] = useState("All")
   let elementaryAutomataFilterOptionArray = Object.keys(interestingElementaryRuleSet).map((k) => ({
     label: k,
     value: k,

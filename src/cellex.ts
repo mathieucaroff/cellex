@@ -201,32 +201,42 @@ function main() {
   // \/ diff mode
 
   // /\ presentation mode
-  context.usePosition(({ posT }, { zoom }) => {
-    if (state.presentationMode === "present" && posT * zoom >= state.canvasSize.height) {
-      context.updateState((state) => {
-        let newRuleNumber = randomChoice(interestingElementaryRuleArray)
-        let newRule = parseNomenclature(newRuleNumber.toString())
-        if (Number(computeTransitionNumber(state.rule)) !== newRuleNumber) {
-          state.rule = newRule
-          state.redraw = true
-          state.posT = 0
+  let presentationTick = () => {
+    if (state.presentationMode !== "present") {
+      return
+    }
 
-          if (
-            [18, 22, 26, 30, 45, 60, 62, 73, 90, 105, 110, 126, 146, 150, 154].includes(
-              newRuleNumber,
-            ) &&
-            Math.random() < 0.5
-          ) {
-            // impulse genesis
-            state.topology.genesis = parseTopBorder("1(0)")
-          } else {
-            // random genesis
-            state.topology.genesis = parseTopBorder("([01])")
-          }
+    if (state.play === false) {
+      context.updateState(() => {
+        state.play = true
+      })
+    } else {
+      let oldRuleNumber = Number(computeTransitionNumber(state.rule))
+      let newRuleNumber = oldRuleNumber
+      while (newRuleNumber === oldRuleNumber) {
+        // retry
+        newRuleNumber = randomChoice(interestingElementaryRuleArray)
+      }
+      context.updateState(() => {
+        state.rule = parseNomenclature(newRuleNumber.toString())
+        state.posT = 0
+
+        let impulseOkRuleArray = [18, 22, 26, 30, 45, 60, 62, 73, 90, 105, 110, 126, 146, 150, 154]
+        if (impulseOkRuleArray.includes(newRuleNumber) && Math.random() < 0.5) {
+          // impulse genesis
+          state.topology.genesis = parseTopBorder("1(0)")
+        } else {
+          // random genesis
+          state.topology.genesis = parseTopBorder("([01])")
         }
       })
     }
-  })
+
+    setTimeout(presentationTick, 5000)
+  }
+
+  setTimeout(presentationTick, 5000)
+
   if (state.presentationMode === "present") {
     const { body } = document
     // -- /\ Disable the presentation mode on the first interaction the user has with the page

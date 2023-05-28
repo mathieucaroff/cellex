@@ -129,20 +129,6 @@ export let SettingsUI = () => {
           </p>
           <ul>
             <li>
-              <Button style={{ marginRight: "10px" }} onClick={() => act.setGenesis("(0)1(0)")()}>
-                Impulse Mode 1
-              </Button>
-              <Button style={{ marginRight: "10px" }} onClick={() => act.setGenesis("(0)11(0)")()}>
-                Impulse Mode 3
-              </Button>
-              <Button onClick={() => act.setRandomGenesis("([0001])([0111])")()}>
-                Random Mode
-              </Button>
-            </li>
-          </ul>
-          <Divider />
-          <ul>
-            <li>
               Topology kind:{" "}
               <div>
                 <Select
@@ -191,30 +177,54 @@ export let SettingsUI = () => {
           </ul>
           <Divider />
           <p>Misc</p>
-          <p>
-            <Checkbox
-              checked={presentationMode === "present"}
-              onChange={(e) => {
-                context.updateState(
-                  (state) => (state.presentationMode = e.target.checked ? "present" : "off"),
-                )
-              }}
-            />{" "}
-            Presentation mode
-          </p>
-          <Button
-            onClick={() => {
-              const state = context.getState()
-              const ruleName = presentNomenclature(state.rule).descriptor
-              const genesis = presentTopBorder(state.topology.genesis)
-              let url = new URL(location.href)
-              url.searchParams.set("genesis", genesis)
-              url.searchParams.set("rule", ruleName)
-              history.pushState(null, "", url)
-            }}
-          >
-            Export config to URL
-          </Button>
+          <ul>
+            <li>
+              <p>
+                <Button style={{ marginRight: "10px" }} onClick={() => act.setGenesis("(0)1(0)")()}>
+                  Impulse Mode 1
+                </Button>
+                <Button
+                  style={{ marginRight: "10px" }}
+                  onClick={() => act.setGenesis("(0)11(0)")()}
+                >
+                  Impulse Mode 3
+                </Button>
+                <Button onClick={() => act.setRandomGenesis("([0001])([0111])")()}>
+                  Random Mode
+                </Button>
+              </p>
+            </li>
+            <li>
+              <p>
+                <Checkbox
+                  checked={presentationMode === "present"}
+                  onChange={(e) => {
+                    context.updateState(
+                      (state) => (state.presentationMode = e.target.checked ? "present" : "off"),
+                    )
+                  }}
+                />{" "}
+                Presentation mode
+              </p>
+            </li>
+            <li>
+              <p>
+                <Button
+                  onClick={() => {
+                    const state = context.getState()
+                    const ruleName = presentNomenclature(state.rule).descriptor
+                    const genesis = presentTopBorder(state.topology.genesis)
+                    let url = new URL(location.href)
+                    url.searchParams.set("genesis", genesis)
+                    url.searchParams.set("rule", ruleName)
+                    history.pushState(null, "", url)
+                  }}
+                >
+                  Export config to URL
+                </Button>
+              </p>
+            </li>
+          </ul>
         </div>
       </div>
       <div className="settingsUiMenuColumn">
