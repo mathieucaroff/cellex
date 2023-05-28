@@ -5,20 +5,25 @@ import { ReactContext } from "../../../state/ReactContext"
 
 export function TimePositionInputNumber() {
   let { context } = useContext(ReactContext)
-  let [value, setValue] = useState(0)
+  let [timePosition, setPosition] = useState(0)
 
   useEffect(() => {
-    let remove = context.usePosition(({ posT }) => {
-      setValue(posT)
+    return context.usePosition(({ posT }) => {
+      setPosition(posT)
     })
-    return remove
   }, [])
 
   return (
     <InputNumber
-      value={value}
+      value={timePosition}
       onChange={(posT) => {
-        context.updatePosition((position) => ({ ...position, posT }))
+        if (posT < 0) {
+          return
+        }
+        setPosition(posT)
+        context.updatePosition((position) => {
+          position.posT = posT
+        })
       }}
     />
   )

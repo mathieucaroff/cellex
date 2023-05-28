@@ -33,10 +33,10 @@ export let createInfo = (state: State) => {
 
     /** Positions */
     maxLeft() {
-      return Math.ceil((state.topology.width / state.zoom - state.canvasSize.width) / 2)
+      return Math.floor((state.canvasSize.width / state.zoom - state.topology.width) / 2)
     },
     maxRight() {
-      return Math.floor((state.canvasSize.width - state.topology.width / state.zoom) / 2)
+      return Math.ceil((state.topology.width - state.canvasSize.width / state.zoom) / 2)
     },
     center() {
       return 0

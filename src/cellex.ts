@@ -17,10 +17,8 @@ import { h } from "./lib/hyper"
 import { parseNomenclature } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
-import { ReactContext } from "./state/ReactContext"
 import { initialState } from "./state/state"
 import { DesktopOrMobile } from "./type"
-import { UserInterface } from "./userinterface/UserInterface"
 import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { randomChoice } from "./util/randomChoice"
@@ -79,7 +77,7 @@ function main() {
   appRoot.appendChild(span)
 
   let reactRoot = ReactDOM.createRoot(span)
-  reactRoot.render(React.createElement(App, { act, context, helpList, displayDiv }))
+  reactRoot.render(React.createElement(App, { act, context, info, helpList, displayDiv }))
 
   // /\ display
   let display = createDisplay(canvas)

@@ -13,6 +13,7 @@ import { defaultColorMap } from "../../state/state"
 import { Color } from "../../type"
 import { OxButton, OxEnterInput, OxInput, OxInputNumber } from "../component"
 import { useStateSelection } from "../hooks"
+import { SpacialPositionInputNumber } from "./input/SpacialPositionInputNumber"
 import { TimePositionInputNumber } from "./input/TimePositionInputNumber"
 import { SideBorderCascader } from "./topologySelect"
 
@@ -54,14 +55,14 @@ export let SettingsUI = () => {
             <li>
               ⌖Space position:{" "}
               <div>
-                <OxInputNumber path="posS" />
+                <SpacialPositionInputNumber />
               </div>
             </li>
             <li>
               ⌖Time position (generation):{" "}
               <div>
                 <TimePositionInputNumber />
-                <Button onClick={() => act.gotoTop()}>Reset</Button>
+                <Button onClick={() => act.gotoTop()}>GO TO TOP</Button>
               </div>
             </li>
             <li>
