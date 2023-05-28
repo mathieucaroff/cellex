@@ -232,7 +232,7 @@ function main() {
       })
     }
 
-    setTimeout(presentationTick, 5000)
+    setTimeout(presentationTick, 12_000)
   }
 
   setTimeout(presentationTick, 5000)
