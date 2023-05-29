@@ -1,5 +1,5 @@
 import { ConfigProvider, theme as antdTheme } from "antd"
-import { useEffect, useState } from "react"
+import { StrictMode, useEffect, useState } from "react"
 
 import { Act } from "./control/Act"
 import { Info } from "./control/Info"
@@ -30,10 +30,12 @@ export function App(prop: AppProp) {
   }, [])
 
   return (
-    <ReactContext.Provider value={{ act, context, info }}>
-      <ConfigProvider theme={{ algorithm: darkMode === "dark" ? [antdTheme.darkAlgorithm] : [] }}>
-        <UserInterface helpList={helpList} displayDiv={displayDiv} />
-      </ConfigProvider>
-    </ReactContext.Provider>
+    <StrictMode>
+      <ReactContext.Provider value={{ act, context, info }}>
+        <ConfigProvider theme={{ algorithm: darkMode === "dark" ? [antdTheme.darkAlgorithm] : [] }}>
+          <UserInterface helpList={helpList} displayDiv={displayDiv} />
+        </ConfigProvider>
+      </ReactContext.Provider>
+    </StrictMode>
   )
 }

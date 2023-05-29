@@ -108,7 +108,6 @@ export function AutomatonGallery() {
           value={currentEAGrouping}
           options={["None", "Symmetries", "Wolfram Classes"].map(labelValue)}
           onChange={(value) => {
-            console.log("value", value)
             setEAGrouping(value)
           }}
           style={{ width: 160 }}
