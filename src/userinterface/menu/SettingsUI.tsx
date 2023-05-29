@@ -102,7 +102,6 @@ export let SettingsUI = () => {
                 <OxInputNumber path="topology.width" />
                 <OxButton double icon={"x2"} path="topology.width" />
               </div>
-              <br />
               <div>
                 <Button
                   onClick={context.action((state) => {
