@@ -1,19 +1,11 @@
+import { parseColorMap } from "../display/Display"
 import { randomGoodRule } from "../engine/rule"
 import { parseNomenclature } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../stateType"
 
-export let defaultColorMap = () => {
-  return [
-    { red: 0, green: 0, blue: 0 }, // 0 black
-    { red: 0, green: 127, blue: 255 }, // 1 blue
-    { red: 180, green: 180, blue: 0 }, // 2 yellow
-    { red: 127, green: 0, blue: 200 }, // 3 majenta
-    { red: 10, green: 160, blue: 10 }, // 4 green
-    { red: 127, green: 30, blue: 30 }, // 5 red
-    { red: 240, green: 180, blue: 0 }, // 6 orange
-  ]
-}
+export let oldColorMap = "#000000;#007fff;#b4b400;#7f00c8;#0aa00a;#7f1e1e;#f0b400"
+export let defaultColorMap = "#0aaN0c;#00c3ff;#ffa700;#0100c8;#00bd00;#b60303;#ff57eb"
 
 export let initialState = (): State => {
   let param = new URLSearchParams(location.search)
@@ -58,7 +50,7 @@ export let initialState = (): State => {
     diffMode: { status: "off" },
     zoom: 1,
     darkMode: "dark",
-    colorMap: defaultColorMap(),
+    colorMap: parseColorMap(defaultColorMap),
     topology: {
       finitness: "finite",
       kind: getOr(
