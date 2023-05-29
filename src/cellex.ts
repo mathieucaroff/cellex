@@ -201,6 +201,7 @@ function main() {
   // \/ diff mode
 
   // /\ presentation mode
+  let presentationTickTimeoutId: ReturnType<typeof setTimeout>
   let presentationTick = () => {
     if (state.presentationMode !== "present") {
       return
@@ -232,10 +233,19 @@ function main() {
       })
     }
 
-    setTimeout(presentationTick, 12_000)
+    presentationTickTimeoutId = setTimeout(presentationTick, 12_000)
   }
 
-  setTimeout(presentationTick, 5000)
+  let presentationModeWarmUpDuration = 5000
+  context
+    .use(({ presentationMode }) => presentationMode)
+    .for((mode) => {
+      clearTimeout(presentationTickTimeoutId)
+      if (mode === "present") {
+        presentationTickTimeoutId = setTimeout(presentationTick, presentationModeWarmUpDuration)
+        presentationModeWarmUpDuration = 0
+      }
+    })
 
   if (state.presentationMode === "present") {
     const { body } = document
@@ -262,7 +272,7 @@ function main() {
         (ev.target instanceof HTMLTextAreaElement ||
           (ev.target instanceof HTMLInputElement &&
             (!ev.target.type || ev.target.type === "text") &&
-            ev.key !== "Enter"))
+            !["Enter", "ArrowUp", "ArrowDown"].includes(ev.key)))
       ) {
         ev.stopPropagation()
       }
