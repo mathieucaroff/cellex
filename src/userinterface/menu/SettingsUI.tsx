@@ -9,7 +9,7 @@ import { randomPalette } from "../../palette/randomPalette"
 import { parseSideBorder } from "../../patternlang/parser"
 import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
 import { ReactContext } from "../../state/ReactContext"
-import { defaultColorMap } from "../../state/state"
+import { defaultColorMap, oldColorMap } from "../../state/state"
 import { Color } from "../../type"
 import { OxButton } from "../components/OxButton/OxButton"
 import { OxEnterInput } from "../components/OxEnterInput/OxEnterInput"
@@ -295,7 +295,17 @@ export let SettingsUI = () => {
               <Button
                 onClick={() => {
                   context.updateState((state) => {
-                    state.colorMap = defaultColorMap()
+                    state.colorMap = parseColorMap(oldColorMap)
+                    state.redraw = true
+                  })
+                }}
+              >
+                Use the old color map
+              </Button>
+              <Button
+                onClick={() => {
+                  context.updateState((state) => {
+                    state.colorMap = parseColorMap(defaultColorMap)
                     state.redraw = true
                   })
                 }}
