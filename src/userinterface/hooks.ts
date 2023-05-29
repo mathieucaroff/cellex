@@ -7,7 +7,7 @@ export function useStateSelection<T>(selector: (s: State) => T): T {
   let { context } = useContext(ReactContext)
   let [piece, setPiece] = useState<T>(() => selector(context.getState()))
   useEffect(() => {
-    context.use<T>(selector).for((selection) => {
+    return context.use<T>(selector).for((selection) => {
       setPiece(selection)
     })
   }, [])
