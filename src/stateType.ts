@@ -24,6 +24,7 @@ export interface State extends StatePosition {
   darkMode: DarkMode
   colorMap: Color[]
   presentationMode: "present" | "off"
+  imageSmoothing: "auto" | "forceEnabled" | "forceDisabled"
   diffMode: DiffMode
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
   seed: string

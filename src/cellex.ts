@@ -82,9 +82,12 @@ function main() {
   // /\ display
   let display = createDisplay(canvas)
   let engine: Engine
+  let ctx = canvas.getContext("2d")
 
   // local display.draw method
   let drawDisplay = (redraw: boolean) => {
+    ;(ctx as any).imageSmoothingEnabled =
+      (state.imageSmoothing === "auto" && state.zoom < 1) || state.imageSmoothing === "forceEnabled"
     display.draw(state.posS, state.posT, state.zoom, state.zoom, state.colorMap, redraw)
   }
 
@@ -126,8 +129,6 @@ function main() {
     .for(({ canvasSize }) => {
       canvas.width = canvasSize.width
       canvas.height = canvasSize.height
-      let ctx = canvas.getContext("2d")
-      ;(ctx as any).imageSmoothingEnabled = false
       act.fixPosition()
       drawDisplay(true)
     })

@@ -47,6 +47,7 @@ export let initialState = (): State => {
     posT: 0,
     play: false,
     presentationMode,
+    imageSmoothing: "auto",
     diffMode: { status: "off" },
     zoom: 1,
     darkMode: "dark",

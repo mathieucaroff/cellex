@@ -15,6 +15,7 @@ import { OxButton } from "../components/OxButton/OxButton"
 import { OxEnterInput } from "../components/OxEnterInput/OxEnterInput"
 import { OxInput } from "../components/OxInput/OxInput"
 import { OxInputNumber } from "../components/OxInputNumber/OxInputNumber"
+import { OxSelect } from "../components/OxSelect/OxSelect"
 import { useStateSelection } from "../hooks"
 import { SpacialPositionInputNumber } from "./input/SpacialPositionInputNumber"
 import { TimePositionInputNumber } from "./input/TimePositionInputNumber"
@@ -83,6 +84,13 @@ export let SettingsUI = () => {
                 <OxInputNumber path="canvasSize.height" />
                 <OxButton double icon={"x2"} path="canvasSize.height" />
               </div>
+            </li>
+            <li>
+              Image smoothing policy:{" "}
+              <OxSelect
+                path="imageSmoothing"
+                valueArray={["auto", "forceEnabled", "forceDisabled"]}
+              />
             </li>
           </ul>
           <Divider />
