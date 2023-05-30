@@ -110,7 +110,7 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
       let fx = mod(xx, 1)
       let fy = mod(yy, 1)
 
-      if (zoomX < lastZoomX) {
+      if (zoomX < lastZoomX || redraw) {
         ctx.fillStyle = "#111"
         ctx.fillRect(0, 0, canvas.width, canvas.height)
       }
