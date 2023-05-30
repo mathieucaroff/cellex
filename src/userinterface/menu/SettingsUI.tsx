@@ -90,10 +90,10 @@ export let SettingsUI = () => {
           <ul>
             <li>
               Seed:{" "}
-              <div>
+              <Space.Compact>
                 <OxInput path="seed" />
                 <Button icon={"🎲"} onClick={() => act.randomizeSeed()} />
-              </div>
+              </Space.Compact>
             </li>
             <li>
               ⟷Simulation width:{" "}
