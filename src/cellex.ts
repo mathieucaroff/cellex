@@ -54,14 +54,6 @@ function main() {
     globalElement: document.documentElement,
     specificElement: displayDiv,
   })
-
-  window.addEventListener("hashchange", () => {
-    if (location.hash.length > 1) {
-      context.updateState((state) => {
-        state.rule = parseNomenclature(location.hash.slice(1))
-      })
-    }
-  })
   // \/ control
 
   // configuration, react

@@ -82,6 +82,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
 
   return (
     <Space.Compact>
+      {randomElement}
       <Input
         id={id}
         style={style}
@@ -116,7 +117,6 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         onBlur={() => setIsFocused(false)}
         onFocus={() => setIsFocused(true)}
       />
-      {randomElement}
       {randomElement2}
     </Space.Compact>
   )
