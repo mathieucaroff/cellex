@@ -82,7 +82,7 @@ function main() {
 
   // engine-related change
   context
-    .use(({ rule, seed, topology }) => ({ rule, seed, topology }))
+    .use(({ rule, seed, topology }) => ({ rule, seed, topology, t: JSON.stringify(topology) }))
     .for(({ rule, seed, topology }) => {
       if (rule.stateCount > state.colorMap.length) {
         console.error(
@@ -176,9 +176,7 @@ function main() {
     }
   })
   context.usePosition(() => {
-    let redraw = state.redraw
-    state.redraw = false
-    drawDisplay(redraw)
+    drawDisplay(false)
   })
   // \/ display
 

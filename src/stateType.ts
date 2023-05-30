@@ -6,7 +6,6 @@ import { Color } from "./type"
 export interface StatePosition {
   posS: number
   posT: number
-  redraw: boolean
 }
 
 export type DarkMode = "dark" | "light"

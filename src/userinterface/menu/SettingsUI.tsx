@@ -71,7 +71,7 @@ export let SettingsUI = () => {
             <li>
               ⟷Canvas width:{" "}
               <div>
-                <OxButton half icon={"/2"} path="canvasSize.width" />
+                <OxButton half ceil icon={"/2"} path="canvasSize.width" />
                 <OxInputNumber path="canvasSize.width" />
                 <OxButton double icon={"x2"} path="canvasSize.width" />
               </div>
@@ -79,7 +79,7 @@ export let SettingsUI = () => {
             <li>
               ⭥Canvas height:{" "}
               <div>
-                <OxButton half icon={"/2"} path="canvasSize.height" />
+                <OxButton half ceil icon={"/2"} path="canvasSize.height" />
                 <OxInputNumber path="canvasSize.height" />
                 <OxButton double icon={"x2"} path="canvasSize.height" />
               </div>
@@ -98,7 +98,7 @@ export let SettingsUI = () => {
             <li>
               ⟷Simulation width:{" "}
               <div>
-                <OxButton half icon={"/2"} path="topology.width" />
+                <OxButton half ceil icon={"/2"} path="topology.width" />
                 <OxInputNumber path="topology.width" />
                 <OxButton double icon={"x2"} path="topology.width" />
               </div>
@@ -107,7 +107,6 @@ export let SettingsUI = () => {
                   onClick={context.action((state) => {
                     state.topology.width = state.canvasSize.width
                     act.fixPosition(state)
-                    state.redraw = true
                   })}
                 >
                   Copy canvas width
@@ -284,7 +283,6 @@ export let SettingsUI = () => {
                       }
                     })
                     state.colorMap = [state.colorMap[0], ...reorderedPalette]
-                    state.redraw = true
                   })
                 }}
               >
@@ -296,7 +294,6 @@ export let SettingsUI = () => {
                 onClick={() => {
                   context.updateState((state) => {
                     state.colorMap = parseColorMap(oldColorMap)
-                    state.redraw = true
                   })
                 }}
               >
@@ -306,7 +303,6 @@ export let SettingsUI = () => {
                 onClick={() => {
                   context.updateState((state) => {
                     state.colorMap = parseColorMap(defaultColorMap)
-                    state.redraw = true
                   })
                 }}
               >

@@ -71,8 +71,6 @@ export let initialState = (): State => {
       () => "_",
     ),
 
-    redraw: false,
-
     canvasSize: adaptiveCanvasSize(window),
 
     galleryIsOpen: false,
