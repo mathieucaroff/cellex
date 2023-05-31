@@ -184,7 +184,9 @@ function main() {
   let diffModeManager = createDiffModeManager({ baseDiffState: 6, context })
 
   diffModeManager.addCanvas(canvas, (x, y) => {
-    let s = Math.floor(x / state.zoom + (state.topology.width - canvas.width / state.zoom) / 2)
+    let s = Math.floor(
+      x / state.zoom + (state.topology.width - canvas.width / state.zoom) / 2 + state.posS,
+    )
     let t = Math.floor(y / state.zoom + state.posT)
     return { s, t }
   })

@@ -94,12 +94,11 @@ export let createAutomatonEngine = (
   let diffMode: DiffMode = { status: "off" }
 
   let applyDiffModeChange = (line: Uint8Array, modifiedSet: number[]) => {
-    return line.map((b, k) => {
-      if (modifiedSet.includes(k)) {
-        return (b + 1) % rule.stateCount
-      }
-      return b
+    let copy = new Uint8Array(line)
+    modifiedSet.forEach((n) => {
+      copy[n] = (copy[n] + 1) % rule.stateCount
     })
+    return copy
   }
 
   // reset set lineA to genesis values
