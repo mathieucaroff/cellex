@@ -1,13 +1,17 @@
 import { default as nearley } from "nearley"
-import { it } from "vitest"
 
-import { Case, failure, success, testEngine } from "../lib/languageTestEngine.ts"
+import { testUnit } from "../devlib/testUnit.ts"
 import { BorderRootGroup, StochasticState, TopBorder } from "./BorderType"
-import topBorderGrammar from "./sideBorderLanguage.ne"
+import topBorderGrammar from "./topBorderLanguage.ne"
 
-export let createTopBorderParser = () => {
-  return new nearley.Parser(topBorderGrammar)
-}
+let { success, failure } = testUnit<string, TopBorder>((input: string) => {
+  let parser = new nearley.Parser(topBorderGrammar)
+  parser.feed(input)
+  if (parser.results.length === 0) {
+    throw new Error("no results")
+  }
+  return parser.results[0]
+})
 
 /**
  * Note how the cumulative map are [1] for 0 and is [0, 1] for 1.
@@ -33,29 +37,42 @@ let emptyGroup: BorderRootGroup = {
   width: 0,
 }
 
-let borderPatternList: Case<string, TopBorder>[] = [
-  success("(0)(0)", {
-    center: emptyGroup,
-    cycleLeft: { type: "group", content: [zero], ...qw1 },
-    cycleRight: { type: "group", content: [zero], ...qw1 },
-  }),
-  success("(0)0(0)", {
-    center: { type: "group", content: [zero], ...qw1 },
-    cycleLeft: { type: "group", content: [zero], ...qw1 },
-    cycleRight: { type: "group", content: [zero], ...qw1 },
-  }),
-  success("([01])1([01])", {
-    center: { type: "group", content: [one], ...qw1 },
-    cycleLeft: { type: "group", content: [rand01], ...qw1 },
-    cycleRight: { type: "group", content: [rand01], ...qw1 },
-  }),
-  failure("()"),
-  failure("(0)0"),
-  failure(")(0)"),
-  failure("(0))"),
-  failure("((0)"),
-  failure("(0)("),
-  failure("1{3}(11(01))"),
-]
+success("(0)", {
+  center: emptyGroup,
+  cycleLeft: { type: "group", content: [zero], ...qw1 },
+  cycleRight: { type: "group", content: [zero], ...qw1 },
+})
+success("0(0)", {
+  center: { type: "group", content: [zero], ...qw1 },
+  cycleLeft: { type: "group", content: [zero], ...qw1 },
+  cycleRight: { type: "group", content: [zero], ...qw1 },
+})
+success("1([01])", {
+  center: { type: "group", content: [one], ...qw1 },
+  cycleLeft: { type: "group", content: [rand01], ...qw1 },
+  cycleRight: { type: "group", content: [rand01], ...qw1 },
+})
 
-testEngine(borderPatternList, createTopBorderParser, it)
+success("(0)(0)", {
+  center: emptyGroup,
+  cycleLeft: { type: "group", content: [zero], ...qw1 },
+  cycleRight: { type: "group", content: [zero], ...qw1 },
+})
+success("(0)0(0)", {
+  center: { type: "group", content: [zero], ...qw1 },
+  cycleLeft: { type: "group", content: [zero], ...qw1 },
+  cycleRight: { type: "group", content: [zero], ...qw1 },
+})
+success("([01])1([01])", {
+  center: { type: "group", content: [one], ...qw1 },
+  cycleLeft: { type: "group", content: [rand01], ...qw1 },
+  cycleRight: { type: "group", content: [rand01], ...qw1 },
+})
+
+failure("()")
+failure("(0)0")
+failure(")(0)")
+failure("(0))")
+failure("((0)")
+failure("(0)(")
+failure("1{3}(11(01))")
