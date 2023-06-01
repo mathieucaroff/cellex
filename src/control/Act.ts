@@ -82,14 +82,13 @@ export let createAct = (context: Context, info: Info) => {
     /********************/
     halfSpeed: action((state) => {
       state.speed /= 2
-      if (info.passingMinSpeed()) {
-        act.setToMinSpeed(state)
-      }
     }),
     doubleSpeed: action((state) => {
       state.speed *= 2
       if (info.passingMaxSpeed()) {
         act.setToMaxSpeed(state)
+      } else if (info.passingMinSpeed()) {
+        act.setToMinSpeed(state)
       }
     }),
     decreaseSpeed: action((state) => {

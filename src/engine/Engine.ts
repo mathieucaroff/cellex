@@ -5,6 +5,8 @@ import { TopologyFinite } from "../topologyType"
 import { mod } from "../util/mod"
 import { PerfectRandom, RandomMapper } from "./RandomMapper"
 
+const SNAPSHOT_PERIOD = 400
+
 // getStochastic finds the stochastic associated with a position of a group
 export let getStochastic = (group: BorderGroup, position: number): StochasticState => {
   // group.width is expected to always be a multiple of group.quantity
@@ -81,13 +83,21 @@ export let createAutomatonEngine = (
   let neighborhoodMiddle = Math.floor(rule.neighborhoodSize / 2)
   let excessValue = rule.stateCount ** rule.neighborhoodSize
 
+  let left = -Math.floor(topology.width / 2)
+  let genesis = Uint8Array.from({ length: topology.width }, (_, k) => {
+    return getTopBorderValue(topology.genesis, k + left, randomMapper.top)
+  })
+
   let currentT = 0
-  let lineA = Uint8Array.from({ length: topology.width }) // known
-  let lineB = Uint8Array.from({ length: topology.width }) // being computed
+  let lineA = new Uint8Array(genesis) // known
+  let lineB = new Uint8Array(genesis) // being computed
 
   // for diff mode
-  let lineC = Uint8Array.from({ length: topology.width }) // known
-  let lineD = Uint8Array.from({ length: topology.width }) // being computed
+  let lineC = new Uint8Array(genesis) // known
+  let lineD = new Uint8Array(genesis) // being computed
+
+  let snapshotArray: Uint8Array[] = [lineA]
+  let snapshotDiffArray: Uint8Array[] = [lineC]
 
   let functionLength = rule.transitionFunction.length
 
@@ -101,18 +111,16 @@ export let createAutomatonEngine = (
     return copy
   }
 
-  // reset set lineA to genesis values
-  let reset = () => {
-    currentT = 0
-    let left = -Math.floor(topology.width / 2)
-    for (let k = 0; k < topology.width; k++) {
-      let v = getTopBorderValue(topology.genesis, k + left, randomMapper.top)
-      lineB[k] = v
-      lineD[k] = v
-    }
+  // reset sets the engine current time and current line to the closest
+  // snapshot available taken before the target time.
+  let reset = (targetTime: number) => {
+    let arrayIndex = Math.floor(targetTime / SNAPSHOT_PERIOD)
+    currentT = SNAPSHOT_PERIOD * arrayIndex
+    lineB = snapshotArray[arrayIndex]
+    lineD = snapshotDiffArray[arrayIndex]
   }
 
-  reset()
+  reset(0)
 
   let nextLine = (input: Uint8Array, output: Uint8Array) => {
     // initialize the rolling result of the rule
@@ -158,23 +166,33 @@ export let createAutomatonEngine = (
   let me = {
     setDiffMode: (otherDiffMode: DiffMode) => {
       diffMode = otherDiffMode
-      reset()
+      reset(0)
+      snapshotDiffArray = [genesis]
     },
     getLine: (t: number): Uint8Array => {
       if (t < currentT) {
         if (t < 0) {
           return Uint8Array.from({ length: topology.width })
         } else if (t >= 0) {
-          reset()
+          reset(t)
         }
       }
       while (currentT < t) {
+        // save lineB if currentT is a multiple of SNAPSHOT_PERIOD
+        // also save lineD if the diffMode status wants it
+        if (currentT % SNAPSHOT_PERIOD === 0) {
+          let arrayIndex = Math.floor(currentT / SNAPSHOT_PERIOD)
+          snapshotArray[arrayIndex] = new Uint8Array(lineB)
+          if (diffMode.status !== "off" && diffMode.status !== "waiting") {
+            snapshotDiffArray[arrayIndex] = new Uint8Array(lineD)
+          }
+        }
+
         // increase time and swap the two lines
         currentT += 1
 
-        let oldLine = lineA
-        lineA = lineB
-        lineB = oldLine
+        // swap the lines by name
+        ;[lineA, lineB] = [lineB, lineA]
 
         // line A is known
         // line B is being computed
@@ -208,6 +226,11 @@ export let createAutomatonEngine = (
       return lineB
     },
   }
+
+  // This call is stabilises the snapshot array and the whole engine
+  // Todo: figure out what's wrong in the engine, fix it and remove this hack.
+  me.getLine(1)
+
   return me
 }
 
