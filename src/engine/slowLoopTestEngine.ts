@@ -1,8 +1,8 @@
-import { Rule } from "../../ruleType"
-import { TopologyFinite } from "../../topologyType"
-import { mod } from "../../util/mod"
-import { getTopBorderValue } from "../Engine"
-import { RandomMapper } from "../RandomMapper"
+import { Rule } from "../ruleType"
+import { TopologyFinite } from "../topologyType"
+import { mod } from "../util/mod"
+import { getTopBorderValue } from "./Engine"
+import { RandomMapper } from "./RandomMapper"
 
 export let createAutomatonEngine = (
   rule: Rule,
