@@ -14,7 +14,7 @@ let { success, failure } = testUnit<string, TopBorder>((input: string) => {
 })
 
 /**
- * Note how the cumulative map are [1] for 0 and is [0, 1] for 1.
+ * Note how the cumulative maps are [1] for 0 and is [0, 1] for 1.
  * It should be interpreted in the following way:
  *
  * * [1, 1][0] === 1 // 100% odds of getting 0
