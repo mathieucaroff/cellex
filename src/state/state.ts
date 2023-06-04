@@ -46,10 +46,11 @@ export let initialState = (): State => {
     posS: 0,
     posT: 0,
     play: false,
-    presentationMode,
     diffMode: { status: "off" },
     zoom: 1,
     darkMode: "dark",
+    immersiveMode: "off",
+    presentationMode,
     colorMap: parseColorMap(defaultColorMap),
     topology: {
       finitness: "finite",

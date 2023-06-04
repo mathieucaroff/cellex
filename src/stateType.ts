@@ -21,8 +21,9 @@ export interface State extends StatePosition {
   play: boolean
   zoom: number
   darkMode: DarkMode
-  colorMap: Color[]
+  immersiveMode: "immersive" | "off"
   presentationMode: "present" | "off"
+  colorMap: Color[]
   diffMode: DiffMode
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
   seed: string
