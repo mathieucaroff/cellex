@@ -1,13 +1,12 @@
-import { PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Space } from "antd"
-import { useContext } from "react"
+import { DiffOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
+import { Button, Collapse, Popover, Space } from "antd"
+import React, { useContext } from "react"
 
 import { presentNomenclature } from "../nomenclature/nomenclature"
 import { parseTopBorder } from "../patternlang/parser"
 import { presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/ReactContext"
 import { RuleInput } from "./RuleInput"
-import { TopMenu } from "./TopMenu"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
 import { OxSelect } from "./components/OxSelect/OxSelect"
 import { RuleEditor } from "./editor/RuleEditor"
@@ -15,6 +14,8 @@ import { GalleryButton } from "./gallery/GalleryButton"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
 import { Documentation } from "./markdown/documentation"
+import { HelpContent } from "./menu/HelpContent"
+import { SettingsUI } from "./menu/SettingsUI"
 import { TopBorderSelect } from "./menu/topologySelect"
 
 const { Panel } = Collapse
@@ -71,7 +72,27 @@ export let UserInterface = (prop: UserInterfaceProp) => {
               />
             </Space.Compact>
 
-            <TopMenu diffMode={diffMode} helpList={helpList} act={act} />
+            <div className="topMenu">
+              <Popover placement="bottom" title="Settings" content={<SettingsUI />} trigger="click">
+                <Button>
+                  <i className="fa fa-cog" />
+                  Settings
+                </Button>
+              </Popover>
+              <Button
+                type={diffMode.status !== "off" ? "primary" : "default"}
+                title={"Toggle the Differential Mode " + (diffMode.status !== "off" ? "off" : "on")}
+                icon={<DiffOutlined />}
+                onClick={() => act.toggleDifferentialMode()}
+              />
+              <Popover
+                placement="bottomLeft"
+                content={<HelpContent helpList={helpList} />}
+                trigger="click"
+              >
+                <Button title="Help">?</Button>
+              </Popover>
+            </div>
           </Space>
           <div style={{ float: "right" }}>
             <OxSelect path="darkMode" valueArray={["dark", "light"]} />
