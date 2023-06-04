@@ -81,33 +81,27 @@ it("getSideBorderValue", () => {
 it("createAutomatonEngine", () => {
   let content = [..."11111000100110"].map((c) => (c === "1" ? one : zero))
   let width = content.length
-  let genesisB: TopBorder = {
+  let genesis: TopBorder = {
     center: { content: [], quantity: 1, type: "group", width: 0 },
     cycleLeft: { content, quantity: 1, type: "group", width },
     cycleRight: { content, quantity: 1, type: "group", width },
   }
-  let engineB = createAutomatonEngine(
-    elementaryRule(110),
-    {
-      kind: "loop",
-      finitness: "finite",
-      width: 10,
-      genesis: genesisB,
-    },
-    createRandomMapper({ seedString: "_" }),
-  )
-  let engineC = createSlowLoopEngine(
-    elementaryRule(110),
-    {
-      kind: "loop",
-      finitness: "finite",
-      width: 10,
-      genesis: genesisB,
-    },
-    createRandomMapper({ seedString: "_" }),
-  )
 
-  expect(engineB.getLine(0), "line 0").toEqual(engineC.getLine(0))
-  expect(engineB.getLine(1), "line 1").toEqual(engineC.getLine(1))
-  expect(engineB.getLine(2), "line 2").toEqual(engineC.getLine(2))
+  let parameterArray = [
+    elementaryRule(110),
+    {
+      kind: "loop",
+      finitness: "finite",
+      width: 10,
+      genesis,
+    },
+    createRandomMapper({ seedString: "_" }),
+  ] as const
+
+  let engine = createAutomatonEngine(...parameterArray)
+  let slowEngine = createSlowLoopEngine(...parameterArray)
+
+  Array.from({ length: 3 }, (_, k) => {
+    expect(engine.getLine(k), `line ${k}`).toEqual(slowEngine.getLine(0))
+  })
 })
