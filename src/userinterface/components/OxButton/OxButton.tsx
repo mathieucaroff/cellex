@@ -8,6 +8,8 @@ interface OxButtonProp {
   path: string
   icon: React.ReactNode
   disabled?: boolean
+  switchValue?: string[]
+  toggle?: boolean
   half?: boolean
   double?: boolean
   floor?: boolean
@@ -16,12 +18,27 @@ interface OxButtonProp {
 
 // OxButton
 export function OxButton(prop: OxButtonProp) {
-  let { path, icon, disabled, half, double, floor, ceil } = prop
+  let { path, icon, disabled, switchValue, toggle, half, double, floor, ceil } = prop
   let { context } = useContext(ReactContext)
 
   let buttonParameter: any = { icon, disabled }
 
-  if (half || double) {
+  if (toggle) {
+    buttonParameter.onClick = () => {
+      context.updateState((state) => {
+        let { piece, last } = readPath(path, state)
+        piece[last] = !piece[last]
+      })
+    }
+  } else if (switchValue) {
+    buttonParameter.onClick = () => {
+      context.updateState((state) => {
+        let { piece, last } = readPath(path, state)
+        let index = switchValue.indexOf(piece[last])
+        piece[last] = switchValue[(index + 1) % switchValue.length]
+      })
+    }
+  } else if (half || double) {
     let ratio = half ? 1 / 2 : 2
     buttonParameter.onClick = () => {
       context.updateState((state) => {

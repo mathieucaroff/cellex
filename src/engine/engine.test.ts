@@ -1,4 +1,4 @@
-import { expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 
 import { TopBorder } from "../patternlang/BorderType"
 import { group, rootGroup } from "../patternlang/patternUtil"
@@ -78,7 +78,7 @@ it("getSideBorderValue", () => {
   expect(getSideBorderValue(sideBorder, 2, r1)).toBe(0)
 })
 
-it("createAutomatonEngine", () => {
+describe("createAutomatonEngine", () => {
   let content = [..."11111000100110"].map((c) => (c === "1" ? one : zero))
   let width = content.length
   let genesis: TopBorder = {
@@ -101,7 +101,7 @@ it("createAutomatonEngine", () => {
   let engine = createAutomatonEngine(...parameterArray)
   let slowEngine = createSlowLoopEngine(...parameterArray)
 
-  Array.from({ length: 3 }, (_, k) => {
-    expect(engine.getLine(k), `line ${k}`).toEqual(slowEngine.getLine(0))
+  it.each(Array.from({ length: 3 }, (_, k) => [k, k]))(`line %i`, (k) => {
+    expect(engine.getLine(k)).toEqual(slowEngine.getLine(k))
   })
 })
