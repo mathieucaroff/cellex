@@ -41,7 +41,6 @@ function main() {
   // /\ canvas
   let displayDiv = h("div", { id: "displayDiv", tabIndex: 0 })
   let canvas = h("canvas", { className: "mainCanvas" })
-  let canvasResizeHandle = h("div", { className: "canvasResizeHandle" })
   displayDiv.appendChild(canvas)
   setTimeout(() => {
     displayDiv.focus()
@@ -124,6 +123,26 @@ function main() {
       drawDisplay(true)
     })
 
+  const handleResize = () => {
+    if (state.immersiveMode === "immersive") {
+      context.updateState((state) => {
+        state.canvasSize = {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        }
+
+        state.topology.width = state.canvasSize.width / state.zoom
+      })
+    }
+  }
+
+  window.addEventListener("resize", handleResize, true)
+  context
+    .use(({ immersiveMode }) => immersiveMode)
+    .for((im) => {
+      handleResize()
+    })
+
   // main canvas panning
   let panningDragManager = createDragManager({
     element: displayDiv,
@@ -140,31 +159,6 @@ function main() {
       if (!state.play) {
         position.posT = Math.max(xy.y / state.zoom, 0)
       }
-    })
-  })
-
-  // during resize, the main canvas and the zoom canvas have their height synced
-  // this is because with the handles which are at the bottom right,
-  // we would need canvases to be top-aligned for a comfortable experience
-  // while the canvases are bottom-aligned. Also it looks better.
-
-  // the drag manager receives negative coordinates and the onMove callback
-  // negates the data it is given. This is because the use case is not a proper
-  // move-content-inside-camera, but is a move-handle
-
-  // main canvas resize
-  let mainResizeDragManager = createDragManager({
-    element: canvasResizeHandle,
-    getDisplayInit: () => {
-      let xy = { x: -state.canvasSize.width, y: -state.canvasSize.height }
-      return xy
-    },
-    desktopOrMobile,
-  })
-  mainResizeDragManager.onMove((xy) => {
-    context.updateState((state) => {
-      state.canvasSize.width = -xy.x
-      state.canvasSize.height = -xy.y
     })
   })
 

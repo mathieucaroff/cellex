@@ -188,15 +188,14 @@ export let createAutomatonEngine = (
           }
         }
 
-        // increase time and swap the two lines
+        // [here lineB is the current line]
+        // the input is line B and line A is the output
+        nextLine(lineB, lineA)
+        // increase time
         currentT += 1
-
-        // swap the lines by name
+        // swap the two lines by name
         ;[lineA, lineB] = [lineB, lineA]
-
-        // line A is known
-        // line B is being computed
-        nextLine(lineA, lineB)
+        // [now lineB is the current line again]
 
         if (diffMode.status !== "off" && diffMode.status !== "waiting") {
           let oldLine = lineC
