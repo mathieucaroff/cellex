@@ -222,11 +222,13 @@ export let createAct = (context: Context, info: Info) => {
     },
 
     /** Differential Mode */
-    toggleDifferentialMode: action((state) => {
+    nextDifferentialMode: action((state) => {
       if (state.diffMode.status === "off") {
-        state.diffMode = { status: "waiting" }
+        state.diffMode = { status: "waiting", active: false, divine: false }
+      } else if (!state.diffMode.divine) {
+        state.diffMode = { status: "waiting", active: false, divine: true }
       } else {
-        state.diffMode = { status: "off" }
+        state.diffMode = { status: "off", active: false }
       }
     }),
 

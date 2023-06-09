@@ -46,7 +46,7 @@ export let initialState = (): State => {
     posS: 0,
     posT: 0,
     play: false,
-    diffMode: { status: "off" },
+    diffMode: { status: "off", active: false },
     zoom: 1,
     darkMode: "dark",
     immersiveMode: "off",

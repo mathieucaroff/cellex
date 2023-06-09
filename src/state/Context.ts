@@ -1,7 +1,6 @@
 import { State, StatePosition } from "../stateType"
+import { clone } from "../util/clone"
 import { deepEqual } from "../util/deepEqual"
-
-let deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
 
 /**
  * @param state the initial state to be held in the context
@@ -34,7 +33,7 @@ export let createContext = (state: State) => {
         for: (runFunction: (selection: T, state: State) => unknown) => {
           runFunction(selection, state)
           if (!done) {
-            propertyUtilizationShelf.push([selector, deepCopy(selection), runFunction])
+            propertyUtilizationShelf.push([selector, clone(selection), runFunction])
             done = true
           }
           // return the removal function
@@ -64,7 +63,7 @@ export let createContext = (state: State) => {
           let newSelection = selector(state)
           if (!deepEqual(newSelection, selection)) {
             runFunction(newSelection, state)
-            triplet[1] = deepCopy(newSelection)
+            triplet[1] = clone(newSelection)
           }
         })
         positionShelf.forEach((f) => {

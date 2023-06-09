@@ -102,14 +102,14 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                     Settings
                   </Button>
                 </Popover>
-                <Button
+                {/* <Button
                   type={diffMode.status !== "off" ? "primary" : "default"}
                   title={
                     "Toggle the Differential Mode " + (diffMode.status !== "off" ? "off" : "on")
                   }
                   icon={<DiffOutlined />}
-                  onClick={() => act.toggleDifferentialMode()}
-                />
+                  onClick={() => act.nextDifferentialMode()}
+                /> */}
                 <Popover
                   placement="bottomLeft"
                   content={<HelpContent helpList={helpList} />}
