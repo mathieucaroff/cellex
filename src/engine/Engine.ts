@@ -2,8 +2,10 @@ import { DiffMode } from "../diffType"
 import { BorderGroup, SideBorder, StochasticState, TopBorder } from "../patternlang/BorderType"
 import { Rule } from "../ruleType"
 import { TopologyFinite } from "../topologyType"
+import { clone } from "../util/clone"
 import { mod } from "../util/mod"
 import { PerfectRandom, RandomMapper } from "./RandomMapper"
+import { earliestDifference } from "./diffmode/earliestDifference"
 
 const SNAPSHOT_PERIOD = 400
 
@@ -89,35 +91,28 @@ export let createAutomatonEngine = (
   })
 
   let currentT = 0
-  let lineA = new Uint8Array(genesis) // known
-  let lineB = new Uint8Array(genesis) // being computed
+  let lineA = Uint8Array.from({ length: genesis.length }) // previous
+  let lineB = new Uint8Array(genesis) // current
+  let snapshotArray: Uint8Array[] = [lineB]
 
-  // for diff mode
-  let lineC = new Uint8Array(genesis) // known
-  let lineD = new Uint8Array(genesis) // being computed
-
-  let snapshotArray: Uint8Array[] = [lineA]
-  let snapshotDiffArray: Uint8Array[] = [lineC]
+  let diffMode: DiffMode = {
+    status: "off",
+    active: false,
+  }
 
   let functionLength = rule.transitionFunction.length
-
-  let diffMode: DiffMode = { status: "off" }
-
-  let applyDiffModeChange = (line: Uint8Array, modifiedSet: number[]) => {
-    let copy = new Uint8Array(line)
-    modifiedSet.forEach((n) => {
-      copy[n] = (copy[n] + 1) % rule.stateCount
-    })
-    return copy
-  }
 
   // reset sets the engine current time and current line to the closest
   // snapshot available taken before the target time.
   let reset = (targetTime: number) => {
+    if (currentT < targetTime) {
+      // we cannot reset the time to a future time, only a past time
+      // (we keep only the oldest of the two times)
+      return
+    }
     let arrayIndex = Math.floor(targetTime / SNAPSHOT_PERIOD)
     currentT = SNAPSHOT_PERIOD * arrayIndex
     lineB = snapshotArray[arrayIndex]
-    lineD = snapshotDiffArray[arrayIndex]
   }
 
   reset(0)
@@ -164,10 +159,19 @@ export let createAutomatonEngine = (
   }
 
   let me = {
-    setDiffMode: (otherDiffMode: DiffMode) => {
-      diffMode = otherDiffMode
-      reset(0)
-      snapshotDiffArray = [genesis]
+    setDiffMode: (newDiffMode: DiffMode) => {
+      if (!newDiffMode.active) {
+        // becoming inactive or staying inactive
+        // nothing to do
+      } else if (diffMode.active) {
+        // staying active
+        reset(earliestDifference(diffMode.changes, newDiffMode.changes))
+      } else {
+        // becoming active
+        reset(newDiffMode.changes[0].t)
+      }
+
+      diffMode = clone(newDiffMode)
     },
     getLine: (t: number): Uint8Array => {
       if (t < currentT) {
@@ -183,9 +187,6 @@ export let createAutomatonEngine = (
         if (currentT % SNAPSHOT_PERIOD === 0) {
           let arrayIndex = Math.floor(currentT / SNAPSHOT_PERIOD)
           snapshotArray[arrayIndex] = new Uint8Array(lineB)
-          if (diffMode.status !== "off" && diffMode.status !== "waiting") {
-            snapshotDiffArray[arrayIndex] = new Uint8Array(lineD)
-          }
         }
 
         // [here lineB is the current line]
@@ -196,39 +197,11 @@ export let createAutomatonEngine = (
         // swap the two lines by name
         ;[lineA, lineB] = [lineB, lineA]
         // [now lineB is the current line again]
-
-        if (diffMode.status !== "off" && diffMode.status !== "waiting") {
-          let oldLine = lineC
-          lineC = lineD
-          lineD = oldLine
-          nextLine(lineC, lineD)
-          if (diffMode.t === currentT) {
-            let changeSet = diffMode.status === "selection" ? diffMode.s : [diffMode.s]
-            lineD = applyDiffModeChange(lineD, changeSet)
-          }
-        }
-      }
-
-      if (diffMode.status !== "off" && diffMode.status !== "waiting") {
-        if (diffMode.t === 0 && currentT === 0) {
-          let changeSet = diffMode.status === "selection" ? diffMode.s : [diffMode.s]
-          lineD = applyDiffModeChange(lineD, changeSet)
-        }
-
-        let { diffState } = diffMode
-        let diffLine = lineB.map((b, k) => {
-          return b === lineD[k] ? b : diffState
-        })
-        return diffLine
       }
 
       return lineB
     },
   }
-
-  // This call is stabilises the snapshot array and the whole engine
-  // Todo: figure out what's wrong in the engine, fix it and remove this hack.
-  me.getLine(1)
 
   return me
 }

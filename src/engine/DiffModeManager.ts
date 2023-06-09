@@ -2,7 +2,6 @@
 import { Context } from "../state/Context"
 
 export interface DiffModeManagerProp {
-  baseDiffState: number
   context: Context
 }
 
@@ -22,7 +21,7 @@ export let getPosition = (ev: MouseEvent, element: HTMLElement) => {
  * @returns
  */
 export let createDiffModeManager = (prop: DiffModeManagerProp) => {
-  let { baseDiffState, context } = prop
+  let { context } = prop
 
   // When diff mode is disabled, there's nothing to do.
   // When diff mode is enabled, we want to know whenever the mouse is over
@@ -66,24 +65,88 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
         if (eventKind !== "click") {
           return
         }
-        if (t === diffMode.t) {
-          // edit the selection: remove or add one cell
-          if (diffMode.s.includes(s)) {
-            diffMode.s = diffMode.s.filter((x) => x !== s)
-          } else {
-            diffMode.s.push(s)
+        let tIndex = 0
+        diffMode.changes.some((changes) => {
+          if (changes.t < t) {
+            tIndex += 1
+            return
           }
+          return true
+        })
+
+        let lineChanges = diffMode.changes[tIndex]
+
+        if (!lineChanges || lineChanges.t !== t) {
+          // Simplest case: the line doesn't exist in the set of modified lines
+          diffMode.changes.splice(tIndex, 0, { t, changes: [{ s, amount: 1 }] })
         } else {
-          // switch the mode to hovering
-          diffMode = { status: "hovering", s, t, diffState: diffMode.diffState }
+          let sIndex = 0
+          lineChanges.changes.some((changes) => {
+            if (changes.s < s) {
+              sIndex += 1
+              return
+            }
+            return true
+          })
+
+          let cellChanges = lineChanges.changes[sIndex]
+          if (!cellChanges || cellChanges.s !== s) {
+            // Second case: the line exists, but not the cell
+            lineChanges.changes.splice(sIndex, 0, { s, amount: 1 })
+          } else {
+            let {
+              rule: { stateCount },
+            } = context.getState()
+            cellChanges.amount = (cellChanges.amount + 1) % stateCount
+            if (cellChanges.amount > 0) {
+              // Third case: the line and the cell both exist and the new amount is non-zero
+              // -- nothing to do
+            } else {
+              // The new amount is zero => remove the cell from the line
+              lineChanges.changes.splice(sIndex, 1)
+              if (lineChanges.changes.length > 0) {
+                // Fourth case: there are more cells in the line
+                // -- nothing to do
+              } else {
+                // That cell is the last of the line => remove the **line** from the diff-mode changes
+                diffMode.changes.splice(tIndex, 1)
+                if (diffMode.changes.length > 0) {
+                  // Fifth case: there are other lines in the diff-mode changes
+                  // -- nothing to do
+                } else {
+                  // Sixth and final case: there are no more lines in the diff-mode changes
+                  // go back to the hovering mode
+                  diffMode = {
+                    status: "hovering",
+                    active: true,
+                    divine: diffMode.divine,
+                    changes: [{ t, changes: [{ s, amount: 1 }] }],
+                  }
+                }
+              }
+            }
+          }
         }
+        // ensure the reference is changed so that updates which rely on diffMode
+        // are performed
+        diffMode = { ...diffMode }
       } else {
         if (eventKind === "leave") {
-          diffMode = { status: "waiting" }
+          diffMode = { status: "waiting", active: false, divine: diffMode.divine }
         } else if (eventKind === "move") {
-          diffMode = { status: "hovering", s, t, diffState: baseDiffState }
+          diffMode = {
+            status: "hovering",
+            active: true,
+            divine: diffMode.divine,
+            changes: [{ t, changes: [{ s, amount: 1 }] }],
+          }
         } else if (eventKind === "click") {
-          diffMode = { status: "selection", s: [s], t, diffState: baseDiffState }
+          diffMode = {
+            status: "selection",
+            active: true,
+            divine: diffMode.divine,
+            changes: [{ t, changes: [{ s, amount: 1 }] }],
+          }
         }
       }
       context.updateState((state) => {
