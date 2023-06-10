@@ -62,6 +62,17 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onSpecificSymbol([" "], act.togglePlay, "[space]**", "toggle play / pause")
   onSpecificSymbol(["Enter"], act.singleStep, "[enter]**", "process a single generation")
 
+  onSymbol(["P"], act.togglePlay, "P", "toggle *P*lay / *P*ause")
+  onSymbol(["O"], act.singleStep, "O", "process *O*ne generation")
+  onSymbol(["R"], act.select("#ruleInput"), "R", "select the *R*ule input")
+  onSymbol(["C"], act.focus("#displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
+  onSymbol(
+    ["E"],
+    act.focus(".ruleEditor__controlButtonDiv button"),
+    "E",
+    "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
+  )
+
   onSymbol(["ArrowLeft"], act.goLeft, "[left]", "move camera left*")
   onSymbol(["ArrowRight"], act.goRight, "[right]", "move camera right*")
   onSymbol(["ArrowUp"], act.goUp, "[up]", "move camera up")
@@ -78,7 +89,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     "go back to the top and select the rule input box",
   )
 
-  onKeypress(["Digit0"], act.gotoTop, "0", "go back to the top")
+  onKeypress(["Digit0", "Numpad0"], act.gotoTop, "0", "go back to the top")
 
   onSymbol(["["], act.halfSpeed, "[", "half the speed")
   onSymbol(["]"], act.doubleSpeed, "]", "double the speed")
@@ -86,16 +97,6 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onSymbol(["{"], act.gotoMaxLeft, "{", "move the camera to the left end of the simulation*")
   onSymbol(["|"], act.gotoCenter, "|", "center the camera*")
   onSymbol(["}"], act.gotoMaxRight, "}", "move the camera to the right end of the simulation*")
-
-  onSymbol(["P"], act.togglePlay, "P", "toggle *P*lay / *P*ause")
-  onSymbol(["R"], act.select("#ruleInput"), "R", "select the *R*ule input")
-  onSymbol(["C"], act.focus("#displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
-  onSymbol(
-    ["E"],
-    act.focus(".ruleEditor__controlButtonDiv button"),
-    "E",
-    "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
-  )
 
   onKeypress(["Digit1", "Numpad1"], act.setGenesis("1(0)"), "1", "set the genesis to impulse 010")
   onKeypress(["Digit2", "Numpad2"], act.setGenesis("0(1)"), "2", "set the genesis to impulse 101")
@@ -123,7 +124,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onKeypress(
     ["Digit8", "Numpad8"],
     act.setRandomGenesis("([0111])"),
-    "9",
+    "8",
     "set the genesis to random with 25% of 0 and 75% of 1",
   )
   onKeypress(
