@@ -96,39 +96,39 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   )
 
   onKeypress("Digit1", act.setGenesis("1(0)"), "1", "set the genesis to impulse 010")
+  onKeypress("Digit2", act.setGenesis("0(1)"), "2", "set the genesis to impulse 101")
   onKeypress("Digit3", act.setGenesis("11(0)"), "3", "set the genesis to impulse 0110")
-  onKeypress("Digit5", act.setGenesis("0(1)"), "5", "set the genesis to impulse 101")
-  onKeypress("Digit7", act.setGenesis("00(1)"), "7", "set the genesis to impulse 1001")
+  onKeypress("Digit4", act.setGenesis("00(1)"), "4", "set the genesis to impulse 1001")
 
   onKeypress(
-    "Digit9",
+    "Digit5",
+    act.setRandomGenesis("([0{19}1])"),
+    "5",
+    "set the genesis to random with 95% of 0 and 5% of 1",
+  )
+  onKeypress(
+    "Digit6",
+    act.setRandomGenesis("([0001])"),
+    "6",
+    "set the genesis to random with 75% of 0 and 25% of 1",
+  )
+  onKeypress(
+    "Digit7",
     act.setRandomGenesis("([01])"),
-    "9",
+    "7",
     "set the genesis to random with 50% of 0 and 50% of 1",
   )
   onKeypress(
     "Digit8",
-    act.setRandomGenesis("([0{9}1])([01{9}])"),
-    "8",
-    "set the genesis to random step from 10% of 1 to 90% of 1",
+    act.setRandomGenesis("([0111])"),
+    "9",
+    "set the genesis to random with 25% of 0 and 75% of 1",
   )
   onKeypress(
-    "Digit2",
-    act.setRandomGenesis("(0[01])"),
-    "2",
-    "set the genesis to 50% random but only on every other index",
-  )
-  onKeypress(
-    "Digit4",
-    act.setRandomGenesis("(000[01])"),
-    "4",
-    "set the genesis to 50% random but only on every fourth indices",
-  )
-  onKeypress(
-    "Digit6",
-    act.setRandomGenesis("(0{5}[01])"),
-    "6",
-    "set the genesis to 50% random but only on every sixth indices",
+    "Digit9",
+    act.setRandomGenesis("([01{19}])"),
+    "9",
+    "set the genesis to random with 5% of 0 and 95% of 1",
   )
 
   onKeypress("Minus", act.halfZoom, "-", "half the zoom level")
