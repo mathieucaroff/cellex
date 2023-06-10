@@ -23,11 +23,12 @@ import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { randomChoice } from "./util/randomChoice"
 
+declare const __COMMIT_HASH__: string
+
 function main() {
   // /\ github corner / package
-  let cornerDiv = h("div", {
-    innerHTML: githubCornerHTML(packageInfo.repository, packageInfo.version),
-  })
+  let version = `${packageInfo.version}-${__COMMIT_HASH__}`
+  let cornerDiv = h("div", { innerHTML: githubCornerHTML(packageInfo.repository, version) })
   document.body.appendChild(cornerDiv)
   // \/ canvas
 
