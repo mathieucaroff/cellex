@@ -59,9 +59,6 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   let onKeypress = onKeydownForKb(codeKb)
   let onSpecificSymbol = onKeydownForKb(specificKeyKb)
 
-  onSpecificSymbol([" "], act.togglePlay, "[space]**", "toggle play / pause")
-  onSpecificSymbol(["Enter"], act.singleStep, "[enter]**", "process a single generation")
-
   onSymbol(["P"], act.togglePlay, "P", "toggle *P*lay / *P*ause")
   onSymbol(["O"], act.singleStep, "O", "process *O*ne generation")
   onSymbol(["R"], act.select("#ruleInput"), "R", "select the *R*ule input")
@@ -71,22 +68,6 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     act.focus(".ruleEditor__controlButtonDiv button"),
     "E",
     "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
-  )
-
-  onSymbol(["ArrowLeft"], act.goLeft, "[left]", "move camera left*")
-  onSymbol(["ArrowRight"], act.goRight, "[right]", "move camera right*")
-  onSymbol(["ArrowUp"], act.goUp, "[up]", "move camera up")
-  onSymbol(["ArrowDown"], act.goDown, "[down]", "move camera down")
-
-  onSymbol(["Home"], act.pageLeft, "[home]", "move camera left one page*")
-  onSymbol(["End"], act.pageRight, "[end]", "move camera right one page*")
-  onSymbol(["PageUp"], act.pageUp, "[page up]", "move camera up one page")
-  onSymbol(["PageDown"], act.pageDown, "[page down]", "move camera down one page")
-  onSymbol(
-    ["Backspace"],
-    act.backspace,
-    "[backspace]",
-    "go back to the top and select the rule input box",
   )
 
   onKeypress(["Digit0", "Numpad0"], act.gotoTop, "0", "go back to the top")
@@ -124,7 +105,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onKeypress(
     ["Digit8", "Numpad8"],
     act.setRandomGenesis("([0111])"),
-    "8",
+    "9",
     "set the genesis to random with 25% of 0 and 75% of 1",
   )
   onKeypress(
@@ -136,6 +117,25 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
 
   onKeypress(["Minus"], act.halfZoom, "-", "half the zoom level")
   onKeypress(["Equal"], act.doubleZoom, "+", "double the zoom level")
+
+  onSpecificSymbol([" "], act.togglePlay, "[space]**", "toggle play / pause")
+  onSpecificSymbol(["Enter"], act.singleStep, "[enter]**", "process a single generation")
+
+  onSymbol(["ArrowLeft"], act.goLeft, "[left]", "move camera left*")
+  onSymbol(["ArrowRight"], act.goRight, "[right]", "move camera right*")
+  onSymbol(["ArrowUp"], act.goUp, "[up]", "move camera up")
+  onSymbol(["ArrowDown"], act.goDown, "[down]", "move camera down")
+
+  onSymbol(["Home"], act.pageLeft, "[home]", "move camera left one page*")
+  onSymbol(["End"], act.pageRight, "[end]", "move camera right one page*")
+  onSymbol(["PageUp"], act.pageUp, "[page up]", "move camera up one page")
+  onSymbol(["PageDown"], act.pageDown, "[page down]", "move camera down one page")
+  onSymbol(
+    ["Backspace"],
+    act.backspace,
+    "[backspace]",
+    "go back to the top and select the rule input box",
+  )
 
   return {
     remove: () => {
