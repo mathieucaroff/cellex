@@ -1,7 +1,7 @@
 import { default as nearley } from "nearley"
 
 import { computeTransitionFunction, computeTransitionNumber } from "../engine/rule"
-import { Rule } from "../ruleType"
+import { TableRule } from "../ruleType"
 import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
@@ -18,7 +18,7 @@ type NomenclatureOutput =
       },
     ]
 
-export function parseNomenclature(descriptor: string): Rule {
+export function parseNomenclature(descriptor: string): TableRule {
   let parser = new nearley.Parser(nomenclatureGrammar)
 
   try {
@@ -36,7 +36,7 @@ export function parseNomenclature(descriptor: string): Rule {
 
   let parserOutput: NomenclatureOutput = parser.results[0]
   let transitionNumber: bigint
-  let result: Rule
+  let result: TableRule
 
   // Manage the case where the rule descriptor contains no letter
   // In that case, we want to produce a rule with a neigborhood size of three
@@ -65,10 +65,11 @@ export function parseNomenclature(descriptor: string): Rule {
     }
 
     result = {
+      kind: "tableRule",
       dimension: 1,
       neighborhoodSize: 3,
       stateCount,
-      transitionFunction: computeTransitionFunction(3, stateCount, transitionNumber),
+      transitionTable: computeTransitionFunction(3, stateCount, transitionNumber),
     }
   } else if (parserOutput[0] === "elementary") {
     transitionNumber = BigInt(parserOutput[1])
@@ -78,22 +79,24 @@ export function parseNomenclature(descriptor: string): Rule {
     }
 
     result = {
+      kind: "tableRule",
       dimension: 1,
       neighborhoodSize: 3,
       stateCount: 2,
-      transitionFunction: computeTransitionFunction(3, 2, transitionNumber),
+      transitionTable: computeTransitionFunction(3, 2, transitionNumber),
     }
   } else if (parserOutput[1].transitionString[0] === "rule") {
     // The grammar guarantees that a transition number is specified
     transitionNumber = BigInt(parserOutput[1].transitionString[1])
 
     result = {
+      kind: "tableRule",
       dimension: +(parserOutput[1].dimension ?? 1),
       neighborhoodSize: +(parserOutput[1].neighborhoodSize ?? 3),
       stateCount: +(parserOutput[1].colors ?? [2])[0],
-      transitionFunction: [],
+      transitionTable: [],
     }
-    result.transitionFunction = computeTransitionFunction(
+    result.transitionTable = computeTransitionFunction(
       result.neighborhoodSize,
       result.stateCount,
       transitionNumber,
@@ -112,7 +115,7 @@ export function parseNomenclature(descriptor: string): Rule {
   return result
 }
 
-export function presentNomenclature(rule: Rule) {
+export function presentNomenclature(rule: TableRule) {
   let tn = thousandSplit(String(computeTransitionNumber(rule)))
   let regular: string[] = []
   let long: string[] = []

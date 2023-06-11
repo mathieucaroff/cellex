@@ -2,7 +2,7 @@ import { Space } from "antd"
 
 import { randomGoodRule, randomGoodRuleFromDomain } from "../engine/rule"
 import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
-import { Rule } from "../ruleType"
+import { TableRule } from "../ruleType"
 import { DomainSelect } from "./DomainSelect"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
 import { useStateSelection } from "./hooks"
@@ -18,7 +18,7 @@ export let RuleInput = () => {
         id="ruleInput"
         title="Set the simulated rule"
         style={{ width: "initial" }}
-        present={(rule: Rule) => presentNomenclature(rule).descriptor}
+        present={(rule: TableRule) => presentNomenclature(rule).descriptor}
         parse={parseNomenclature}
         randomizer={() => randomGoodRuleFromDomain(rule)}
         randomizer2={randomGoodRule}
