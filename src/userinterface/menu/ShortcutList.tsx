@@ -1,17 +1,17 @@
 export interface HelpContentProp {
-  helpList: [string, string][]
+  list: [string, string][]
 }
 
-export let HelpContent = (prop: HelpContentProp) => {
-  let { helpList } = prop
+export let ShorcutList = (prop: HelpContentProp) => {
+  let { list } = prop
   let longShortcutTableContent: React.ReactNode[] = []
   let shortShortcutTableContent: React.ReactNode[] = []
-  let table = longShortcutTableContent
 
-  helpList.forEach((row, k) => {
+  let table = shortShortcutTableContent
+  list.forEach((row, k) => {
     let [key, description] = row
-    if (key.length === 1) {
-      table = shortShortcutTableContent
+    if (key.length > 1) {
+      table = longShortcutTableContent
     }
     table.push(
       <tr key={k}>
@@ -26,8 +26,8 @@ export let HelpContent = (prop: HelpContentProp) => {
   return (
     <div style={{ width: "600px" }}>
       <p>The following shortcuts are available:</p>
-      <table className="longShortcutTable">{longShortcutTableContent}</table>
       <table className="shortShortcutTable">{shortShortcutTableContent}</table>
+      <table className="longShortcutTable">{longShortcutTableContent}</table>
       <p>
         [*]moving the camera horizontally is only possible when the simulation is bigger than the
         camera. You can set the camera size (canvas size) in the Display menu, and set the

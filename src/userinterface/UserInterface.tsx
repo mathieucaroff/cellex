@@ -5,7 +5,7 @@ import {
   PlayCircleOutlined,
 } from "@ant-design/icons"
 import { Button, Collapse, Popover, Space } from "antd"
-import React, { ReactNode, useContext } from "react"
+import { useContext } from "react"
 
 import { presentNomenclature } from "../nomenclature/nomenclature"
 import { parseTopBorder } from "../patternlang/parser"
@@ -20,18 +20,18 @@ import { GalleryButton } from "./gallery/GalleryButton"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
 import { Documentation } from "./markdown/documentation"
-import { HelpContent } from "./menu/HelpContent"
 import { SettingsUI } from "./menu/SettingsUI"
+import { ShorcutList } from "./menu/ShortcutList"
 import { TopBorderSelect } from "./menu/topologySelect"
 
 const { Panel } = Collapse
 interface UserInterfaceProp {
-  helpList: [string, string][]
+  shortcutList: [string, string][]
   displayDiv: HTMLDivElement
 }
 
 export let UserInterface = (prop: UserInterfaceProp) => {
-  let { helpList, displayDiv } = prop
+  let { shortcutList, displayDiv } = prop
   let { act } = useContext(ReactContext)
   let { rule, diffMode, play, immersiveMode } = useStateSelection(
     ({ rule, diffMode, immersiveMode, play }) => ({
@@ -110,13 +110,6 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                   icon={<DiffOutlined />}
                   onClick={() => act.nextDifferentialMode()}
                 /> */}
-                <Popover
-                  placement="bottomLeft"
-                  content={<HelpContent helpList={helpList} />}
-                  trigger="click"
-                >
-                  <Button title="Help">?</Button>
-                </Popover>
               </div>
             </Space>
             <div style={{ float: "right" }}>
@@ -138,6 +131,9 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             key="ruleEditor"
           >
             <RuleEditor />
+          </Panel>
+          <Panel header="Keyboard shortcuts" key="shortcutList">
+            <ShorcutList list={shortcutList} />
           </Panel>
           <Panel header={`Documentation`} key="documentation">
             <Documentation />

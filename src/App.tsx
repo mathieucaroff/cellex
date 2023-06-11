@@ -12,12 +12,12 @@ export interface AppProp {
   act: Act
   context: Context
   info: Info
-  helpList: [string, string][]
+  shortcutList: [string, string][]
   displayDiv: HTMLDivElement
 }
 
 export function App(prop: AppProp) {
-  const { act, context, info, helpList, displayDiv } = prop
+  const { act, context, info, shortcutList, displayDiv } = prop
 
   let [darkMode, setDarkMode] = useState<DarkMode>(() => context.getState().darkMode)
   useEffect(() => {
@@ -33,7 +33,7 @@ export function App(prop: AppProp) {
     <StrictMode>
       <ReactContext.Provider value={{ act, context, info }}>
         <ConfigProvider theme={{ algorithm: darkMode === "dark" ? [antdTheme.darkAlgorithm] : [] }}>
-          <UserInterface helpList={helpList} displayDiv={displayDiv} />
+          <UserInterface shortcutList={shortcutList} displayDiv={displayDiv} />
         </ConfigProvider>
       </ReactContext.Provider>
     </StrictMode>

@@ -64,12 +64,12 @@ function main() {
 
   let appRoot = document.getElementById("appRoot")!
 
-  let helpList = keyboardBindingReference.getHelp()
+  let shortcutList = keyboardBindingReference.getHelp()
   let span = h("span")
   appRoot.appendChild(span)
 
   let reactRoot = ReactDOM.createRoot(span)
-  reactRoot.render(React.createElement(App, { act, context, info, helpList, displayDiv }))
+  reactRoot.render(React.createElement(App, { act, context, info, shortcutList, displayDiv }))
 
   // /\ display
   let display = createDisplay(canvas)
