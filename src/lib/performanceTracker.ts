@@ -110,13 +110,13 @@ export function getTimer(title: string, sectionName?: string) {
 w.report = function report() {
   Object.entries(timedDataStore).forEach(([title, { totalTime, count }]) => {
     let fps = (count * 1000) / totalTime
-    console.log(title, totalTime / count, "ms", fps, "fps")
+    console.info(title, totalTime / count, "ms", fps, "fps")
   })
   Object.entries(timerDataStore).forEach(([title, sectionArray]) => {
-    console.log(title)
+    console.info(title)
     sectionArray.forEach(({ name, totalTime, count }, k) => {
       let fps = (count * 1000) / totalTime
-      console.log(`  ${k}. ${name ?? ""}`, totalTime / count, "ms", fps, "fps")
+      console.info(`  ${k}. ${name ?? ""}`, totalTime / count, "ms", fps, "fps")
     })
   })
 }

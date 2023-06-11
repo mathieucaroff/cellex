@@ -24,13 +24,13 @@ export function parseNomenclature(descriptor: string): Rule {
   try {
     parser.feed(descriptor)
   } catch (e) {
-    console.log("the nomenclature grammar threw:", e)
+    console.info("the nomenclature grammar threw:", e)
     let ne = new Error("invalid automaton descriptor (the grammar threw)")
     ne.message += String(e)
     throw ne
   }
   if (parser.results.length === 0) {
-    console.log("no result after parsing nomenclature")
+    console.info("no result after parsing nomenclature")
     throw new Error("invalid automaton descriptor (no result after parsing)")
   }
 

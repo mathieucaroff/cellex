@@ -11,7 +11,7 @@ let compose =
 
 let log = (name) => (f) => (value) => {
     let res = f(value)
-    console.log(name, value, res)
+    console.log(name, value, res) // console.log allowed because it is inside the `log`` function
     return res
 }
 

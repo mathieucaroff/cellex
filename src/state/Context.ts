@@ -56,19 +56,22 @@ export let createContext = (state: State) => {
         updatingState = true
         changer(state)
       } finally {
-        updatingState = false
-        // we push work to the event queue so that the current thread finishes first
-        propertyUtilizationShelf.forEach((triplet) => {
-          let [selector, selection, runFunction] = triplet
-          let newSelection = selector(state)
-          if (!deepEqual(newSelection, selection)) {
-            runFunction(newSelection, state)
-            triplet[1] = clone(newSelection)
-          }
-        })
-        positionShelf.forEach((f) => {
-          f(state, state)
-        })
+        try {
+          // we push work to the event queue so that the current thread finishes first
+          propertyUtilizationShelf.forEach((triplet) => {
+            let [selector, selection, runFunction] = triplet
+            let newSelection = selector(state)
+            if (!deepEqual(newSelection, selection)) {
+              runFunction(newSelection, state)
+              triplet[1] = clone(newSelection)
+            }
+          })
+          positionShelf.forEach((f) => {
+            f(state, state)
+          })
+        } finally {
+          updatingState = false
+        }
       }
     },
     /**
