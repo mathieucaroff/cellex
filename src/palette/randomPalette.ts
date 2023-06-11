@@ -19,15 +19,15 @@ export function randomPalette(colorCount: number): Color[] {
   if (80 <= baseHue && baseHue < 140) {
     // green
     hueBoost = 2
-    console.log("**green**")
+    console.info("**green**")
   } else if (180 <= baseHue && baseHue < 260) {
     // blue
     hueBoost = 2
-    console.log("**blue**")
+    console.info("**blue**")
   } else if (300 <= baseHue) {
     // red
     hueBoost = 1.8
-    console.log("**red**")
+    console.info("**red**")
   }
 
   return Array.from({ length: colorCount }, (_, k) => {

@@ -128,8 +128,8 @@ function main() {
     if (state.immersiveMode === "immersive") {
       context.updateState((state) => {
         state.canvasSize = {
-          width: window.innerWidth,
-          height: window.innerHeight,
+          width: window.innerWidth - 50,
+          height: window.innerHeight - 40,
         }
 
         state.topology.width = state.canvasSize.width / state.zoom
@@ -140,8 +140,10 @@ function main() {
   window.addEventListener("resize", handleResize, true)
   context
     .use(({ immersiveMode }) => immersiveMode)
-    .for((im) => {
-      handleResize()
+    .for(() => {
+      setTimeout(() => {
+        handleResize()
+      })
     })
 
   // main canvas panning
