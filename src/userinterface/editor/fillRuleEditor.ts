@@ -1,4 +1,4 @@
-import { Rule } from "../../ruleType"
+import { TableRule } from "../../ruleType"
 import { Color } from "../../type"
 
 function writeColor(buffer: Uint8ClampedArray, x: number, color: Color) {
@@ -11,7 +11,7 @@ function writeColor(buffer: Uint8ClampedArray, x: number, color: Color) {
 // fillRuleEditor fill the ruleEditor small canvas from the rule data
 export let fillRuleEditor = (
   ctx: CanvasRenderingContext2D,
-  rule: Rule,
+  rule: TableRule,
   colorMap: Color[],
   xSpacing: number,
   ySpacing: number,
@@ -27,7 +27,7 @@ export let fillRuleEditor = (
   let image = ctx.createImageData(ctx.canvas.width, ctx.canvas.height)
 
   // fill the image
-  for (let i = 0; i < rule.transitionFunction.length; i++) {
+  for (let i = 0; i < rule.transitionTable.length; i++) {
     let iy = Math.floor(i / iWidth)
     let ix = i % iWidth
     let y = iy * ySpacing
@@ -36,13 +36,13 @@ export let fillRuleEditor = (
     let q = 4 * p
     let q2 = 4 * (p + ctx.canvas.width + xMiddle)
 
-    let text = (rule.transitionFunction.length - 1 - i).toString(rule.stateCount)
+    let text = (rule.transitionTable.length - 1 - i).toString(rule.stateCount)
     text = text.padStart(rule.neighborhoodSize, "0")
     text.split("").forEach((c, dp) => {
       writeColor(image.data, q + 4 * dp, colorMap[Number.parseInt(c, 16)])
     })
 
-    writeColor(image.data, q2, colorMap[rule.transitionFunction[i]])
+    writeColor(image.data, q2, colorMap[rule.transitionTable[i]])
   }
 
   ctx.putImageData(image, 0, 0)

@@ -1,4 +1,4 @@
-import { Domain, Rule } from "../ruleType"
+import { Domain, TableRule } from "../ruleType"
 import { limitLength } from "../util/limitLength"
 import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
@@ -20,16 +20,17 @@ export const interestingElementaryRuleArray = ([] as number[]).concat(
 )
 
 // elementaryRule produces a rule
-export let elementaryRule = (ruleNumberValue: number): Rule => {
+export let elementaryRule = (ruleNumberValue: number): TableRule => {
   let transitionFunction = Array.from({ length: 8 }, (_, k) => {
     return (ruleNumberValue & (1 << (7 - k))) >> (7 - k)
   })
 
   return {
+    kind: "tableRule",
     dimension: 1,
     stateCount: 2,
     neighborhoodSize: 3,
-    transitionFunction,
+    transitionTable: transitionFunction,
   }
 }
 
@@ -88,24 +89,25 @@ export let randomRule = () => {
   return randomRuleFromDomain(randomDomain())
 }
 
-export let randomRuleFromDomain = (domain: Domain): Rule => {
+export let randomRuleFromDomain = (domain: Domain): TableRule => {
   let { neighborhoodSize, stateCount } = domain
   return {
+    kind: "tableRule",
     dimension: 1,
     neighborhoodSize,
     stateCount,
-    transitionFunction: randomTransition({ neighborhoodSize, stateCount }).transitionFunction,
+    transitionTable: randomTransition({ neighborhoodSize, stateCount }).transitionFunction,
   }
 }
 
-export let randomGoodRule = (): Rule => {
+export let randomGoodRule = (): TableRule => {
   if (Math.random() < 0.6) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
   return randomRule()
 }
 
-export let randomGoodRuleFromDomain = (domain: Domain): Rule => {
+export let randomGoodRuleFromDomain = (domain: Domain): TableRule => {
   if (domain.neighborhoodSize === 3 && domain.stateCount === 2 && Math.random() < 0.6) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
@@ -128,10 +130,10 @@ export function computeTransitionFunction(
   return transitionFunction
 }
 
-export let computeTransitionNumber = (rule: Rule): BigInt => {
+export let computeTransitionNumber = (rule: TableRule): BigInt => {
   let value = 0n // bigint
   let stateCount = BigInt(rule.stateCount)
-  rule.transitionFunction.forEach((v) => {
+  rule.transitionTable.forEach((v) => {
     value += BigInt(v)
     value *= stateCount
   })
@@ -140,37 +142,37 @@ export let computeTransitionNumber = (rule: Rule): BigInt => {
 }
 
 // leftRightSymmetric of the given rule
-export let leftRightSymmetric = (rule: Rule): Rule => {
+export let leftRightSymmetric = (rule: TableRule): TableRule => {
   return {
     ...rule,
-    transitionFunction: Array.from({ length: rule.transitionFunction.length }, (_, k) => {
+    transitionTable: Array.from({ length: rule.transitionTable.length }, (_, k) => {
       let text = k.toString(rule.stateCount).padStart(rule.neighborhoodSize, "0")
       let reversedText = text.split("").reverse().join("")
       let m = Number.parseInt(reversedText, rule.stateCount)
-      return rule.transitionFunction[m]
+      return rule.transitionTable[m]
     }),
   }
 }
 
 // colorComplement of the given rule
-export let colorComplement = (rule: Rule): Rule => {
+export let colorComplement = (rule: TableRule): TableRule => {
   return {
     ...rule,
-    transitionFunction: rule.transitionFunction.map((c) => rule.stateCount - 1 - c).reverse(),
+    transitionTable: rule.transitionTable.map((c) => rule.stateCount - 1 - c).reverse(),
   }
 }
 
-export let baseComplement = (rule: Rule): Rule => {
+export let baseComplement = (rule: TableRule): TableRule => {
   return {
     ...rule,
-    transitionFunction: rule.transitionFunction.map((c) => rule.stateCount - 1 - c),
+    transitionTable: rule.transitionTable.map((c) => rule.stateCount - 1 - c),
   }
 }
 
-export let baseDigitOrderReverse = (rule: Rule): Rule => {
+export let baseDigitOrderReverse = (rule: TableRule): TableRule => {
   return {
     ...rule,
-    transitionFunction: [...rule.transitionFunction].reverse(),
+    transitionTable: [...rule.transitionTable].reverse(),
   }
 }
 

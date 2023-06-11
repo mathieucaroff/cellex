@@ -1,6 +1,6 @@
 import { colorComplement, leftRightSymmetric } from "../engine/rule"
 import { presentNomenclature } from "../nomenclature/nomenclature"
-import { Rule } from "../ruleType"
+import { TableRule } from "../ruleType"
 import { useStateSelection } from "./hooks"
 
 export const informationSet: Record<string, string> = {
@@ -25,7 +25,7 @@ interface Info {
   extra: string
 }
 
-export let getRuleInformation = (rule: Rule): Info | undefined => {
+export let getRuleInformation = (rule: TableRule): Info | undefined => {
   if (rule.neighborhoodSize > 3 || rule.stateCount > 2) {
     return
   }

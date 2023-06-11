@@ -1,26 +1,28 @@
 import { testUnit } from "../devlib/testUnit"
-import { Rule } from "../ruleType"
+import { TableRule } from "../ruleType"
 import { parseNomenclature } from "./nomenclature"
 
-let { success, failure } = testUnit<string, Rule>((input: string) => {
+let { success, failure } = testUnit<string, TableRule>((input: string) => {
   return parseNomenclature(input)
 })
 
-function elementaryRule(ruleNumber: number): Rule {
+function elementaryRule(ruleNumber: number): TableRule {
   return {
+    kind: "tableRule",
     dimension: 1,
     neighborhoodSize: 3,
     stateCount: 2,
-    transitionFunction: Array.from({ length: 8 }, (_, k) => 1 & (ruleNumber >> (7 - k))),
+    transitionTable: Array.from({ length: 8 }, (_, k) => 1 & (ruleNumber >> (7 - k))),
   }
 }
 
-function rule0(neighborhoodSize: number, stateCount: number): Rule {
+function rule0(neighborhoodSize: number, stateCount: number): TableRule {
   return {
+    kind: "tableRule",
     dimension: 1,
     neighborhoodSize,
     stateCount,
-    transitionFunction: Array.from({ length: stateCount ** neighborhoodSize }, (_, k) => 0),
+    transitionTable: Array.from({ length: stateCount ** neighborhoodSize }, (_, k) => 0),
   }
 }
 
@@ -55,7 +57,7 @@ success("256", {
   ...rule0(3, 3),
   // 256 == 3 ** 5 + 3 ** 2 + 3 ** 1 + 3 ** 0
   // prettier-ignore
-  transitionFunction: [
+  transitionTable: [
       0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 1, 0, 0, 1, 1, 1,

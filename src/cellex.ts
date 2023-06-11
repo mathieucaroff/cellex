@@ -11,6 +11,7 @@ import { createDisplay } from "./display/Display"
 import { createDiffModeManager } from "./engine/DiffModeManager"
 import { Engine, createAutomatonEngine } from "./engine/Engine"
 import { createRandomMapper } from "./engine/RandomMapper"
+import { createTableRuleCalculator } from "./engine/calculator/tableRule"
 import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/rule"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
@@ -92,7 +93,9 @@ function main() {
       }
 
       let randomMapper = createRandomMapper({ seedString: seed })
-      engine = createAutomatonEngine(rule, topology, randomMapper)
+      let calculator = createTableRuleCalculator(rule, topology, randomMapper)
+
+      engine = createAutomatonEngine(calculator, topology, randomMapper)
 
       display.setEngine(engine)
 

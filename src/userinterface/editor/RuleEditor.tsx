@@ -31,7 +31,7 @@ export let RuleEditor = () => {
   let canvasRef = useRef<HTMLCanvasElement>(null)
   let smallCanvas = document.createElement("canvas")
   let smallCtx = smallCanvas.getContext("2d")!
-  let { length } = rule.transitionFunction
+  let { length } = rule.transitionTable
   let iWidthPeriodicity = rule.stateCount
   if (iWidthPeriodicity <= 2) {
     iWidthPeriodicity = 4
@@ -96,7 +96,7 @@ export let RuleEditor = () => {
     let delta = ev.button === 0 ? 1 : -1
     let exact = true
     ev.preventDefault()
-    let { stateCount, transitionFunction } = rule
+    let { stateCount, transitionTable: transitionFunction } = rule
     let [position, error] = getPosition(ev, exact)
     if (error) {
       return
@@ -113,7 +113,7 @@ export let RuleEditor = () => {
   let baseXReverse = baseDigitOrderReverse(rule)
 
   let identityDifferenceArray: number[] = []
-  let identityFunction = rule.transitionFunction.map((v, k) => {
+  let identityFunction = rule.transitionTable.map((v, k) => {
     let n = length - 1 - k
     let centerPosition = Math.floor(rule.neighborhoodSize / 2)
     let result = Math.floor(n / rule.stateCount ** centerPosition) % rule.stateCount
@@ -153,57 +153,57 @@ export let RuleEditor = () => {
           onClick={() => {
             context.updateState(({ rule }) => {
               let index = randomChoice(identityDifferenceArray)
-              rule.transitionFunction[index] = identityFunction[index]
+              rule.transitionTable[index] = identityFunction[index]
             })
           }}
         >
           Simplify
         </Button>
         <Button
-          disabled={deepEqual(rule.transitionFunction, complement.transitionFunction)}
+          disabled={deepEqual(rule.transitionTable, complement.transitionTable)}
           onClick={() => {
             context.updateState(({ rule }) => {
-              rule.transitionFunction = complement.transitionFunction
+              rule.transitionTable = complement.transitionTable
             })
           }}
         >
           Switch to color complement: {presentNomenclature(complement).descriptor}
         </Button>
         <Button
-          disabled={deepEqual(rule.transitionFunction, symmetric.transitionFunction)}
+          disabled={deepEqual(rule.transitionTable, symmetric.transitionTable)}
           onClick={() => {
             context.updateState(({ rule }) => {
-              rule.transitionFunction = symmetric.transitionFunction
+              rule.transitionTable = symmetric.transitionTable
             })
           }}
         >
           Switch to left-right symmetric: {presentNomenclature(symmetric).descriptor}
         </Button>
         <Button
-          disabled={deepEqual(rule.transitionFunction, both.transitionFunction)}
+          disabled={deepEqual(rule.transitionTable, both.transitionTable)}
           onClick={() => {
             context.updateState(({ rule }) => {
-              rule.transitionFunction = both.transitionFunction
+              rule.transitionTable = both.transitionTable
             })
           }}
         >
           Switch both: {presentNomenclature(both).descriptor}
         </Button>
         <Button
-          disabled={deepEqual(rule.transitionFunction, baseXComplement.transitionFunction)}
+          disabled={deepEqual(rule.transitionTable, baseXComplement.transitionTable)}
           onClick={() => {
             context.updateState(({ rule }) => {
-              rule.transitionFunction = baseXComplement.transitionFunction
+              rule.transitionTable = baseXComplement.transitionTable
             })
           }}
         >
           Toggle twinkliness: {presentNomenclature(baseXComplement).descriptor}
         </Button>
         <Button
-          disabled={deepEqual(rule.transitionFunction, baseXReverse.transitionFunction)}
+          disabled={deepEqual(rule.transitionTable, baseXReverse.transitionTable)}
           onClick={() => {
             context.updateState(({ rule }) => {
-              rule.transitionFunction = baseXReverse.transitionFunction
+              rule.transitionTable = baseXReverse.transitionTable
             })
           }}
         >
@@ -216,7 +216,7 @@ export let RuleEditor = () => {
       ) : (
         <div>
           <NumberVariator
-            valueArray={rule.transitionFunction}
+            valueArray={rule.transitionTable}
             onChange={(array) => {
               context.updateState((state) => {
                 let base = rule.stateCount
@@ -237,7 +237,7 @@ export let RuleEditor = () => {
                   return
                 }
 
-                state.rule.transitionFunction = array
+                state.rule.transitionTable = array
               })
             }}
             titleIncreaseFunction={(k) =>

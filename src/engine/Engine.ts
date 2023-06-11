@@ -1,6 +1,6 @@
 import { DiffMode } from "../diffType"
+import { Calculator } from "../engineType"
 import { BorderGroup, SideBorder, StochasticState, TopBorder } from "../patternlang/BorderType"
-import { Rule } from "../ruleType"
 import { TopologyFinite } from "../topologyType"
 import { clone } from "../util/clone"
 import { mod } from "../util/mod"
@@ -67,40 +67,24 @@ export let runStochastic = (border: StochasticState, value: number) => {
 // createAutomatonEngine creates a 1d automaton computing machine for the given
 // rule, topology, and source of randomness
 export let createAutomatonEngine = (
-  rule: Rule,
+  calculator: Calculator,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
 ) => {
-  let length = rule.stateCount ** rule.neighborhoodSize
-  if (rule.stateCount > 16) {
-    throw `state count must be at most 16 (got ${rule.stateCount})`
-  } else if (rule.neighborhoodSize % 2 != 1) {
-    throw `neighborhood size must be odd (got ${rule.neighborhoodSize})`
-  } else if (length > 4096) {
-    throw `rule length too big (stateCount ** neighborhoodSize) is (${length}), which is above 4096`
-  } else if (rule.stateCount < 1) {
-    throw `state count must be at least 1`
-  }
-
-  let neighborhoodMiddle = Math.floor(rule.neighborhoodSize / 2)
-  let excessValue = rule.stateCount ** rule.neighborhoodSize
-
   let left = -Math.floor(topology.width / 2)
   let genesis = Uint8Array.from({ length: topology.width }, (_, k) => {
     return getTopBorderValue(topology.genesis, k + left, randomMapper.top)
   })
 
   let currentT = 0
-  let lineA = Uint8Array.from({ length: genesis.length }) // previous
-  let lineB = new Uint8Array(genesis) // current
-  let snapshotArray: Uint8Array[] = [lineB]
+  let lineA = new Uint8Array(genesis) // current
+  let lineB = Uint8Array.from({ length: genesis.length }) // previous
+  let snapshotArray: Uint8Array[] = [lineA]
 
   let diffMode: DiffMode = {
     status: "off",
     active: false,
   }
-
-  let functionLength = rule.transitionFunction.length
 
   // reset sets the engine current time and current line to the closest
   // snapshot available taken before the target time.
@@ -112,51 +96,10 @@ export let createAutomatonEngine = (
     }
     let arrayIndex = Math.floor(targetTime / SNAPSHOT_PERIOD)
     currentT = SNAPSHOT_PERIOD * arrayIndex
-    lineB = snapshotArray[arrayIndex]
+    lineA = snapshotArray[arrayIndex]
   }
 
   reset(0)
-
-  let nextLine = (input: Uint8Array, output: Uint8Array) => {
-    // initialize the rolling result of the rule
-    let index = 0
-    for (let k = -neighborhoodMiddle; k < 0; k++) {
-      index *= rule.stateCount
-      if (topology.kind == "loop") {
-        // look on the other side: `lineA[topology.width + k]`
-        index += input[topology.width + k]
-      } else if (topology.kind == "border") {
-        // read the border
-        index += getSideBorderValue(topology.borderLeft, currentT, randomMapper.left)
-      }
-    }
-    for (let k = 0; k < neighborhoodMiddle; k++) {
-      index *= rule.stateCount
-      index += input[k]
-    }
-
-    // main loop
-    for (let k = 0; k + neighborhoodMiddle < topology.width; k++) {
-      index = (index * rule.stateCount) % excessValue
-      index += input[k + neighborhoodMiddle]
-      output[k] = rule.transitionFunction[functionLength - 1 - index]
-    }
-
-    // compute the last few values
-    for (let k = topology.width - neighborhoodMiddle; k < topology.width; k++) {
-      index = (index * rule.stateCount) % excessValue
-      if (topology.kind == "loop") {
-        // look on the other side: `lineA[topology.width + k]`
-        index += input[k - (topology.width - neighborhoodMiddle)]
-      } else if (topology.kind == "border") {
-        index += getSideBorderValue(topology.borderRight, currentT, randomMapper.right)
-      }
-
-      output[k] = rule.transitionFunction[functionLength - 1 - index]
-    }
-
-    return output
-  }
 
   let me = {
     setDiffMode: (newDiffMode: DiffMode) => {
@@ -182,24 +125,24 @@ export let createAutomatonEngine = (
         }
       }
       while (currentT < t) {
-        // save lineB if currentT is a multiple of SNAPSHOT_PERIOD
+        // save lineA if currentT is a multiple of SNAPSHOT_PERIOD
         // also save lineD if the diffMode status wants it
         if (currentT % SNAPSHOT_PERIOD === 0) {
           let arrayIndex = Math.floor(currentT / SNAPSHOT_PERIOD)
-          snapshotArray[arrayIndex] = new Uint8Array(lineB)
+          snapshotArray[arrayIndex] = new Uint8Array(lineA)
         }
 
-        // [here lineB is the current line]
+        // [here lineA is the current line]
         // the input is line B and line A is the output
-        nextLine(lineB, lineA)
+        calculator.nextLine(lineA, lineB, currentT)
         // increase time
         currentT += 1
         // swap the two lines by name
-        ;[lineA, lineB] = [lineB, lineA]
-        // [now lineB is the current line again]
+        ;[lineB, lineA] = [lineA, lineB]
+        // [now lineA is the current line again]
       }
 
-      return lineB
+      return lineA
     },
   }
 

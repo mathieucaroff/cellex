@@ -1,16 +1,16 @@
-import { Rule } from "../ruleType"
+import { TableRule } from "../ruleType"
 import { TopologyFinite } from "../topologyType"
 import { mod } from "../util/mod"
 import { getTopBorderValue } from "./Engine"
 import { RandomMapper } from "./RandomMapper"
 
 export let createAutomatonEngine = (
-  rule: Rule,
+  rule: TableRule,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
 ) => {
   let halfNeighborhood = Math.floor(rule.neighborhoodSize / 2)
-  let functionLength = rule.transitionFunction.length
+  let functionLength = rule.transitionTable.length
 
   let getFirstLine = (): Uint8Array => {
     let left = -Math.floor(topology.width / 2)
@@ -32,7 +32,7 @@ export let createAutomatonEngine = (
   }
 
   let dereference = (indexLine: Uint16Array): Uint8Array =>
-    Uint8Array.from(indexLine, (v) => rule.transitionFunction[functionLength - 1 - v])
+    Uint8Array.from(indexLine, (v) => rule.transitionTable[functionLength - 1 - v])
 
   return {
     getIndexLine: (t: number): Uint16Array => {

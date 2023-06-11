@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { TopBorder } from "../patternlang/BorderType"
 import { group, rootGroup } from "../patternlang/patternUtil"
+import { TopologyFinite } from "../topologyType"
 import {
   createAutomatonEngine,
   getSideBorderValue,
@@ -10,6 +11,7 @@ import {
   runStochastic,
 } from "./Engine"
 import { createRandomMapper } from "./RandomMapper"
+import { createTableRuleCalculator } from "./calculator/tableRule"
 import { elementaryRule } from "./rule"
 import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopTestEngine"
 
@@ -87,18 +89,20 @@ describe("createAutomatonEngine", () => {
     cycleRight: { content, quantity: 1, type: "group", width },
   }
 
-  let parameterArray = [
-    elementaryRule(110),
-    {
-      kind: "loop",
-      finitness: "finite",
-      width: 10,
-      genesis,
-    },
-    createRandomMapper({ seedString: "_" }),
-  ] as const
+  let topology: TopologyFinite = {
+    kind: "loop",
+    finitness: "finite",
+    width: 10,
+    genesis,
+  }
+  let randomMapper = createRandomMapper({ seedString: "_" })
+  let parameterArray = [elementaryRule(110), topology, randomMapper] as const
 
-  let engine = createAutomatonEngine(...parameterArray)
+  let engine = createAutomatonEngine(
+    createTableRuleCalculator(...parameterArray),
+    topology,
+    randomMapper,
+  )
   let slowEngine = createSlowLoopEngine(...parameterArray)
 
   it.each(Array.from({ length: 3 }, (_, k) => [k, k]))(`line %i`, (k) => {
