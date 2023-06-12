@@ -69,6 +69,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     "E",
     "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
   )
+  onSymbol(["I"], act.toggleImmersiveMode, "I", "toggle the *I*mmersive mode on or off")
 
   onKeypress(["Digit0", "Numpad0"], act.gotoTop, "0", "go back to the top")
 
@@ -105,7 +106,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onKeypress(
     ["Digit8", "Numpad8"],
     act.setRandomGenesis("([0111])"),
-    "9",
+    "8",
     "set the genesis to random with 25% of 0 and 75% of 1",
   )
   onKeypress(
@@ -120,6 +121,12 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
 
   onSpecificSymbol([" "], act.togglePlay, "[space]**", "toggle play / pause")
   onSpecificSymbol(["Enter"], act.singleStep, "[enter]**", "process a single generation")
+  onSymbol(
+    ["Escape"],
+    act.handlePressEscape,
+    "[escape]",
+    "disable the *I*mmersive mode when it is enabled",
+  )
 
   onSymbol(["ArrowLeft"], act.goLeft, "[left]", "move camera left*")
   onSymbol(["ArrowRight"], act.goRight, "[right]", "move camera right*")

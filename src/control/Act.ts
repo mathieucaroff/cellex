@@ -232,6 +232,15 @@ export let createAct = (context: Context, info: Info) => {
       }
     }),
 
+    /** Immersive Mode */
+    toggleImmersiveMode: action((state) => {
+      state.immersiveMode = state.immersiveMode === "off" ? "immersive" : "off"
+    }),
+
+    handlePressEscape: action((state) => {
+      state.immersiveMode = "off"
+    }),
+
     /** Quick settings */
     backspace: action((state) => {
       act.setPause(state)
