@@ -30,10 +30,10 @@ export function createTableRuleCalculator(
     let index = 0
     for (let k = -neighborhoodMiddle; k < 0; k++) {
       index *= rule.stateCount
-      if (topology.kind == "loop") {
+      if (topology.kind === "loop") {
         // look on the other side: `lineA[topology.width + k]`
         index += input[topology.width + k]
-      } else if (topology.kind == "border") {
+      } else if (topology.kind === "border") {
         // read the border
         index += getSideBorderValue(topology.borderLeft, currentT, randomMapper.left)
       }
@@ -53,10 +53,10 @@ export function createTableRuleCalculator(
     // compute the last few values
     for (let k = topology.width - neighborhoodMiddle; k < topology.width; k++) {
       index = (index * rule.stateCount) % excessValue
-      if (topology.kind == "loop") {
+      if (topology.kind === "loop") {
         // look on the other side: `lineA[topology.width + k]`
         index += input[k - (topology.width - neighborhoodMiddle)]
-      } else if (topology.kind == "border") {
+      } else if (topology.kind === "border") {
         index += getSideBorderValue(topology.borderRight, currentT, randomMapper.right)
       }
 

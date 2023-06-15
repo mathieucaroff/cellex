@@ -4,7 +4,7 @@ import { mod } from "../util/mod"
 import { getTopBorderValue } from "./Engine"
 import { RandomMapper } from "./RandomMapper"
 
-export let createAutomatonEngine = (
+export let createSlowLoopEngine = (
   rule: TableRule,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
