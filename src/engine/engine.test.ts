@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { TopBorder } from "../patternlang/BorderType"
 import { group, rootGroup } from "../patternlang/patternUtil"
-import { TopologyFinite } from "../topologyType"
 import {
   createAutomatonEngine,
   getSideBorderValue,
@@ -12,23 +10,21 @@ import {
 } from "./Engine"
 import { createRandomMapper } from "./RandomMapper"
 import { createTableRuleCalculator } from "./calculator/tableRule"
+import {
+  cMap,
+  one,
+  qw1,
+  r1,
+  r2,
+  r10,
+  random01,
+  rule110Topology10,
+  ts,
+  two,
+  zero,
+} from "./engine.test-provisionning"
 import { elementaryRule } from "./rule"
-import { createAutomatonEngine as createSlowLoopEngine } from "./slowLoopTestEngine"
-
-const ts = { type: "state" as const }
-const qw1 = { quantity: 1, width: 1 }
-const r1 = (x) => 0 // "random 1"
-const r2 = (x) => ((x % 2) + 2) % 2 // "random 2"
-const r10 = (x) => ((x % 10) + 10) % 10 // "random 10"
-let cMap = (cumulativeMap: number[]) => {
-  return { cumulativeMap, total: cumulativeMap.slice(-1)[0] }
-}
-
-let zero = { ...ts, ...qw1, ...cMap([1]) }
-let one = { ...ts, ...qw1, ...cMap([0, 1]) }
-let random01 = { ...ts, ...qw1, ...cMap([1, 2]) }
-
-let two = { ...ts, ...qw1, ...cMap([0, 0, 1]) }
+import { createSlowLoopEngine } from "./slowLoopTestEngine"
 
 it("runStochastic", () => {
   expect(runStochastic(zero, 0)).toBe(0)
@@ -81,20 +77,7 @@ it("getSideBorderValue", () => {
 })
 
 describe("createAutomatonEngine", () => {
-  let content = [..."11111000100110"].map((c) => (c === "1" ? one : zero))
-  let width = content.length
-  let genesis: TopBorder = {
-    center: { content: [], quantity: 1, type: "group", width: 0 },
-    cycleLeft: { content, quantity: 1, type: "group", width },
-    cycleRight: { content, quantity: 1, type: "group", width },
-  }
-
-  let topology: TopologyFinite = {
-    kind: "loop",
-    finitness: "finite",
-    width: 10,
-    genesis,
-  }
+  let topology = rule110Topology10
   let randomMapper = createRandomMapper({ seedString: "_" })
   let parameterArray = [elementaryRule(110), topology, randomMapper] as const
 

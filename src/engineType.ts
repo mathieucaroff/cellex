@@ -1,3 +1,3 @@
 export interface Calculator {
-  nextLine: (lineB: Uint8Array, lineA: Uint8Array, currentT: number) => void
+  nextLine: (input: Uint8Array, output: Uint8Array, currentT: number) => void
 }
