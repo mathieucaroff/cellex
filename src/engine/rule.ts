@@ -1,4 +1,4 @@
-import { Domain, TableRule } from "../ruleType"
+import { Domain, TableCode, TableRule } from "../ruleType"
 import { limitLength } from "../util/limitLength"
 import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
@@ -114,23 +114,43 @@ export let randomGoodRuleFromDomain = (domain: Domain): TableRule => {
   return randomRuleFromDomain(domain)
 }
 
-export function computeTransitionFunction(
-  neighborhoodSize: number,
+export function computeAnyTransitionTable(
   stateCount: number,
+  length: number,
   transitionNumber: bigint,
 ) {
   let colorCount = BigInt(stateCount)
 
-  let transitionFunction = Array.from({ length: stateCount ** neighborhoodSize }, () => {
+  let transitionTable = Array.from({ length }, () => {
     let mod = transitionNumber % colorCount
     transitionNumber = (transitionNumber - mod) / colorCount
     return Number(mod)
   }).reverse()
 
-  return transitionFunction
+  return transitionTable
 }
 
-export let computeTransitionNumber = (rule: TableRule): BigInt => {
+export function computeRuleTransitionTable(
+  neighborhoodSize: number,
+  stateCount: number,
+  transitionNumber: bigint,
+) {
+  return computeAnyTransitionTable(stateCount, stateCount ** neighborhoodSize, transitionNumber)
+}
+
+export function computeCodeTransitionTable(
+  neighborhoodSize: number,
+  stateCount: number,
+  transitionNumber: bigint,
+) {
+  return computeAnyTransitionTable(
+    stateCount,
+    (stateCount - 1) * neighborhoodSize + 1,
+    transitionNumber,
+  )
+}
+
+export let computeTransitionNumber = (rule: TableRule | TableCode): BigInt => {
   let value = 0n // bigint
   let stateCount = BigInt(rule.stateCount)
   rule.transitionTable.forEach((v) => {

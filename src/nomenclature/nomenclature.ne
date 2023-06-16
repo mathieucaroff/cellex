@@ -11,12 +11,21 @@ let debug = (name) => (...args) => {
 %}
 
 
-main -> _ (numeric_three_cell_neigborhood | elementary_rule | any_automaton) _ {% ([_, [x]]) => x %}
+main -> _ (numeric_three_cell_neighborhood | elementary_rule | any_automaton) _ {% ([_, [x]]) => x %}
 
-numeric_three_cell_neigborhood -> [0-9_]:+ {% ([x]) => ["numeric", ruleNumber(x)] %}
+# The numeric automaton production allows to specify an automaton just by giving
+# its rule number, without specifying the number of states. The neighborhood
+# will be assumed to be of size 3, and the number of states will be guessed from
+# the size of the number. This means that autoata whose rule number is low
+# compare to their number of states, cannot be described by this production.
+# For this, this production is not relied on by the rule normalization scheme.
+numeric_three_cell_neighborhood -> [0-9_]:+ {% ([x]) => ["numeric", ruleNumber(x)] %}
 
+# Elementary automata. They use the prefix letter `e`
 elementary_rule -> ("e" | "elementary") _ [0-9]:+ _ {% ([_a, _b, x]) => ["elementary", ruleNumber(x)] %}
 
+# Any automaton. Only the rule number is mandatory. The dimension will be
+# assumed to be 1, the neighborhoodSize 3 and the colors 2.
 any_automaton -> _ (dimension:? neighborhood_size:? colors:? rule) _ {%
   ([_, [dimension, neighborhoodSize, colors, rule]]) => ([
     "any",

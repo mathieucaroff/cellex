@@ -1,7 +1,11 @@
 import { default as nearley } from "nearley"
 
-import { computeTransitionFunction, computeTransitionNumber } from "../engine/rule"
-import { TableRule } from "../ruleType"
+import {
+  computeCodeTransitionTable,
+  computeRuleTransitionTable,
+  computeTransitionNumber,
+} from "../engine/rule"
+import { Rule, TableCode, TableRule } from "../ruleType"
 import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
@@ -18,7 +22,7 @@ type NomenclatureOutput =
       },
     ]
 
-export function parseNomenclature(descriptor: string): TableRule {
+export function parseNomenclature(descriptor: string): TableRule | TableCode {
   let parser = new nearley.Parser(nomenclatureGrammar)
 
   try {
@@ -36,7 +40,7 @@ export function parseNomenclature(descriptor: string): TableRule {
 
   let parserOutput: NomenclatureOutput = parser.results[0]
   let transitionNumber: bigint
-  let result: TableRule
+  let result: TableRule | TableCode
 
   // Manage the case where the rule descriptor contains no letter
   // In that case, we want to produce a rule with a neigborhood size of three
@@ -69,7 +73,7 @@ export function parseNomenclature(descriptor: string): TableRule {
       dimension: 1,
       neighborhoodSize: 3,
       stateCount,
-      transitionTable: computeTransitionFunction(3, stateCount, transitionNumber),
+      transitionTable: computeRuleTransitionTable(3, stateCount, transitionNumber),
     }
   } else if (parserOutput[0] === "elementary") {
     transitionNumber = BigInt(parserOutput[1])
@@ -83,7 +87,7 @@ export function parseNomenclature(descriptor: string): TableRule {
       dimension: 1,
       neighborhoodSize: 3,
       stateCount: 2,
-      transitionTable: computeTransitionFunction(3, 2, transitionNumber),
+      transitionTable: computeRuleTransitionTable(3, 2, transitionNumber),
     }
   } else if (parserOutput[1].transitionString[0] === "rule") {
     // The grammar guarantees that a transition number is specified
@@ -96,14 +100,25 @@ export function parseNomenclature(descriptor: string): TableRule {
       stateCount: +(parserOutput[1].colors ?? [2])[0],
       transitionTable: [],
     }
-    result.transitionTable = computeTransitionFunction(
+    result.transitionTable = computeRuleTransitionTable(
       result.neighborhoodSize,
       result.stateCount,
       transitionNumber,
     )
   } else if (parserOutput[1].transitionString[0] === "code") {
-    // let codeNumber = BigInt(parserOutput[1].transitionString[1][0])
-    throw new Error("totalistic code rules are not yet supported")
+    transitionNumber = BigInt(parserOutput[1].transitionString[1])
+    result = {
+      kind: "tableCode",
+      dimension: +(parserOutput[1].dimension ?? 1),
+      neighborhoodSize: +(parserOutput[1].neighborhoodSize ?? 3),
+      stateCount: +(parserOutput[1].colors ?? [2])[0],
+      transitionTable: [],
+    }
+    result.transitionTable = computeCodeTransitionTable(
+      result.neighborhoodSize,
+      result.stateCount,
+      transitionNumber,
+    )
   } else {
     throw new Error("unrecognized parse output: " + JSON.stringify(parserOutput))
   }
@@ -115,7 +130,7 @@ export function parseNomenclature(descriptor: string): TableRule {
   return result
 }
 
-export function presentNomenclature(rule: TableRule) {
+export function presentNomenclature(rule: TableRule | TableCode) {
   let tn = thousandSplit(String(computeTransitionNumber(rule)))
   let regular: string[] = []
   let long: string[] = []
@@ -131,12 +146,18 @@ export function presentNomenclature(rule: TableRule) {
     regular.push(`${rule.stateCount}c`)
     long.push(`${rule.stateCount} colors`)
   }
-  if (regular.length === 0) {
-    regular.push(`e${tn}`)
-    long.push(`elementary ${tn}`)
+
+  if (rule.kind === "tableCode") {
+    regular.push(`c${tn}`)
+    long.push(`code ${tn}`)
   } else {
-    regular.push(`r${tn}`)
-    long.push(`rule ${tn}`)
+    if (regular.length === 0) {
+      regular.push(`e${tn}`)
+      long.push(`elementary ${tn}`)
+    } else {
+      regular.push(`r${tn}`)
+      long.push(`rule ${tn}`)
+    }
   }
   return {
     descriptor: regular.join(","),

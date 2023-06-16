@@ -1,5 +1,5 @@
 import { DiffMode } from "./diffType"
-import { TableRule } from "./ruleType"
+import { Rule } from "./ruleType"
 import { TopologyFiniteBorder } from "./topologyType"
 import { Color } from "./type"
 
@@ -15,7 +15,7 @@ export type DarkMode = "dark" | "light"
  * @param postT Temporal position
  */
 export interface State extends StatePosition {
-  rule: TableRule
+  rule: Rule
 
   speed: number
   play: boolean
