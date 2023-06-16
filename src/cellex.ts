@@ -11,8 +11,10 @@ import { createDisplay } from "./display/Display"
 import { createDiffModeManager } from "./engine/DiffModeManager"
 import { Engine, createAutomatonEngine } from "./engine/Engine"
 import { createRandomMapper } from "./engine/RandomMapper"
+import { createTableCodeCalculator } from "./engine/calculator/tableCode"
 import { createTableRuleCalculator } from "./engine/calculator/tableRule"
 import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/rule"
+import { Calculator } from "./engineType"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
 import { parseNomenclature } from "./nomenclature/nomenclature"
@@ -93,7 +95,14 @@ function main() {
       }
 
       let randomMapper = createRandomMapper({ seedString: seed })
-      let calculator = createTableRuleCalculator(rule, topology, randomMapper)
+      let calculator: Calculator
+      if (rule.kind === "tableCode") {
+        calculator = createTableCodeCalculator(rule, topology, randomMapper)
+      } else if (rule.kind === "tableRule") {
+        calculator = createTableRuleCalculator(rule, topology, randomMapper)
+      } else {
+        throw new Error("unsupported rule kind: " + rule.kind)
+      }
 
       engine = createAutomatonEngine(calculator, topology, randomMapper)
 
@@ -204,6 +213,12 @@ function main() {
         state.play = true
       })
     } else {
+      if (state.rule.kind !== "tableRule" && state.rule.kind !== "tableCode") {
+        context.updateState(() => {
+          state.presentationMode = "off"
+        })
+        return
+      }
       let oldRuleNumber = Number(computeTransitionNumber(state.rule))
       let newRuleNumber = oldRuleNumber
       while (newRuleNumber === oldRuleNumber) {
