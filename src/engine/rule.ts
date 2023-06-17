@@ -21,7 +21,7 @@ export const interestingElementaryRuleArray = ([] as number[]).concat(
 
 // elementaryRule produces a rule
 export let elementaryRule = (ruleNumberValue: number): TableRule => {
-  let transitionFunction = Array.from({ length: 8 }, (_, k) => {
+  let transitionTable = Array.from({ length: 8 }, (_, k) => {
     return (ruleNumberValue & (1 << (7 - k))) >> (7 - k)
   })
 
@@ -30,7 +30,7 @@ export let elementaryRule = (ruleNumberValue: number): TableRule => {
     dimension: 1,
     stateCount: 2,
     neighborhoodSize: 3,
-    transitionTable: transitionFunction,
+    transitionTable,
   }
 }
 
@@ -68,11 +68,11 @@ export let randomDomain = (): Domain => {
   return { dimension: 1, neighborhoodSize, stateCount }
 }
 
-export let randomTransition = (domain: Omit<Domain, "dimension">) => {
+export let randomTransitionTable = (domain: Omit<Domain, "dimension">) => {
   let { neighborhoodSize, stateCount } = domain
   let count = BigInt(stateCount)
   let transition = 0n
-  let transitionFunction = Array.from({ length: stateCount ** neighborhoodSize }, () => {
+  let transitionTable = Array.from({ length: stateCount ** neighborhoodSize }, () => {
     let random = Math.floor(stateCount * Math.random())
     transition *= count
     transition += BigInt(random)
@@ -80,7 +80,7 @@ export let randomTransition = (domain: Omit<Domain, "dimension">) => {
   })
   // let transitionNumber = transition
   return {
-    transitionFunction,
+    transitionTable,
     transitionNumber: transition,
   }
 }
@@ -96,7 +96,7 @@ export let randomRuleFromDomain = (domain: Domain): TableRule => {
     dimension: 1,
     neighborhoodSize,
     stateCount,
-    transitionTable: randomTransition({ neighborhoodSize, stateCount }).transitionFunction,
+    transitionTable: randomTransitionTable({ neighborhoodSize, stateCount }).transitionTable,
   }
 }
 

@@ -1,4 +1,4 @@
-import { Collapse, Select } from "antd"
+import { Collapse, Select, Typography } from "antd"
 import { ReactNode, useState } from "react"
 
 import {
@@ -8,9 +8,19 @@ import {
 } from "../../engine/rule"
 import { wolframClassInfo } from "../../engine/wolframClassInfo"
 import { labelValue } from "../../util/labelValue"
+import { SingleCollapse } from "../components/SingleLoadingCollapse/SingleLoadingCollapse"
 import { AutomatonPreview } from "./AutomatonPreview"
 
 const { Panel } = Collapse
+const { Title } = Typography
+
+const totalisticCodeOverview = (props: { neighborhoodSize: number }) => {
+  let { neighborhoodSize } = props
+  return Array.from({ length: 2 ** (neighborhoodSize + 1) }, (_, k) => {
+    let descriptor = `ns ${neighborhoodSize}, code ${k}`
+    return <AutomatonPreview key={k} descriptor={descriptor} automatonTitle={descriptor} />
+  })
+}
 
 export function AutomatonGallery() {
   const elementaryAutomatonPreview = (k: number) => (
@@ -94,39 +104,64 @@ export function AutomatonGallery() {
 
   return (
     <div className="automatonGallery">
-      <h2>Curated Large Automata</h2>
-      <div className="curatedLargeAutomata">
-        {curatedLargeAutomatonArray.map(({ shorterLabel, value }) => (
-          <AutomatonPreview key={value} descriptor={value} automatonTitle={shorterLabel} />
-        ))}
-      </div>
-      <h2>Elementary Automata</h2>
-      <div>
-        {" "}
-        <strong>Grouping </strong>
-        <Select
-          value={currentEAGrouping}
-          options={["None", "Symmetries", "Wolfram Classes"].map(labelValue)}
-          onChange={(value) => {
-            setEAGrouping(value)
-          }}
-          style={{ width: 160 }}
-        />
-      </div>
-      {currentEAGrouping === "None" && (
+      <Title level={4}>Curated Large Automata</Title>
+      <SingleCollapse ghost defaultIsOpen>
+        <div className="curatedLargeAutomata">
+          {curatedLargeAutomatonArray.map(({ shorterLabel, value }) => (
+            <AutomatonPreview key={value} descriptor={value} automatonTitle={shorterLabel} />
+          ))}
+        </div>
+      </SingleCollapse>
+
+      <Title level={4}>Elementary Automata</Title>
+      <SingleCollapse ghost>
         <div>
-          <strong>Filtering </strong>
+          <strong>Grouping </strong>
           <Select
-            value={currentEAFilter}
-            options={elementaryAutomataFilterOptionArray}
+            value={currentEAGrouping}
+            options={["None", "Symmetries", "Wolfram Classes"].map(labelValue)}
             onChange={(value) => {
-              setEAFilter(value)
+              setEAGrouping(value)
             }}
-            style={{ width: 120 }}
+            style={{ width: 160 }}
           />
         </div>
-      )}
-      <div className="elementaryAutomatonOverview">{groupedElementaryAutomata}</div>
+        {currentEAGrouping === "None" && (
+          <div>
+            <strong>Filtering </strong>
+            <Select
+              value={currentEAFilter}
+              options={elementaryAutomataFilterOptionArray}
+              onChange={(value) => {
+                setEAFilter(value)
+              }}
+              style={{ width: 120 }}
+            />
+          </div>
+        )}
+        <div className="elementaryAutomatonOverview">{groupedElementaryAutomata}</div>
+      </SingleCollapse>
+
+      <Title level={4}>Totalistic code of neighborhood size 3</Title>
+      <SingleCollapse ghost>
+        <div className="totalisticCodeOverviewNs3">
+          {totalisticCodeOverview({ neighborhoodSize: 3 })}
+        </div>
+      </SingleCollapse>
+
+      <Title level={4}>Totalistic code of neighborhood size 5</Title>
+      <SingleCollapse ghost>
+        <div className="totalisticCodeOverviewNs5">
+          {totalisticCodeOverview({ neighborhoodSize: 5 })}
+        </div>
+      </SingleCollapse>
+
+      <Title level={4}>Totalistic code of neighborhood size 7</Title>
+      <SingleCollapse ghost>
+        <div className="totalisticCodeOverviewNs7">
+          {totalisticCodeOverview({ neighborhoodSize: 7 })}
+        </div>
+      </SingleCollapse>
     </div>
   )
 }

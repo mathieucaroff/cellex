@@ -1,4 +1,4 @@
-// import react from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react"
 import * as child from "child_process"
 import { defineConfig } from "vite"
 
@@ -11,5 +11,5 @@ export default defineConfig({
   define: {
     __COMMIT_HASH__: JSON.stringify(commitHash),
   },
-  plugins: [nearley()],
+  plugins: [nearley(), react()],
 })

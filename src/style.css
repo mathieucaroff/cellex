@@ -148,7 +148,10 @@ th {
 .elementaryAutomatonOverview > div,
 .curatedLargeAutomata > div,
 .groupedElementaryAutomata .ant-collapse-content-box > div > div,
-.groupedElementaryAutomataWolframClasses .ant-collapse-content-box > div {
+.groupedElementaryAutomataWolframClasses .ant-collapse-content-box > div,
+.totalisticCodeOverviewNs3 > div,
+.totalisticCodeOverviewNs5 > div,
+.totalisticCodeOverviewNs7 > div {
   display: inline-block;
   margin: 8px;
 }
@@ -164,7 +167,6 @@ th {
   visibility: visible;
   transition: 0.4s linear;
 }
-
 
 .ant-modal-root .ant-modal {
   transform: translate(-45vw, -45vh) scale(0);

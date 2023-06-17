@@ -28,6 +28,9 @@ import {
 export let RuleEditor = () => {
   let { context } = useContext(ReactContext)
   let { rule, colorMap } = useStateSelection(({ rule, colorMap }) => ({ rule, colorMap }))
+  if (rule.kind !== "tableRule" && rule.kind !== "tableCode") {
+    return <></>
+  }
   let canvasRef = useRef<HTMLCanvasElement>(null)
   let smallCanvas = document.createElement("canvas")
   let smallCtx = smallCanvas.getContext("2d")!
@@ -96,13 +99,13 @@ export let RuleEditor = () => {
     let delta = ev.button === 0 ? 1 : -1
     let exact = true
     ev.preventDefault()
-    let { stateCount, transitionTable: transitionFunction } = rule
+    let { stateCount, transitionTable } = rule
     let [position, error] = getPosition(ev, exact)
     if (error) {
       return
     }
     context.updateState(() => {
-      transitionFunction[position] = mod(transitionFunction[position] + delta, stateCount)
+      transitionTable[position] = mod(transitionTable[position] + delta, stateCount)
     })
   }
 
