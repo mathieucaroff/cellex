@@ -24,6 +24,7 @@ import {
   getWikipediaLink,
   getWolframAlphaLink,
 } from "./link"
+import "./ruleEditor.css"
 
 export let RuleEditor = () => {
   let { context } = useContext(ReactContext)
