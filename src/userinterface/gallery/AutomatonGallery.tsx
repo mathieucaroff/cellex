@@ -5,7 +5,7 @@ import {
   curatedLargeAutomatonArray,
   interestingElementaryRuleSet,
   ruleSet,
-} from "../../engine/rule"
+} from "../../engine/automaton"
 import { wolframClassInfo } from "../../engine/wolframClassInfo"
 import { labelValue } from "../../util/labelValue"
 import { SingleCollapse } from "../components/SingleLoadingCollapse/SingleLoadingCollapse"

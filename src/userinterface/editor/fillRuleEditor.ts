@@ -1,4 +1,4 @@
-import { TableRule } from "../../ruleType"
+import { TableRuleAutomaton } from "../../automatonType"
 import { Color } from "../../type"
 
 function writeColor(buffer: Uint8ClampedArray, x: number, color: Color) {
@@ -11,7 +11,7 @@ function writeColor(buffer: Uint8ClampedArray, x: number, color: Color) {
 // fillRuleEditor fill the ruleEditor small canvas from the rule data
 export let fillRuleEditor = (
   ctx: CanvasRenderingContext2D,
-  rule: TableRule,
+  rule: TableRuleAutomaton,
   colorMap: Color[],
   xSpacing: number,
   ySpacing: number,

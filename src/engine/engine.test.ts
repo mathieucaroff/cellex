@@ -9,6 +9,7 @@ import {
   runStochastic,
 } from "./Engine"
 import { createRandomMapper } from "./RandomMapper"
+import { elementaryRule } from "./automaton"
 import { createTableRuleCalculator } from "./calculator/tableRule"
 import {
   cMap,
@@ -23,7 +24,6 @@ import {
   two,
   zero,
 } from "./engine.test-provisionning"
-import { elementaryRule } from "./rule"
 import { createSlowLoopEngine } from "./slowLoopTestEngine"
 
 it("runStochastic", () => {

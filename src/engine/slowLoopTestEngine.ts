@@ -1,11 +1,11 @@
-import { TableRule } from "../ruleType"
+import { TableRuleAutomaton } from "../automatonType"
 import { TopologyFinite } from "../topologyType"
 import { mod } from "../util/mod"
 import { getTopBorderValue } from "./Engine"
 import { RandomMapper } from "./RandomMapper"
 
 export let createSlowLoopEngine = (
-  rule: TableRule,
+  rule: TableRuleAutomaton,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
 ) => {

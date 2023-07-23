@@ -7,7 +7,7 @@ import {
   colorComplement,
   computeTransitionNumber,
   leftRightSymmetric,
-} from "../../engine/rule"
+} from "../../engine/automaton"
 import { presentNomenclature } from "../../nomenclature/nomenclature"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
@@ -28,7 +28,10 @@ import "./ruleEditor.css"
 
 export let RuleEditor = () => {
   let { context } = useContext(ReactContext)
-  let { rule, colorMap } = useStateSelection(({ rule, colorMap }) => ({ rule, colorMap }))
+  let { rule, colorMap } = useStateSelection(({ automaton: rule, colorMap }) => ({
+    rule,
+    colorMap,
+  }))
   if (rule.kind !== "tableRule" && rule.kind !== "tableCode") {
     return <></>
   }
@@ -155,7 +158,7 @@ export let RuleEditor = () => {
           title="Simplify 1 step towards identity"
           disabled={identityDifferenceArray.length == 0}
           onClick={() => {
-            context.updateState(({ rule }) => {
+            context.updateState(({ automaton: rule }) => {
               let index = randomChoice(identityDifferenceArray)
               rule.transitionTable[index] = identityFunction[index]
             })
@@ -166,7 +169,7 @@ export let RuleEditor = () => {
         <Button
           disabled={deepEqual(rule.transitionTable, complement.transitionTable)}
           onClick={() => {
-            context.updateState(({ rule }) => {
+            context.updateState(({ automaton: rule }) => {
               rule.transitionTable = complement.transitionTable
             })
           }}
@@ -176,7 +179,7 @@ export let RuleEditor = () => {
         <Button
           disabled={deepEqual(rule.transitionTable, symmetric.transitionTable)}
           onClick={() => {
-            context.updateState(({ rule }) => {
+            context.updateState(({ automaton: rule }) => {
               rule.transitionTable = symmetric.transitionTable
             })
           }}
@@ -186,7 +189,7 @@ export let RuleEditor = () => {
         <Button
           disabled={deepEqual(rule.transitionTable, both.transitionTable)}
           onClick={() => {
-            context.updateState(({ rule }) => {
+            context.updateState(({ automaton: rule }) => {
               rule.transitionTable = both.transitionTable
             })
           }}
@@ -196,7 +199,7 @@ export let RuleEditor = () => {
         <Button
           disabled={deepEqual(rule.transitionTable, baseXComplement.transitionTable)}
           onClick={() => {
-            context.updateState(({ rule }) => {
+            context.updateState(({ automaton: rule }) => {
               rule.transitionTable = baseXComplement.transitionTable
             })
           }}
@@ -206,7 +209,7 @@ export let RuleEditor = () => {
         <Button
           disabled={deepEqual(rule.transitionTable, baseXReverse.transitionTable)}
           onClick={() => {
-            context.updateState(({ rule }) => {
+            context.updateState(({ automaton: rule }) => {
               rule.transitionTable = baseXReverse.transitionTable
             })
           }}
@@ -241,7 +244,7 @@ export let RuleEditor = () => {
                   return
                 }
 
-                state.rule.transitionTable = array
+                state.automaton.transitionTable = array
               })
             }}
             titleIncreaseFunction={(k) =>

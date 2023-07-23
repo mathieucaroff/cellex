@@ -59,7 +59,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
   // set the state on click
   const handleClick = () => {
     context.updateState((s) => {
-      s.rule = rule
+      s.automaton = rule
       s.topology.genesis = genesis
       s.posT = 0
       s.posS = 0

@@ -4,26 +4,30 @@ export interface Domain {
   stateCount: number
 }
 
-export interface TableRule extends Domain {
+export interface TableRuleAutomaton extends Domain {
   kind: "tableRule"
   transitionTable: number[]
 }
 
-export interface TableCode extends Domain {
+export interface TableCodeAutomaton extends Domain {
   kind: "tableCode"
   transitionTable: number[]
 }
 
-export interface FunctionRule extends Domain {
+export interface FunctionAutomaton extends Domain {
   kind: "functionRule"
   transitionFunction: (neighborhood: number[]) => number
 }
 
-export interface FreeFunctionRule extends Domain {
+export interface FreeFunctionAutomaton extends Domain {
   kind: "freeFunctionRule"
   neighborhoodSize: 0
   stateCount: 0
   transitionFunction: (get: (s: number) => number) => number
 }
 
-export type Rule = TableRule | TableCode | FunctionRule | FreeFunctionRule
+export type Automaton =
+  | TableRuleAutomaton
+  | TableCodeAutomaton
+  | FunctionAutomaton
+  | FreeFunctionAutomaton

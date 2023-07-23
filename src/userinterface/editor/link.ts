@@ -1,5 +1,5 @@
-import { computeTransitionNumber } from "../../engine/rule"
-import { TableRule } from "../../ruleType"
+import { TableRuleAutomaton } from "../../automatonType"
+import { computeTransitionNumber } from "../../engine/automaton"
 
 export let getMathworldLink = (ruleNumber: number) => {
   let knownRuleNumbers = [
@@ -27,7 +27,7 @@ export let getWikipediaDedicatedPageLink = (ruleNumber: number) => {
   return ""
 }
 
-export let getWolframAlphaLink = (rule: TableRule) => {
+export let getWolframAlphaLink = (rule: TableRuleAutomaton) => {
   let prefix = "https://www.wolframalpha.com/input/?i="
   let r = fractionToString(rule.neighborhoodSize - 1, 2)
   let ruleNumber = computeTransitionNumber(rule)

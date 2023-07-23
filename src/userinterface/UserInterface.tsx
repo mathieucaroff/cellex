@@ -33,12 +33,12 @@ interface UserInterfaceProp {
 export let UserInterface = (prop: UserInterfaceProp) => {
   let { shortcutList, displayDiv } = prop
   let { act } = useContext(ReactContext)
-  let { rule, diffMode, play, immersiveMode } = useStateSelection(
-    ({ rule, diffMode, immersiveMode, play }) => ({
+  let { automaton, diffMode, play, immersiveMode } = useStateSelection(
+    ({ automaton, diffMode, immersiveMode, play }) => ({
       diffMode,
       immersiveMode,
       play,
-      rule,
+      automaton,
     }),
   )
 
@@ -127,7 +127,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
         <Collapse accordion {...collapseProp}>
           <Panel
             className="ruleEditor"
-            header={`Rule Editor (${presentNomenclature(rule).longDescriptor})`}
+            header={`Rule Editor (${presentNomenclature(automaton).longDescriptor})`}
             key="ruleEditor"
           >
             <RuleEditor />

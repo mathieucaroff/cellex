@@ -213,7 +213,7 @@ export let SettingsUI = () => {
                 <Button
                   onClick={() => {
                     const state = context.getState()
-                    const ruleName = presentNomenclature(state.rule).descriptor
+                    const ruleName = presentNomenclature(state.automaton).descriptor
                     const genesis = presentTopBorder(state.topology.genesis)
                     let url = new URL(location.href)
                     url.searchParams.set("genesis", genesis)

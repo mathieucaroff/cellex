@@ -11,9 +11,9 @@ import { createDisplay } from "./display/Display"
 import { createDiffModeManager } from "./engine/DiffModeManager"
 import { Engine, createAutomatonEngine } from "./engine/Engine"
 import { createRandomMapper } from "./engine/RandomMapper"
+import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/automaton"
 import { createTableCodeCalculator } from "./engine/calculator/tableCode"
 import { createTableRuleCalculator } from "./engine/calculator/tableRule"
-import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/rule"
 import { Calculator } from "./engineType"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
@@ -85,7 +85,12 @@ function main() {
 
   // engine-related change
   context
-    .use(({ rule, seed, topology }) => ({ rule, seed, topology, t: JSON.stringify(topology) }))
+    .use(({ automaton: rule, seed, topology }) => ({
+      rule,
+      seed,
+      topology,
+      t: JSON.stringify(topology),
+    }))
     .for(({ rule, seed, topology }) => {
       if (rule.stateCount > state.colorMap.length) {
         console.error(
@@ -213,20 +218,20 @@ function main() {
         state.play = true
       })
     } else {
-      if (state.rule.kind !== "tableRule" && state.rule.kind !== "tableCode") {
+      if (state.automaton.kind !== "tableRule" && state.automaton.kind !== "tableCode") {
         context.updateState(() => {
           state.presentationMode = "off"
         })
         return
       }
-      let oldRuleNumber = Number(computeTransitionNumber(state.rule))
+      let oldRuleNumber = Number(computeTransitionNumber(state.automaton))
       let newRuleNumber = oldRuleNumber
       while (newRuleNumber === oldRuleNumber) {
         // retry
         newRuleNumber = randomChoice(interestingElementaryRuleArray)
       }
       context.updateState(() => {
-        state.rule = parseNomenclature(newRuleNumber.toString())
+        state.automaton = parseNomenclature(newRuleNumber.toString())
         state.posT = 0
 
         let impulseOkRuleArray = [18, 22, 26, 30, 45, 60, 62, 73, 90, 105, 110, 126, 146, 150, 154]

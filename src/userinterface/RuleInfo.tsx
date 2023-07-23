@@ -1,6 +1,6 @@
-import { colorComplement, leftRightSymmetric } from "../engine/rule"
+import { TableRuleAutomaton } from "../automatonType"
+import { colorComplement, leftRightSymmetric } from "../engine/automaton"
 import { presentNomenclature } from "../nomenclature/nomenclature"
-import { TableRule } from "../ruleType"
 import { useStateSelection } from "./hooks"
 
 export const informationSet: Record<string, string> = {
@@ -25,7 +25,7 @@ interface Info {
   extra: string
 }
 
-export let getRuleInformation = (rule: TableRule): Info | undefined => {
+export let getRuleInformation = (rule: TableRuleAutomaton): Info | undefined => {
   if (rule.neighborhoodSize > 3 || rule.stateCount > 2) {
     return
   }
@@ -52,7 +52,7 @@ export let getRuleInformation = (rule: TableRule): Info | undefined => {
 }
 
 export let RuleInfo = () => {
-  let rule = useStateSelection(({ rule }) => rule)
+  let rule = useStateSelection(({ automaton: rule }) => rule)
   let name = presentNomenclature(rule).longDescriptor
   let info = getRuleInformation(rule)!
   if (!info) {

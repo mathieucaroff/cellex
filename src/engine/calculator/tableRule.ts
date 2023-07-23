@@ -1,11 +1,11 @@
+import { TableRuleAutomaton } from "../../automatonType"
 import { Calculator } from "../../engineType"
-import { TableRule } from "../../ruleType"
 import { TopologyFinite } from "../../topologyType"
 import { getSideBorderValue } from "../Engine"
 import { RandomMapper } from "../RandomMapper"
 
 export function createTableRuleCalculator(
-  rule: TableRule,
+  rule: TableRuleAutomaton,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
 ): Calculator {

@@ -1,4 +1,4 @@
-import { Domain, TableCode, TableRule } from "../ruleType"
+import { Domain, TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
 import { limitLength } from "../util/limitLength"
 import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
@@ -20,7 +20,7 @@ export const interestingElementaryRuleArray = ([] as number[]).concat(
 )
 
 // elementaryRule produces a rule
-export let elementaryRule = (ruleNumberValue: number): TableRule => {
+export let elementaryRule = (ruleNumberValue: number): TableRuleAutomaton => {
   let transitionTable = Array.from({ length: 8 }, (_, k) => {
     return (ruleNumberValue & (1 << (7 - k))) >> (7 - k)
   })
@@ -89,7 +89,7 @@ export let randomRule = () => {
   return randomRuleFromDomain(randomDomain())
 }
 
-export let randomRuleFromDomain = (domain: Domain): TableRule => {
+export let randomRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
   let { neighborhoodSize, stateCount } = domain
   return {
     kind: "tableRule",
@@ -100,14 +100,14 @@ export let randomRuleFromDomain = (domain: Domain): TableRule => {
   }
 }
 
-export let randomGoodRule = (): TableRule => {
+export let randomGoodRule = (): TableRuleAutomaton => {
   if (Math.random() < 0.6) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
   return randomRule()
 }
 
-export let randomGoodRuleFromDomain = (domain: Domain): TableRule => {
+export let randomGoodRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
   if (domain.neighborhoodSize === 3 && domain.stateCount === 2 && Math.random() < 0.6) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
@@ -150,7 +150,7 @@ export function computeCodeTransitionTable(
   )
 }
 
-export let computeTransitionNumber = (rule: TableRule | TableCode): BigInt => {
+export let computeTransitionNumber = (rule: TableRuleAutomaton | TableCodeAutomaton): BigInt => {
   let value = 0n // bigint
   let stateCount = BigInt(rule.stateCount)
   rule.transitionTable.forEach((v) => {
@@ -162,7 +162,7 @@ export let computeTransitionNumber = (rule: TableRule | TableCode): BigInt => {
 }
 
 // leftRightSymmetric of the given rule
-export let leftRightSymmetric = (rule: TableRule): TableRule => {
+export let leftRightSymmetric = (rule: TableRuleAutomaton): TableRuleAutomaton => {
   return {
     ...rule,
     transitionTable: Array.from({ length: rule.transitionTable.length }, (_, k) => {
@@ -175,21 +175,21 @@ export let leftRightSymmetric = (rule: TableRule): TableRule => {
 }
 
 // colorComplement of the given rule
-export let colorComplement = (rule: TableRule): TableRule => {
+export let colorComplement = (rule: TableRuleAutomaton): TableRuleAutomaton => {
   return {
     ...rule,
     transitionTable: rule.transitionTable.map((c) => rule.stateCount - 1 - c).reverse(),
   }
 }
 
-export let baseComplement = (rule: TableRule): TableRule => {
+export let baseComplement = (rule: TableRuleAutomaton): TableRuleAutomaton => {
   return {
     ...rule,
     transitionTable: rule.transitionTable.map((c) => rule.stateCount - 1 - c),
   }
 }
 
-export let baseDigitOrderReverse = (rule: TableRule): TableRule => {
+export let baseDigitOrderReverse = (rule: TableRuleAutomaton): TableRuleAutomaton => {
   return {
     ...rule,
     transitionTable: [...rule.transitionTable].reverse(),

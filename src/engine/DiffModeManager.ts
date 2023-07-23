@@ -95,7 +95,7 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
             lineChanges.changes.splice(sIndex, 0, { s, amount: 1 })
           } else {
             let {
-              rule: { stateCount },
+              automaton: { stateCount },
             } = context.getState()
             cellChanges.amount = (cellChanges.amount + 1) % stateCount
             if (cellChanges.amount > 0) {

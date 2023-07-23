@@ -18,7 +18,7 @@ export let DomainSelect = () => {
       listHeight={400}
       onChange={(value) => {
         context.updateState((state) => {
-          state.rule = parseNomenclature(value)
+          state.automaton = parseNomenclature(value)
         })
       }}
     />

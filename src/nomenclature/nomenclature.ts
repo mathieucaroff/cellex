@@ -1,11 +1,11 @@
 import { default as nearley } from "nearley"
 
+import { Automaton, TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
 import {
   computeCodeTransitionTable,
   computeRuleTransitionTable,
   computeTransitionNumber,
-} from "../engine/rule"
-import { Rule, TableCode, TableRule } from "../ruleType"
+} from "../engine/automaton"
 import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
@@ -22,7 +22,7 @@ type NomenclatureOutput =
       },
     ]
 
-export function parseNomenclature(descriptor: string): TableRule | TableCode {
+export function parseNomenclature(descriptor: string): TableRuleAutomaton | TableCodeAutomaton {
   let parser = new nearley.Parser(nomenclatureGrammar)
 
   try {
@@ -40,7 +40,7 @@ export function parseNomenclature(descriptor: string): TableRule | TableCode {
 
   let parserOutput: NomenclatureOutput = parser.results[0]
   let transitionNumber: bigint
-  let result: TableRule | TableCode
+  let result: TableRuleAutomaton | TableCodeAutomaton
 
   // Manage the case where the rule descriptor contains no letter
   // In that case, we want to produce a rule with a neigborhood size of three
@@ -130,7 +130,7 @@ export function parseNomenclature(descriptor: string): TableRule | TableCode {
   return result
 }
 
-export function presentNomenclature(rule: TableRule | TableCode) {
+export function presentNomenclature(rule: TableRuleAutomaton | TableCodeAutomaton) {
   let tn = thousandSplit(String(computeTransitionNumber(rule)))
   let regular: string[] = []
   let long: string[] = []

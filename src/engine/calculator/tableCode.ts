@@ -1,11 +1,11 @@
+import { TableCodeAutomaton } from "../../automatonType"
 import { Calculator } from "../../engineType"
-import { TableCode } from "../../ruleType"
 import { TopologyFinite } from "../../topologyType"
 import { getSideBorderValue } from "../Engine"
 import { RandomMapper } from "../RandomMapper"
 
 export function createTableCodeCalculator(
-  code: TableCode,
+  code: TableCodeAutomaton,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
 ): Calculator {

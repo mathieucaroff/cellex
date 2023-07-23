@@ -1,12 +1,12 @@
+import { TableRuleAutomaton } from "../automatonType"
 import { testUnit } from "../devlib/testUnit"
-import { TableRule } from "../ruleType"
 import { parseNomenclature } from "./nomenclature"
 
-let { success, failure } = testUnit<string, TableRule>((input: string) => {
+let { success, failure } = testUnit<string, TableRuleAutomaton>((input: string) => {
   return parseNomenclature(input)
 })
 
-function elementaryRule(ruleNumber: number): TableRule {
+function elementaryRule(ruleNumber: number): TableRuleAutomaton {
   return {
     kind: "tableRule",
     dimension: 1,
@@ -16,7 +16,7 @@ function elementaryRule(ruleNumber: number): TableRule {
   }
 }
 
-function rule0(neighborhoodSize: number, stateCount: number): TableRule {
+function rule0(neighborhoodSize: number, stateCount: number): TableRuleAutomaton {
   return {
     kind: "tableRule",
     dimension: 1,

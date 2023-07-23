@@ -1,5 +1,5 @@
 import { parseColorMap } from "../display/Display"
-import { randomGoodRule } from "../engine/rule"
+import { randomGoodRule } from "../engine/automaton"
 import { parseNomenclature } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../stateType"
@@ -40,7 +40,7 @@ export let initialState = (): State => {
   const presentationMode = new URLSearchParams(location.search).has("rule") ? "off" : "present"
 
   return {
-    rule,
+    automaton: rule,
 
     speed: 1,
     posS: 0,
