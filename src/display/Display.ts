@@ -76,7 +76,7 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
   }
 
   /**
-   * preDraw -- draw to the precanvas
+   * scaleUpDraw -- scale the precanvas up to the visible canvas
    */
   const scaleUpDraw = (fx: number, fy: number, zoomX: number, zoomY: number) => {
     ctx.drawImage(

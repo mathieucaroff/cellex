@@ -52,9 +52,12 @@ export let getRuleInformation = (rule: TableRuleAutomaton): Info | undefined => 
 }
 
 export let RuleInfo = () => {
-  let rule = useStateSelection(({ automaton: rule }) => rule)
+  let rule = useStateSelection(({ automaton }) => automaton)
+  if (rule.kind !== "tableRule") {
+    return <span></span>
+  }
   let name = presentNomenclature(rule).longDescriptor
-  let info = getRuleInformation(rule)!
+  let info = getRuleInformation(rule)
   if (!info) {
     return <span></span>
   }

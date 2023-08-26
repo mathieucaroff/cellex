@@ -1,4 +1,4 @@
-import { TableRuleAutomaton } from "../../automatonType"
+import { TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
 import { computeTransitionNumber } from "../../engine/automaton"
 
 export let getMathworldLink = (ruleNumber: number) => {
@@ -27,11 +27,12 @@ export let getWikipediaDedicatedPageLink = (ruleNumber: number) => {
   return ""
 }
 
-export let getWolframAlphaLink = (rule: TableRuleAutomaton) => {
+export let getWolframAlphaLink = (rule: TableRuleAutomaton | TableCodeAutomaton) => {
   let prefix = "https://www.wolframalpha.com/input/?i="
   let r = fractionToString(rule.neighborhoodSize - 1, 2)
   let ruleNumber = computeTransitionNumber(rule)
-  return `${prefix}k%3D${rule.stateCount}+r%3D${r}+rule+${ruleNumber}`
+  let short = { tableRule: "rule", tableCode: "code" }[rule.kind]
+  return `${prefix}k%3D${rule.stateCount}+r%3D${r}+${short}+${ruleNumber}`
 }
 
 let fractionToString = (numerator: number, denominator: number) => {

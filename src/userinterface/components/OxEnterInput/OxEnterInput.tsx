@@ -107,6 +107,16 @@ export function OxEnterInput(prop: OxEnterInputProp) {
           }
         }}
         onPressEnter={() => {
+          let p: any
+          let pv: any
+          try {
+            p = parse(localValue)
+            pv = present(p)
+          } catch (e) {
+            console.error(`Error parsing value ${localValue}: [[${e}]]`)
+            return
+          }
+
           context.updateState((state) => {
             let { piece, last } = readPath(path, state)
             piece[last] = parse(localValue)

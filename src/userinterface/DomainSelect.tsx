@@ -30,14 +30,12 @@ function generateSupportedDomainArray() {
 
   const domainArray: DefaultOptionType[] = []
 
-  let degenerateArray: DefaultOptionType[]
-
   // iterate on the neighborhood sizes
   Array.from({ length: 12 }, (_, ns) => {
     /* prettier-ignore */
     if (
       false
-      || ns < 1 || ns > 11 // ns out of bound
+      || ns < 2 || ns > 11 // ns out of bound
       || ns % 2 === 0 // ns must be odd
     ) {
       return
@@ -55,15 +53,9 @@ function generateSupportedDomainArray() {
       }
       subArray.push(labelValue(`neighborhood size ${ns}, ${c} colors`))
     })
-    if (ns === 1) {
-      degenerateArray = subArray
-    } else {
-      let suffix = ns > 3 ? ` of neighborhood size ${ns}` : ""
-      domainArray.push({ label: `Domains${suffix}`, options: subArray })
-    }
+    let suffix = ns > 3 ? ` of neighborhood size ${ns}` : ""
+    domainArray.push({ label: `Domains${suffix}`, options: subArray })
   })
-
-  domainArray.push({ label: "Degenerate domains", options: degenerateArray })
 
   return domainArray
 }

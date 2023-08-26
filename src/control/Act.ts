@@ -245,7 +245,7 @@ export let createAct = (context: Context, info: Info) => {
     backspace: action((state) => {
       act.setPause(state)
       act.gotoTop(state)
-      document.querySelector<HTMLInputElement>("#ruleInput")!.select()
+      document.querySelector<HTMLInputElement>("#automatonInput")!.select()
     }),
     setGenesis: (genesis: string) =>
       action((state) => {

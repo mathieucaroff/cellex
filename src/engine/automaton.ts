@@ -107,7 +107,7 @@ export let randomGoodRule = (): TableRuleAutomaton => {
   return randomRule()
 }
 
-export let randomGoodRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
+export let randomGoodAutomatonFromDomain = (domain: Domain): TableRuleAutomaton => {
   if (domain.neighborhoodSize === 3 && domain.stateCount === 2 && Math.random() < 0.6) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
@@ -150,10 +150,12 @@ export function computeCodeTransitionTable(
   )
 }
 
-export let computeTransitionNumber = (rule: TableRuleAutomaton | TableCodeAutomaton): BigInt => {
+export let computeTransitionNumber = (
+  automaton: TableRuleAutomaton | TableCodeAutomaton,
+): BigInt => {
   let value = 0n // bigint
-  let stateCount = BigInt(rule.stateCount)
-  rule.transitionTable.forEach((v) => {
+  let stateCount = BigInt(automaton.stateCount)
+  automaton.transitionTable.forEach((v) => {
     value += BigInt(v)
     value *= stateCount
   })
@@ -175,7 +177,7 @@ export let leftRightSymmetric = (rule: TableRuleAutomaton): TableRuleAutomaton =
 }
 
 // colorComplement of the given rule
-export let colorComplement = (rule: TableRuleAutomaton): TableRuleAutomaton => {
+export let colorComplement = <T extends TableRuleAutomaton | TableCodeAutomaton>(rule: T): T => {
   return {
     ...rule,
     transitionTable: rule.transitionTable.map((c) => rule.stateCount - 1 - c).reverse(),

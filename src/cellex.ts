@@ -85,28 +85,26 @@ function main() {
 
   // engine-related change
   context
-    .use(({ automaton: rule, seed, topology }) => ({
-      rule,
+    .use(({ automaton, seed, topology }) => ({
+      automaton,
       seed,
       topology,
       t: JSON.stringify(topology),
     }))
-    .for(({ rule, seed, topology }) => {
-      if (rule.stateCount > state.colorMap.length) {
+    .for(({ automaton, seed, topology }) => {
+      if (automaton.stateCount > state.colorMap.length) {
         console.error(
-          `Cannot display rules ${rule.stateCount} states with a palette of only ${state.colorMap.length} colors`,
+          `Cannot display rules ${automaton.stateCount} states with a palette of only ${state.colorMap.length} colors`,
         )
         return
       }
 
       let randomMapper = createRandomMapper({ seedString: seed })
       let calculator: Calculator
-      if (rule.kind === "tableCode") {
-        calculator = createTableCodeCalculator(rule, topology, randomMapper)
-      } else if (rule.kind === "tableRule") {
-        calculator = createTableRuleCalculator(rule, topology, randomMapper)
+      if (automaton.kind === "tableCode") {
+        calculator = createTableCodeCalculator(automaton, topology, randomMapper)
       } else {
-        throw new Error("unsupported rule kind: " + rule.kind)
+        calculator = createTableRuleCalculator(automaton, topology, randomMapper)
       }
 
       engine = createAutomatonEngine(calculator, topology, randomMapper)

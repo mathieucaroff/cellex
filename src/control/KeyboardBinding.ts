@@ -61,7 +61,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
 
   onSymbol(["P"], act.togglePlay, "P", "toggle *P*lay / *P*ause")
   onSymbol(["O"], act.singleStep, "O", "process *O*ne generation")
-  onSymbol(["R"], act.select("#ruleInput"), "R", "select the *R*ule input")
+  onSymbol(["R"], act.select("#automatonInput"), "R", "select the *R*ule input")
   onSymbol(["C"], act.focus("#displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
   onSymbol(
     ["E"],

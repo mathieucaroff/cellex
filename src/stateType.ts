@@ -1,4 +1,4 @@
-import { Automaton } from "./automatonType"
+import { TableCodeAutomaton, TableRuleAutomaton } from "./automatonType"
 import { DiffMode } from "./diffType"
 import { TopologyFiniteBorder } from "./topologyType"
 import { Color } from "./type"
@@ -15,7 +15,7 @@ export type DarkMode = "dark" | "light"
  * @param postT Temporal position
  */
 export interface State extends StatePosition {
-  automaton: Automaton
+  automaton: TableRuleAutomaton | TableCodeAutomaton
 
   speed: number
   play: boolean

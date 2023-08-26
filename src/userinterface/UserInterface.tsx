@@ -1,9 +1,4 @@
-import {
-  DiffOutlined,
-  FullscreenOutlined,
-  PauseCircleOutlined,
-  PlayCircleOutlined,
-} from "@ant-design/icons"
+import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
 import { Button, Collapse, Popover, Space } from "antd"
 import { useContext } from "react"
 
@@ -15,7 +10,7 @@ import { RuleInput } from "./RuleInput"
 import { OxButton } from "./components/OxButton/OxButton"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
 import { OxSelect } from "./components/OxSelect/OxSelect"
-import { RuleEditor } from "./editor/RuleEditor"
+import { AutomatonEditor } from "./editor/AutomatonEditor"
 import { GalleryButton } from "./gallery/GalleryButton"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
@@ -33,7 +28,7 @@ interface UserInterfaceProp {
 export let UserInterface = (prop: UserInterfaceProp) => {
   let { shortcutList, displayDiv } = prop
   let { act } = useContext(ReactContext)
-  let { automaton, diffMode, play, immersiveMode } = useStateSelection(
+  let { automaton, play, immersiveMode } = useStateSelection(
     ({ automaton, diffMode, immersiveMode, play }) => ({
       diffMode,
       immersiveMode,
@@ -127,10 +122,10 @@ export let UserInterface = (prop: UserInterfaceProp) => {
         <Collapse accordion {...collapseProp}>
           <Panel
             className="ruleEditor"
-            header={`Rule Editor (${presentNomenclature(automaton).longDescriptor})`}
+            header={`Automaton Editor (${presentNomenclature(automaton).longDescriptor})`}
             key="ruleEditor"
           >
-            <RuleEditor />
+            <AutomatonEditor />
           </Panel>
           <Panel header="Keyboard shortcuts" key="shortcutList">
             <ShorcutList list={shortcutList} />

@@ -1,6 +1,6 @@
 import { default as nearley } from "nearley"
 
-import { Automaton, TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
+import { TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
 import {
   computeCodeTransitionTable,
   computeRuleTransitionTable,
@@ -28,13 +28,11 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
   try {
     parser.feed(descriptor)
   } catch (e) {
-    console.info("the nomenclature grammar threw:", e)
     let ne = new Error("invalid automaton descriptor (the grammar threw)")
     ne.message += String(e)
     throw ne
   }
   if (parser.results.length === 0) {
-    console.info("no result after parsing nomenclature")
     throw new Error("invalid automaton descriptor (no result after parsing)")
   }
 
@@ -42,7 +40,6 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
   let transitionNumber: bigint
   let result: TableRuleAutomaton | TableCodeAutomaton
 
-  // Manage the case where the rule descriptor contains no letter
   // In that case, we want to produce a rule with a neigborhood size of three
   // and with sufficiently many colors that the number makes sense in that rule
   if (parserOutput[0] === "numeric") {
@@ -130,24 +127,24 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
   return result
 }
 
-export function presentNomenclature(rule: TableRuleAutomaton | TableCodeAutomaton) {
-  let tn = thousandSplit(String(computeTransitionNumber(rule)))
+export function presentNomenclature(automaton: TableRuleAutomaton | TableCodeAutomaton) {
+  let tn = thousandSplit(String(computeTransitionNumber(automaton)))
   let regular: string[] = []
   let long: string[] = []
-  if (rule.dimension !== 1) {
-    regular.push(`${rule.dimension}d`)
-    long.push(`${rule.dimension} dimensions`)
+  if (automaton.dimension !== 1) {
+    regular.push(`${automaton.dimension}d`)
+    long.push(`${automaton.dimension} dimensions`)
   }
-  if (rule.neighborhoodSize !== 3) {
-    regular.push(`ns${rule.neighborhoodSize}`)
-    long.push(`neighborhood size ${rule.neighborhoodSize}`)
+  if (automaton.neighborhoodSize !== 3) {
+    regular.push(`ns${automaton.neighborhoodSize}`)
+    long.push(`neighborhood size ${automaton.neighborhoodSize}`)
   }
-  if (rule.stateCount !== 2) {
-    regular.push(`${rule.stateCount}c`)
-    long.push(`${rule.stateCount} colors`)
+  if (automaton.stateCount !== 2) {
+    regular.push(`${automaton.stateCount}c`)
+    long.push(`${automaton.stateCount} colors`)
   }
 
-  if (rule.kind === "tableCode") {
+  if (automaton.kind === "tableCode") {
     regular.push(`c${tn}`)
     long.push(`code ${tn}`)
   } else {

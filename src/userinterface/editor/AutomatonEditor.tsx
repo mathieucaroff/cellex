@@ -1,6 +1,7 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 
+import { TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
 import {
   baseComplement,
   baseDigitOrderReverse,
@@ -17,7 +18,7 @@ import { numberToStringWithThousandSplit } from "../../util/thousandSplit"
 import { RuleInfo } from "../RuleInfo"
 import { NumberVariator } from "../components/NumberVariator/NumberVariator"
 import { useStateSelection } from "../hooks"
-import { fillRuleEditor } from "./fillRuleEditor"
+import { fillRuleEditor as fillAutomatonEditor } from "./fillAutomatonEditor"
 import {
   getMathworldLink as getMathWorldLink,
   getWikipediaDedicatedPageLink,
@@ -26,26 +27,26 @@ import {
 } from "./link"
 import "./ruleEditor.css"
 
-export let RuleEditor = () => {
+export let AutomatonEditor = () => {
   let { context } = useContext(ReactContext)
-  let { rule, colorMap } = useStateSelection(({ automaton: rule, colorMap }) => ({
-    rule,
+  let { automaton, colorMap } = useStateSelection(({ automaton, colorMap }) => ({
+    automaton,
     colorMap,
   }))
-  if (rule.kind !== "tableRule" && rule.kind !== "tableCode") {
+  if (automaton.kind !== "tableRule" && automaton.kind !== "tableCode") {
     return <></>
   }
   let canvasRef = useRef<HTMLCanvasElement>(null)
   let smallCanvas = document.createElement("canvas")
   let smallCtx = smallCanvas.getContext("2d")!
-  let { length } = rule.transitionTable
-  let iWidthPeriodicity = rule.stateCount
+  let { length } = automaton.transitionTable
+  let iWidthPeriodicity = automaton.stateCount
   if (iWidthPeriodicity <= 2) {
     iWidthPeriodicity = 4
   }
   let minimumIWidth = (iWidthPeriodicity < 6 ? 2 : 1) * iWidthPeriodicity
   // xSpacing and ySpacing define the spacing between the occurences of the function's entries
-  const xSpacing = rule.neighborhoodSize + 1
+  const xSpacing = automaton.neighborhoodSize + 1
   const ySpacing = 3
   // iWidth and iHeight define how many occurences of entry per row or column
   const iWidth = Math.max(
@@ -54,7 +55,7 @@ export let RuleEditor = () => {
   )
   const iHeight = Math.ceil(length / iWidth)
 
-  fillRuleEditor(smallCtx, rule, colorMap, xSpacing, ySpacing, iWidth, iHeight)
+  fillAutomatonEditor(smallCtx, automaton, colorMap, xSpacing, ySpacing, iWidth, iHeight)
 
   const zoom = Math.min(Math.floor(0.9 * (window.innerWidth / smallCanvas.width)), 24)
   // useLayoutEffect here because we need to wait for the canvas to be instanciated
@@ -84,7 +85,7 @@ export let RuleEditor = () => {
     if (exact) {
       let x = Math.floor(mouseX / zoom)
       let y = Math.floor(mouseY / zoom)
-      if (x % (rule.neighborhoodSize + 1) !== Math.floor(rule.neighborhoodSize / 2)) {
+      if (x % (automaton.neighborhoodSize + 1) !== Math.floor(automaton.neighborhoodSize / 2)) {
         return [0, "inexact x coordinate"]
       } else if (y % 3 != 1) {
         return [0, "inexact y coordinate"]
@@ -103,7 +104,7 @@ export let RuleEditor = () => {
     let delta = ev.button === 0 ? 1 : -1
     let exact = true
     ev.preventDefault()
-    let { stateCount, transitionTable } = rule
+    let { stateCount, transitionTable } = automaton
     let [position, error] = getPosition(ev, exact)
     if (error) {
       return
@@ -113,17 +114,27 @@ export let RuleEditor = () => {
     })
   }
 
-  let complement = colorComplement(rule)
-  let symmetric = leftRightSymmetric(rule)
-  let both = leftRightSymmetric(complement)
-  let baseXComplement = baseComplement(rule)
-  let baseXReverse = baseDigitOrderReverse(rule)
+  let complement: TableRuleAutomaton | TableCodeAutomaton
+  let symmetric: TableRuleAutomaton | undefined
+  let both: TableRuleAutomaton | undefined
+  let baseXComplement: TableRuleAutomaton | undefined
+  let baseXReverse: TableRuleAutomaton | undefined
+
+  if (automaton.kind === "tableRule") {
+    complement = colorComplement(automaton)
+    symmetric = leftRightSymmetric(automaton)
+    both = leftRightSymmetric(complement)
+    baseXComplement = baseComplement(automaton)
+    baseXReverse = baseDigitOrderReverse(automaton)
+  } else {
+    complement = colorComplement(automaton)
+  }
 
   let identityDifferenceArray: number[] = []
-  let identityFunction = rule.transitionTable.map((v, k) => {
+  let identityFunction = automaton.transitionTable.map((v, k) => {
     let n = length - 1 - k
-    let centerPosition = Math.floor(rule.neighborhoodSize / 2)
-    let result = Math.floor(n / rule.stateCount ** centerPosition) % rule.stateCount
+    let centerPosition = Math.floor(automaton.neighborhoodSize / 2)
+    let result = Math.floor(n / automaton.stateCount ** centerPosition) % automaton.stateCount
     if (result !== v) {
       identityDifferenceArray.push(k)
     }
@@ -132,8 +143,8 @@ export let RuleEditor = () => {
 
   let ruleNumber = -1
   let ulContent: React.ReactNode[] = []
-  if (rule.neighborhoodSize === 3 && rule.stateCount === 2) {
-    ruleNumber = Number(computeTransitionNumber(rule))
+  if (automaton.neighborhoodSize === 3 && automaton.stateCount === 2) {
+    ruleNumber = Number(computeTransitionNumber(automaton))
     ;[
       [getMathWorldLink(ruleNumber), "on Wolfram MathWorld"],
       [getWikipediaLink(ruleNumber), "on Wikipedia"],
@@ -158,75 +169,83 @@ export let RuleEditor = () => {
           title="Simplify 1 step towards identity"
           disabled={identityDifferenceArray.length == 0}
           onClick={() => {
-            context.updateState(({ automaton: rule }) => {
+            context.updateState(({ automaton }) => {
               let index = randomChoice(identityDifferenceArray)
-              rule.transitionTable[index] = identityFunction[index]
+              automaton.transitionTable[index] = identityFunction[index]
             })
           }}
         >
           Simplify
         </Button>
         <Button
-          disabled={deepEqual(rule.transitionTable, complement.transitionTable)}
+          disabled={deepEqual(automaton.transitionTable, complement.transitionTable)}
           onClick={() => {
-            context.updateState(({ automaton: rule }) => {
-              rule.transitionTable = complement.transitionTable
+            context.updateState(({ automaton }) => {
+              automaton.transitionTable = complement.transitionTable
             })
           }}
         >
           Switch to color complement: {presentNomenclature(complement).descriptor}
         </Button>
-        <Button
-          disabled={deepEqual(rule.transitionTable, symmetric.transitionTable)}
-          onClick={() => {
-            context.updateState(({ automaton: rule }) => {
-              rule.transitionTable = symmetric.transitionTable
-            })
-          }}
-        >
-          Switch to left-right symmetric: {presentNomenclature(symmetric).descriptor}
-        </Button>
-        <Button
-          disabled={deepEqual(rule.transitionTable, both.transitionTable)}
-          onClick={() => {
-            context.updateState(({ automaton: rule }) => {
-              rule.transitionTable = both.transitionTable
-            })
-          }}
-        >
-          Switch both: {presentNomenclature(both).descriptor}
-        </Button>
-        <Button
-          disabled={deepEqual(rule.transitionTable, baseXComplement.transitionTable)}
-          onClick={() => {
-            context.updateState(({ automaton: rule }) => {
-              rule.transitionTable = baseXComplement.transitionTable
-            })
-          }}
-        >
-          Toggle twinkliness: {presentNomenclature(baseXComplement).descriptor}
-        </Button>
-        <Button
-          disabled={deepEqual(rule.transitionTable, baseXReverse.transitionTable)}
-          onClick={() => {
-            context.updateState(({ automaton: rule }) => {
-              rule.transitionTable = baseXReverse.transitionTable
-            })
-          }}
-        >
-          Switch to base ({rule.stateCount}) digit order reverse:{" "}
-          {presentNomenclature(baseXReverse).descriptor}
-        </Button>
+        {symmetric && (
+          <Button
+            disabled={deepEqual(automaton.transitionTable, symmetric.transitionTable)}
+            onClick={() => {
+              context.updateState(({ automaton }) => {
+                automaton.transitionTable = symmetric.transitionTable
+              })
+            }}
+          >
+            Switch to left-right symmetric: {presentNomenclature(symmetric).descriptor}
+          </Button>
+        )}
+        {both && (
+          <Button
+            disabled={deepEqual(automaton.transitionTable, both.transitionTable)}
+            onClick={() => {
+              context.updateState(({ automaton }) => {
+                automaton.transitionTable = both.transitionTable
+              })
+            }}
+          >
+            Switch both: {presentNomenclature(both).descriptor}
+          </Button>
+        )}
+        {baseXComplement && (
+          <Button
+            disabled={deepEqual(automaton.transitionTable, baseXComplement.transitionTable)}
+            onClick={() => {
+              context.updateState(({ automaton }) => {
+                automaton.transitionTable = baseXComplement.transitionTable
+              })
+            }}
+          >
+            Toggle twinkliness: {presentNomenclature(baseXComplement).descriptor}
+          </Button>
+        )}
+        {baseXReverse && (
+          <Button
+            disabled={deepEqual(automaton.transitionTable, baseXReverse.transitionTable)}
+            onClick={() => {
+              context.updateState(({ automaton }) => {
+                automaton.transitionTable = baseXReverse.transitionTable
+              })
+            }}
+          >
+            Switch to base ({automaton.stateCount}) digit order reverse:{" "}
+            {presentNomenclature(baseXReverse).descriptor}
+          </Button>
+        )}
       </div>
       {length > 512 ? (
         <></>
       ) : (
         <div>
           <NumberVariator
-            valueArray={rule.transitionTable}
+            valueArray={automaton.transitionTable}
             onChange={(array) => {
               context.updateState((state) => {
-                let base = rule.stateCount
+                let base = automaton.stateCount
                 for (let k = array.length - 1; k >= 0; k--) {
                   let quotient: number
                   if (array[k] >= 0) {
@@ -248,10 +267,10 @@ export let RuleEditor = () => {
               })
             }}
             titleIncreaseFunction={(k) =>
-              `+ ${numberToStringWithThousandSplit(rule.stateCount ** k)}`
+              `+ ${numberToStringWithThousandSplit(automaton.stateCount ** k)}`
             }
             titleDecreaseFunction={(k) =>
-              `- ${numberToStringWithThousandSplit(rule.stateCount ** k)}`
+              `- ${numberToStringWithThousandSplit(automaton.stateCount ** k)}`
             }
           />
         </div>
@@ -264,7 +283,7 @@ export let RuleEditor = () => {
       />
       <RuleInfo />
       <ul>
-        <a href={getWolframAlphaLink(rule)} target="_blank">
+        <a href={getWolframAlphaLink(automaton)} target="_blank">
           <li>
             See this rule on WolframAlpha <i className="fa fa-external-link" />
           </li>

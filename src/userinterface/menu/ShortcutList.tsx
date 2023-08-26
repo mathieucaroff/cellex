@@ -26,8 +26,12 @@ export let ShorcutList = (prop: HelpContentProp) => {
   return (
     <div style={{ width: "600px" }}>
       <p>The following shortcuts are available:</p>
-      <table className="shortShortcutTable">{shortShortcutTableContent}</table>
-      <table className="longShortcutTable">{longShortcutTableContent}</table>
+      <table className="shortShortcutTable">
+        <tbody>{shortShortcutTableContent}</tbody>
+      </table>
+      <table className="longShortcutTable">
+        <tbody>{longShortcutTableContent}</tbody>
+      </table>
       <p>
         [*]moving the camera horizontally is only possible when the simulation is bigger than the
         camera. You can set the camera size (canvas size) in the Display menu, and set the
