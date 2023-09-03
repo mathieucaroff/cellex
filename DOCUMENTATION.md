@@ -9,10 +9,10 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
 - [Base interface](#base-interface)
   - [View](#view)
   - [Top Toolbar](#top-toolbar)
-    - [Rule Input Widget](#rule-input-widget)
+    - [Automaton Input Widget](#automaton-input-widget)
   - [Top Menu](#top-menu)
     - [Genesis](#genesis)
-  - [Rule Editor](#rule-editor)
+  - [Automaton Editor](#automaton-editor)
     - [Simulation topology selector](#simulation-topology-selector)
     - [Simulation border fields](#simulation-border-fields)
     - [Zoom](#zoom)
@@ -25,13 +25,14 @@ The application includes the following parts:
 
 - The **view**, or display -- this is where the cellular automaton is displayed
 - The **top toolbar**, followed by the **top menu**. They provide some controls for the view.
-- The **rule editor**
+- The **automaton editor**
 
 ## View
 
 The view canvas supports click and drag, allowing panning using the mouse. It also supports resizing by clicking and dragging the bottom right corner.
 
 Please note that:
+
 - when the zoomed simulation is of the same width or of smaller width than the canvas, the view of the simulation is locked in the center of the canvas and the horizontal canvas moves are not possible
 - when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered. Also note that the heights of the two canvas are tied together.
 
@@ -54,11 +55,11 @@ When the view is selected, it also supports the following keyboard actions:
 
 ## Top Toolbar
 
-The top toolbar is composed of a **play/pause** button, a **rule input widget** and a **genesis selector**.
+The top toolbar is composed of a **play/pause** button, a **automaton input widget** and a **genesis selector**.
 
-### Rule Input Widget
+## Automaton Input Widget
 
-The rule input allows to choose an elementary rule between 0 and 255, to be displayed.
+The automaton input widget allows to input an automaton descriptor. For automata with more than two colors, the number of colors must be specified in the descriptor, e.g. "3 colors". For automata whose neighborhood is larger than 3 cells, the neighborhood size must be specified, e.g. "neighborhood size 5". Finally, the rule number or code number of the automaton must always be specified, e.g. "rule 901" or "code 376".
 
 ## Top Menu
 
@@ -75,9 +76,9 @@ The genesis selector allows to choose what the how the starting state of the aut
   Next to the seed selector is a dice button. This dice allows to randomly
   generate a new seed, to obtain a new initial state.
 
-## Rule Editor
+## Automaton Editor
 
-The rule editor shows the resulting cell of for each of all the possible combinations of states. Click on a result cell or scrolling while hovering allows to change the rule.
+The automaton editor shows the resulting cell of for each of all the possible combinations of states. Click on a result cell or scrolling while hovering allows to change the automaton.
 
 ### Simulation topology selector
 

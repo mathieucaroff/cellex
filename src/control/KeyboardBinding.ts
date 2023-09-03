@@ -65,7 +65,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   onSymbol(["C"], act.focus("#displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
   onSymbol(
     ["E"],
-    act.focus(".ruleEditor__controlButtonDiv button"),
+    act.focus(".automatonEditor__controlButtonDiv button"),
     "E",
     "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
   )

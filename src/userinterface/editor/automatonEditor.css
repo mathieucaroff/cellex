@@ -1,5 +1,5 @@
-/** Make the background of rule editor lighter when in dark mode,
+/** Make the background of automaton editor lighter when in dark mode,
  * so that the contrast is good enough to distinguish the visualisations */
-.dark .ruleEditor .ant-collapse-content {
+.dark .automatonEditor .ant-collapse-content {
   background: #222;
 }

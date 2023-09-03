@@ -65,7 +65,7 @@ export let runStochastic = (border: StochasticState, value: number) => {
 }
 
 // createAutomatonEngine creates a 1d automaton computing machine for the given
-// rule, topology, and source of randomness
+// automaton, topology, and source of randomness
 export let createAutomatonEngine = (
   calculator: Calculator,
   topology: TopologyFinite,

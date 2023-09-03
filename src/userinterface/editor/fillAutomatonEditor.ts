@@ -8,8 +8,8 @@ function writeColor(buffer: Uint8ClampedArray, x: number, color: Color) {
   buffer[x + 3] = 255
 }
 
-// fillRuleEditor fill the ruleEditor small canvas from the rule data
-export let fillRuleEditor = (
+// fillAutomatonEditor fill the automatonEditor small canvas from the rule data
+export let fillAutomatonEditor = (
   ctx: CanvasRenderingContext2D,
   automaton: TableRuleAutomaton | TableCodeAutomaton,
   colorMap: Color[],

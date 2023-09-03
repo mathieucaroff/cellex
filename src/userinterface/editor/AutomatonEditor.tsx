@@ -18,14 +18,14 @@ import { numberToStringWithThousandSplit } from "../../util/thousandSplit"
 import { RuleInfo } from "../RuleInfo"
 import { NumberVariator } from "../components/NumberVariator/NumberVariator"
 import { useStateSelection } from "../hooks"
-import { fillRuleEditor as fillAutomatonEditor } from "./fillAutomatonEditor"
+import "./automatonEditor.css"
+import { fillAutomatonEditor } from "./fillAutomatonEditor"
 import {
   getMathworldLink as getMathWorldLink,
   getWikipediaDedicatedPageLink,
   getWikipediaLink,
   getWolframAlphaLink,
 } from "./link"
-import "./ruleEditor.css"
 
 export let AutomatonEditor = () => {
   let { context } = useContext(ReactContext)
@@ -164,7 +164,7 @@ export let AutomatonEditor = () => {
 
   return (
     <Space direction="vertical">
-      <div className="ruleEditor__controlButtonDiv">
+      <div className="automatonEditor__controlButtonDiv">
         <Button
           title="Simplify 1 step towards identity"
           disabled={identityDifferenceArray.length == 0}
@@ -276,7 +276,7 @@ export let AutomatonEditor = () => {
         </div>
       )}
       <canvas
-        className="ruleEditorCanvas"
+        className="automatonEditorCanvas"
         style={{ display: "table" }}
         ref={canvasRef}
         onMouseDown={clickChangeColor}

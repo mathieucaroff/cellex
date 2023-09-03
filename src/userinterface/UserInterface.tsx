@@ -121,9 +121,9 @@ export let UserInterface = (prop: UserInterfaceProp) => {
 
         <Collapse accordion {...collapseProp}>
           <Panel
-            className="ruleEditor"
+            className="automatonEditor"
             header={`Automaton Editor (${presentNomenclature(automaton).longDescriptor})`}
-            key="ruleEditor"
+            key="automatonEditor"
           >
             <AutomatonEditor />
           </Panel>

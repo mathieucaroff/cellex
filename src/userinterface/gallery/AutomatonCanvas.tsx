@@ -13,7 +13,7 @@ import { TopologyFinite } from "../../topologyType"
 import { useStateSelection } from "../hooks"
 
 export interface AutomatonOverviewProp {
-  ruleName: string
+  descriptor: string
   genesis: string
   width: number
   height: number
@@ -25,7 +25,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
 
   let canvasRef = useRef<HTMLCanvasElement>()
 
-  let rule = parseNomenclature(prop.ruleName)
+  let rule = parseNomenclature(prop.descriptor)
   let genesis = parseTopBorder(prop.genesis)
 
   useLayoutEffect(() => {

@@ -11,8 +11,8 @@ export function AutomatonPreview(props: AutomatonPreviewProp) {
   return (
     <div className="automatonPreview">
       <p>{automatonTitle}</p>
-      <AutomatonCanvas ruleName={descriptor} genesis="1(0)" width={100} height={100} />
-      <AutomatonCanvas ruleName={descriptor} genesis="([01])" width={100} height={100} />
+      <AutomatonCanvas descriptor={descriptor} genesis="1(0)" width={100} height={100} />
+      <AutomatonCanvas descriptor={descriptor} genesis="([01])" width={100} height={100} />
     </div>
   )
 }

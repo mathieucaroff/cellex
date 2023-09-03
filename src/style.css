@@ -80,19 +80,19 @@ html.light {
   line-height: 12px;
 }
 
-/* rule editor */
-.ruleEditor {
-  /* rule names can be extremely long */
+/* automaton editor */
+.automatonEditor {
+  /* automaton names can be extremely long */
   word-break: break-word;
 }
 
-.ruleEditor__controlButtonDiv button {
+.automatonEditor__controlButtonDiv button {
   margin: 4px;
   max-width: calc(100vw - 120px);
   overflow-x: hidden;
 }
 
-.ruleEditorCanvas {
+.automatonEditorCanvas {
   cursor: pointer;
 }
 

@@ -177,10 +177,12 @@ export let leftRightSymmetric = (rule: TableRuleAutomaton): TableRuleAutomaton =
 }
 
 // colorComplement of the given rule
-export let colorComplement = <T extends TableRuleAutomaton | TableCodeAutomaton>(rule: T): T => {
+export let colorComplement = <T extends TableRuleAutomaton | TableCodeAutomaton>(
+  automaton: T,
+): T => {
   return {
-    ...rule,
-    transitionTable: rule.transitionTable.map((c) => rule.stateCount - 1 - c).reverse(),
+    ...automaton,
+    transitionTable: automaton.transitionTable.map((c) => automaton.stateCount - 1 - c).reverse(),
   }
 }
 
@@ -254,7 +256,7 @@ export const curatedLargeAutomatonArray = [
   "Cascade 3c,r4_880__842_232_460",
   "Right-triangles 3c,r7_281__352_072_754",
   "White-patches 3c,r7_567__294_825_569",
-  "Sierpinski-triangle-leaning-right 3c,r2_093__255_393_004",
+  "Sierpinski-triangle 3c,r2_093__255_393_004",
   "Chaotic-veins 3c,r6_079__678_157_526",
   "Pattern-rich-triangles 3c,r3_819__888_392_777",
   "Semichaotic-e26 3c,r33__469_693_293",
