@@ -69,6 +69,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     "E",
     "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
   )
+  onSymbol(["G"], act.toggleGallery, "G", "close or open the *G*allery")
   onSymbol(["I"], act.toggleImmersiveMode, "I", "toggle the *I*mmersive mode on or off")
 
   onKeypress(["Digit0", "Numpad0"], act.gotoTop, "0", "go back to the top")

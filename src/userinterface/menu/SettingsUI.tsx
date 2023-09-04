@@ -1,6 +1,5 @@
-import { Button, Checkbox, Divider, Popover, Select, Space } from "antd"
+import { Button, Checkbox, ColorPicker, Divider, Popover, Select, Space } from "antd"
 import { useContext } from "react"
-import { SketchPicker } from "react-color"
 
 import { parseColorMap, presentColorMap } from "../../display/Display"
 import { colorToHexColor } from "../../engine/color"
@@ -237,36 +236,20 @@ export let SettingsUI = () => {
             {colorMap.map((c, k) => (
               <li key={k}>
                 Color #{k}:{" "}
-                <Popover
-                  placement="bottomLeft"
-                  title={`Select color #${k + 1}`}
-                  content={
-                    <SketchPicker
-                      color={{ r: c.red, g: c.green, b: c.blue }}
-                      onChange={({ rgb }) => {
-                        context.updateState((state) => {
-                          state.colorMap[k] = {
-                            red: rgb.r,
-                            green: rgb.g,
-                            blue: rgb.b,
-                          }
-                        })
-                      }}
-                    />
-                  }
-                  trigger="click"
-                >
-                  <Button
-                    style={{
-                      borderRadius: 20,
-                      borderWidth: 2,
-                      borderColor: "#FFF",
-                      backgroundColor: colorToHexColor(c),
-                    }}
-                  >
-                    {" "}
-                  </Button>
-                </Popover>
+                <ColorPicker
+                  showText
+                  value={{ r: c.red, g: c.green, b: c.blue } as any}
+                  onChange={(color) => {
+                    const rgb = color.toRgb()
+                    context.updateState((state) => {
+                      state.colorMap[k] = {
+                        red: rgb.r,
+                        green: rgb.g,
+                        blue: rgb.b,
+                      }
+                    })
+                  }}
+                />
               </li>
             ))}
             <li>

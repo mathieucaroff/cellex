@@ -241,6 +241,12 @@ export let createAct = (context: Context, info: Info) => {
       state.immersiveMode = "off"
     }),
 
+    /** Gallery */
+
+    toggleGallery: action((state) => {
+      state.galleryIsOpen = !state.galleryIsOpen
+    }),
+
     /** Quick settings */
     backspace: action((state) => {
       act.setPause(state)
