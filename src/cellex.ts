@@ -65,13 +65,9 @@ function main() {
     ...document.getElementsByClassName("subtitle"),
   ].forEach((element) => element.remove())
 
-  let appRoot = document.getElementById("appRoot")!
-
   let shortcutList = keyboardBindingReference.getHelp()
-  let span = h("span")
-  appRoot.appendChild(span)
 
-  let reactRoot = ReactDOM.createRoot(span)
+  let reactRoot = ReactDOM.createRoot(document.getElementById("appRoot")!)
   reactRoot.render(React.createElement(App, { act, context, info, shortcutList, displayDiv }))
 
   // /\ display
