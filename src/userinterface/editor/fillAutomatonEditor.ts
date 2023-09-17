@@ -36,19 +36,30 @@ export let fillAutomatonEditor = (
     let q = 4 * p
     let q2 = 4 * (p + ctx.canvas.width + xMiddle)
 
+    let j = automaton.transitionTable.length - 1 - i
     let text = ""
     if (automaton.kind === "tableRule") {
-      text = (automaton.transitionTable.length - 1 - i).toString(automaton.stateCount)
+      text = j.toString(automaton.stateCount)
       text = text.padStart(automaton.neighborhoodSize, "0")
+      text.split("").forEach((c, dp) => {
+        writeColor(image.data, q + 4 * dp, colorMap[Number.parseInt(c, automaton.stateCount)])
+      })
     } else {
-      let zeroLeftCount = Math.floor(i / 2)
-      let oneCount = automaton.transitionTable.length - 1 - i
-      let zeroRightCount = automaton.neighborhoodSize - oneCount - zeroLeftCount
-      text = "0".repeat(zeroLeftCount) + "1".repeat(oneCount) + "0".repeat(zeroRightCount)
+      let nextCount = j % automaton.neighborhoodSize
+      let baseCount = automaton.stateCount + 1 - nextCount
+      let baseColorIndex = Math.floor(j / automaton.neighborhoodSize)
+
+      let leftThreshold = Math.floor(baseCount / 2)
+      let rightThreshold = leftThreshold + nextCount
+      for (let dp = 0; dp < automaton.neighborhoodSize; dp++) {
+        const color =
+          dp < leftThreshold || dp >= rightThreshold
+            ? colorMap[baseColorIndex]
+            : colorMap[baseColorIndex + 1]
+        writeColor(image.data, q + 4 * dp, color)
+      }
     }
-    text.split("").forEach((c, dp) => {
-      writeColor(image.data, q + 4 * dp, colorMap[Number.parseInt(c, automaton.stateCount)])
-    })
+    text = text.slice(0, automaton.neighborhoodSize)
 
     writeColor(image.data, q2, colorMap[automaton.transitionTable[i]])
   }

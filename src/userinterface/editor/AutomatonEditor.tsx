@@ -165,18 +165,20 @@ export let AutomatonEditor = () => {
   return (
     <Space direction="vertical">
       <div className="automatonEditor__controlButtonDiv">
-        <Button
-          title="Simplify 1 step towards identity"
-          disabled={identityDifferenceArray.length == 0}
-          onClick={() => {
-            context.updateState(({ automaton }) => {
-              let index = randomChoice(identityDifferenceArray)
-              automaton.transitionTable[index] = identityFunction[index]
-            })
-          }}
-        >
-          Simplify
-        </Button>
+        {automaton.kind === "tableRule" && (
+          <Button
+            title="Simplify 1 step towards identity"
+            disabled={identityDifferenceArray.length == 0}
+            onClick={() => {
+              context.updateState(({ automaton }) => {
+                let index = randomChoice(identityDifferenceArray)
+                automaton.transitionTable[index] = identityFunction[index]
+              })
+            }}
+          >
+            Simplify
+          </Button>
+        )}
         <Button
           disabled={deepEqual(automaton.transitionTable, complement.transitionTable)}
           onClick={() => {
