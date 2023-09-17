@@ -221,17 +221,6 @@ export let createAct = (context: Context, info: Info) => {
       document.querySelector<HTMLInputElement>(id)?.select()
     },
 
-    /** Differential Mode */
-    nextDifferentialMode: action((state) => {
-      if (state.diffMode.status === "off") {
-        state.diffMode = { status: "waiting", active: false, divine: false }
-      } else if (!state.diffMode.divine) {
-        state.diffMode = { status: "waiting", active: false, divine: true }
-      } else {
-        state.diffMode = { status: "off", active: false }
-      }
-    }),
-
     /** Immersive Mode */
     toggleImmersiveMode: action((state) => {
       state.immersiveMode = state.immersiveMode === "off" ? "immersive" : "off"

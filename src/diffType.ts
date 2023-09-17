@@ -19,6 +19,7 @@ export interface DiffModeHovering {
   divine: boolean
   changes: [{ t: number; changes: [{ s: number; amount: 1 }] }]
 }
+
 /** DiffModeSelection - cells have been selected and the changes apply only to
  * these */
 export interface DiffModeSelection {
@@ -29,7 +30,8 @@ export interface DiffModeSelection {
    * children that are affected by the change */
   divine: boolean
   /** changes: the time and spatial position of all the interventions
-   * arranged pragmatically by time and position */
+   * arranged pragmatically by time and position. */
   changes: { t: number; changes: { s: number; amount: number }[] }[]
 }
+
 export type DiffMode = DiffModeOff | DiffModeWaiting | DiffModeHovering | DiffModeSelection

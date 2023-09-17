@@ -133,7 +133,7 @@ export let createAutomatonEngine = (
         }
 
         // [here lineA is the current line]
-        // the input is line B and line A is the output
+        // the input is line A and line B is the output
         calculator.nextLine(lineA, lineB, currentT)
         // increase time
         currentT += 1
