@@ -35,12 +35,14 @@ export let initialState = (): State => {
     return { width, height }
   }
 
-  let rule = getOr("rule", parseNomenclature, randomGoodRule)
-  let isElementary = rule.neighborhoodSize === 3 && rule.stateCount === 2
+  let automaton = getOr("automaton", parseNomenclature, () =>
+    getOr("rule", parseNomenclature, randomGoodRule),
+  )
+  let isElementary = automaton.neighborhoodSize === 3 && automaton.stateCount === 2
   const presentationMode = new URLSearchParams(location.search).has("rule") ? "off" : "present"
 
   return {
-    automaton: rule,
+    automaton,
 
     speed: 1,
     posS: 0,
