@@ -163,7 +163,7 @@ export let computeTransitionNumber = (
   return value
 }
 
-// leftRightSymmetric of the given rule
+/** left-right symmetric of the given rule. It supports arbitrary rules. */
 export let leftRightSymmetric = (rule: TableRuleAutomaton): TableRuleAutomaton => {
   return {
     ...rule,
@@ -176,7 +176,7 @@ export let leftRightSymmetric = (rule: TableRuleAutomaton): TableRuleAutomaton =
   }
 }
 
-// colorComplement of the given rule
+/** color complement of the given rule or code. */
 export let colorComplement = <T extends TableRuleAutomaton | TableCodeAutomaton>(
   automaton: T,
 ): T => {
@@ -200,7 +200,7 @@ export let baseDigitOrderReverse = (rule: TableRuleAutomaton): TableRuleAutomato
   }
 }
 
-// Generate the elementary automata rule set, classifying each of them according to their symmetries
+/** Generate the elementary automata rule set, classifying each of them according to their symmetries */
 function generateRuleSet() {
   let ruleGroup = {
     both: [] as number[],
@@ -252,7 +252,7 @@ export const ruleSet = generateRuleSet()
 ;(globalThis as any).ruleSet = ruleSet
 ;(globalThis as any).interestingElementaryRuleArray = interestingElementaryRuleArray
 
-export const curatedLargeAutomatonArray = [
+export const curatedNs3AutomatonArray = [
   "Cascade 3c,r4_880__842_232_460",
   "Right-triangles 3c,r7_281__352_072_754",
   "White-patches 3c,r7_567__294_825_569",
@@ -273,7 +273,45 @@ export const curatedLargeAutomatonArray = [
   let [head, value] = text.split(" ")
   return {
     value,
-    label: `${head} (${limitLength(value, 60 - head.length)})`,
+    label: `${head} (${limitLength(value, 30)})`,
     shorterLabel: `${head} (${limitLength(value, 28 - head.length)})`,
+  }
+})
+
+export const curated3ColorCodeArray = [
+  "3c,c43",
+  "3c,c69",
+  "3c,c83",
+  "3c,c88",
+  "3c,c136",
+  "3c,c153 look like rule 54",
+  "3c,c165 look like rule 73, but it's even more beautiful",
+  "3c,c173",
+  "3c,c174 and 3c,c190 have walls ",
+  "3c,c228 look like rule 54",
+  "3c,c231 look like rule 54, but the electrons are visible",
+  "3c,c262 has beautiful roots",
+  "3c,c266 has some blue columns and some dark orange ones",
+  "3c,c320 also does.",
+  "3c,c321 has rule73 columns",
+  "3c,c379 look like code 136",
+  "3c,c408 like rule 73 as well",
+  "3c,c426 like rule 73",
+  "3c,c462 look good",
+  "3c,c555 look really good!",
+  "3c,c622 similar to 3c,c136",
+  "3c,c806 funny",
+  "3c,c824 interesting",
+  "3c,c861 beautiful and rather interesting",
+  "3c,c963 look very good and is interesting",
+  "3c,c1_029 s rule 73",
+].map((text) => {
+  let [code, ...infoArray] = text.split(" ")
+  let info = infoArray.join(" ")
+  let label = info.length > 0 ? `${code} (${info})` : code
+  return {
+    value: code,
+    label,
+    shorterLabel: code,
   }
 })

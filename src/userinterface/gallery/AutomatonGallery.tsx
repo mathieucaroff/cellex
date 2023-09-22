@@ -2,7 +2,8 @@ import { Collapse, Select, Typography } from "antd"
 import { ReactNode, useState } from "react"
 
 import {
-  curatedLargeAutomatonArray,
+  curated3ColorCodeArray,
+  curatedNs3AutomatonArray,
   interestingElementaryRuleSet,
   ruleSet,
 } from "../../engine/automaton"
@@ -106,9 +107,29 @@ export function AutomatonGallery() {
     <div className="automatonGallery">
       <Title level={4}>Curated Large Automata</Title>
       <SingleCollapse ghost defaultIsOpen>
+        <Title level={5}>Neighborhood-size-3 Rules</Title>
         <div className="curatedLargeAutomata">
-          {curatedLargeAutomatonArray.map(({ shorterLabel, value }) => (
-            <AutomatonPreview key={value} descriptor={value} automatonTitle={shorterLabel} />
+          {curatedNs3AutomatonArray.map(({ shorterLabel, label, value }) => (
+            <AutomatonPreview
+              key={value}
+              title={label}
+              descriptor={value}
+              automatonTitle={shorterLabel}
+            />
+          ))}
+        </div>
+        <Title level={5}>3-color Codes</Title>
+        <div className="curatedLargeAutomata">
+          {curated3ColorCodeArray.map(({ shorterLabel, label, value }) => (
+            <AutomatonPreview
+              key={value}
+              title={label}
+              descriptor={value}
+              automatonTitle={shorterLabel}
+              genesisArray={["([012])"]}
+              width={150}
+              height={150}
+            />
           ))}
         </div>
       </SingleCollapse>

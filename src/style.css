@@ -140,6 +140,10 @@ th {
   margin: 1px;
 }
 
+.automatonPreview {
+  display: inline-block;
+}
+
 .automatonPreview p {
   margin: 0;
   margin-bottom: 2px;

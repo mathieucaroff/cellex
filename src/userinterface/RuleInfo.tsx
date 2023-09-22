@@ -61,19 +61,9 @@ export let RuleInfo = () => {
   if (!info) {
     return <span></span>
   }
-  if (info.match === "exact") {
-    return (
-      <span>
-        Rule {name} {info.extra}
-      </span>
-    )
-  } else {
-    return (
-      <>
-        <span>
-          Rule {name} is a symmetric of rule {info.rule} which {info.extra}
-        </span>
-      </>
-    )
-  }
+  let textContent =
+    info.match === "exact"
+      ? `Rule ${name} ${info.extra}`
+      : `Rule ${name} is a symmetric of rule ${info.rule} which ${info.extra}`
+  return <span>{textContent}</span>
 }
