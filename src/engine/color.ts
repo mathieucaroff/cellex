@@ -1,7 +1,9 @@
 import { Color } from "../type"
 
 export function colorToHexColor(c: Color): string {
-  return "#" + [c.red, c.green, c.blue].map((x) => ("0" + x.toString(16)).slice(-2)).join("")
+  return (
+    "#" + [c.red, c.green, c.blue].map((x) => ("0" + Math.floor(x).toString(16)).slice(-2)).join("")
+  )
 }
 
 export function hexColorToColor(c: string): Color {

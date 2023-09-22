@@ -12,6 +12,13 @@ export interface RandomMapperProp {
   seedString: string
 }
 
+/**
+ * Random mapper creates three perfect random functions from a single seed.
+ * The random of each of the three functions is independant. They are named:
+ * - top
+ * - left
+ * - right
+ */
 export let createRandomMapper = (prop: RandomMapperProp) => {
   let { seedString } = prop
 

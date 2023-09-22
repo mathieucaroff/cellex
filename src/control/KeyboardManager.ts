@@ -1,8 +1,11 @@
 import { Remover } from "../type"
 
 export interface KeyboardManagerProp {
+  /** Which element to should carry the event listener */
   element: Element
+  /** Which property of the event use to index the event map */
   evKeyPropName: keyof KeyboardEvent
+  /** Whether the listener should be triggered during the capturing phase or during the bubbling phase */
   capture: boolean
   /** Whether the event should be ignored */
   ignoreEvent: (ev: KeyboardEvent) => boolean

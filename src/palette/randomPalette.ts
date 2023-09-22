@@ -7,6 +7,7 @@ const saturation = 0.7
 
 const luminosityArray = [baseLuminosity + lumSpacing, baseLuminosity - lumSpacing]
 
+/** Produce an array of random, rather pastelle colors */
 export function randomPalette(colorCount: number): Color[] {
   const diversityRatio = 1 / 2
   let baseHue = Math.floor(360 * Math.random())

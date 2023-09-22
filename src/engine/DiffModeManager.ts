@@ -7,6 +7,7 @@ export interface DiffModeManagerProp {
 
 export type GetST = (x: number, y: number) => { s: number; t: number }
 
+/** Obtain the position (x, y), of a mouse event, relative to an html element */
 export let getPosition = (ev: MouseEvent, element: HTMLElement) => {
   let rect = element.getBoundingClientRect()
   let x = ev.clientX - rect.left //x position within the element.
@@ -154,6 +155,13 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
       })
     }
   return {
+    /** Given:
+     * - an Html Element,
+     * - a function which maps the coordinates inside the Html Element to the
+     *   coordinates of pixels in the image,
+     * call the hover, leave and click handlers provided at the initialization
+     * of the diff mode manager.
+     */
     addCanvas: (element: HTMLElement, getST: GetST) => {
       let hoverHandler = handler("move", element, getST)
       let leaveHandler = handler("leave", element, getST)

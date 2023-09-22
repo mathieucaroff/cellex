@@ -1,7 +1,6 @@
 import { DesktopOrMobile, Pair } from "../type"
 
-// dragManager helps with implementing the canvas panning feature
-
+/** dragManager helps with implementing the canvas panning feature */
 export interface DragManagerProp {
   /**
    * the element for which we want to listen for "drag events"

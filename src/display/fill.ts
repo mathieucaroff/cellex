@@ -31,10 +31,11 @@ export function fillImage(
   let line: Uint8Array
   let imageData = ctx.createImageData(width, height)
 
-  let error: unknown[] = []
+  let lastError: unknown[] = []
   let errorCount = 0
 
   if (!engine) {
+    console.error("/!\\ attempt to fill the canvas before the engine has been set.")
     return
   }
   for (let dy = 0; dy < height; dy += 1) {
@@ -45,7 +46,7 @@ export function fillImage(
       if (x >= 0 && x < line.length) {
         let color = colorMap[line[x]]
         if (!color) {
-          error = ["Encountered a color absent from colormap", x]
+          lastError = ["Encountered a color index [", x, "] wi absent from the colormap", x]
           errorCount += 1
           continue
         }
@@ -59,7 +60,7 @@ export function fillImage(
   }
 
   if (errorCount) {
-    console.error(errorCount, error)
+    console.error(errorCount, ...lastError)
   }
 
   ctx.putImageData(imageData, baseX, baseY)
