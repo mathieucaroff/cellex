@@ -1,8 +1,7 @@
-import { Button, Checkbox, ColorPicker, Divider, Popover, Select, Space } from "antd"
+import { Button, ColorPicker, Divider, Select, Space, Switch } from "antd"
 import { useContext } from "react"
 
 import { parseColorMap, presentColorMap } from "../../display/Display"
-import { colorToHexColor } from "../../engine/color"
 import { presentNomenclature } from "../../nomenclature/nomenclature"
 import { randomPalette } from "../../palette/randomPalette"
 import { parseSideBorder } from "../../patternlang/parser"
@@ -133,6 +132,7 @@ export let SettingsUI = () => {
               <div>
                 <Select
                   value={topologyKind}
+                  style={{ width: "20rem" }}
                   onChange={(value) => {
                     context.updateState((state) => {
                       state.topology.kind = value
@@ -196,11 +196,11 @@ export let SettingsUI = () => {
             </li>
             <li>
               <p>
-                <Checkbox
+                <Switch
                   checked={presentationMode === "present"}
-                  onChange={(e) => {
+                  onChange={(enabled) => {
                     context.updateState(
-                      (state) => (state.presentationMode = e.target.checked ? "present" : "off"),
+                      (state) => (state.presentationMode = enabled ? "present" : "off"),
                     )
                   }}
                 />{" "}
