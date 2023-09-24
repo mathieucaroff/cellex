@@ -10,11 +10,7 @@ export function createTableRuleConceiver(
   randomMapper: RandomMapper,
 ): Conceiver {
   let tableLength = rule.stateCount ** rule.neighborhoodSize
-  if (rule.stateCount > 16) {
-    throw `state count must be at most 16 (got ${rule.stateCount})`
-  } else if (rule.neighborhoodSize % 2 != 1) {
-    throw `neighborhood size must be odd (got ${rule.neighborhoodSize})`
-  } else if (tableLength > 4096) {
+  if (tableLength > 4096) {
     throw `rule table length too big (stateCount ** neighborhoodSize) is (${tableLength}), which is larger than the limit, 4096`
   } else if (rule.stateCount < 1) {
     throw `state count must be at least 1`

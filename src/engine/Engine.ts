@@ -80,7 +80,7 @@ export let createAutomatonEngine = (
   let lineA = new Uint8Array(genesis) // current
   let lineB = Uint8Array.from({ length: genesis.length }) // previous
   let lineC = Uint8Array.from({ length: genesis.length }) // one-before-previous
-  let snapshotArray: Uint8Array[] = [lineA]
+  let snapshotArray: [Uint8Array, Uint8Array][] = [[lineA, lineB]]
 
   let diffMode: DiffMode = {
     status: "off",
@@ -97,7 +97,7 @@ export let createAutomatonEngine = (
     }
     let arrayIndex = Math.floor(targetTime / SNAPSHOT_PERIOD)
     currentT = SNAPSHOT_PERIOD * arrayIndex
-    lineA = snapshotArray[arrayIndex]
+    ;[lineA, lineB] = snapshotArray[arrayIndex]
   }
 
   reset(0)
@@ -130,7 +130,7 @@ export let createAutomatonEngine = (
         // also save lineD if the diffMode status wants it
         if (currentT % SNAPSHOT_PERIOD === 0) {
           let arrayIndex = Math.floor(currentT / SNAPSHOT_PERIOD)
-          snapshotArray[arrayIndex] = new Uint8Array(lineA)
+          snapshotArray[arrayIndex] = [new Uint8Array(lineA), new Uint8Array(lineB)]
         }
 
         // [here lineA is the current line]

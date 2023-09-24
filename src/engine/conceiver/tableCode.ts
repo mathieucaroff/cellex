@@ -10,11 +10,7 @@ export function createTableCodeConceiver(
   randomMapper: RandomMapper,
 ): Conceiver {
   let tableLength = 1 + (code.stateCount - 1) * code.neighborhoodSize
-  if (code.stateCount > 16) {
-    throw `state count must be at most 16 (got ${code.stateCount})`
-  } else if (code.neighborhoodSize % 2 != 1) {
-    throw `neighborhood size must be odd (got ${code.neighborhoodSize})`
-  } else if (tableLength > 4096) {
+  if (tableLength > 4096) {
     throw `code table length too big (1 + (code.stateCount - 1) * code.neighborhoodSize) is (${tableLength}), which is larger than the limit, 4096`
   } else if (code.stateCount < 1) {
     throw `state count must be at least 1`

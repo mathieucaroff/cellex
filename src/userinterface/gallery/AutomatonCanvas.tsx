@@ -3,6 +3,7 @@ import { useContext, useLayoutEffect, useRef } from "react"
 import { fillImage } from "../../display/fill"
 import { createAutomatonEngine } from "../../engine/Engine"
 import { createRandomMapper } from "../../engine/RandomMapper"
+import { createConceiver } from "../../engine/conceiver/conceiver"
 import { createTableCodeConceiver } from "../../engine/conceiver/tableCode"
 import { createTableRuleConceiver } from "../../engine/conceiver/tableRule"
 import { Conceiver } from "../../engineType"
@@ -42,14 +43,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
       genesis,
       width: canvas.width,
     }
-    let calculator: Conceiver
-    if (rule.kind === "tableRule") {
-      calculator = createTableRuleConceiver(rule, topology, randomMapper)
-    } else if (rule.kind === "tableCode") {
-      calculator = createTableCodeConceiver(rule, topology, randomMapper)
-    } else {
-      throw new Error("unsupported rule kind: " + JSON.stringify(rule))
-    }
+    let calculator = createConceiver(rule, topology, randomMapper)
     let engine = createAutomatonEngine(calculator, topology, randomMapper)
 
     // draw
