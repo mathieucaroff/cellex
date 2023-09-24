@@ -10,17 +10,21 @@ import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
 type NomenclatureOutput =
-  | ["numeric", string]
-  | ["elementary", string]
-  | [
-      "any",
-      {
+  | { kind: "numeric"; transitionString: string }
+  | { kind: "elementary"; transitionString: string; reversible: boolean }
+  | {
+      kind: "any"
+      automaton: {
         dimension?: [string]
         neighborhoodSize?: [string]
         colors?: [string]
-        transitionString: ["rule" | "code", string]
-      },
-    ]
+        table: {
+          tableKind: "rule" | "code"
+          transitionString: string
+        }
+        reversible: boolean
+      }
+    }
 
 export function parseNomenclature(descriptor: string): TableRuleAutomaton | TableCodeAutomaton {
   let parser = new nearley.Parser(nomenclatureGrammar)
@@ -42,8 +46,8 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
 
   // In that case, we want to produce a rule with a neigborhood size of three
   // and with sufficiently many colors that the number makes sense in that rule
-  if (parserOutput[0] === "numeric") {
-    transitionNumber = BigInt(parserOutput[1])
+  if (parserOutput.kind === "numeric") {
+    transitionNumber = BigInt(parserOutput.transitionString)
     let stateCount = 0
     try {
       for (let k = 2n; k < 99n; k++) {
@@ -73,8 +77,8 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
       reversible: false,
       transitionTable: computeRuleTransitionTable(3, stateCount, transitionNumber),
     }
-  } else if (parserOutput[0] === "elementary") {
-    transitionNumber = BigInt(parserOutput[1])
+  } else if (parserOutput.kind === "elementary") {
+    transitionNumber = BigInt(parserOutput.transitionString)
 
     if (transitionNumber >= 256n) {
       throw new Error("elementary transition numbers must be strictly less than 256")
@@ -85,19 +89,20 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
       dimension: 1,
       neighborhoodSize: 3,
       stateCount: 2,
-      reversible: false,
+      reversible: parserOutput.reversible,
       transitionTable: computeRuleTransitionTable(3, 2, transitionNumber),
     }
-  } else if (parserOutput[1].transitionString[0] === "rule") {
+  } else if (parserOutput.automaton.table.tableKind === "rule") {
     // The grammar guarantees that a transition number is specified
-    transitionNumber = BigInt(parserOutput[1].transitionString[1])
+    let { automaton } = parserOutput
+    transitionNumber = BigInt(automaton.table.transitionString)
 
     result = {
       kind: "tableRule",
-      dimension: +(parserOutput[1].dimension ?? 1),
-      neighborhoodSize: +(parserOutput[1].neighborhoodSize ?? 3),
-      stateCount: +(parserOutput[1].colors ?? [2])[0],
-      reversible: false,
+      dimension: +(automaton.dimension ?? 1),
+      neighborhoodSize: +(automaton.neighborhoodSize ?? 3),
+      stateCount: +(automaton.colors ?? [2])[0],
+      reversible: automaton.reversible,
       transitionTable: [],
     }
     result.transitionTable = computeRuleTransitionTable(
@@ -105,14 +110,16 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
       result.stateCount,
       transitionNumber,
     )
-  } else if (parserOutput[1].transitionString[0] === "code") {
-    transitionNumber = BigInt(parserOutput[1].transitionString[1])
+  } else if (parserOutput.automaton.table.tableKind === "code") {
+    let { automaton } = parserOutput
+    transitionNumber = BigInt(automaton.table.transitionString)
+
     result = {
       kind: "tableCode",
-      dimension: +(parserOutput[1].dimension ?? 1),
-      neighborhoodSize: +(parserOutput[1].neighborhoodSize ?? 3),
-      stateCount: +(parserOutput[1].colors ?? [2])[0],
-      reversible: false,
+      dimension: +(automaton.dimension ?? 1),
+      neighborhoodSize: +(automaton.neighborhoodSize ?? 3),
+      stateCount: +(automaton.colors ?? [2])[0],
+      reversible: automaton.reversible,
       transitionTable: [],
     }
     result.transitionTable = computeCodeTransitionTable(
@@ -148,16 +155,19 @@ export function presentNomenclature(automaton: TableRuleAutomaton | TableCodeAut
     long.push(`${automaton.stateCount} colors`)
   }
 
+  let reversible = automaton.reversible ? "reversible " : ""
+  let r = automaton.reversible ? "r" : ""
+
   if (automaton.kind === "tableCode") {
-    regular.push(`c${tn}`)
-    long.push(`code ${tn}`)
+    regular.push(`${r}c${tn}`)
+    long.push(`${reversible}code ${tn}`)
   } else {
     if (regular.length === 0) {
-      regular.push(`e${tn}`)
-      long.push(`elementary ${tn}`)
+      regular.push(`${r}e${tn}`)
+      long.push(`${reversible}elementary ${tn}`)
     } else {
-      regular.push(`r${tn}`)
-      long.push(`rule ${tn}`)
+      regular.push(`${r}r${tn}`)
+      long.push(`${reversible}rule ${tn}`)
     }
   }
   return {
