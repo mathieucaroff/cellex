@@ -70,6 +70,7 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
       dimension: 1,
       neighborhoodSize: 3,
       stateCount,
+      reversible: false,
       transitionTable: computeRuleTransitionTable(3, stateCount, transitionNumber),
     }
   } else if (parserOutput[0] === "elementary") {
@@ -84,6 +85,7 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
       dimension: 1,
       neighborhoodSize: 3,
       stateCount: 2,
+      reversible: false,
       transitionTable: computeRuleTransitionTable(3, 2, transitionNumber),
     }
   } else if (parserOutput[1].transitionString[0] === "rule") {
@@ -95,6 +97,7 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
       dimension: +(parserOutput[1].dimension ?? 1),
       neighborhoodSize: +(parserOutput[1].neighborhoodSize ?? 3),
       stateCount: +(parserOutput[1].colors ?? [2])[0],
+      reversible: false,
       transitionTable: [],
     }
     result.transitionTable = computeRuleTransitionTable(
@@ -109,6 +112,7 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
       dimension: +(parserOutput[1].dimension ?? 1),
       neighborhoodSize: +(parserOutput[1].neighborhoodSize ?? 3),
       stateCount: +(parserOutput[1].colors ?? [2])[0],
+      reversible: false,
       transitionTable: [],
     }
     result.transitionTable = computeCodeTransitionTable(

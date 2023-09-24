@@ -3,9 +3,9 @@ import { useContext, useLayoutEffect, useRef } from "react"
 import { fillImage } from "../../display/fill"
 import { createAutomatonEngine } from "../../engine/Engine"
 import { createRandomMapper } from "../../engine/RandomMapper"
-import { createTableCodeCalculator } from "../../engine/calculator/tableCode"
-import { createTableRuleCalculator } from "../../engine/calculator/tableRule"
-import { Calculator } from "../../engineType"
+import { createTableCodeConceiver } from "../../engine/conceiver/tableCode"
+import { createTableRuleConceiver } from "../../engine/conceiver/tableRule"
+import { Conceiver } from "../../engineType"
 import { parseNomenclature } from "../../nomenclature/nomenclature"
 import { parseTopBorder } from "../../patternlang/parser"
 import { ReactContext } from "../../state/ReactContext"
@@ -42,11 +42,11 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
       genesis,
       width: canvas.width,
     }
-    let calculator: Calculator
+    let calculator: Conceiver
     if (rule.kind === "tableRule") {
-      calculator = createTableRuleCalculator(rule, topology, randomMapper)
+      calculator = createTableRuleConceiver(rule, topology, randomMapper)
     } else if (rule.kind === "tableCode") {
-      calculator = createTableCodeCalculator(rule, topology, randomMapper)
+      calculator = createTableCodeConceiver(rule, topology, randomMapper)
     } else {
       throw new Error("unsupported rule kind: " + JSON.stringify(rule))
     }

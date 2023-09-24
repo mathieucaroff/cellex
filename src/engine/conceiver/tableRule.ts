@@ -1,14 +1,14 @@
 import { TableRuleAutomaton } from "../../automatonType"
-import { Calculator } from "../../engineType"
+import { Conceiver } from "../../engineType"
 import { TopologyFinite } from "../../topologyType"
 import { getSideBorderValue } from "../Engine"
 import { RandomMapper } from "../RandomMapper"
 
-export function createTableRuleCalculator(
+export function createTableRuleConceiver(
   rule: TableRuleAutomaton,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
-): Calculator {
+): Conceiver {
   let tableLength = rule.stateCount ** rule.neighborhoodSize
   if (rule.stateCount > 16) {
     throw `state count must be at most 16 (got ${rule.stateCount})`
@@ -25,7 +25,12 @@ export function createTableRuleCalculator(
 
   let functionLength = rule.transitionTable.length
 
-  let nextLine = (input: Uint8Array, output: Uint8Array, currentT: number) => {
+  let conceive = (
+    input: Uint8Array,
+    olderInput: Uint8Array,
+    output: Uint8Array,
+    currentT: number,
+  ) => {
     // initialize the rolling result of the rule
     let index = 0
     for (let k = -neighborhoodMiddle; k < 0; k++) {
@@ -48,6 +53,9 @@ export function createTableRuleCalculator(
       index = (index * rule.stateCount) % excessValue
       index += input[k + neighborhoodMiddle]
       output[k] = rule.transitionTable[functionLength - 1 - index]
+      if (rule.reversible) {
+        output[k] ^= olderInput[k]
+      }
     }
 
     // compute the last few values
@@ -61,10 +69,13 @@ export function createTableRuleCalculator(
       }
 
       output[k] = rule.transitionTable[functionLength - 1 - index]
+      if (rule.reversible) {
+        output[k] ^= olderInput[k]
+      }
     }
 
     return output
   }
 
-  return { nextLine }
+  return { conceive }
 }

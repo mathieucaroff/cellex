@@ -26,7 +26,7 @@ export interface DiffModeSelection {
   status: "selection"
   active: true
   /** divine: if true, highlight only the modified cell and show only the
-   * changed timeline. if false, hightlight the modified cell and all the
+   * changed timeline. if false, highlight the modified cell and all the
    * children that are affected by the change */
   divine: boolean
   /** changes: the time and spatial position of all the interventions

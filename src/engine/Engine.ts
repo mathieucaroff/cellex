@@ -1,5 +1,5 @@
 import { DiffMode } from "../diffType"
-import { Calculator } from "../engineType"
+import { Conceiver } from "../engineType"
 import { BorderGroup, SideBorder, StochasticState, TopBorder } from "../patternlang/BorderType"
 import { TopologyFinite } from "../topologyType"
 import { clone } from "../util/clone"
@@ -67,7 +67,7 @@ export let runStochastic = (border: StochasticState, value: number) => {
 // createAutomatonEngine creates a 1d automaton computing machine for the given
 // automaton, topology, and source of randomness
 export let createAutomatonEngine = (
-  calculator: Calculator,
+  conceiver: Conceiver,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
 ) => {
@@ -79,6 +79,7 @@ export let createAutomatonEngine = (
   let currentT = 0
   let lineA = new Uint8Array(genesis) // current
   let lineB = Uint8Array.from({ length: genesis.length }) // previous
+  let lineC = Uint8Array.from({ length: genesis.length }) // one-before-previous
   let snapshotArray: Uint8Array[] = [lineA]
 
   let diffMode: DiffMode = {
@@ -133,12 +134,12 @@ export let createAutomatonEngine = (
         }
 
         // [here lineA is the current line]
-        // the input is line A and line B is the output
-        calculator.nextLine(lineA, lineB, currentT)
+        // the input is line A and line C is the output
+        conceiver.conceive(lineA, lineB, lineC, currentT)
         // increase time
         currentT += 1
-        // swap the two lines by name
-        ;[lineB, lineA] = [lineA, lineB]
+        // rotate the three lines by name
+        ;[lineB, lineC, lineA] = [lineA, lineB, lineC]
         // [now lineA is the current line again]
       }
 

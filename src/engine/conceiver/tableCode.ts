@@ -1,14 +1,14 @@
 import { TableCodeAutomaton } from "../../automatonType"
-import { Calculator } from "../../engineType"
+import { Conceiver } from "../../engineType"
 import { TopologyFinite } from "../../topologyType"
 import { getSideBorderValue } from "../Engine"
 import { RandomMapper } from "../RandomMapper"
 
-export function createTableCodeCalculator(
+export function createTableCodeConceiver(
   code: TableCodeAutomaton,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
-): Calculator {
+): Conceiver {
   let tableLength = 1 + (code.stateCount - 1) * code.neighborhoodSize
   if (code.stateCount > 16) {
     throw `state count must be at most 16 (got ${code.stateCount})`
@@ -24,7 +24,12 @@ export function createTableCodeCalculator(
 
   let functionLength = code.transitionTable.length
 
-  let nextLine = (input: Uint8Array, output: Uint8Array, currentT: number) => {
+  let conceive = (
+    input: Uint8Array,
+    olderInput: Uint8Array,
+    output: Uint8Array,
+    currentT: number,
+  ) => {
     // initialize the rolling result of the rule
     let neighborhoodRoll = Array.from({ length: code.neighborhoodSize }, () => 0)
     let rollIndex = 0
@@ -61,6 +66,9 @@ export function createTableCodeCalculator(
       neighborhoodRoll[rollIndex] = value
       rollIndex = (rollIndex + 1) % code.neighborhoodSize
       output[k] = code.transitionTable[functionLength - 1 - total]
+      if (code.reversible) {
+        output[k] ^= olderInput[k]
+      }
     }
 
     // compute the last few values
@@ -77,10 +85,13 @@ export function createTableCodeCalculator(
       neighborhoodRoll[rollIndex] = value
       rollIndex = (rollIndex + 1) % code.neighborhoodSize
       output[k] = code.transitionTable[functionLength - 1 - total]
+      if (code.reversible) {
+        output[k] ^= olderInput[k]
+      }
     }
 
     return output
   }
 
-  return { nextLine }
+  return { conceive }
 }

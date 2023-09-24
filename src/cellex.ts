@@ -12,9 +12,9 @@ import { createDiffModeManager } from "./engine/DiffModeManager"
 import { Engine, createAutomatonEngine } from "./engine/Engine"
 import { createRandomMapper } from "./engine/RandomMapper"
 import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/automaton"
-import { createTableCodeCalculator } from "./engine/calculator/tableCode"
-import { createTableRuleCalculator } from "./engine/calculator/tableRule"
-import { Calculator } from "./engineType"
+import { createTableCodeConceiver } from "./engine/conceiver/tableCode"
+import { createTableRuleConceiver } from "./engine/conceiver/tableRule"
+import { Conceiver } from "./engineType"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
 import { parseNomenclature } from "./nomenclature/nomenclature"
@@ -96,14 +96,14 @@ function main() {
       }
 
       let randomMapper = createRandomMapper({ seedString: seed })
-      let calculator: Calculator
+      let conceiver: Conceiver
       if (automaton.kind === "tableCode") {
-        calculator = createTableCodeCalculator(automaton, topology, randomMapper)
+        conceiver = createTableCodeConceiver(automaton, topology, randomMapper)
       } else {
-        calculator = createTableRuleCalculator(automaton, topology, randomMapper)
+        conceiver = createTableRuleConceiver(automaton, topology, randomMapper)
       }
 
-      engine = createAutomatonEngine(calculator, topology, randomMapper)
+      engine = createAutomatonEngine(conceiver, topology, randomMapper)
 
       display.setEngine(engine)
 

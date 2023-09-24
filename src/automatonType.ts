@@ -2,6 +2,7 @@ export interface Domain {
   dimension: number
   neighborhoodSize: number
   stateCount: number
+  reversible: boolean
 }
 
 export interface TableRuleAutomaton extends Domain {

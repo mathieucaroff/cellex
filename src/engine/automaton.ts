@@ -30,42 +30,50 @@ export let elementaryRule = (ruleNumberValue: number): TableRuleAutomaton => {
     dimension: 1,
     stateCount: 2,
     neighborhoodSize: 3,
+    reversible: false,
     transitionTable,
   }
 }
 
 export let randomDomain = (): Domain => {
-  let [neighborhoodSize, stateCount] = weightedRandomChoice([
+  let [neighborhoodSize, stateCount, r] = weightedRandomChoice([
     // weight, [neighborhoodSize, colorCount]
-    [1, [3, 2]], // elementary automaton
-    [1, [5, 2]],
-    [1, [7, 2]],
-    [1, [9, 2]],
-    [1, [11, 2]],
-    // [1, [12, 2]],
-    [1, [3, 3]],
-    [1, [5, 3]],
-    [1, [7, 3]],
-    [1, [3, 4]],
-    [1, [5, 4]],
-    [1, [3, 5]],
-    [1, [5, 5]],
-    [1, [3, 6]],
-    // [1, [3, 7]],
-    // [1, [3, 8]],
-    // [1, [3, 9]],
-    // [1, [3, 10]],
-    // [1, [3, 11]],
-    // [1, [3, 12]],
-    // [1, [3, 13]],
-    // [1, [3, 14]],
-    // [1, [3, 15]],
-    // [1, [3, 16]],
-    // [1, [2, 16]],
+    [1, [3, 2, 0]], // elementary automaton
+    [1, [3, 2, 1]],
+    [1, [5, 2, 0]],
+    [1, [5, 2, 1]],
+    [1, [7, 2, 0]],
+    [1, [7, 2, 1]],
+    [1, [9, 2, 0]],
+    [1, [9, 2, 1]],
+    [1, [11, 2, 0]],
+    [1, [11, 2, 1]],
+    // [1, [12, 2, 0]],
+    [1, [3, 3, 0]],
+    [1, [5, 3, 0]],
+    [1, [7, 3, 0]],
+    [1, [3, 4, 0]],
+    [1, [3, 4, 1]],
+    [1, [5, 4, 0]],
+    [1, [5, 4, 1]],
+    [1, [3, 5, 0]],
+    [1, [5, 5, 0]],
+    [1, [3, 6, 0]],
+    // [1, [3, 7, 0]],
+    // [1, [3, 8, 0]],
+    // [1, [3, 9, 0]],
+    // [1, [3, 10, 0]],
+    // [1, [3, 11, 0]],
+    // [1, [3, 12, 0]],
+    // [1, [3, 13, 0]],
+    // [1, [3, 14, 0]],
+    // [1, [3, 15, 0]],
+    // [1, [3, 16, 0]],
+    // [1, [2, 16, 0]],
     // ...
-    // [1, [2, 64]],
+    // [1, [2, 64, 0]],
   ])
-  return { dimension: 1, neighborhoodSize, stateCount }
+  return { dimension: 1, reversible: !!r, neighborhoodSize, stateCount }
 }
 
 export let randomTransitionTable = (domain: Omit<Domain, "dimension">) => {
@@ -90,13 +98,14 @@ export let randomRule = () => {
 }
 
 export let randomRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
-  let { neighborhoodSize, stateCount } = domain
+  let { dimension: _, ...d } = domain
   return {
     kind: "tableRule",
     dimension: 1,
-    neighborhoodSize,
-    stateCount,
-    transitionTable: randomTransitionTable({ neighborhoodSize, stateCount }).transitionTable,
+    neighborhoodSize: d.neighborhoodSize,
+    stateCount: d.stateCount,
+    reversible: d.reversible,
+    transitionTable: randomTransitionTable(d).transitionTable,
   }
 }
 

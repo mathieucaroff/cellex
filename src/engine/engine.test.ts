@@ -10,7 +10,7 @@ import {
 } from "./Engine"
 import { createRandomMapper } from "./RandomMapper"
 import { elementaryRule } from "./automaton"
-import { createTableRuleCalculator } from "./calculator/tableRule"
+import { createTableRuleConceiver } from "./conceiver/tableRule"
 import {
   cMap,
   one,
@@ -82,7 +82,7 @@ describe("createAutomatonEngine", () => {
   let parameterArray = [elementaryRule(110), topology, randomMapper] as const
 
   let engine = createAutomatonEngine(
-    createTableRuleCalculator(...parameterArray),
+    createTableRuleConceiver(...parameterArray),
     topology,
     randomMapper,
   )
