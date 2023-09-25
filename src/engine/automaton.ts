@@ -117,7 +117,12 @@ export let randomGoodRule = (): TableRuleAutomaton => {
 }
 
 export let randomGoodAutomatonFromDomain = (domain: Domain): TableRuleAutomaton => {
-  if (domain.neighborhoodSize === 3 && domain.stateCount === 2 && Math.random() < 0.6) {
+  if (
+    domain.neighborhoodSize === 3 &&
+    domain.stateCount === 2 &&
+    !domain.reversible &&
+    Math.random() < 0.6
+  ) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
   return randomRuleFromDomain(domain)

@@ -150,7 +150,7 @@ th {
 }
 
 .elementaryAutomatonOverview > div,
-.curatedLargeAutomata > div,
+.curatedAutomata > div,
 .groupedElementaryAutomata .ant-collapse-content-box > div > div,
 .groupedElementaryAutomataWolframClasses .ant-collapse-content-box > div,
 .totalisticCodeOverviewNs3 > div,

@@ -105,10 +105,10 @@ export function AutomatonGallery() {
 
   return (
     <div className="automatonGallery">
-      <Title level={4}>Curated Large Automata</Title>
+      <Title level={4}>Curated Automata</Title>
       <SingleCollapse ghost defaultIsOpen>
         <Title level={5}>Neighborhood-size-3 Rules</Title>
-        <div className="curatedLargeAutomata">
+        <div className="curatedAutomata">
           {curatedNs3AutomatonArray.map(({ shorterLabel, label, value }) => (
             <AutomatonPreview
               key={value}
@@ -119,7 +119,7 @@ export function AutomatonGallery() {
           ))}
         </div>
         <Title level={5}>3-color Codes</Title>
-        <div className="curatedLargeAutomata">
+        <div className="curatedAutomata">
           {curated3ColorCodeArray.map(({ shorterLabel, label, value }) => (
             <AutomatonPreview
               key={value}
@@ -181,6 +181,62 @@ export function AutomatonGallery() {
       <SingleCollapse ghost>
         <div className="totalisticCodeOverviewNs7">
           {totalisticCodeOverview({ neighborhoodSize: 7 })}
+        </div>
+      </SingleCollapse>
+
+      <Title level={4}>Reversible Elementary Automata</Title>
+      <SingleCollapse ghost>
+        <div>
+          {Array.from({ length: 256 }, (_, k) => (
+            <AutomatonPreview
+              key={k}
+              descriptor={`re${k}`}
+              automatonTitle={`Reversible rule ${k}`}
+              genesisArray={["1(0)", "([01])", "([0{9}1])"]}
+            />
+          ))}
+        </div>
+      </SingleCollapse>
+
+      <Title level={4}>Reversible totalistic code of neighborhood size 3</Title>
+      <SingleCollapse ghost>
+        <div>
+          {Array.from({ length: 16 }, (_, k) => (
+            <AutomatonPreview
+              key={k}
+              descriptor={`rc${k}`}
+              automatonTitle={`Reversible code ${k}`}
+              genesisArray={["1(0)", "([01])", "([0{9}1])"]}
+            />
+          ))}
+        </div>
+      </SingleCollapse>
+
+      <Title level={4}>Reversible totalistic code of neighborhood size 5</Title>
+      <SingleCollapse ghost>
+        <div>
+          {Array.from({ length: 64 }, (_, k) => (
+            <AutomatonPreview
+              key={k}
+              descriptor={`ns5,rc${k}`}
+              automatonTitle={`Reversible code ${k}`}
+              genesisArray={["1(0)", "([01])", "([0{9}1])"]}
+            />
+          ))}
+        </div>
+      </SingleCollapse>
+
+      <Title level={4}>Reversible totalistic code of neighborhood size 7</Title>
+      <SingleCollapse ghost>
+        <div>
+          {Array.from({ length: 256 }, (_, k) => (
+            <AutomatonPreview
+              key={k}
+              descriptor={`ns7,rc${k}`}
+              automatonTitle={`Reversible code ${k}`}
+              genesisArray={["1(0)", "([01])", "([0{9}1])"]}
+            />
+          ))}
         </div>
       </SingleCollapse>
     </div>
