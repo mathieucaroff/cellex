@@ -46,16 +46,12 @@ export let fillAutomatonEditor = (
       })
     } else {
       let nextCount = j % automaton.neighborhoodSize
-      let baseCount = automaton.stateCount + 1 - nextCount
+      let baseCount = automaton.neighborhoodSize - nextCount
       let baseColorIndex = Math.floor(j / automaton.neighborhoodSize)
 
-      let leftThreshold = Math.floor(baseCount / 2)
-      let rightThreshold = leftThreshold + nextCount
+      let threshold = baseCount
       for (let dp = 0; dp < automaton.neighborhoodSize; dp++) {
-        const color =
-          dp < leftThreshold || dp >= rightThreshold
-            ? colorMap[baseColorIndex]
-            : colorMap[baseColorIndex + 1]
+        const color = dp < threshold ? colorMap[baseColorIndex] : colorMap[baseColorIndex + 1]
         writeColor(image.data, q + 4 * dp, color)
       }
     }
