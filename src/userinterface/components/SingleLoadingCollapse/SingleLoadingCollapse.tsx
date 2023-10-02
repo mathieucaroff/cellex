@@ -5,25 +5,24 @@ import { useEffect, useState } from "react"
 export interface SingleCollapseProp extends Omit<CollapseProps, "activeKey"> {
   children: React.ReactNode | React.ReactNode[]
   label?: React.ReactNode
-  defaultIsOpen?: boolean
+  doOpen?: boolean
 }
 
 export function SingleCollapse(prop: SingleCollapseProp) {
-  let {
-    children,
-    defaultIsOpen = false,
-    label = "Click to expand/collapse",
-    ...remainingProp
-  } = prop
-  let [open, setOpen] = useState(defaultIsOpen)
+  let { children, doOpen = false, label = "Click to expand/collapse", ...remainingProp } = prop
+  let [open, setOpen] = useState(false)
   let [loading, setLoading] = useState(false)
-  let loadingTimeout: ReturnType<typeof setTimeout>
   let openTimeout: ReturnType<typeof setTimeout>
+
+  useEffect(() => {
+    if (doOpen && !open) {
+      setOpen(true)
+    }
+  }, [doOpen, open])
 
   useEffect(() => {
     return () => {
       clearTimeout(openTimeout)
-      clearTimeout(loadingTimeout)
     }
   }, [])
 
@@ -34,10 +33,8 @@ export function SingleCollapse(prop: SingleCollapseProp) {
           setLoading(true)
           openTimeout = setTimeout(() => {
             setOpen(true)
-          }, 1)
-          loadingTimeout = setTimeout(() => {
             setLoading(false)
-          }, 2)
+          })
         } else {
           setOpen(false)
         }

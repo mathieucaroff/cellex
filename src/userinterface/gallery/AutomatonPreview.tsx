@@ -3,18 +3,24 @@ import { Tooltip } from "antd"
 import { AutomatonCanvas } from "./AutomatonCanvas"
 
 export interface AutomatonPreviewProp {
+  /** Title for the automaton. Always visible. */
   automatonTitle?: string
+  /** Automaton name */
   descriptor: string
-  title?: string
+  /** Tooltip for the automaton */
+  tooltip?: string
+  /** Genesis descriptors. One canvas will be displayed for each genesis */
   genesisArray?: string[]
+  /** width of the canvas-es */
   width?: number
+  /** height of the canvas-es */
   height?: number
 }
 
 export function AutomatonPreview(props: AutomatonPreviewProp) {
   let {
     descriptor,
-    title,
+    tooltip,
     automatonTitle = descriptor,
     genesisArray = ["1(0)", "([01])"],
     width = 100,
@@ -22,15 +28,16 @@ export function AutomatonPreview(props: AutomatonPreviewProp) {
   } = props
 
   return (
-    <Tooltip className="automatonPreview inline" title={title}>
+    <Tooltip className="automatonPreview inline" title={tooltip}>
       <p>{automatonTitle}</p>
-      {genesisArray.map((g, k) => (
+      {genesisArray.map((genesis, k) => (
         <AutomatonCanvas
           key={k}
           descriptor={descriptor}
-          genesis={g}
+          genesis={genesis}
           width={width}
           height={height}
+          title={tooltip ? (genesisArray.length > 1 ? genesis : "") : undefined}
         />
       ))}
     </Tooltip>

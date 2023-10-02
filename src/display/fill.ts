@@ -5,7 +5,6 @@ import { Color } from "../type"
  *
  * @param engine The engine to request lines
  * @param ctx The canvas context, to putImageData on
- * @param canvasWidth The canvas width, to make sense of the posY info
  * @param width The width of the region to draw
  * @param height The height of the region to draw
  * @param baseX The X position where to put the image in the canvas
@@ -17,7 +16,6 @@ import { Color } from "../type"
 export function fillImage(
   engine: Engine | undefined,
   ctx: CanvasRenderingContext2D,
-  canvasWidth: number,
   width: number,
   height: number,
   baseX: number,
@@ -42,11 +40,16 @@ export function fillImage(
     y = posY + baseY + dy
     line = engine.getLine(y)
     for (let dx = 0; dx < width; dx += 1) {
-      x = Math.round(posX + baseX + dx + (line.length - canvasWidth) / 2)
+      x = Math.round(posX + baseX + dx + (line.length - ctx.canvas.width) / 2)
       if (x >= 0 && x < line.length) {
         let color = colorMap[line[x]]
         if (!color) {
-          lastError = ["Encountered a color index [", x, "] wi absent from the colormap", x]
+          lastError = [
+            "Encountered a color index [",
+            x,
+            "] which is absent from the colormap",
+            colorMap,
+          ]
           errorCount += 1
           continue
         }
@@ -61,6 +64,8 @@ export function fillImage(
 
   if (errorCount) {
     console.error(errorCount, ...lastError)
+    console.log("line", line)
+    debugger
   }
 
   ctx.putImageData(imageData, baseX, baseY)

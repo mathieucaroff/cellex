@@ -47,7 +47,7 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
 
     if (redraw) {
       // fill the whole canvas at the current coordinates
-      fillImage(engine, preCtx, preWidth, preWidth, preHeight, 0, 0, x, y, colorMap)
+      fillImage(engine, preCtx, preWidth, preHeight, 0, 0, x, y, colorMap)
       lastX = x
       lastY = y
       return
@@ -61,14 +61,14 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
       // Vertical empty band
       let imageWidth = Math.min(Math.abs(deltaX), preWidth)
       let baseX = deltaX > 0 ? Math.max(preWidth - deltaX, 0) : 0
-      fillImage(engine, preCtx, preWidth, imageWidth, preHeight, baseX, 0, x, y, colorMap)
+      fillImage(engine, preCtx, imageWidth, preHeight, baseX, 0, x, y, colorMap)
     }
 
     if (deltaY !== 0) {
       // Horizontal empty band
       let imageHeight = Math.min(Math.abs(deltaY), preHeight)
       let baseY = deltaY > 0 ? Math.max(preHeight - deltaY, 0) : 0
-      fillImage(engine, preCtx, preWidth, preWidth, imageHeight, 0, baseY, x, y, colorMap)
+      fillImage(engine, preCtx, preWidth, imageHeight, 0, baseY, x, y, colorMap)
     }
 
     lastX = x

@@ -18,12 +18,17 @@ const { Title } = Typography
 const totalisticCodeOverview = (props: { neighborhoodSize: number }) => {
   let { neighborhoodSize } = props
   return Array.from({ length: 2 ** (neighborhoodSize + 1) }, (_, k) => {
-    let descriptor = `ns ${neighborhoodSize}, code ${k}`
-    return <AutomatonPreview key={k} descriptor={descriptor} automatonTitle={descriptor} />
+    return (
+      <AutomatonPreview
+        key={k}
+        descriptor={`ns${neighborhoodSize},c${k}`}
+        automatonTitle={`ns ${neighborhoodSize}, code ${k}`}
+      />
+    )
   })
 }
 
-export function AutomatonGallery() {
+export function AutomatonGallery({ doOpenFirst }: { doOpenFirst?: boolean }) {
   const elementaryAutomatonPreview = (k: number) => (
     <AutomatonPreview key={k} descriptor={`e${k}`} automatonTitle={`Rule ${k}`} />
   )
@@ -106,13 +111,13 @@ export function AutomatonGallery() {
   return (
     <div className="automatonGallery">
       <Title level={4}>Curated Automata</Title>
-      <SingleCollapse ghost defaultIsOpen>
+      <SingleCollapse ghost doOpen={doOpenFirst}>
         <Title level={5}>Neighborhood-size-3 Rules</Title>
         <div className="curatedAutomata">
           {curatedNs3AutomatonArray.map(({ shorterLabel, label, value }) => (
             <AutomatonPreview
               key={value}
-              title={label}
+              tooltip={label}
               descriptor={value}
               automatonTitle={shorterLabel}
             />
@@ -123,7 +128,7 @@ export function AutomatonGallery() {
           {curated3ColorCodeArray.map(({ shorterLabel, label, value }) => (
             <AutomatonPreview
               key={value}
-              title={label}
+              tooltip={label}
               descriptor={value}
               automatonTitle={shorterLabel}
               genesisArray={["([012])"]}

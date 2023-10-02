@@ -129,8 +129,8 @@ th {
 
 /* automaton gallery */
 .automatonGalleryModal {
-  min-height: 75vh;
-  max-height: 75vh;
+  min-height: 71vh;
+  max-height: 71vh;
   overflow-y: auto;
 }
 
@@ -142,6 +142,7 @@ th {
 
 .automatonPreview {
   display: inline-block;
+  margin: 4px;
 }
 
 .automatonPreview p {
@@ -149,27 +150,13 @@ th {
   margin-bottom: 2px;
 }
 
-.elementaryAutomatonOverview > div,
-.curatedAutomata > div,
-.groupedElementaryAutomata .ant-collapse-content-box > div > div,
-.groupedElementaryAutomataWolframClasses .ant-collapse-content-box > div,
-.totalisticCodeOverviewNs3 > div,
-.totalisticCodeOverviewNs5 > div,
-.totalisticCodeOverviewNs7 > div {
-  display: inline-block;
-  margin: 8px;
-}
-
 /* modal override */
-
 .ant-modal-root {
   visibility: hidden;
-  transition: 0.4s linear;
 }
 
 .ant-modal-root.oxModalIsOpen {
   visibility: visible;
-  transition: 0.4s linear;
 }
 
 .ant-modal-root .ant-modal {
@@ -178,7 +165,7 @@ th {
 }
 
 .ant-modal-root.oxModalIsOpen .ant-modal {
-  transform: translateY(0) scale(1);
+  transform: translate(0, 0) scale(1);
   transition: 0.4s;
 }
 
