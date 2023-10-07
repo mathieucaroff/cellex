@@ -4,6 +4,7 @@ import { ReactNode, useState } from "react"
 import {
   curated3ColorCodeArray,
   curatedNs3AutomatonArray,
+  extraCurated3ColorCodeArray,
   interestingElementaryRuleSet,
   ruleSet,
 } from "../../engine/automaton"
@@ -112,28 +113,32 @@ export function AutomatonGallery({ doOpenFirst }: { doOpenFirst?: boolean }) {
     <div className="automatonGallery">
       <Title level={4}>Curated Automata</Title>
       <SingleCollapse ghost doOpen={doOpenFirst}>
-        <Title level={5}>Neighborhood-size-3 Rules</Title>
         <div className="curatedAutomata">
-          {curatedNs3AutomatonArray.map(({ shorterLabel, label, value }) => (
-            <AutomatonPreview
-              key={value}
-              tooltip={label}
-              descriptor={value}
-              automatonTitle={shorterLabel}
-            />
-          ))}
+          {curatedNs3AutomatonArray
+            .concat(curated3ColorCodeArray)
+            .map(({ shorterLabel, label, value }) => (
+              <AutomatonPreview
+                key={value}
+                tooltip={label}
+                descriptor={value}
+                automatonTitle={shorterLabel}
+                genesisArray={["1(0)", "([012])"]}
+              />
+            ))}
         </div>
-        <Title level={5}>3-color Codes</Title>
+      </SingleCollapse>
+      <Title level={4}>Extra curated 3-color Codes</Title>
+      <SingleCollapse ghost>
         <div className="curatedAutomata">
-          {curated3ColorCodeArray.map(({ shorterLabel, label, value }) => (
+          {extraCurated3ColorCodeArray.map(({ shorterLabel, label, value }) => (
             <AutomatonPreview
               key={value}
               tooltip={label}
               descriptor={value}
               automatonTitle={shorterLabel}
               genesisArray={["([012])"]}
-              width={150}
-              height={150}
+              width={140}
+              height={140}
             />
           ))}
         </div>

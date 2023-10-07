@@ -86,7 +86,7 @@ export let randomTransitionTable = (domain: Omit<Domain, "dimension">) => {
     transition += BigInt(random)
     return random
   })
-  // let transitionNumber = transition
+
   return {
     transitionTable,
     transitionNumber: transition,
@@ -266,6 +266,17 @@ export const ruleSet = generateRuleSet()
 ;(globalThis as any).ruleSet = ruleSet
 ;(globalThis as any).interestingElementaryRuleArray = interestingElementaryRuleArray
 
+function parseCuratedCode(text) {
+  let [code, ...infoArray] = text.split(" ")
+  let info = infoArray.join(" ")
+  let label = info.length > 0 ? `${code} (${info})` : code
+  return {
+    value: code,
+    label,
+    shorterLabel: code,
+  }
+}
+
 export const curatedNs3AutomatonArray = [
   "Cascade 3c,r4_880__842_232_460",
   "Right-triangles 3c,r7_281__352_072_754",
@@ -294,32 +305,44 @@ export const curatedNs3AutomatonArray = [
 })
 
 export const curated3ColorCodeArray = [
+  "3c,c153 looks like rule 54",
+  "3c,c228 looks like rule 54",
+  "3c,c321 has rule 73 columns",
+  "3c,c408 is like rule 73",
+  "3c,c426 is like rule 73 as well",
+  "3c,c555 has blue rootlings!",
+  "3c,c963 looks very good and is interesting",
+  "3c,c1_029 has orange patches",
+].map((text) => {
+  let [code, ...infoArray] = text.split(" ")
+  let info = infoArray.join(" ")
+  let label = info.length > 0 ? `${code} (${info})` : code
+  let shorterLabel = info.length > 0 ? `${code} (${limitLength(info, 24)})` : code
+  return {
+    value: code,
+    label,
+    shorterLabel,
+  }
+})
+
+export const extraCurated3ColorCodeArray = [
   "3c,c43",
   "3c,c69",
   "3c,c83",
   "3c,c88",
   "3c,c136",
-  "3c,c153 look like rule 54",
-  "3c,c165 look like rule 73, but it's even more beautiful",
+  "3c,c165 looks like rule 73, but it's even more beautiful",
   "3c,c173",
   "3c,c174 and 3c,c190 have walls",
-  "3c,c228 look like rule 54",
-  "3c,c231 look like rule 54, but the electrons are visible",
-  "3c,c262 have beautiful roots",
-  "3c,c266 have some blue columns and some dark orange ones",
-  "3c,c320 also do.",
-  "3c,c321 have rule 73 columns",
-  "3c,c379 look like code 136",
-  "3c,c408 like rule 73",
-  "3c,c426 like rule 73 as well",
-  "3c,c462 look good",
-  "3c,c555 look really good!",
-  "3c,c622 similar to 3c,c136",
-  "3c,c806 funny",
-  "3c,c824 interesting",
-  "3c,c861 beautiful and rather interesting",
-  "3c,c963 look very good and be interesting",
-  "3c,c1_029",
+  "3c,c231 looks like rule 54, but the electrons are visible",
+  "3c,c262 has beautiful roots",
+  "3c,c266 has some blue columns and some dark orange ones",
+  "3c,c320 also does.",
+  "3c,c379 looks like code 136",
+  "3c,c462 looks good",
+  "3c,c622 is similar to 3c,c136 but it converges faster",
+  "3c,c806 is funny",
+  "3c,c861 is beautiful and rather interesting",
 ].map((text) => {
   let [code, ...infoArray] = text.split(" ")
   let info = infoArray.join(" ")
