@@ -1,3 +1,5 @@
+export type ChangeSet = { t: number; changes: { s: number; amount: number }[] }[]
+
 export interface DiffModeOff {
   status: "off"
   active: false
@@ -31,7 +33,7 @@ export interface DiffModeSelection {
   divine: boolean
   /** changes: the time and spatial position of all the interventions
    * arranged pragmatically by time and position. */
-  changes: { t: number; changes: { s: number; amount: number }[] }[]
+  changes: ChangeSet
 }
 
 export type DiffMode = DiffModeOff | DiffModeWaiting | DiffModeHovering | DiffModeSelection

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { createRandomMapper } from "../RandomMapper"
-import { getTopBorderValue } from "../roller/Roller"
+import { getTopBorderValue } from "../roller/BasicRoller"
 import {
   expectedGenesisLine14,
   expectedOutputLiney14,

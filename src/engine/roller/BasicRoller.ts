@@ -1,20 +1,16 @@
-import { DiffMode } from "../../diffType"
-import { Stepper } from "../../engineType"
+import { BasicRoller, Stepper } from "../../engineType"
 import { TopologyFinite } from "../../topologyType"
-import { clone } from "../../util/clone"
 import { getTopBorderValue } from "../borderGetter"
-import { earliestDifference } from "../diffmode/earliestDifference"
+import { SNAPSHOT_PERIOD } from "../engine.constants"
 import { RandomMapper } from "../misc/RandomMapper"
-
-const SNAPSHOT_PERIOD = 400
 
 /** createAutomatonEngine creates a 1d automaton computing machine for the given
     automaton, topology, and source of randomness */
-export let createAutomatonRoller = (
+export let createBasicRoller = (
   stepper: Stepper,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
-) => {
+): BasicRoller => {
   let left = -Math.floor(topology.width / 2)
   let genesis = Uint8Array.from({ length: topology.width }, (_, k) => {
     return getTopBorderValue(topology.genesis, k + left, randomMapper.top)
@@ -25,11 +21,6 @@ export let createAutomatonRoller = (
   let lineB = Uint8Array.from({ length: genesis.length }) // previous
   let lineC = Uint8Array.from({ length: genesis.length }) // one-before-previous
   let snapshotArray: [Uint8Array, Uint8Array][] = [[lineA, lineB]]
-
-  let diffMode: DiffMode = {
-    status: "off",
-    active: false,
-  }
 
   // reset sets the engine current time and current line to the closest
   // snapshot available taken before the target time.
@@ -46,21 +37,7 @@ export let createAutomatonRoller = (
 
   reset(0)
 
-  let me = {
-    setDiffMode: (newDiffMode: DiffMode) => {
-      if (!newDiffMode.active) {
-        // becoming inactive or staying inactive
-        // nothing to do
-      } else if (diffMode.active) {
-        // staying active
-        reset(earliestDifference(diffMode.changes, newDiffMode.changes))
-      } else {
-        // becoming active
-        reset(newDiffMode.changes[0].t)
-      }
-
-      diffMode = clone(newDiffMode)
-    },
+  return {
     getLine: (t: number): Uint8Array => {
       if (t < currentT) {
         if (t < 0) {
@@ -90,8 +67,4 @@ export let createAutomatonRoller = (
       return lineA
     },
   }
-
-  return me
 }
-
-export type Engine = ReturnType<typeof createAutomatonRoller>

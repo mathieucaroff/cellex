@@ -1,4 +1,4 @@
-import { Engine } from "../engine/roller/Roller"
+import { Engine } from "../engineType"
 import { Color } from "../type"
 
 /**

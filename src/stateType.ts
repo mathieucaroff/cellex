@@ -24,7 +24,7 @@ export interface State extends StatePosition {
   immersiveMode: "immersive" | "off"
   presentationMode: "present" | "off"
   colorMap: Color[]
-  diffMode: DiffMode
+  diffMode: DiffMode // todo: rename DiffMode into something which encompasses the divine case and the differential case
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
   seed: string
 

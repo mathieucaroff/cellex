@@ -1,7 +1,7 @@
 import { Automaton } from "../../automatonType"
 import { Stepper } from "../../engineType"
 import { TopologyFinite } from "../../topologyType"
-import { RandomMapper } from "../RandomMapper"
+import { RandomMapper } from "../misc/RandomMapper"
 import { createTableCodeStepper } from "./tableCode"
 import { createTableRuleStepper } from "./tableRule"
 

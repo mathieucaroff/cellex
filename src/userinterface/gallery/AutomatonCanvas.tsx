@@ -1,9 +1,7 @@
 import { useContext, useEffect, useRef } from "react"
 
 import { fillImage } from "../../display/fill"
-import { createRandomMapper } from "../../engine/misc/RandomMapper"
-import { createAutomatonRoller } from "../../engine/roller/Roller"
-import { createStepper } from "../../engine/stepper/Stepper"
+import { createAutomatonEngine } from "../../engine/Engine"
 import { parseNomenclature } from "../../nomenclature/nomenclature"
 import { parseTopBorder } from "../../patternlang/parser"
 import { ReactContext } from "../../state/ReactContext"
@@ -20,7 +18,7 @@ export interface AutomatonOverviewProp {
 
 export function AutomatonCanvas(prop: AutomatonOverviewProp) {
   let { context } = useContext(ReactContext)
-  let [seedString, colorMap] = useStateSelection((s) => [s.seed, s.colorMap])
+  let [seed, colorMap] = useStateSelection((s) => [s.seed, s.colorMap])
 
   let title = prop.title
   if (title == undefined) {
@@ -43,16 +41,13 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
   }
 
   useEffect(() => {
-    let randomMapper = createRandomMapper({ seedString })
     let canvas = canvasRef.current
-
-    let calculator = createStepper(rule, topology, randomMapper)
-    let engine = createAutomatonRoller(calculator, topology, randomMapper)
+    let engine = createAutomatonEngine({ automaton: rule, topology, seed })
 
     // draw
     let ctx = canvas.getContext("2d")!
     fillImage(engine, ctx, canvas.width, canvas.height, 0, 0, 0, 0, colorMap)
-  }, [seedString, JSON.stringify(colorMap)])
+  }, [seed, JSON.stringify(colorMap)])
 
   // set the state on click
   const handleClick = () => {

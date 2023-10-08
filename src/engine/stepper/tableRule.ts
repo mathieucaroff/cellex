@@ -69,5 +69,5 @@ export function createTableRuleStepper(
     return output
   }
 
-  return { step }
+  return { step, getStateCount: () => rule.stateCount }
 }

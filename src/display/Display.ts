@@ -1,5 +1,5 @@
 import { colorToHexColor, hexColorToColor } from "../engine/misc/color"
-import { Engine } from "../engine/roller/Roller"
+import { Engine } from "../engine/roller/BasicRoller"
 import { Color } from "../type"
 import { mod } from "../util/mod"
 import { fillImage } from "./fill"

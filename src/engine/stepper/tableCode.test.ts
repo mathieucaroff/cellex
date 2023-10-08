@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { createRandomMapper } from "../RandomMapper"
-import { getTopBorderValue } from "../roller/Roller"
+import { getTopBorderValue } from "../roller/BasicRoller"
 import { createSlowLoopEngine } from "../slowLoopTestEngine"
 import { rule110Topology14 } from "../test-provisionning"
 import { createTableCodeStepper } from "./tableCode"

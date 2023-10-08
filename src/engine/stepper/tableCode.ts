@@ -85,5 +85,5 @@ export function createTableCodeStepper(
     return output
   }
 
-  return { step }
+  return { step, getStateCount: () => code.stateCount }
 }
