@@ -8,7 +8,7 @@ import {
   colorComplement,
   computeTransitionNumber,
   leftRightSymmetric,
-} from "../../engine/automaton"
+} from "../../engine/curatedAutomata"
 import { presentNomenclature } from "../../nomenclature/nomenclature"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"

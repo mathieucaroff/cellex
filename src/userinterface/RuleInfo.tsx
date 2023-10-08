@@ -1,5 +1,5 @@
 import { TableRuleAutomaton } from "../automatonType"
-import { colorComplement, leftRightSymmetric } from "../engine/automaton"
+import { colorComplement, leftRightSymmetric } from "../engine/curatedAutomata"
 import { presentNomenclature } from "../nomenclature/nomenclature"
 import { useStateSelection } from "./hooks"
 

@@ -5,7 +5,7 @@ import {
   computeCodeTransitionTable,
   computeRuleTransitionTable,
   computeTransitionNumber,
-} from "../engine/automaton"
+} from "../engine/curatedAutomata"
 import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 

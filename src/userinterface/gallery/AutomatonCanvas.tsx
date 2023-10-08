@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef } from "react"
 
 import { fillImage } from "../../display/fill"
-import { createAutomatonEngine } from "../../engine/Engine"
-import { createRandomMapper } from "../../engine/RandomMapper"
-import { createConceiver } from "../../engine/conceiver/conceiver"
+import { createRandomMapper } from "../../engine/misc/RandomMapper"
+import { createAutomatonRoller } from "../../engine/roller/Roller"
+import { createStepper } from "../../engine/stepper/Stepper"
 import { parseNomenclature } from "../../nomenclature/nomenclature"
 import { parseTopBorder } from "../../patternlang/parser"
 import { ReactContext } from "../../state/ReactContext"
@@ -46,8 +46,8 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
     let randomMapper = createRandomMapper({ seedString })
     let canvas = canvasRef.current
 
-    let calculator = createConceiver(rule, topology, randomMapper)
-    let engine = createAutomatonEngine(calculator, topology, randomMapper)
+    let calculator = createStepper(rule, topology, randomMapper)
+    let engine = createAutomatonRoller(calculator, topology, randomMapper)
 
     // draw
     let ctx = canvas.getContext("2d")!

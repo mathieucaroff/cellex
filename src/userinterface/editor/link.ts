@@ -1,5 +1,5 @@
 import { TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
-import { computeTransitionNumber } from "../../engine/automaton"
+import { computeTransitionNumber } from "../../engine/curatedAutomata"
 
 export let getMathworldLink = (ruleNumber: number) => {
   let knownRuleNumbers = [

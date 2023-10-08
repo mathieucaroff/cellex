@@ -9,10 +9,10 @@ import { createInfo } from "./control/Info"
 import { keyboardBinding } from "./control/KeyboardBinding"
 import { createDisplay } from "./display/Display"
 import { createDiffModeManager } from "./engine/DiffModeManager"
-import { Engine, createAutomatonEngine } from "./engine/Engine"
-import { createRandomMapper } from "./engine/RandomMapper"
-import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/automaton"
-import { createConceiver } from "./engine/conceiver/conceiver"
+import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/curatedAutomata"
+import { createRandomMapper } from "./engine/misc/RandomMapper"
+import { Engine, createAutomatonRoller } from "./engine/roller/Roller"
+import { createStepper } from "./engine/stepper/Stepper"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
 import { parseNomenclature } from "./nomenclature/nomenclature"
@@ -94,9 +94,9 @@ function main() {
       }
 
       let randomMapper = createRandomMapper({ seedString: seed })
-      let conceiver = createConceiver(automaton, topology, randomMapper)
+      let stepper = createStepper(automaton, topology, randomMapper)
 
-      engine = createAutomatonEngine(conceiver, topology, randomMapper)
+      engine = createAutomatonRoller(stepper, topology, randomMapper)
 
       display.setEngine(engine)
 

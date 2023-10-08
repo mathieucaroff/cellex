@@ -1,14 +1,15 @@
 import { TableCodeAutomaton } from "../../automatonType"
-import { Conceiver } from "../../engineType"
+import { Stepper } from "../../engineType"
 import { TopologyFinite } from "../../topologyType"
-import { getSideBorderValue } from "../Engine"
-import { RandomMapper } from "../RandomMapper"
+import { getSideBorderValue } from "../borderGetter"
+import { RandomMapper } from "../misc/RandomMapper"
 
-export function createTableCodeConceiver(
+/** a stepper implementation for table codes */
+export function createTableCodeStepper(
   code: TableCodeAutomaton,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
-): Conceiver {
+): Stepper {
   let tableLength = 1 + (code.stateCount - 1) * code.neighborhoodSize
   if (tableLength > 4096) {
     throw `code table length too big (1 + (code.stateCount - 1) * code.neighborhoodSize) is (${tableLength}), which is larger than the limit, 4096`
@@ -20,12 +21,7 @@ export function createTableCodeConceiver(
 
   let functionLength = code.transitionTable.length
 
-  let conceive = (
-    input: Uint8Array,
-    olderInput: Uint8Array,
-    output: Uint8Array,
-    currentT: number,
-  ) => {
+  let step = (input: Uint8Array, olderInput: Uint8Array, output: Uint8Array, currentT: number) => {
     // initialize the rolling result of the rule
     let neighborhoodRoll = Array.from({ length: code.neighborhoodSize }, () => 0)
     let rollIndex = 0
@@ -89,5 +85,5 @@ export function createTableCodeConceiver(
     return output
   }
 
-  return { conceive }
+  return { step }
 }

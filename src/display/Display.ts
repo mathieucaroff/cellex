@@ -1,5 +1,5 @@
-import { Engine } from "../engine/Engine"
-import { colorToHexColor, hexColorToColor } from "../engine/color"
+import { colorToHexColor, hexColorToColor } from "../engine/misc/color"
+import { Engine } from "../engine/roller/Roller"
 import { Color } from "../type"
 import { mod } from "../util/mod"
 import { fillImage } from "./fill"

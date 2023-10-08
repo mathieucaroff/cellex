@@ -1,4 +1,4 @@
-import { Color } from "../type"
+import { Color } from "../../type"
 
 export function colorToHexColor(c: Color): string {
   return (

@@ -1,9 +1,10 @@
 import { TableRuleAutomaton } from "../automatonType"
 import { TopologyFinite } from "../topologyType"
 import { mod } from "../util/mod"
-import { getTopBorderValue } from "./Engine"
-import { RandomMapper } from "./RandomMapper"
+import { getTopBorderValue } from "./borderGetter"
+import { RandomMapper } from "./misc/RandomMapper"
 
+/** slowLoopEngine is made to test the correctness of the loop engine. */
 export let createSlowLoopEngine = (
   rule: TableRuleAutomaton,
   topology: TopologyFinite,

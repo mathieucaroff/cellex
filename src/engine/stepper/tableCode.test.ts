@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { getTopBorderValue } from "../Engine"
 import { createRandomMapper } from "../RandomMapper"
-import { rule110Topology14 } from "../engine.test-provisionning"
+import { getTopBorderValue } from "../roller/Roller"
 import { createSlowLoopEngine } from "../slowLoopTestEngine"
-import { createTableCodeConceiver } from "./tableCode"
+import { rule110Topology14 } from "../test-provisionning"
+import { createTableCodeStepper } from "./tableCode"
 
 describe("The tableCode calculator", () => {
   it("Correctly computes one generation of rule 110 in looping topology", () => {
@@ -13,7 +13,7 @@ describe("The tableCode calculator", () => {
       width: 8,
     }
     let randomMapper = createRandomMapper({ seedString: "_" })
-    let conceiver = createTableCodeConceiver(
+    let stepper = createTableCodeStepper(
       {
         kind: "tableCode",
         dimension: 1,
@@ -52,7 +52,7 @@ describe("The tableCode calculator", () => {
     expect(inputLine).toEqual(new Uint8Array("01101111".split("").map((c) => Number(c))))
     expect(inputLine).toEqual(slowEngine.getLine(0))
 
-    conceiver.conceive(inputLine, oldInputLine, outputLine, currentT)
+    stepper.step(inputLine, oldInputLine, outputLine, currentT)
     expect(outputLine).toEqual(slowEngine.getLine(1))
   })
 })

@@ -7,8 +7,8 @@ import {
   extraCurated3ColorCodeArray,
   interestingElementaryRuleSet,
   ruleSet,
-} from "../../engine/automaton"
-import { wolframClassInfo } from "../../engine/wolframClassInfo"
+} from "../../engine/curatedAutomata"
+import { wolframClassInfo } from "../../engine/misc/wolframClassInfo"
 import { labelValue } from "../../util/labelValue"
 import { SingleCollapse } from "../components/SingleLoadingCollapse/SingleLoadingCollapse"
 import { AutomatonPreview } from "./AutomatonPreview"

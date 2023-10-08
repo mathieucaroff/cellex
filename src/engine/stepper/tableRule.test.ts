@@ -1,19 +1,19 @@
 import { describe, expect, it } from "vitest"
 
-import { getTopBorderValue } from "../Engine"
 import { createRandomMapper } from "../RandomMapper"
+import { getTopBorderValue } from "../roller/Roller"
 import {
   expectedGenesisLine14,
   expectedOutputLiney14,
   rule110Topology14,
-} from "../engine.test-provisionning"
-import { createTableRuleConceiver } from "./tableRule"
+} from "../test-provisionning"
+import { createTableRuleStepper } from "./tableRule"
 
 describe("The tableRule calculator", () => {
   it("Correctly computes one generation of rule 110 in looping topology", () => {
     let topology = rule110Topology14
     let randomMapper = createRandomMapper({ seedString: "_" })
-    let calculator = createTableRuleConceiver(
+    let calculator = createTableRuleStepper(
       {
         kind: "tableRule",
         dimension: 1,
@@ -37,7 +37,7 @@ describe("The tableRule calculator", () => {
     let outputLine = Uint8Array.from({ length: genesis.length }) // previous
     expect(inputLine).toEqual(expectedGenesisLine14)
 
-    calculator.conceive(inputLine, oldInputLine, outputLine, currentT)
+    calculator.step(inputLine, oldInputLine, outputLine, currentT)
     expect(outputLine).toEqual(expectedOutputLiney14)
   })
 })

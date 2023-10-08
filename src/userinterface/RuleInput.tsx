@@ -1,7 +1,7 @@
 import { Space } from "antd"
 
 import { TableRuleAutomaton } from "../automatonType"
-import { randomGoodAutomatonFromDomain, randomGoodRule } from "../engine/automaton"
+import { randomGoodAutomatonFromDomain, randomGoodRule } from "../engine/curatedAutomata"
 import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
 import { DomainSelect } from "./DomainSelect"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"

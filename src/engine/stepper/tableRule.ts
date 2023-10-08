@@ -1,14 +1,15 @@
 import { TableRuleAutomaton } from "../../automatonType"
-import { Conceiver } from "../../engineType"
+import { Stepper } from "../../engineType"
 import { TopologyFinite } from "../../topologyType"
-import { getSideBorderValue } from "../Engine"
-import { RandomMapper } from "../RandomMapper"
+import { getSideBorderValue } from "../borderGetter"
+import { RandomMapper } from "../misc/RandomMapper"
 
-export function createTableRuleConceiver(
+/** table rule stepper */
+export function createTableRuleStepper(
   rule: TableRuleAutomaton,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
-): Conceiver {
+): Stepper {
   let tableLength = rule.stateCount ** rule.neighborhoodSize
   if (tableLength > 4096) {
     throw `rule table length too big (stateCount ** neighborhoodSize) is (${tableLength}), which is larger than the limit, 4096`
@@ -21,12 +22,7 @@ export function createTableRuleConceiver(
 
   let functionLength = rule.transitionTable.length
 
-  let conceive = (
-    input: Uint8Array,
-    olderInput: Uint8Array,
-    output: Uint8Array,
-    currentT: number,
-  ) => {
+  let step = (input: Uint8Array, olderInput: Uint8Array, output: Uint8Array, currentT: number) => {
     // initialize the rolling result of the rule
     let index = 0
     for (let k = -neighborhoodMiddle; k < 0; k++) {
@@ -73,5 +69,5 @@ export function createTableRuleConceiver(
     return output
   }
 
-  return { conceive }
+  return { step }
 }

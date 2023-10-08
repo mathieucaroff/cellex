@@ -1,5 +1,5 @@
 import { parseColorMap } from "../display/Display"
-import { randomGoodRule } from "../engine/automaton"
+import { randomGoodRule } from "../engine/curatedAutomata"
 import { parseNomenclature } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../stateType"

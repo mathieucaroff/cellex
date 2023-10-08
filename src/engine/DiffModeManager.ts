@@ -16,6 +16,7 @@ export let getPosition = (ev: MouseEvent, element: HTMLElement) => {
 }
 
 /**
+ * diffModeManager updates the diff mode state from mouse events.
  *
  * @param element the element for which we want to listen for hovering and click events
  * @param handler the function which receives the event
