@@ -78,6 +78,9 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
 
   onKeypress(["Digit0", "Numpad0"], act.gotoTop, "0", "go back to the top")
 
+  onSymbol([">"], act.nextAutomaton, ">", "increase automaton index")
+  onSymbol(["<"], act.previousAutomaton, "<", "decrease automaton index")
+
   onSymbol(["["], act.halfSpeed, "[", "half the speed")
   onSymbol(["]"], act.doubleSpeed, "]", "double the speed")
 

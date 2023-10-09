@@ -2,6 +2,7 @@ import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { Context } from "../state/Context"
 import { State } from "../stateType"
 import { clamp } from "../util/clamp"
+import { normalizeArray } from "../util/normalizeArray"
 import { randomSeed } from "../util/randomSeed"
 import { Info } from "./Info"
 
@@ -144,7 +145,7 @@ export let createAct = (context: Context, info: Info) => {
     /* Panning */
     /***********/
 
-    /** Relative move */
+    /** Horizontal relative move */
     pageLeft: posAction((position) => {
       position.posS -= info.horizontalPage()
       fixPosition(position)
@@ -164,7 +165,7 @@ export let createAct = (context: Context, info: Info) => {
 
     fixPosition,
 
-    /** Goto */
+    /** Horizontal goto */
     gotoMaxLeft: posAction((position) => {
       position.posS = info.maxLeft()
       fixPosition(position)
@@ -178,7 +179,7 @@ export let createAct = (context: Context, info: Info) => {
       fixPosition(position)
     }),
 
-    /** Relative move */
+    /** Vertical relative move */
     pageUp: posAction((position) => {
       position.posT -= info.verticalPage()
       fixTop()
@@ -194,7 +195,7 @@ export let createAct = (context: Context, info: Info) => {
       position.posT += info.verticalPage()
     }),
 
-    /** Goto */
+    /** Vertical goto */
     gotoTop: posAction((state) => {
       state.play = false
       state.posT = info.top()
@@ -212,6 +213,18 @@ export let createAct = (context: Context, info: Info) => {
         }
       })
     },
+
+    /** Next/previous automaton by number */
+    nextAutomaton: action((state) => {
+      const tt = state.automaton.transitionTable
+      tt[tt.length - 1] += 1
+      normalizeArray(tt, state.automaton.stateCount)
+    }),
+    previousAutomaton: action((state) => {
+      const tt = state.automaton.transitionTable
+      tt[tt.length - 1] -= 1
+      normalizeArray(tt, state.automaton.stateCount)
+    }),
 
     /** Divine mode */
     setDivineModeOff: action((state) => {
