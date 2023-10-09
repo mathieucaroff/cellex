@@ -160,6 +160,7 @@ function main() {
       return xy
     },
     desktopOrMobile,
+    window,
   })
   panningDragManager.onMove((xy) => {
     context.updatePosition((position, state) => {

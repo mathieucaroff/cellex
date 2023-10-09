@@ -15,13 +15,15 @@ export interface DragManagerProp {
    * whether the device running the app is a desktop-laptop or is a mobile phone
    */
   desktopOrMobile: DesktopOrMobile
+  /**
+   * whether the device running the app is a desktop-laptop or is a mobile phone
+   */
+  window: Window
 }
 
 export let createDragManager = (prop: DragManagerProp) => {
-  let { element, getDisplayInit, desktopOrMobile } = prop
+  let { element, getDisplayInit, desktopOrMobile, window } = prop
   let nop = () => {}
-
-  let html = element.ownerDocument!.documentElement
 
   let init = {
     x: 0,
@@ -54,8 +56,8 @@ export let createDragManager = (prop: DragManagerProp) => {
       }
 
       if (state === "up") {
-        html.addEventListener("mousemove", handleMove, false)
-        html.addEventListener("mouseup", handleEnd, false)
+        window.addEventListener("mousemove", handleMove, false)
+        window.addEventListener("mouseup", handleEnd, false)
       }
     } else {
       init = {
@@ -64,9 +66,9 @@ export let createDragManager = (prop: DragManagerProp) => {
       }
 
       if (state === "up") {
-        html.addEventListener("touchmove", handleMove, false)
-        html.addEventListener("touchend", handleEnd, false)
-        html.addEventListener("touchcancel", handleCancel, false)
+        window.addEventListener("touchmove", handleMove, false)
+        window.addEventListener("touchend", handleEnd, false)
+        window.addEventListener("touchcancel", handleCancel, false)
       }
     }
     state = "down"
@@ -113,12 +115,12 @@ export let createDragManager = (prop: DragManagerProp) => {
   const handleEnd = () => {
     if (state == "down") {
       if (desktopOrMobile === "desktop") {
-        html.removeEventListener("mousemove", handleMove, false)
-        html.removeEventListener("mouseup", handleEnd, false)
+        window.removeEventListener("mousemove", handleMove, false)
+        window.removeEventListener("mouseup", handleEnd, false)
       } else {
-        html.removeEventListener("touchmove", handleMove, false)
-        html.removeEventListener("touchend", handleEnd, false)
-        html.removeEventListener("touchcancel", handleCancel, false)
+        window.removeEventListener("touchmove", handleMove, false)
+        window.removeEventListener("touchend", handleEnd, false)
+        window.removeEventListener("touchcancel", handleCancel, false)
       }
     }
     state = "up"
