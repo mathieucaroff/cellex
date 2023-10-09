@@ -30,9 +30,9 @@ export let createControllableRoller = (
 
   // updateChangeIndex updates the changeIndex so that the current time matches change corresponding to the change index or that the corresponding change is the first after the current time. Beware, if the current time is after the last change, then the changeIndex will be set to the change set length, thus pointing outside of the set.
   let updateChangeIndex = () => {
-    if (changeSet.length === 0) {
-      changeIndex = 0
-      return
+    // Handle the case where a change has been removed from the set.
+    if (changeSet.length <= changeIndex) {
+      changeIndex = changeSet.length
     }
     // Reduce changeIndex until the change at changeIndex is before the current time, or equal to it.
     while (changeIndex > 0 && changeSet[changeIndex - 1].t > currentT) {

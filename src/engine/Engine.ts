@@ -4,6 +4,7 @@ import { clone } from "../util/clone"
 import { createRandomMapper } from "./misc/RandomMapper"
 import { createBasicRoller } from "./roller/BasicRoller"
 import { createControllableRoller } from "./roller/ControllableRoller"
+import { createDiffRoller } from "./roller/DiffRoller"
 import { createStepper } from "./stepper/Stepper"
 
 export interface EngineProp {
@@ -36,14 +37,26 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
         } else {
           // staying active -> update changeSet
           controllableRoller.setChangeSet(newDivineMode.changes)
+          if (!divineMode.propagation && newDivineMode.propagation) {
+            // adding propagation mode -> switch to diff roller
+            roller = createDiffRoller(basicRoller, controllableRoller)
+          } else if (divineMode.propagation && !newDivineMode.propagation) {
+            // removing propagation mode -> switch to controllable roller
+            roller = controllableRoller
+          }
         }
       } else {
         if (!newDivineMode.active) {
           // staying inactive -> nothing to do
         } else {
-          // becoming active -> switch to controllable roller
+          // becoming active -> switch to a controllable roller or a diff roller
+          // depending on the propagation setting
           controllableRoller = createControllableRoller(stepper, topology, randomMapper)
-          roller = controllableRoller
+          if (newDivineMode.propagation) {
+            roller = createDiffRoller(basicRoller, controllableRoller)
+          } else {
+            roller = controllableRoller
+          }
         }
       }
 

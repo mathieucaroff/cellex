@@ -5,7 +5,7 @@ import { BasicRoller, DiffRoller } from "../../engineType"
 export let createDiffRoller = (firstRoller: BasicRoller, secondRoller: BasicRoller): DiffRoller => {
   return {
     getLine: (t: number): Uint8Array => {
-      let a = firstRoller.getLine(t)
+      let a = Uint8Array.from(firstRoller.getLine(t))
       let b = secondRoller.getLine(t)
       a.forEach((v, k) => {
         if (v !== b[k]) {

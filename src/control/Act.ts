@@ -218,13 +218,14 @@ export let createAct = (context: Context, info: Info) => {
       state.divineMode = {
         status: "off",
         active: false,
+        propagation: true,
       }
     }),
     setDivineModeWaiting: action((state) => {
       state.divineMode = {
         status: "waiting",
         active: false,
-        perturbation: state.divineMode["perturbation"] ?? false,
+        propagation: state.divineMode.propagation,
       }
     }),
 

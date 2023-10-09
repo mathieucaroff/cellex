@@ -121,7 +121,7 @@ export let createDivineModeManager = (prop: DivineModeManagerProp) => {
                   divineMode = {
                     status: "hovering",
                     active: true,
-                    perturbation: divineMode.perturbation,
+                    propagation: divineMode.propagation,
                     changes: [{ t, changes: [{ s, amount: 1 }] }],
                   }
                 }
@@ -134,19 +134,19 @@ export let createDivineModeManager = (prop: DivineModeManagerProp) => {
         divineMode = { ...divineMode }
       } else {
         if (eventKind === "leave") {
-          divineMode = { status: "waiting", active: false, perturbation: divineMode.perturbation }
+          divineMode = { status: "waiting", active: false, propagation: divineMode.propagation }
         } else if (eventKind === "move") {
           divineMode = {
             status: "hovering",
             active: true,
-            perturbation: divineMode.perturbation,
+            propagation: divineMode.propagation,
             changes: [{ t, changes: [{ s, amount: 1 }] }],
           }
         } else if (eventKind === "click") {
           divineMode = {
             status: "selection",
             active: true,
-            perturbation: divineMode.perturbation,
+            propagation: divineMode.propagation,
             changes: [{ t, changes: [{ s, amount: 1 }] }],
           }
         }

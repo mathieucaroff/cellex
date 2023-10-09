@@ -100,7 +100,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 </Popover>
                 <Popover
                   content={
-                    divineMode.status === "off" ? null : <OxSwitch path="divineMode.perturbation" />
+                    divineMode.status === "off" ? null : <OxSwitch path="divineMode.propagation" />
                   }
                 >
                   <Switch
