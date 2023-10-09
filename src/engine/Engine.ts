@@ -26,6 +26,7 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
   let divineMode: DivineMode = {
     active: false,
     status: "off",
+    propagation: true,
   }
 
   return {
@@ -52,6 +53,7 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
           // becoming active -> switch to a controllable roller or a diff roller
           // depending on the propagation setting
           controllableRoller = createControllableRoller(stepper, topology, randomMapper)
+          controllableRoller.setChangeSet(newDivineMode.changes)
           if (newDivineMode.propagation) {
             roller = createDiffRoller(basicRoller, controllableRoller)
           } else {

@@ -228,6 +228,13 @@ export let createAct = (context: Context, info: Info) => {
         propagation: state.divineMode.propagation,
       }
     }),
+    toggleDivineMode: action((state) => {
+      if (state.divineMode.status === "off") {
+        act.setDivineModeWaiting(state)
+      } else {
+        act.setDivineModeOff(state)
+      }
+    }),
 
     /** Focus */
     focus: (id: string) => () => {

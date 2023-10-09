@@ -16,8 +16,11 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   let { act, globalElement, specificElement } = prop
 
   /**
-   * keyKb operates on keyboard configured symbol inputs,
-   * while codeKb operates on keyboard key positions
+   * - keyKb operates on keyboard configured symbol inputs
+   * - codeKb operates on keyboard key positions
+   * - specicKeyKb is used for keys that interact with buttons and inputs:
+   * these keys are listened to only on the specificElement, so that
+   * they don't interfere with other interactions.
    */
   let keyKb = createKeyboardManager({
     element: globalElement,
@@ -71,6 +74,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
   )
   onSymbol(["G"], act.toggleGallery, "G", "close or open the *G*allery")
   onSymbol(["I"], act.toggleImmersiveMode, "I", "toggle the *I*mmersive mode on or off")
+  onSymbol(["D"], act.toggleDivineMode, "D", "toggle the *D*ivine mode on or off")
 
   onKeypress(["Digit0", "Numpad0"], act.gotoTop, "0", "go back to the top")
 

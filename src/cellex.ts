@@ -93,6 +93,7 @@ function main() {
       }
 
       engine = createAutomatonEngine({ automaton, topology, seed })
+      act.setDivineModeOff(state)
 
       display.setEngine(engine)
 
@@ -102,6 +103,11 @@ function main() {
   context
     .use(({ divineMode }) => ({ divineMode }))
     .for(({ divineMode }) => {
+      if (divineMode.active) {
+        canvas.classList.add("divineMode")
+      } else {
+        canvas.classList.remove("divineMode")
+      }
       engine.setDivineMode(divineMode)
       drawDisplay(true)
     })
@@ -181,8 +187,10 @@ function main() {
   let divineModeManager = createDivineModeManager({ context })
 
   divineModeManager.addCanvas(canvas, (x, y) => {
+    // I have no idea why "-0.2" is required to compute `s`, but I couldn't
+    // get the correct position without it.
     let s = Math.floor(
-      x / state.zoom + (state.topology.width - canvas.width / state.zoom) / 2 + state.posS,
+      x / state.zoom + (state.topology.width - canvas.width / state.zoom) / 2 + state.posS - 0.2,
     )
     let t = Math.floor(y / state.zoom + state.posT)
     return { s, t }

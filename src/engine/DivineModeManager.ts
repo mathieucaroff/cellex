@@ -1,4 +1,5 @@
 // DivineModeManager handles the mouse events to keep the state up to date
+import { DivineMode } from "../divineType"
 import { Context } from "../state/Context"
 
 export interface DivineModeManagerProp {
@@ -118,12 +119,27 @@ export let createDivineModeManager = (prop: DivineModeManagerProp) => {
                 } else {
                   // Sixth and final case: there are no more lines in the divine mode changes
                   // go back to the hovering mode
-                  divineMode = {
+
+                  // It is not obvious for the user that the mode has changed to hovering, so
+                  // we flash the propagation to make it obvious.
+                  let temporaryDivineMode: DivineMode = {
+                    status: "waiting",
+                    active: false,
+                    propagation: divineMode.propagation,
+                  }
+                  let finalDivineMode: DivineMode = {
                     status: "hovering",
                     active: true,
                     propagation: divineMode.propagation,
                     changes: [{ t, changes: [{ s, amount: 1 }] }],
                   }
+
+                  divineMode = temporaryDivineMode
+                  setTimeout(() => {
+                    context.updateState((state) => {
+                      state.divineMode = finalDivineMode
+                    })
+                  }, 100)
                 }
               }
             }

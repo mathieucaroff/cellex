@@ -48,7 +48,7 @@ export let initialState = (): State => {
     posS: 0,
     posT: 0,
     play: false,
-    divineMode: { status: "off", active: false },
+    divineMode: { status: "off", active: false, propagation: true },
     zoom: 1,
     darkMode: "dark",
     immersiveMode: "off",
