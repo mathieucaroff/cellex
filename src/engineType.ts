@@ -1,4 +1,4 @@
-import { ChangeSet, DiffMode } from "./diffType"
+import { ChangeSet, DivineMode } from "./divineType"
 
 /** A stepper computes a single generation of cells by going simultaneously
     through the three buffers it has as input */
@@ -24,9 +24,9 @@ export interface DiffRoller extends BasicRoller {
   // getFirstRoller: () => BasicRoller
 }
 
-/** The engine handles diffMode changes with as little recomputations as
+/** The engine handles divineMode changes with as little recomputations as
  * possible */
 export interface Engine {
-  setDiffMode: (diffMode: DiffMode) => void
+  setDivineMode: (divineMode: DivineMode) => void
   getLine: (t: number) => Uint8Array
 }

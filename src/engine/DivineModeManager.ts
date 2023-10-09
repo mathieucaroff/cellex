@@ -1,7 +1,7 @@
-// hoverManager helps with implementing the diffing
+// DivineModeManager handles the mouse events to keep the state up to date
 import { Context } from "../state/Context"
 
-export interface DiffModeManagerProp {
+export interface DivineModeManagerProp {
   context: Context
 }
 
@@ -16,22 +16,22 @@ export let getPosition = (ev: MouseEvent, element: HTMLElement) => {
 }
 
 /**
- * diffModeManager updates the diff mode state from mouse events.
+ * divineModeManager updates the divine mode state from mouse events.
  *
  * @param element the element for which we want to listen for hovering and click events
  * @param handler the function which receives the event
  * @returns
  */
-export let createDiffModeManager = (prop: DiffModeManagerProp) => {
+export let createDivineModeManager = (prop: DivineModeManagerProp) => {
   let { context } = prop
 
-  // When diff mode is disabled, there's nothing to do.
-  // When diff mode is enabled, we want to know whenever the mouse is over
+  // When divine mode is disabled, there's nothing to do.
+  // When divine mode is enabled, we want to know whenever the mouse is over
   // either canvas and compute the corresponding (posT, posS) location.
   // In case of a mouse click, we want to lock the highlighted cell.
   // Clicking again anywhere but on the same line as the highlighted cell
   // should remove the lock.
-  // Thus, there are three diff modes:
+  // Thus, there are three divine modes:
   // - "off", disabled
   // - "hovering", a single cell is selected
   // - "selection" the cells of a line can be selected (locking)
@@ -53,8 +53,8 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
       getST: GetST,
     ) =>
     (ev: MouseEvent) => {
-      let { diffMode } = context.getState()
-      if (diffMode.status === "off") {
+      let { divineMode } = context.getState()
+      if (divineMode.status === "off") {
         return
       }
 
@@ -62,13 +62,13 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
       var x = ev.clientX - rect.left
       var y = ev.clientY - rect.top
       let { s, t } = getST(x, y)
-      if (diffMode.status === "selection") {
+      if (divineMode.status === "selection") {
         // mode: locking
         if (eventKind !== "click") {
           return
         }
         let tIndex = 0
-        diffMode.changes.some((changes) => {
+        divineMode.changes.some((changes) => {
           if (changes.t < t) {
             tIndex += 1
             return
@@ -76,11 +76,11 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
           return true
         })
 
-        let lineChanges = diffMode.changes[tIndex]
+        let lineChanges = divineMode.changes[tIndex]
 
         if (!lineChanges || lineChanges.t !== t) {
           // Simplest case: the line doesn't exist in the set of modified lines
-          diffMode.changes.splice(tIndex, 0, { t, changes: [{ s, amount: 1 }] })
+          divineMode.changes.splice(tIndex, 0, { t, changes: [{ s, amount: 1 }] })
         } else {
           let sIndex = 0
           lineChanges.changes.some((changes) => {
@@ -110,18 +110,18 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
                 // Fourth case: there are more cells in the line
                 // -- nothing to do
               } else {
-                // That cell is the last of the line => remove the **line** from the diff-mode changes
-                diffMode.changes.splice(tIndex, 1)
-                if (diffMode.changes.length > 0) {
-                  // Fifth case: there are other lines in the diff-mode changes
+                // That cell is the last of the line => remove the **line** from the divine mode changes
+                divineMode.changes.splice(tIndex, 1)
+                if (divineMode.changes.length > 0) {
+                  // Fifth case: there are other lines in the divine mode changes
                   // -- nothing to do
                 } else {
-                  // Sixth and final case: there are no more lines in the diff-mode changes
+                  // Sixth and final case: there are no more lines in the divine mode changes
                   // go back to the hovering mode
-                  diffMode = {
+                  divineMode = {
                     status: "hovering",
                     active: true,
-                    divine: diffMode.divine,
+                    perturbation: divineMode.perturbation,
                     changes: [{ t, changes: [{ s, amount: 1 }] }],
                   }
                 }
@@ -129,30 +129,30 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
             }
           }
         }
-        // ensure the reference is changed so that updates which rely on diffMode
+        // ensure the reference is changed so that updates which rely on divineMode
         // are performed
-        diffMode = { ...diffMode }
+        divineMode = { ...divineMode }
       } else {
         if (eventKind === "leave") {
-          diffMode = { status: "waiting", active: false, divine: diffMode.divine }
+          divineMode = { status: "waiting", active: false, perturbation: divineMode.perturbation }
         } else if (eventKind === "move") {
-          diffMode = {
+          divineMode = {
             status: "hovering",
             active: true,
-            divine: diffMode.divine,
+            perturbation: divineMode.perturbation,
             changes: [{ t, changes: [{ s, amount: 1 }] }],
           }
         } else if (eventKind === "click") {
-          diffMode = {
+          divineMode = {
             status: "selection",
             active: true,
-            divine: diffMode.divine,
+            perturbation: divineMode.perturbation,
             changes: [{ t, changes: [{ s, amount: 1 }] }],
           }
         }
       }
       context.updateState((state) => {
-        state.diffMode = diffMode
+        state.divineMode = divineMode
       })
     }
   return {
@@ -161,7 +161,7 @@ export let createDiffModeManager = (prop: DiffModeManagerProp) => {
      * - a function which maps the coordinates inside the Html Element to the
      *   coordinates of pixels in the image,
      * call the hover, leave and click handlers provided at the initialization
-     * of the diff mode manager.
+     * of the divine mode manager.
      */
     addCanvas: (element: HTMLElement, getST: GetST) => {
       let hoverHandler = handler("move", element, getST)

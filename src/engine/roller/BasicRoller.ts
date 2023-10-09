@@ -48,7 +48,7 @@ export let createBasicRoller = (
       }
       while (currentT < t) {
         // save lineA if currentT is a multiple of SNAPSHOT_PERIOD
-        // also save lineD if the diffMode status wants it
+        // also save lineD if the divineMode status wants it
         if (currentT % SNAPSHOT_PERIOD === 0) {
           let arrayIndex = Math.floor(currentT / SNAPSHOT_PERIOD)
           snapshotArray[arrayIndex] = [new Uint8Array(lineA), new Uint8Array(lineB)]

@@ -8,7 +8,7 @@ import { createDragManager } from "./control/DragManager"
 import { createInfo } from "./control/Info"
 import { keyboardBinding } from "./control/KeyboardBinding"
 import { createDisplay } from "./display/Display"
-import { createDiffModeManager } from "./engine/DiffModeManager"
+import { createDivineModeManager } from "./engine/DivineModeManager"
 import { createAutomatonEngine } from "./engine/Engine"
 import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/curatedAutomata"
 import { Engine } from "./engineType"
@@ -100,9 +100,9 @@ function main() {
     })
 
   context
-    .use(({ diffMode }) => ({ diffMode }))
-    .for(({ diffMode }) => {
-      engine.setDiffMode(diffMode)
+    .use(({ divineMode }) => ({ divineMode }))
+    .for(({ divineMode }) => {
+      engine.setDivineMode(divineMode)
       drawDisplay(true)
     })
 
@@ -177,17 +177,17 @@ function main() {
   })
   // \/ display
 
-  // /\ diff mode, "divine intervention"
-  let diffModeManager = createDiffModeManager({ context })
+  // /\ divine mode, "divine intervention"
+  let divineModeManager = createDivineModeManager({ context })
 
-  diffModeManager.addCanvas(canvas, (x, y) => {
+  divineModeManager.addCanvas(canvas, (x, y) => {
     let s = Math.floor(
       x / state.zoom + (state.topology.width - canvas.width / state.zoom) / 2 + state.posS,
     )
     let t = Math.floor(y / state.zoom + state.posT)
     return { s, t }
   })
-  // \/ diff mode
+  // \/ divine mode
 
   // /\ presentation mode
   let presentationTickTimeoutId: ReturnType<typeof setTimeout>

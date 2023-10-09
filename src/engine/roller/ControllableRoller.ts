@@ -1,4 +1,4 @@
-import { ChangeSet } from "../../diffType"
+import { ChangeSet } from "../../divineType"
 import { ControllableRoller, Stepper } from "../../engineType"
 import { TopologyFinite } from "../../topologyType"
 import { getTopBorderValue } from "../borderGetter"

@@ -1,4 +1,4 @@
-import { DiffMode } from "../diffType"
+import { DivineMode } from "../divineType"
 import { BasicRoller, ControllableRoller, Engine } from "../engineType"
 import { clone } from "../util/clone"
 import { createRandomMapper } from "./misc/RandomMapper"
@@ -22,23 +22,23 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
   let controllableRoller: ControllableRoller
   let roller = basicRoller
 
-  let diffMode: DiffMode = {
+  let divineMode: DivineMode = {
     active: false,
     status: "off",
   }
 
   return {
-    setDiffMode(newDiffMode: DiffMode) {
-      if (diffMode.active) {
-        if (!newDiffMode.active) {
+    setDivineMode(newDivineMode: DivineMode) {
+      if (divineMode.active) {
+        if (!newDivineMode.active) {
           // becoming inactive -> switch to basic roller
           roller = basicRoller
         } else {
           // staying active -> update changeSet
-          controllableRoller.setChangeSet(newDiffMode.changes)
+          controllableRoller.setChangeSet(newDivineMode.changes)
         }
       } else {
-        if (!newDiffMode.active) {
+        if (!newDivineMode.active) {
           // staying inactive -> nothing to do
         } else {
           // becoming active -> switch to controllable roller
@@ -47,7 +47,7 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
         }
       }
 
-      diffMode = clone(newDiffMode)
+      divineMode = clone(newDivineMode)
     },
     getLine(t) {
       return roller.getLine(t)

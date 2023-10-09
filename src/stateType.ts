@@ -1,5 +1,5 @@
 import { TableCodeAutomaton, TableRuleAutomaton } from "./automatonType"
-import { DiffMode } from "./diffType"
+import { DivineMode } from "./divineType"
 import { TopologyFiniteBorder } from "./topologyType"
 import { Color } from "./type"
 
@@ -24,7 +24,7 @@ export interface State extends StatePosition {
   immersiveMode: "immersive" | "off"
   presentationMode: "present" | "off"
   colorMap: Color[]
-  diffMode: DiffMode // todo: rename DiffMode into something which encompasses the divine case and the differential case
+  divineMode: DivineMode // todo: rename DivineMode into something which encompasses the divine case and the differential case
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
   seed: string
 

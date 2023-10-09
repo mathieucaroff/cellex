@@ -213,6 +213,21 @@ export let createAct = (context: Context, info: Info) => {
       })
     },
 
+    /** Divine mode */
+    setDivineModeOff: action((state) => {
+      state.divineMode = {
+        status: "off",
+        active: false,
+      }
+    }),
+    setDivineModeWaiting: action((state) => {
+      state.divineMode = {
+        status: "waiting",
+        active: false,
+        perturbation: state.divineMode["perturbation"] ?? false,
+      }
+    }),
+
     /** Focus */
     focus: (id: string) => () => {
       document.querySelector<HTMLElement>(id)?.focus()

@@ -1,4 +1,4 @@
-import { ChangeSet } from "../../diffType"
+import { ChangeSet } from "../../divineType"
 import { deepEqual } from "../../util/deepEqual"
 
 /** earliestDifference returns the first time at which there is a difference

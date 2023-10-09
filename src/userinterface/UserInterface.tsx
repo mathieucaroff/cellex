@@ -1,5 +1,5 @@
 import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Popover, Space } from "antd"
+import { Button, Collapse, Popover, Space, Switch } from "antd"
 import { useContext } from "react"
 
 import { presentNomenclature } from "../nomenclature/nomenclature"
@@ -10,6 +10,7 @@ import { RuleInput } from "./RuleInput"
 import { OxButton } from "./components/OxButton/OxButton"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
 import { OxSelect } from "./components/OxSelect/OxSelect"
+import { OxSwitch } from "./components/OxSwittch/OxSwitch"
 import { AutomatonEditor } from "./editor/AutomatonEditor"
 import { GalleryButton } from "./gallery/GalleryButton"
 import { DivGraft } from "./graft"
@@ -28,9 +29,9 @@ interface UserInterfaceProp {
 export let UserInterface = (prop: UserInterfaceProp) => {
   let { shortcutList, displayDiv } = prop
   let { act } = useContext(ReactContext)
-  let { automaton, play, immersiveMode } = useStateSelection(
-    ({ automaton, diffMode, immersiveMode, play }) => ({
-      diffMode,
+  let { automaton, divineMode, play, immersiveMode } = useStateSelection(
+    ({ automaton, divineMode, immersiveMode, play }) => ({
+      divineMode,
       immersiveMode,
       play,
       automaton,
@@ -97,14 +98,22 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                     Settings
                   </Button>
                 </Popover>
-                {/* <Button
-                  type={diffMode.status !== "off" ? "primary" : "default"}
-                  title={
-                    "Toggle the Differential Mode " + (diffMode.status !== "off" ? "off" : "on")
+                <Popover
+                  content={
+                    divineMode.status === "off" ? null : <OxSwitch path="divineMode.perturbation" />
                   }
-                  icon={<DiffOutlined />}
-                  onClick={() => act.nextDifferentialMode()}
-                /> */}
+                >
+                  <Switch
+                    checked={divineMode.status !== "off"}
+                    onChange={(checked) => {
+                      if (checked) {
+                        act.setDivineModeWaiting()
+                      } else {
+                        act.setDivineModeOff()
+                      }
+                    }}
+                  />
+                </Popover>
               </div>
             </Space>
             <div style={{ float: "right" }}>
