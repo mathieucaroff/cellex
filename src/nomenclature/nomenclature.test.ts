@@ -12,6 +12,7 @@ function elementaryRule(ruleNumber: number): TableRuleAutomaton {
   return {
     kind: "tableRule",
     dimension: 1,
+    reversible: false,
     neighborhoodSize: 3,
     stateCount: 2,
     transitionTable: Array.from({ length: 8 }, (_, k) => 1 & (ruleNumber >> (7 - k))),
@@ -22,6 +23,7 @@ function rule0(neighborhoodSize: number, stateCount: number): TableRuleAutomaton
   return {
     kind: "tableRule",
     dimension: 1,
+    reversible: false,
     neighborhoodSize,
     stateCount,
     transitionTable: Array.from({ length: stateCount ** neighborhoodSize }, (_, k) => 0),

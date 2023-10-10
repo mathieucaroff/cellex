@@ -108,10 +108,9 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         }}
         onPressEnter={() => {
           let p: any
-          let pv: any
           try {
             p = parse(localValue)
-            pv = present(p)
+            present(p)
           } catch (e) {
             console.error(`Error parsing value ${localValue}: [[${e}]]`)
             return
