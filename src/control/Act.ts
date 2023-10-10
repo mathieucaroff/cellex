@@ -231,7 +231,7 @@ export let createAct = (context: Context, info: Info) => {
       state.divineMode = {
         status: "off",
         active: false,
-        propagation: true,
+        propagation: state.divineMode.propagation,
       }
     }),
     setDivineModeWaiting: action((state) => {

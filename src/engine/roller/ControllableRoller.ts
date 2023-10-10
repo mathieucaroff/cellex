@@ -59,21 +59,31 @@ export let createControllableRoller = (
   }
 
   // control applies the changes to the given line
-  const control = () => {
+  const applyControl = (targetLine: Uint8Array, visualMode = false) => {
+    let hasBeenChanged = false
+    if (visualMode) {
+      changeIndex -= 1
+    }
     // if the changeIndex exceeds the changeSet length then there's
     // nothing to do
     if (changeIndex < changeSet.length) {
       // if the current time matches the changeSet time, apply the
       // changes
       if (changeSet[changeIndex].t === currentT) {
+        hasBeenChanged = true
         let change = changeSet[changeIndex]
         for (let intervention of change.changes) {
-          lineA[intervention.s] =
-            (lineA[intervention.s] + intervention.amount) % stepper.getStateCount()
+          if (visualMode) {
+            targetLine[intervention.s] = 6
+          } else {
+            targetLine[intervention.s] =
+              (targetLine[intervention.s] + intervention.amount) % stepper.getStateCount()
+          }
         }
         changeIndex += 1
       }
     }
+    return hasBeenChanged
   }
 
   reset(0)
@@ -92,9 +102,9 @@ export let createControllableRoller = (
         }
       }
 
-      control()
-
       while (currentT < t) {
+        applyControl(lineA)
+
         // save lineA if currentT is a multiple of SNAPSHOT_PERIOD
         if (currentT % SNAPSHOT_PERIOD === 0) {
           let arrayIndex = Math.floor(currentT / SNAPSHOT_PERIOD)
@@ -109,8 +119,12 @@ export let createControllableRoller = (
         // rotate the three lines by name
         ;[lineB, lineC, lineA] = [lineA, lineB, lineC]
         // [now lineA is the current line again]
+      }
 
-        control()
+      if (applyControl(lineA)) {
+        let copy = Uint8Array.from(lineA)
+        applyControl(copy, true)
+        return copy
       }
 
       return lineA

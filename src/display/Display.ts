@@ -1,11 +1,13 @@
 import { colorToHexColor, hexColorToColor } from "../engine/misc/color"
-import { Engine } from "../engine/roller/BasicRoller"
+import { Engine } from "../engineType"
 import { Color } from "../type"
 import { mod } from "../util/mod"
 import { fillImage } from "./fill"
 
-export let presentColorMap = (colorMap) => colorMap.map((c) => colorToHexColor(c)).join(";")
-export let parseColorMap = (colorString) => colorString.split(";").map((h) => hexColorToColor(h))
+export let presentColorMap = (colorMap: Color[]) =>
+  colorMap.map((c) => colorToHexColor(c)).join(";")
+export let parseColorMap = (colorString: string) =>
+  colorString.split(";").map((h) => hexColorToColor(h))
 
 export let createDisplay = (canvas: HTMLCanvasElement) => {
   let ctx = canvas.getContext("2d")!
