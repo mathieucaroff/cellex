@@ -29,7 +29,7 @@ export let createControllableRoller = (
   let changeIndex = 0
 
   // updateChangeIndex updates the changeIndex so that the current time matches change corresponding to the change index or that the corresponding change is the first after the current time. Beware, if the current time is after the last change, then the changeIndex will be set to the change set length, thus pointing outside of the set.
-  let updateChangeIndex = () => {
+  const updateChangeIndex = () => {
     // Handle the case where a change has been removed from the set.
     if (changeSet.length <= changeIndex) {
       changeIndex = changeSet.length
@@ -46,7 +46,7 @@ export let createControllableRoller = (
 
   // reset sets the engine current time and current line to the closest
   // snapshot available taken before the target time.
-  let reset = (targetTime: number) => {
+  const reset = (targetTime: number) => {
     if (currentT < targetTime) {
       // we cannot reset the time to a future time, only a past time
       // (we keep only the oldest of the two times)
@@ -56,6 +56,24 @@ export let createControllableRoller = (
     currentT = SNAPSHOT_PERIOD * arrayIndex
     ;[lineA, lineB] = snapshotArray[arrayIndex]
     updateChangeIndex()
+  }
+
+  // control applies the changes to the given line
+  const control = () => {
+    // if the changeIndex exceeds the changeSet length then there's
+    // nothing to do
+    if (changeIndex < changeSet.length) {
+      // if the current time matches the changeSet time, apply the
+      // changes
+      if (changeSet[changeIndex].t === currentT) {
+        let change = changeSet[changeIndex]
+        for (let intervention of change.changes) {
+          lineA[intervention.s] =
+            (lineA[intervention.s] + intervention.amount) % stepper.getStateCount()
+        }
+        changeIndex += 1
+      }
+    }
   }
 
   reset(0)
@@ -73,6 +91,9 @@ export let createControllableRoller = (
           reset(t)
         }
       }
+
+      control()
+
       while (currentT < t) {
         // save lineA if currentT is a multiple of SNAPSHOT_PERIOD
         if (currentT % SNAPSHOT_PERIOD === 0) {
@@ -89,22 +110,7 @@ export let createControllableRoller = (
         ;[lineB, lineC, lineA] = [lineA, lineB, lineC]
         // [now lineA is the current line again]
 
-        // /\ CODE FOR CONTROLLABILITY HANDLING
-        // if the changeIndex exceeds the changeSet length then there's
-        // nothing to do
-        if (changeIndex < changeSet.length) {
-          // if the current time matches the changeSet time, apply the
-          // changes
-          if (changeSet[changeIndex].t === currentT) {
-            let change = changeSet[changeIndex]
-            for (let intervention of change.changes) {
-              lineA[intervention.s] =
-                (lineA[intervention.s] + intervention.amount) % stepper.getStateCount()
-            }
-            changeIndex += 1
-          }
-        }
-        // \/ END OF CODE FOR CONTROLLABILITY HANDLING
+        control()
       }
 
       return lineA
