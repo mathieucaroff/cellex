@@ -188,11 +188,12 @@ function main() {
   let divineModeManager = createDivineModeManager({ context })
 
   divineModeManager.addCanvas(canvas, (x, y) => {
-    // I have no idea why "-0.2" is required to compute `s`, but I couldn't
-    // get the correct position without it.
-    let s = Math.floor(
-      x / state.zoom + (state.topology.width - canvas.width / state.zoom) / 2 + state.posS - 0.2,
-    )
+    let rawS =
+      x / state.zoom +
+      state.posS +
+      state.topology.width / 2 -
+      Math.ceil(canvas.width / state.zoom / 2)
+    let s = Math.floor(rawS)
     let t = Math.floor(y / state.zoom + state.posT)
     return { s, t }
   })
