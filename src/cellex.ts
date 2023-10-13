@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
+import { BsDiscord } from "react-icons/bs"
 
 import * as packageInfo from "../package.json"
 import { App } from "./App"
@@ -30,6 +31,7 @@ function main() {
   let version = `${packageInfo.version}-${__COMMIT_HASH__}`
   let cornerDiv = h("div", { innerHTML: githubCornerHTML(packageInfo.repository, version) })
   document.body.appendChild(cornerDiv)
+  // <a href="https://discord.gg/gF3C79GKPY" title="Join the Cellex Discord server"><BsDiscord /></a>
   // \/ canvas
 
   let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
