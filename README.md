@@ -3,6 +3,10 @@
 A unidimensional cellular automata explorer. It supports up to 16 colors, and
 a neigborhood range of up to 11 cells.
 
+### Discord community
+
+Join the [Cellex Discord community](https://discord.gg/gF3C79GKPY) to talk about unidimensional cellular automata and cellex.
+
 ### Cellex main view
 
 [![Cellex screencap](doc/img/cellex-screencap.png)](https://mathieucaroff.com/cellex)
