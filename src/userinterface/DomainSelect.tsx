@@ -2,7 +2,10 @@ import { Select } from "antd"
 import { DefaultOptionType } from "antd/lib/select"
 import { useContext } from "react"
 
-import { parseNomenclature } from "../nomenclature/nomenclature"
+import { Domain } from "../automatonType"
+import { randomRuleFromDomain } from "../engine/curatedAutomata"
+import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
+import { parseTopBorder } from "../patternlang/parser"
 import { ReactContext } from "../state/ReactContext"
 
 export let DomainSelect = () => {
@@ -19,6 +22,7 @@ export let DomainSelect = () => {
       onChange={(value) => {
         context.updateState((state) => {
           state.automaton = parseNomenclature(value)
+          state.topology.genesis = parseTopBorder("1(0)")
         })
       }}
     />
@@ -26,7 +30,10 @@ export let DomainSelect = () => {
 }
 
 function generateSupportedDomainArray() {
-  const labelValue = (s: string) => ({ label: s, value: `${s}, rule 1` })
+  const labelValue = (s: string, d: Domain) => ({
+    label: s,
+    value: presentNomenclature(randomRuleFromDomain(d)).descriptor,
+  })
 
   const domainArray: DefaultOptionType[] = []
 
@@ -51,7 +58,19 @@ function generateSupportedDomainArray() {
       ) {
         return
       }
-      subArray.push(labelValue(`neighborhood size ${ns}, ${c} colors`))
+
+      let isReversible = 2 ** Math.floor(Math.log2(c)) === c
+
+      Array.from({ length: isReversible ? 2 : 1 }, (_, r) => {
+        subArray.push(
+          labelValue(`neighborhood size ${ns}, ${c} colors${r ? " [reversible]" : ""}`, {
+            dimension: 1,
+            neighborhoodSize: ns,
+            stateCount: c,
+            reversible: !!r,
+          }),
+        )
+      })
     })
     let suffix = ns > 3 ? ` of neighborhood size ${ns}` : ""
     domainArray.push({ label: `Domains${suffix}`, options: subArray })

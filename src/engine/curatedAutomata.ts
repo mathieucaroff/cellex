@@ -266,17 +266,6 @@ export const ruleSet = generateRuleSet()
 ;(globalThis as any).ruleSet = ruleSet
 ;(globalThis as any).interestingElementaryRuleArray = interestingElementaryRuleArray
 
-function parseCuratedCode(text) {
-  let [code, ...infoArray] = text.split(" ")
-  let info = infoArray.join(" ")
-  let label = info.length > 0 ? `${code} (${info})` : code
-  return {
-    value: code,
-    label,
-    shorterLabel: code,
-  }
-}
-
 export const curatedNs3AutomatonArray = [
   "Cascade 3c,r4_880__842_232_460",
   "Right-triangles 3c,r7_281__352_072_754",
@@ -353,3 +342,15 @@ export const extraCurated3ColorCodeArray = [
     shorterLabel: code,
   }
 })
+
+export const curatedNeighborhoodSizeThreeCodeArray = [
+  "ns9,c75 between chaos and order",
+  "ns9,c87 weird 1-page convergence",
+  "ns9,c134 shows worms",
+  "ns9,c139 at the brim of chaos",
+  "ns9,c273 hemidiagonal worms",
+  "ns9,c279 somewhat chaotic but with gliders",
+  "ns9,c286 has neat columns",
+  "ns9,c292 computes sierpinski triangles",
+  //ns9,c500 ...
+]
