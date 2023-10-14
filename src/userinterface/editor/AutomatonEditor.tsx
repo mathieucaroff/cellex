@@ -1,7 +1,7 @@
 import { Button, Space } from "antd"
 import { useContext, useLayoutEffect, useRef } from "react"
 
-import { TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
+import { TableAutomaton, TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
 import {
   baseComplement,
   baseDigitOrderReverse,
@@ -9,7 +9,7 @@ import {
   computeTransitionNumber,
   leftRightSymmetric,
 } from "../../engine/curatedAutomata"
-import { presentNomenclature } from "../../nomenclature/nomenclature"
+import { presentAutomaton } from "../../nomenclature/nomenclature"
 import { ReactContext } from "../../state/ReactContext"
 import { deepEqual } from "../../util/deepEqual"
 import { mod } from "../../util/mod"
@@ -115,7 +115,7 @@ export let AutomatonEditor = () => {
     })
   }
 
-  let complement: TableRuleAutomaton | TableCodeAutomaton
+  let complement: TableAutomaton
   let symmetric: TableRuleAutomaton | undefined
   let both: TableRuleAutomaton | undefined
   let baseXComplement: TableRuleAutomaton | undefined
@@ -188,7 +188,7 @@ export let AutomatonEditor = () => {
             })
           }}
         >
-          Switch to color complement: {presentNomenclature(complement).descriptor}
+          Switch to color complement: {presentAutomaton(complement).descriptor}
         </Button>
         {symmetric && (
           <Button
@@ -199,7 +199,7 @@ export let AutomatonEditor = () => {
               })
             }}
           >
-            Switch to left-right symmetric: {presentNomenclature(symmetric).descriptor}
+            Switch to left-right symmetric: {presentAutomaton(symmetric).descriptor}
           </Button>
         )}
         {both && (
@@ -211,7 +211,7 @@ export let AutomatonEditor = () => {
               })
             }}
           >
-            Switch both: {presentNomenclature(both).descriptor}
+            Switch both: {presentAutomaton(both).descriptor}
           </Button>
         )}
         {baseXComplement && (
@@ -223,7 +223,7 @@ export let AutomatonEditor = () => {
               })
             }}
           >
-            Toggle twinkliness: {presentNomenclature(baseXComplement).descriptor}
+            Toggle twinkliness: {presentAutomaton(baseXComplement).descriptor}
           </Button>
         )}
         {baseXReverse && (
@@ -236,7 +236,7 @@ export let AutomatonEditor = () => {
             }}
           >
             Switch to base ({automaton.stateCount}) digit order reverse:{" "}
-            {presentNomenclature(baseXReverse).descriptor}
+            {presentAutomaton(baseXReverse).descriptor}
           </Button>
         )}
       </div>

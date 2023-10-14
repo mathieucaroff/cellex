@@ -15,7 +15,7 @@ import { computeTransitionNumber, interestingElementaryRuleArray } from "./engin
 import { Engine } from "./engineType"
 import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
-import { parseNomenclature } from "./nomenclature/nomenclature"
+import { parseAutomaton } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
 import { initialState } from "./state/state"
@@ -161,12 +161,6 @@ function main() {
   context
     .use(({ immersiveMode }) => immersiveMode)
     .for((immersiveMode) => {
-      setTimeout(() => {
-        if (immersiveMode === "off") {
-          updateCanvasSizeAndTopologyWidth("off")
-        }
-        handleResize()
-      })
       if (immersiveMode === "immersive") {
         document.documentElement.classList.add("immersive")
         document.documentElement.requestFullscreen().then(() => {
@@ -178,6 +172,12 @@ function main() {
           displayDiv.focus()
         })
       }
+      setTimeout(() => {
+        if (immersiveMode === "off") {
+          updateCanvasSizeAndTopologyWidth("off")
+        }
+        handleResize()
+      })
     })
 
   // main canvas panning
@@ -252,7 +252,7 @@ function main() {
         newRuleNumber = randomChoice(interestingElementaryRuleArray)
       }
       context.updateState(() => {
-        state.automaton = parseNomenclature(newRuleNumber.toString())
+        state.automaton = parseAutomaton(newRuleNumber.toString())
         state.posT = 0
 
         let impulseOkRuleArray = [18, 22, 26, 30, 45, 60, 62, 73, 90, 105, 110, 126, 146, 150, 154]

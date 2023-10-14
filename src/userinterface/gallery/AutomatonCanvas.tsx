@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from "react"
 
 import { fillImage } from "../../display/fill"
 import { createAutomatonEngine } from "../../engine/Engine"
-import { parseNomenclature } from "../../nomenclature/nomenclature"
+import { parseAutomaton } from "../../nomenclature/nomenclature"
 import { parseTopBorder } from "../../patternlang/parser"
 import { ReactContext } from "../../state/ReactContext"
 import { TopologyFinite } from "../../topologyType"
@@ -31,7 +31,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
 
   let canvasRef = useRef<HTMLCanvasElement>()
 
-  let rule = parseNomenclature(prop.descriptor)
+  let rule = parseAutomaton(prop.descriptor)
   let genesis = parseTopBorder(prop.genesis)
   let topology: TopologyFinite = {
     kind: "loop",

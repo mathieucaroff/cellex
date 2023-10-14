@@ -1,4 +1,4 @@
-import { Domain, TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
+import { Domain, TableAutomaton, TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
 import { limitLength } from "../util/limitLength"
 import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
@@ -76,11 +76,10 @@ export let randomDomain = (): Domain => {
   return { dimension: 1, reversible: !!r, neighborhoodSize, stateCount }
 }
 
-export let randomTransitionTable = (domain: Omit<Domain, "dimension">) => {
-  let { neighborhoodSize, stateCount } = domain
+export let randomTransitionTable = (stateCount: number, length: number) => {
   let count = BigInt(stateCount)
   let transition = 0n
-  let transitionTable = Array.from({ length: stateCount ** neighborhoodSize }, () => {
+  let transitionTable = Array.from({ length }, () => {
     let random = Math.floor(stateCount * Math.random())
     transition *= count
     transition += BigInt(random)
@@ -93,10 +92,6 @@ export let randomTransitionTable = (domain: Omit<Domain, "dimension">) => {
   }
 }
 
-export let randomRule = () => {
-  return randomRuleFromDomain(randomDomain())
-}
-
 export let randomRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
   let { dimension: _, ...d } = domain
   return {
@@ -105,27 +100,50 @@ export let randomRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
     neighborhoodSize: d.neighborhoodSize,
     stateCount: d.stateCount,
     reversible: d.reversible,
-    transitionTable: randomTransitionTable(d).transitionTable,
+    transitionTable: randomTransitionTable(d.stateCount, d.stateCount ** d.neighborhoodSize)
+      .transitionTable,
   }
 }
 
-export let randomGoodRule = (): TableRuleAutomaton => {
-  if (Math.random() < 0.6) {
-    return elementaryRule(randomChoice(interestingElementaryRuleArray))
+export let randomCodeFromDomain = (domain: Domain): TableCodeAutomaton => {
+  let { dimension: _, ...d } = domain
+  return {
+    kind: "tableCode",
+    dimension: 1,
+    neighborhoodSize: d.neighborhoodSize,
+    stateCount: d.stateCount,
+    reversible: d.reversible,
+    transitionTable: randomTransitionTable(
+      d.stateCount,
+      (d.stateCount - 1) * d.neighborhoodSize + 1,
+    ).transitionTable,
   }
-  return randomRule()
 }
 
-export let randomGoodAutomatonFromDomain = (domain: Domain): TableRuleAutomaton => {
+export let randomGoodRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
   if (
     domain.neighborhoodSize === 3 &&
     domain.stateCount === 2 &&
     !domain.reversible &&
-    Math.random() < 0.6
+    Math.random() < 0.4
   ) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
   }
   return randomRuleFromDomain(domain)
+}
+
+export let randomGoodRule = (): TableRuleAutomaton => {
+  if (Math.random() < 0.3) {
+    return elementaryRule(randomChoice(interestingElementaryRuleArray))
+  }
+  return randomRuleFromDomain(randomDomain())
+}
+
+export function randomGoodAutomaton(): TableAutomaton {
+  if (Math.random() < 0.5) {
+    return randomCodeFromDomain(randomDomain())
+  }
+  return randomGoodRule()
 }
 
 export function computeAnyTransitionTable(
@@ -164,9 +182,7 @@ export function computeCodeTransitionTable(
   )
 }
 
-export let computeTransitionNumber = (
-  automaton: TableRuleAutomaton | TableCodeAutomaton,
-): BigInt => {
+export let computeTransitionNumber = (automaton: TableAutomaton): BigInt => {
   let value = 0n // bigint
   let stateCount = BigInt(automaton.stateCount)
   automaton.transitionTable.forEach((v) => {
@@ -191,9 +207,7 @@ export let leftRightSymmetric = (rule: TableRuleAutomaton): TableRuleAutomaton =
 }
 
 /** color complement of the given rule or code. */
-export let colorComplement = <T extends TableRuleAutomaton | TableCodeAutomaton>(
-  automaton: T,
-): T => {
+export let colorComplement = <T extends TableAutomaton>(automaton: T): T => {
   return {
     ...automaton,
     transitionTable: automaton.transitionTable.map((c) => automaton.stateCount - 1 - c).reverse(),

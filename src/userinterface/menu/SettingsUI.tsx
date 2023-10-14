@@ -2,7 +2,7 @@ import { Button, ColorPicker, Divider, Select, Space, Switch } from "antd"
 import { useContext } from "react"
 
 import { parseColorMap, presentColorMap } from "../../display/Display"
-import { presentNomenclature } from "../../nomenclature/nomenclature"
+import { presentAutomaton } from "../../nomenclature/nomenclature"
 import { randomPalette } from "../../palette/randomPalette"
 import { parseSideBorder } from "../../patternlang/parser"
 import { presentSideBorder, presentTopBorder } from "../../patternlang/presenter"
@@ -212,7 +212,7 @@ export let SettingsUI = () => {
                 <Button
                   onClick={() => {
                     const state = context.getState()
-                    const automatonName = presentNomenclature(state.automaton).descriptor
+                    const automatonName = presentAutomaton(state.automaton).descriptor
                     const genesis = presentTopBorder(state.topology.genesis)
                     let url = new URL(location.href)
                     url.searchParams.set("genesis", genesis)

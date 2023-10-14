@@ -1,6 +1,6 @@
 import { parseColorMap } from "../display/Display"
 import { randomGoodRule } from "../engine/curatedAutomata"
-import { parseNomenclature } from "../nomenclature/nomenclature"
+import { parseAutomaton } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../stateType"
 
@@ -35,8 +35,8 @@ export let initialState = (): State => {
     return { width, height }
   }
 
-  let automaton = getOr("automaton", parseNomenclature, () =>
-    getOr("rule", parseNomenclature, randomGoodRule),
+  let automaton = getOr("automaton", parseAutomaton, () =>
+    getOr("rule", parseAutomaton, randomGoodRule),
   )
   let isElementary = automaton.neighborhoodSize === 3 && automaton.stateCount === 2
   const presentationMode = new URLSearchParams(location.search).has("rule") ? "off" : "present"

@@ -1,6 +1,6 @@
 import { TableRuleAutomaton } from "../automatonType"
 import { colorComplement, leftRightSymmetric } from "../engine/curatedAutomata"
-import { presentNomenclature } from "../nomenclature/nomenclature"
+import { presentAutomaton } from "../nomenclature/nomenclature"
 import { useStateSelection } from "./hooks"
 
 export const informationSet: Record<string, string> = {
@@ -38,7 +38,7 @@ export let getRuleInformation = (rule: TableRuleAutomaton): Info | undefined => 
   ]
 
   for (let k = 0; k < alternativeArray.length; k++) {
-    let name = presentNomenclature(alternativeArray[k]).descriptor
+    let name = presentAutomaton(alternativeArray[k]).descriptor
     let information = informationSet[name]
     if (information) {
       return {
@@ -56,7 +56,7 @@ export let RuleInfo = () => {
   if (rule.kind !== "tableRule") {
     return <span></span>
   }
-  let name = presentNomenclature(rule).longDescriptor
+  let name = presentAutomaton(rule).longDescriptor
   let info = getRuleInformation(rule)
   if (!info) {
     return <span></span>

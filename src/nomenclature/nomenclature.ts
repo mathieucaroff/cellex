@@ -1,6 +1,6 @@
 import { default as nearley } from "nearley"
 
-import { TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
+import { Domain, TableAutomaton } from "../automatonType"
 import {
   computeCodeTransitionTable,
   computeRuleTransitionTable,
@@ -26,7 +26,7 @@ type NomenclatureOutput =
       }
     }
 
-export function parseNomenclature(descriptor: string): TableRuleAutomaton | TableCodeAutomaton {
+export function parseAutomaton(descriptor: string): TableAutomaton {
   let parser = new nearley.Parser(nomenclatureGrammar)
 
   try {
@@ -42,7 +42,7 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
 
   let parserOutput: NomenclatureOutput = parser.results[0]
   let transitionNumber: bigint
-  let result: TableRuleAutomaton | TableCodeAutomaton
+  let result: TableAutomaton
 
   // In that case, we want to produce a rule with a neigborhood size of three
   // and with sufficiently many colors that the number makes sense in that rule
@@ -138,22 +138,45 @@ export function parseNomenclature(descriptor: string): TableRuleAutomaton | Tabl
   return result
 }
 
-export function presentNomenclature(automaton: TableRuleAutomaton | TableCodeAutomaton) {
-  let tn = thousandSplit(String(computeTransitionNumber(automaton)))
+function presentDomainBeginning(domain: Domain) {
   let regular: string[] = []
   let long: string[] = []
-  if (automaton.dimension !== 1) {
-    regular.push(`${automaton.dimension}d`)
-    long.push(`${automaton.dimension} dimensions`)
+  if (domain.dimension !== 1) {
+    regular.push(`${domain.dimension}d`)
+    long.push(`${domain.dimension} dimensions`)
   }
-  if (automaton.neighborhoodSize !== 3) {
-    regular.push(`ns${automaton.neighborhoodSize}`)
-    long.push(`neighborhood size ${automaton.neighborhoodSize}`)
+  if (domain.neighborhoodSize !== 3) {
+    regular.push(`ns${domain.neighborhoodSize}`)
+    long.push(`neighborhood size ${domain.neighborhoodSize}`)
   }
-  if (automaton.stateCount !== 2) {
-    regular.push(`${automaton.stateCount}c`)
-    long.push(`${automaton.stateCount} colors`)
+  if (domain.stateCount !== 2) {
+    regular.push(`${domain.stateCount}c`)
+    long.push(`${domain.stateCount} colors`)
   }
+  return {
+    descriptor: regular.join(","),
+    longDescriptor: long.join(", "),
+  }
+}
+
+export function presentDomain(domain: Domain) {
+  let { descriptor, longDescriptor } = presentDomainBeginning(domain)
+  if (descriptor.length === 0) {
+    descriptor = "e"
+    longDescriptor = "elementary"
+  }
+  return {
+    descriptor: `${descriptor}${domain.reversible ? ",r" : ""}`,
+    longDescriptor: `${longDescriptor}${domain.reversible ? ", reversible" : ""}`,
+  }
+}
+
+export function presentAutomaton(automaton: TableAutomaton) {
+  let tn = thousandSplit(String(computeTransitionNumber(automaton)))
+
+  let { descriptor, longDescriptor } = presentDomainBeginning(automaton)
+  let regular: string[] = descriptor ? [descriptor] : []
+  let long: string[] = longDescriptor ? [longDescriptor] : []
 
   let reversible = automaton.reversible ? "reversible " : ""
   let r = automaton.reversible ? "r" : ""
@@ -177,5 +200,5 @@ export function presentNomenclature(automaton: TableRuleAutomaton | TableCodeAut
 }
 
 export function normalizeNomenclature(descriptor: string) {
-  return presentNomenclature(parseNomenclature(descriptor)).descriptor
+  return presentAutomaton(parseAutomaton(descriptor)).descriptor
 }

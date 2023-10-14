@@ -1,12 +1,10 @@
-import { TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
+import { TableAutomaton, TableRuleAutomaton } from "../automatonType"
 import { testUnit } from "../devlib/testUnit"
-import { parseNomenclature } from "./nomenclature"
+import { parseAutomaton } from "./nomenclature"
 
-let { success, failure } = testUnit<string, TableRuleAutomaton | TableCodeAutomaton>(
-  (input: string) => {
-    return parseNomenclature(input)
-  },
-)
+let { success, failure } = testUnit<string, TableAutomaton>((input: string) => {
+  return parseAutomaton(input)
+})
 
 function elementaryRule(ruleNumber: number): TableRuleAutomaton {
   return {

@@ -15,9 +15,7 @@ interface OxEnterInputProp {
   // randomizer is a way to get a random value written to the state
   randomizer?: () => any
   // randomizer2 is a second way to get a random value
-  randomizer2?: () => any
   randomElementTitle?: string
-  randomElementTitle2?: string
   extraOnPressEnter?: () => void
 }
 
@@ -34,9 +32,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     parse = (y) => y,
     style = {},
     randomizer,
-    randomizer2,
     randomElementTitle,
-    randomElementTitle2,
     extraOnPressEnter,
   } = prop
 
@@ -66,23 +62,8 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     />
   ) : null
 
-  let randomElement2 = randomizer2 ? (
-    <Button
-      icon={"🎲"}
-      title={randomElementTitle2}
-      onClick={() => {
-        context.updateState((state) => {
-          let { piece, last } = readPath(path, state)
-          piece[last] = randomizer2!()
-          setValue(present(piece[last]))
-        })
-      }}
-    />
-  ) : null
-
   return (
     <Space.Compact>
-      {randomElement}
       <Input
         id={id}
         style={style}
@@ -99,7 +80,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
             p = parse(v)
             pv = present(p)
           } catch {}
-          if (pv !== undefined && pv === v) {
+          if (pv !== undefined) {
             context.updateState((state) => {
               let { piece, last } = readPath(path, state)
               piece[last] = p
@@ -126,7 +107,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         onBlur={() => setIsFocused(false)}
         onFocus={() => setIsFocused(true)}
       />
-      {randomElement2}
+      {randomElement}
     </Space.Compact>
   )
 }

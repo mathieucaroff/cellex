@@ -4,7 +4,7 @@ import { useContext } from "react"
 
 import { Domain } from "../automatonType"
 import { randomRuleFromDomain } from "../engine/curatedAutomata"
-import { parseNomenclature, presentNomenclature } from "../nomenclature/nomenclature"
+import { parseAutomaton, presentAutomaton } from "../nomenclature/nomenclature"
 import { parseTopBorder } from "../patternlang/parser"
 import { ReactContext } from "../state/ReactContext"
 
@@ -21,7 +21,7 @@ export let DomainSelect = () => {
       listHeight={400}
       onChange={(value) => {
         context.updateState((state) => {
-          state.automaton = parseNomenclature(value)
+          state.automaton = parseAutomaton(value)
           state.topology.genesis = parseTopBorder("1(0)")
         })
       }}
@@ -32,7 +32,7 @@ export let DomainSelect = () => {
 function generateSupportedDomainArray() {
   const labelValue = (s: string, d: Domain) => ({
     label: s,
-    value: presentNomenclature(randomRuleFromDomain(d)).descriptor,
+    value: presentAutomaton(randomRuleFromDomain(d)).descriptor,
   })
 
   const domainArray: DefaultOptionType[] = []

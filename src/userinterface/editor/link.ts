@@ -1,4 +1,4 @@
-import { TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
+import { TableAutomaton, TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
 import { computeTransitionNumber } from "../../engine/curatedAutomata"
 
 export let getMathworldLink = (ruleNumber: number) => {
@@ -27,7 +27,7 @@ export let getWikipediaDedicatedPageLink = (ruleNumber: number) => {
   return ""
 }
 
-export let getWolframAlphaLink = (rule: TableRuleAutomaton | TableCodeAutomaton) => {
+export let getWolframAlphaLink = (rule: TableAutomaton) => {
   let prefix = "https://www.wolframalpha.com/input/?i="
   let r = fractionToString(rule.neighborhoodSize - 1, 2)
   let ruleNumber = computeTransitionNumber(rule)

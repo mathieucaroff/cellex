@@ -27,6 +27,8 @@ export interface FreeFunctionAutomaton extends Domain {
   transitionFunction: (get: (s: number) => number) => number
 }
 
+export type TableAutomaton = TableRuleAutomaton | TableCodeAutomaton
+
 export type Automaton =
   | TableRuleAutomaton
   | TableCodeAutomaton

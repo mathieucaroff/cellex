@@ -2,7 +2,8 @@ import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@an
 import { Button, Collapse, Popover, Space, Switch } from "antd"
 import { useContext } from "react"
 
-import { presentNomenclature } from "../nomenclature/nomenclature"
+import { randomGoodAutomaton } from "../engine/curatedAutomata"
+import { presentAutomaton } from "../nomenclature/nomenclature"
 import { parseTopBorder } from "../patternlang/parser"
 import { presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/ReactContext"
@@ -28,7 +29,7 @@ interface UserInterfaceProp {
 
 export let UserInterface = (prop: UserInterfaceProp) => {
   let { shortcutList, displayDiv } = prop
-  let { act } = useContext(ReactContext)
+  let { act, context } = useContext(ReactContext)
   let { automaton, divineMode, play, immersiveMode } = useStateSelection(
     ({ automaton, divineMode, immersiveMode, play }) => ({
       divineMode,
@@ -59,18 +60,27 @@ export let UserInterface = (prop: UserInterfaceProp) => {
             <Space>
               <Button
                 type="primary"
-                title="play"
+                title={play ? "pause" : "play"}
                 size="large"
                 icon={play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
                 onClick={() => act.togglePlay()}
               />
 
-              <GalleryButton />
-
               <OxButton
                 path="immersiveMode"
                 icon={<FullscreenOutlined />}
                 switchValue={["off", "immersive"]}
+              />
+
+              <GalleryButton />
+              <Button
+                icon={"🎲"}
+                title="Fully random automaton"
+                onClick={() => {
+                  context.updateState((state) => {
+                    state.automaton = randomGoodAutomaton()
+                  })
+                }}
               />
 
               <RuleInput />
@@ -100,10 +110,13 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 </Popover>
                 <Popover
                   content={
-                    divineMode.status !== "off" && <OxSwitch path="divineMode.propagation" />
+                    divineMode.status !== "off" && (
+                      <OxSwitch title="Toggle propagation mode" path="divineMode.propagation" />
+                    )
                   }
                 >
                   <Switch
+                    title="Toggle divine mode"
                     checked={divineMode.status !== "off"}
                     onChange={(checked) => {
                       if (checked) {
@@ -131,7 +144,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
         <Collapse accordion {...collapseProp}>
           <Panel
             className="automatonEditor"
-            header={`Automaton Editor (${presentNomenclature(automaton).longDescriptor})`}
+            header={`Automaton Editor (${presentAutomaton(automaton).longDescriptor})`}
             key="automatonEditor"
           >
             <AutomatonEditor />

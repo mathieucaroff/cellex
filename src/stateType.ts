@@ -1,4 +1,4 @@
-import { TableCodeAutomaton, TableRuleAutomaton } from "./automatonType"
+import { TableAutomaton, TableCodeAutomaton, TableRuleAutomaton } from "./automatonType"
 import { DivineMode } from "./divineType"
 import { TopologyFiniteBorder } from "./topologyType"
 import { Color } from "./type"
@@ -19,7 +19,7 @@ export type PresentationMode = "present" | "off"
  * @param postT Temporal position
  */
 export interface State extends StatePosition {
-  automaton: TableRuleAutomaton | TableCodeAutomaton
+  automaton: TableAutomaton
 
   speed: number
   play: boolean
