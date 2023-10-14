@@ -175,3 +175,13 @@ th {
 .overflowYAuto {
   overflow-y: auto;
 }
+
+/* immersive mode */
+.immersive,
+.immersive body,
+.immersive .bodyDiv {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+}

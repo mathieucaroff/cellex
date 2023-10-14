@@ -19,6 +19,7 @@ import { parseNomenclature } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
 import { initialState } from "./state/state"
+import { ImmersiveMode, State } from "./stateType"
 import { DesktopOrMobile } from "./type"
 import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
@@ -132,15 +133,26 @@ function main() {
       drawDisplay(true)
     })
 
+  const updateCanvasSizeAndTopologyWidth = (immersiveMode: ImmersiveMode) => {
+    context.updateState((state) => {
+      autosetCanvasSize(state, immersiveMode)
+      const newWidth = Math.floor(state.canvasSize.width / state.zoom)
+      if (
+        immersiveMode === "immersive"
+          ? newWidth > state.topology.width
+          : newWidth < state.topology.width
+      ) {
+        state.topology.width = newWidth
+      }
+    })
+  }
+
   const handleResize = () => {
     if (state.immersiveMode === "immersive") {
+      updateCanvasSizeAndTopologyWidth("immersive")
+    } else {
       context.updateState((state) => {
-        state.canvasSize = {
-          width: window.innerWidth - 50,
-          height: window.innerHeight - 40,
-        }
-
-        state.topology.width = state.canvasSize.width / state.zoom
+        autosetCanvasSize(state, "off")
       })
     }
   }
@@ -148,10 +160,24 @@ function main() {
   window.addEventListener("resize", handleResize, true)
   context
     .use(({ immersiveMode }) => immersiveMode)
-    .for(() => {
+    .for((immersiveMode) => {
       setTimeout(() => {
+        if (immersiveMode === "off") {
+          updateCanvasSizeAndTopologyWidth("off")
+        }
         handleResize()
       })
+      if (immersiveMode === "immersive") {
+        document.documentElement.classList.add("immersive")
+        document.documentElement.requestFullscreen().then(() => {
+          displayDiv.focus()
+        })
+      } else {
+        document.documentElement.classList.remove("immersive")
+        document.exitFullscreen().then(() => {
+          displayDiv.focus()
+        })
+      }
     })
 
   // main canvas panning
@@ -286,6 +312,17 @@ function main() {
     },
     true,
   )
+
+  function autosetCanvasSize(state: State, immersiveMode: ImmersiveMode) {
+    state.canvasSize = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    }
+    if (immersiveMode === "off") {
+      state.canvasSize.width -= 70
+      state.canvasSize.height -= 150
+    }
+  }
 }
 
 main()

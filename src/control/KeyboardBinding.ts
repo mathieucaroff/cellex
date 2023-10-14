@@ -64,7 +64,7 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
 
   onSymbol(["P"], act.togglePlay, "P", "toggle *P*lay / *P*ause")
   onSymbol(["O"], act.singleStep, "O", "process *O*ne generation")
-  onSymbol(["R"], act.select("#automatonInput"), "R", "select the *R*ule input")
+  onSymbol(["R"], act.select("#automatonInput"), "R", "select the *R*ule input box")
   onSymbol(["C"], act.focus("#displayDiv"), "C", "select the *C*anvas of the *C*elular automaton")
   onSymbol(
     ["E"],
@@ -73,7 +73,12 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
     "select the Simplify button of the Rule *E*ditor if it is open; otherwise, do nothing",
   )
   onSymbol(["G"], act.toggleGallery, "G", "close or open the *G*allery")
-  onSymbol(["I"], act.toggleImmersiveMode, "I", "toggle the *I*mmersive mode on or off")
+  onSymbol(
+    ["I", "F"],
+    act.toggleImmersiveMode,
+    "I",
+    " (or F) toggle the *I*mmersive mode (*F*ullscreen mode) on or off",
+  )
   onSymbol(["D"], act.toggleDivineMode, "D", "toggle the *D*ivine mode on or off")
 
   onKeypress(["Digit0", "Numpad0"], act.gotoTop, "0", "go back to the top")
