@@ -39,11 +39,6 @@ export let UserInterface = (prop: UserInterfaceProp) => {
     }),
   )
 
-  let collapseProp: any = {}
-  if (window.location.hash) {
-    collapseProp["defaultActiveKey"] = 3
-  }
-
   if (immersiveMode === "immersive") {
     return <DivGraft element={displayDiv} />
   } else if (immersiveMode === "off") {
@@ -141,21 +136,27 @@ export let UserInterface = (prop: UserInterfaceProp) => {
           {/* \/ -------------------- \/ */}
         </Space>
 
-        <Collapse accordion {...collapseProp}>
-          <Panel
-            className="automatonEditor"
-            header={`Automaton Editor (${presentAutomaton(automaton).longDescriptor})`}
-            key="automatonEditor"
-          >
-            <AutomatonEditor />
-          </Panel>
-          <Panel header="Keyboard shortcuts" key="shortcutList">
-            <ShorcutList list={shortcutList} />
-          </Panel>
-          <Panel header={`Documentation`} key="documentation">
-            <Documentation />
-          </Panel>
-        </Collapse>
+        <Collapse
+          accordion
+          items={[
+            {
+              className: "automatonEditor",
+              label: `Automaton Editor (${presentAutomaton(automaton).longDescriptor})`,
+              key: "automatonEditor",
+              children: <AutomatonEditor />,
+            },
+            {
+              label: `Keyboard shortcuts`,
+              key: "shortcutList",
+              children: <ShorcutList list={shortcutList} />,
+            },
+            {
+              label: `Documentation`,
+              key: "documentation",
+              children: <Documentation />,
+            },
+          ]}
+        />
       </>
     )
   } else {

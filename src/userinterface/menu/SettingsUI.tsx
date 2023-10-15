@@ -22,8 +22,12 @@ const { Option } = Select
 
 export let SettingsUI = () => {
   let { context, act } = useContext(ReactContext)
-  let [topologyKind, presentationMode] = useStateSelection(
-    ({ topology: { kind }, presentationMode }) => [kind, presentationMode],
+  let [topologyKind, stateCount, presentationMode] = useStateSelection(
+    ({ automaton: { stateCount }, topology: { kind }, presentationMode }) => [
+      kind,
+      stateCount,
+      presentationMode,
+    ],
   )
   let topologyIsLoop = topologyKind == "loop"
 
@@ -239,6 +243,7 @@ export let SettingsUI = () => {
                 <ColorPicker
                   showText
                   value={{ r: c.red, g: c.green, b: c.blue } as any}
+                  disabled={k >= stateCount && k !== colorMap.length - 1}
                   onChange={(color) => {
                     const rgb = color.toRgb()
                     context.updateState((state) => {

@@ -166,12 +166,13 @@ function main() {
         document.documentElement.requestFullscreen().then(() => {
           displayDiv.focus()
         })
-      } else {
+      } else if (document.documentElement.classList.contains("immersive")) {
         document.documentElement.classList.remove("immersive")
         document.exitFullscreen().then(() => {
           displayDiv.focus()
         })
       }
+
       setTimeout(() => {
         if (immersiveMode === "off") {
           updateCanvasSizeAndTopologyWidth("off")

@@ -6,6 +6,7 @@ import {
   computeRuleTransitionTable,
   computeTransitionNumber,
 } from "../engine/curatedAutomata"
+import { limitLength } from "../util/limitLength"
 import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
@@ -171,8 +172,9 @@ export function presentDomain(domain: Domain) {
   }
 }
 
-export function presentAutomaton(automaton: TableAutomaton) {
-  let tn = thousandSplit(String(computeTransitionNumber(automaton)))
+export function presentAutomaton(automaton: TableAutomaton, param: { lengthLimit?: number } = {}) {
+  let ts = thousandSplit(String(computeTransitionNumber(automaton)))
+  let tn = limitLength(ts, param.lengthLimit)
 
   let { descriptor, longDescriptor } = presentDomainBeginning(automaton)
   let regular: string[] = descriptor ? [descriptor] : []

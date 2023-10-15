@@ -19,7 +19,7 @@ export const interestingElementaryRuleArray = ([] as number[]).concat(
   set.XOR,
 )
 
-// elementaryRule produces a rule
+// elementaryRule produces one of the 256 elementary rules
 export let elementaryRule = (ruleNumberValue: number): TableRuleAutomaton => {
   let transitionTable = Array.from({ length: 8 }, (_, k) => {
     return (ruleNumberValue & (1 << (7 - k))) >> (7 - k)
@@ -198,9 +198,9 @@ export let leftRightSymmetric = (rule: TableRuleAutomaton): TableRuleAutomaton =
   return {
     ...rule,
     transitionTable: Array.from({ length: rule.transitionTable.length }, (_, k) => {
-      let text = k.toString(rule.stateCount).padStart(rule.neighborhoodSize, "0")
-      let reversedText = text.split("").reverse().join("")
-      let m = Number.parseInt(reversedText, rule.stateCount)
+      let head = k.toString(rule.stateCount).padStart(rule.neighborhoodSize, "0")
+      let reversedHead = head.split("").reverse().join("")
+      let m = Number.parseInt(reversedHead, rule.stateCount)
       return rule.transitionTable[m]
     }),
   }
