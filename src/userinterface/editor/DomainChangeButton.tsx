@@ -2,7 +2,12 @@ import { Button } from "antd"
 import { useContext } from "react"
 
 import { TableAutomaton } from "../../automatonType"
-import { isValidDomain } from "../../engine/domain"
+import {
+  isPowerOfTwo,
+  isValidDomain,
+  nextPowerOfTwo,
+  previousPowerOfTwo,
+} from "../../engine/domain"
 import { ReactContext } from "../../state/ReactContext"
 import { useStateSelection } from "../hooks"
 
@@ -32,22 +37,42 @@ export function DomainChangeButton(prop: DomainChangeButtonProp) {
     ns: a.neighborhoodSize,
   }))
 
-  let i = { cc: cc + dcc, ns: ns + dns }
+  let { reversible } = automaton
+  let repetitionCount = 1
+  if (reversible && dcc === 1) {
+    repetitionCount = nextPowerOfTwo(cc) - cc
+  } else if (reversible && dcc === -1) {
+    repetitionCount = cc - previousPowerOfTwo(cc)
+  }
+  let finalDomain: TableAutomaton = {
+    ...automaton,
+    stateCount: cc + dcc * repetitionCount,
+    neighborhoodSize: ns + dns * repetitionCount,
+  }
 
   return (
     <Button
       onClick={() => {
         context.updateState(({ automaton }) => {
-          automaton.stateCount = i.cc
-          automaton.neighborhoodSize = i.ns
-          let length = automaton.kind === "tableCode" ? (i.cc - 1) * i.ns + 1 : i.cc ** i.ns
-          let info = { ...i, length, kind: automaton.kind }
-          automaton.transitionTable = derive(automaton.transitionTable, info)
+          let info = { cc, ns }
+          for (; repetitionCount > 0; repetitionCount -= 1) {
+            info.cc += dcc
+            info.ns += dns
+            let length =
+              automaton.kind === "tableCode" ? (info.cc - 1) * info.ns + 1 : info.cc ** info.ns
+            automaton.transitionTable = derive(automaton.transitionTable, {
+              ...info,
+              length,
+              kind: automaton.kind,
+            })
+          }
+          automaton.stateCount = finalDomain.stateCount
+          automaton.neighborhoodSize = finalDomain.neighborhoodSize
         })
       }}
-      disabled={!isValidDomain({ ...automaton, stateCount: i.cc, neighborhoodSize: i.ns })}
+      disabled={!isValidDomain(finalDomain)}
     >
-      {label(i)}
+      {label({ cc: finalDomain.stateCount, ns: finalDomain.neighborhoodSize })}
     </Button>
   )
 }

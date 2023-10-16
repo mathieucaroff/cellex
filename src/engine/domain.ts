@@ -23,6 +23,14 @@ export function isPowerOfTwo(a: number) {
   return 2 ** Math.floor(Math.log2(a)) === a
 }
 
+export function previousPowerOfTwo(a: number) {
+  return 2 ** Math.floor(Math.log2(a - 1))
+}
+
+export function nextPowerOfTwo(a: number) {
+  return 2 ** Math.ceil(Math.log2(a + 1))
+}
+
 export function generateSupportedDomainArray() {
   const labelValue = (s: string, d: Domain) => ({
     label: s,
