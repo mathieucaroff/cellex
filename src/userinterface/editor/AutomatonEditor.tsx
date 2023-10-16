@@ -206,7 +206,7 @@ export let AutomatonEditor = () => {
                 return Array.from({ length: length - old.length }, () => 0).concat(old)
               }
             }}
-            label={({ ns }) => `Increase neighborhood size to ${ns}`}
+            label={({ ns }) => `⟷ Increase neighborhood size to ${ns}`}
           />
           <DomainChangeButton
             automaton={a}
@@ -224,7 +224,7 @@ export let AutomatonEditor = () => {
                 return old.slice(old.length - length)
               }
             }}
-            label={({ ns }) => `Decrease neighborhood size to ${ns}`}
+            label={({ ns }) => `⟷ Decrease neighborhood size to ${ns}`}
           />
           <DomainChangeButton
             automaton={a}
@@ -256,7 +256,7 @@ export let AutomatonEditor = () => {
                 return Array.from({ length: length - old.length }, () => 0).concat(old)
               }
             }}
-            label={({ cc }) => `Increase color count to ${cc}`}
+            label={({ cc }) => `🎨 Increase color count to ${cc}`}
           />
           <DomainChangeButton
             automaton={a}
@@ -282,7 +282,7 @@ export let AutomatonEditor = () => {
                   .map((color) => (color >= cc ? color - 1 : color))
               }
             }}
-            label={({ cc }) => `Decrease color count to ${cc}`}
+            label={({ cc }) => `🎨 Decrease color count to ${cc}`}
           />
         </div>
         <div>
@@ -294,7 +294,8 @@ export let AutomatonEditor = () => {
               })
             }}
           >
-            Switch to color complement: {presentAutomaton(complement, { lengthLimit }).descriptor}
+            🎨 Switch to color complement:{" "}
+            {presentAutomaton(complement, { lengthLimit }).descriptor}
           </Button>
           {symmetric && (
             <Button
@@ -305,7 +306,7 @@ export let AutomatonEditor = () => {
                 })
               }}
             >
-              Switch to left-right symmetric:{" "}
+              ⟷ Switch to left-right symmetric:{" "}
               {presentAutomaton(symmetric, { lengthLimit }).descriptor}
             </Button>
           )}
@@ -318,7 +319,7 @@ export let AutomatonEditor = () => {
                 })
               }}
             >
-              Switch both: {presentAutomaton(both, { lengthLimit }).descriptor}
+              🎨⟷ Switch both: {presentAutomaton(both, { lengthLimit }).descriptor}
             </Button>
           )}
         </div>
@@ -331,7 +332,7 @@ export let AutomatonEditor = () => {
               })
             }}
           >
-            Toggle reversibility
+            ⭥ Toggle reversibility
           </Button>
           {baseXComplement && (
             <Button
@@ -342,7 +343,7 @@ export let AutomatonEditor = () => {
                 })
               }}
             >
-              Toggle twinkliness: {presentAutomaton(baseXComplement, { lengthLimit }).descriptor}
+              ✨ Toggle twinkliness: {presentAutomaton(baseXComplement, { lengthLimit }).descriptor}
             </Button>
           )}
           {baseXReverse && (
@@ -354,7 +355,7 @@ export let AutomatonEditor = () => {
                 })
               }}
             >
-              Switch to base ({automaton.stateCount}) digit order reverse:{" "}
+              # Switch to base ({automaton.stateCount}) digit order reverse:{" "}
               {presentAutomaton(baseXReverse, { lengthLimit }).descriptor}
             </Button>
           )}
