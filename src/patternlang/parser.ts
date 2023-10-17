@@ -1,9 +1,24 @@
 import { default as nearley } from "nearley"
 
+import { ordinalNumber } from "../util/ordinalNumber"
 import { SideBorder, TopBorder } from "./BorderType"
 import { default as patternGrammar } from "./patternLanguage.ne"
 import { default as sideBorderGrammar } from "./sideBorderLanguage.ne"
 import { default as topBorderGrammar } from "./topBorderLanguage.ne"
+
+export class ErrorWithInfo extends Error {
+  constructor(
+    public message: string,
+    public info: string | undefined,
+    public input: string,
+    public originalError?: any,
+  ) {
+    super(message)
+    if (info === undefined) {
+      this.info = message
+    }
+  }
+}
 
 export let createSideBorderParser = () => {
   return new nearley.Parser(sideBorderGrammar)
@@ -17,21 +32,32 @@ export let createPatternParser = () => {
   return new nearley.Parser(patternGrammar)
 }
 
-export let parse = <T>(input: string, name: string, parser: nearley.Parser, defaultValue: T): T => {
+export let parse = <T>(input: string, name: string, parser: nearley.Parser): T => {
   // Run
   try {
     parser.feed(input)
   } catch (e) {
-    // console.error("e")
+    let position = e.offset + 1 === input.length ? "last" : ordinalNumber(e.offset + 1)
+    throw new ErrorWithInfo(
+      String(e),
+      `unexpected ${position} character: \`${e.token.value}\``,
+      input,
+      e,
+    )
   }
 
-  // Aquire results
   if (parser.results === undefined || parser.results.length === 0) {
-    return defaultValue
+    // No result after parsing
+    let info = ""
+    if (input.length > 0) {
+      info = "incomplete input"
+    }
+    throw new ErrorWithInfo("invalid automaton descriptor (no result after parsing)", info, input)
   }
-  if (parser.results.length > 1) {
-    // console.warn(`parsed several ${name} results:`, parser.results)
-  }
+
+  // if (parser.results.length > 1) {
+  //   console.warn(`parsed several ${name} results:`, parser.results)
+  // }
 
   return parser.results[0]
 }
@@ -58,20 +84,11 @@ const defaultCycle = {
 }
 
 export let parseSideBorder = (input: string): SideBorder => {
-  let defaultValue = {
-    init: emptyRootGroup,
-    cycle: defaultCycle,
-  }
-  return parse(input, "side border", createSideBorderParser(), defaultValue)
+  return parse(input, "side border", createSideBorderParser())
 }
 
 export let parseTopBorder = (input: string): TopBorder => {
-  let defaultValue = {
-    center: emptyRootGroup,
-    cycleLeft: defaultCycle,
-    cycleRight: defaultCycle,
-  }
-  return parse(input, "top border", createTopBorderParser(), defaultValue)
+  return parse(input, "top border", createTopBorderParser())
 }
 ;(globalThis as any).parseTopBorder = parseTopBorder
 ;(globalThis as any).parseSideBorder = parseSideBorder

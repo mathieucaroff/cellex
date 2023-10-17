@@ -6,7 +6,9 @@ import {
   computeRuleTransitionTable,
   computeTransitionNumber,
 } from "../engine/curatedAutomata"
+import { ErrorWithInfo, parse } from "../patternlang/parser"
 import { limitLength } from "../util/limitLength"
+import { ordinalNumber } from "../util/ordinalNumber"
 import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
@@ -28,20 +30,11 @@ type NomenclatureOutput =
     }
 
 export function parseAutomaton(descriptor: string): TableAutomaton {
-  let parser = new nearley.Parser(nomenclatureGrammar)
-
-  try {
-    parser.feed(descriptor)
-  } catch (e) {
-    let ne = new Error("invalid automaton descriptor (the grammar threw)")
-    ne.message += String(e)
-    throw ne
-  }
-  if (parser.results.length === 0) {
-    throw new Error("invalid automaton descriptor (no result after parsing)")
-  }
-
-  let parserOutput: NomenclatureOutput = parser.results[0]
+  let parserOutput: NomenclatureOutput = parse(
+    descriptor,
+    "automaton descriptor",
+    new nearley.Parser(nomenclatureGrammar),
+  )
   let transitionNumber: bigint
   let result: TableAutomaton
 
@@ -65,8 +58,10 @@ export function parseAutomaton(descriptor: string): TableAutomaton {
     }
 
     if (stateCount === 0) {
-      throw new Error(
+      throw new ErrorWithInfo(
         "the transition number is too big (failed to obtain a big enough stateCount value for neighborhood 3)",
+        `the transition number is too big`,
+        descriptor,
       )
     }
 
@@ -82,7 +77,11 @@ export function parseAutomaton(descriptor: string): TableAutomaton {
     transitionNumber = BigInt(parserOutput.transitionString)
 
     if (transitionNumber >= 256n) {
-      throw new Error("elementary transition numbers must be strictly less than 256")
+      throw new ErrorWithInfo(
+        "elementary transition numbers must be strictly less than 256",
+        undefined,
+        descriptor,
+      )
     }
 
     result = {
@@ -133,7 +132,7 @@ export function parseAutomaton(descriptor: string): TableAutomaton {
   }
 
   if (result.stateCount < 1) {
-    throw new Error("the state count must be at least 1")
+    throw new ErrorWithInfo("the state count must be at least 1", undefined, descriptor)
   }
 
   return result
