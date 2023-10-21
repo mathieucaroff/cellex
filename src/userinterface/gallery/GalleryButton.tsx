@@ -5,18 +5,29 @@ import { ReactContext } from "../../state/ReactContext"
 import { useStateSelection } from "../hooks"
 import { AutomatonGallery } from "./AutomatonGallery"
 
+/** Gallery button manages the opening and closing of the gallery.
+ * It works in such a way that once the gallery modal has been opened it
+ * never really closes. This allows to maintain its state until it is
+ * reopen.
+ */
 export function GalleryButton() {
-  let { context } = useContext(ReactContext)
-  let isOpen = useStateSelection((state) => state.galleryIsOpen)
-  let [doOpenFirst, setDoOpenFirst] = useState(false)
+  /** hasBeenOpened is switched to true the first time the gallery is open.
+   * it stays true afterward. */
   let [hasBeenOpened, setHasBeenOpened] = useState(false)
+  /** doExpandFirst is passed to the AutomatonGallery to tell it to expand
+   * the first collapse. It is set to true only once: just after the gallery
+   * has finished opening. */
+  let [doExpandFirst, setDoExpandFirst] = useState(false)
 
+  let { context } = useContext(ReactContext)
+  /** isOpen / setGalleryOpen / setGalleryClosed manage the opening and closing
+   * of the gallery, overriding the Ant Design's handling. */
+  let isOpen = useStateSelection((state) => state.galleryIsOpen)
   let galleryIsOpenSetter = (value: boolean) => () => {
     context.updateState((state) => {
       state.galleryIsOpen = value
     })
   }
-
   let setGalleryOpen = galleryIsOpenSetter(true)
   let setGalleryClosed = galleryIsOpenSetter(false)
 
@@ -24,17 +35,17 @@ export function GalleryButton() {
     if (!hasBeenOpened) {
       setHasBeenOpened(true)
       setTimeout(() => {
-        setDoOpenFirst(true)
+        setDoExpandFirst(true)
       })
     }
     setGalleryOpen()
   }
 
   useEffect(() => {
-    if (doOpenFirst) {
-      setDoOpenFirst(false)
+    if (doExpandFirst) {
+      setDoExpandFirst(false)
     }
-  }, [doOpenFirst])
+  }, [doExpandFirst])
 
   useEffect(() => {
     let modalRoot = document.querySelector<HTMLDivElement>(".ant-modal-root")
@@ -62,7 +73,7 @@ export function GalleryButton() {
         width={window.innerWidth - 10}
       >
         <div className="automatonGalleryModal">
-          <AutomatonGallery doOpenFirst={doOpenFirst} />
+          <AutomatonGallery doExpandFirst={doExpandFirst} />
         </div>
       </Modal>
     </>

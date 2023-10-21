@@ -310,6 +310,7 @@ export const curatedNs3AutomatonArray = [
 export const curated3ColorCodeArray = [
   "3c,c153 looks like rule 54",
   "3c,c228 looks like rule 54",
+  "3c,c262 has beautiful roots",
   "3c,c321 has rule 73 columns",
   "3c,c408 is like rule 73",
   "3c,c426 is like rule 73 as well",
@@ -338,7 +339,6 @@ export const extraCurated3ColorCodeArray = [
   "3c,c173",
   "3c,c174 and 3c,c190 have walls",
   "3c,c231 looks like rule 54, but the electrons are visible",
-  "3c,c262 has beautiful roots",
   "3c,c266 has some blue columns and some dark orange ones",
   "3c,c320 also does.",
   "3c,c379 looks like code 136",

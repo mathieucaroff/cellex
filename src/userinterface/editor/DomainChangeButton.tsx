@@ -2,12 +2,7 @@ import { Button } from "antd"
 import { useContext } from "react"
 
 import { TableAutomaton } from "../../automatonType"
-import {
-  isPowerOfTwo,
-  isValidDomain,
-  nextPowerOfTwo,
-  previousPowerOfTwo,
-} from "../../engine/domain"
+import { isValidDomain, nextPowerOfTwo, previousPowerOfTwo } from "../../engine/domain"
 import { ReactContext } from "../../state/ReactContext"
 import { useStateSelection } from "../hooks"
 

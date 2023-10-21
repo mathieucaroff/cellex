@@ -1,10 +1,10 @@
-import { Switch } from "antd"
+import { Switch, SwitchProps } from "antd"
 import { useContext } from "react"
 
 import { ReactContext } from "../../../state/ReactContext"
 import { readPath, useStatePath } from "../../hooks"
 
-interface OxCheckboxProp {
+interface OxCheckboxProp extends SwitchProps {
   path: string
   disabled?: boolean
   title?: string
@@ -12,7 +12,7 @@ interface OxCheckboxProp {
 
 // OxSwitch is a switch tied to a boolean value of the state
 export function OxSwitch(prop: OxCheckboxProp) {
-  let { path, disabled, title } = prop
+  let { path, disabled, title, ...extraSwitchProps } = prop
   let { context } = useContext(ReactContext)
   let { piece, last } = useStatePath(path)
 
@@ -27,6 +27,7 @@ export function OxSwitch(prop: OxCheckboxProp) {
           piece[last] = value
         })
       }}
+      {...extraSwitchProps}
     />
   )
 }

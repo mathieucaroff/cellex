@@ -10,7 +10,7 @@ export interface AutomatonPreviewProp {
   /** Tooltip for the automaton */
   tooltip?: string
   /** Genesis descriptors. One canvas will be displayed for each genesis */
-  genesisArray?: string[]
+  genesisArray: string[]
   /** width of the canvas-es */
   width?: number
   /** height of the canvas-es */
@@ -22,7 +22,7 @@ export function AutomatonPreview(props: AutomatonPreviewProp) {
     descriptor,
     tooltip,
     automatonTitle = descriptor,
-    genesisArray = ["1(0)", "([01])"],
+    genesisArray,
     width = 100,
     height = 100,
   } = props

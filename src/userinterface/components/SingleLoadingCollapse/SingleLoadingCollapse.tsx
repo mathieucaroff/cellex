@@ -4,21 +4,25 @@ import { useEffect, useState } from "react"
 
 export interface SingleCollapseProp extends Omit<CollapseProps, "activeKey"> {
   children: React.ReactNode | React.ReactNode[]
+  /** the text to use to tell the user that clicking expands or collapses the
+   * view */
   label?: React.ReactNode
-  doOpen?: boolean
+  /** doExpand is a way to force-open the collapse. The collapse cannot be closed
+   * while this parameter is true. */
+  doExpand?: boolean
 }
 
 export function SingleCollapse(prop: SingleCollapseProp) {
-  let { children, doOpen = false, label = "Click to expand/collapse", ...remainingProp } = prop
+  let { children, doExpand = false, label = "Click to expand/collapse", ...remainingProp } = prop
   let [open, setOpen] = useState(false)
   let [loading, setLoading] = useState(false)
   let openTimeout: ReturnType<typeof setTimeout>
 
   useEffect(() => {
-    if (doOpen && !open) {
+    if (doExpand && !open) {
       setOpen(true)
     }
-  }, [doOpen, open])
+  }, [doExpand, open])
 
   useEffect(() => {
     return () => {

@@ -6,9 +6,9 @@ import {
   computeRuleTransitionTable,
   computeTransitionNumber,
 } from "../engine/curatedAutomata"
+import { isPowerOfTwo } from "../engine/domain"
 import { ErrorWithInfo, parse } from "../patternlang/parser"
 import { limitLength } from "../util/limitLength"
-import { ordinalNumber } from "../util/ordinalNumber"
 import { thousandSplit } from "../util/thousandSplit"
 import nomenclatureGrammar from "./nomenclature.ne"
 
@@ -77,11 +77,7 @@ export function parseAutomaton(descriptor: string): TableAutomaton {
     transitionNumber = BigInt(parserOutput.transitionString)
 
     if (transitionNumber >= 256n) {
-      throw new ErrorWithInfo(
-        "elementary transition numbers must be strictly less than 256",
-        undefined,
-        descriptor,
-      )
+      throw new ErrorWithInfo("elementary automata numbers go from 0 to 255", undefined, descriptor)
     }
 
     result = {
@@ -133,6 +129,14 @@ export function parseAutomaton(descriptor: string): TableAutomaton {
 
   if (result.stateCount < 1) {
     throw new ErrorWithInfo("the state count must be at least 1", undefined, descriptor)
+  }
+
+  if (result.reversible && !isPowerOfTwo(result.stateCount)) {
+    throw new ErrorWithInfo(
+      "the color count of reversible automata must be a power of two",
+      undefined,
+      descriptor,
+    )
   }
 
   return result

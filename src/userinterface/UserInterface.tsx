@@ -106,12 +106,19 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 <Popover
                   content={
                     divineMode.status !== "off" && (
-                      <OxSwitch title="Toggle propagation mode" path="divineMode.propagation" />
+                      <OxSwitch
+                        title="Toggle propagation mode"
+                        path="divineMode.propagation"
+                        checkedChildren="propagation"
+                        unCheckedChildren="intervention"
+                      />
                     )
                   }
                 >
                   <Switch
                     title="Toggle divine mode"
+                    checkedChildren="divine"
+                    unCheckedChildren="natural"
                     checked={divineMode.status !== "off"}
                     onChange={(checked) => {
                       if (checked) {
