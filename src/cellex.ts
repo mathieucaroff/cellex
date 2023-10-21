@@ -1,6 +1,5 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
-import { BsDiscord } from "react-icons/bs"
 
 import * as packageInfo from "../package.json"
 import { App } from "./App"
@@ -95,7 +94,12 @@ function main() {
         return
       }
 
-      engine = createAutomatonEngine({ automaton, topology, seed })
+      engine = createAutomatonEngine({
+        automaton,
+        topology,
+        seed,
+        interventionColorIndex: state.colorMap.length - 1,
+      })
       act.setDivineModeOff(state)
 
       display.setEngine(engine)

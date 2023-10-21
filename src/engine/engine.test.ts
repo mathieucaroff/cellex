@@ -10,7 +10,12 @@ describe("createAutomatonEngine", () => {
   let topology = rule110Topology10
   let automaton = elementaryRule(110)
 
-  let engine = createAutomatonEngine({ automaton: elementaryRule(110), topology, seed: "_" })
+  let engine = createAutomatonEngine({
+    automaton: elementaryRule(110),
+    topology,
+    seed: "_",
+    interventionColorIndex: 2,
+  })
 
   let randomMapper = createRandomMapper({ seedString: "_" })
   let slowEngine = createSlowLoopEngine(automaton, topology, randomMapper)

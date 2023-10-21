@@ -11,7 +11,7 @@ export function isValidDomain(domain: Domain) {
   let { stateCount: c, neighborhoodSize: ns, reversible } = domain
   return (
     c >= 2 &&
-    c <= 7 && // c in bound
+    c <= 9 && // c in bound
     ns >= 3 &&
     c ** ns <= 4096 && // rule not too big, ns in bound
     ns % 2 === 1 && // ns is odd

@@ -11,10 +11,11 @@ export interface EngineProp {
   automaton: any
   topology: any
   seed: string
+  interventionColorIndex: number
 }
 
 export function createAutomatonEngine(prop: EngineProp): Engine {
-  let { automaton, topology, seed } = prop
+  let { automaton, topology, seed, interventionColorIndex } = prop
 
   let randomMapper = createRandomMapper({ seedString: seed })
   let stepper = createStepper(automaton, topology, randomMapper)
@@ -40,7 +41,7 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
           controllableRoller.setChangeSet(newDivineMode.changes)
           if (!divineMode.propagation && newDivineMode.propagation) {
             // adding propagation mode -> switch to diff roller
-            roller = createDiffRoller(basicRoller, controllableRoller)
+            roller = createDiffRoller(basicRoller, controllableRoller, interventionColorIndex)
           } else if (divineMode.propagation && !newDivineMode.propagation) {
             // removing propagation mode -> switch to controllable roller
             roller = controllableRoller
@@ -52,10 +53,15 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
         } else {
           // becoming active -> switch to a controllable roller or a diff roller
           // depending on the propagation setting
-          controllableRoller = createControllableRoller(stepper, topology, randomMapper)
+          controllableRoller = createControllableRoller(
+            stepper,
+            topology,
+            randomMapper,
+            interventionColorIndex,
+          )
           controllableRoller.setChangeSet(newDivineMode.changes)
           if (newDivineMode.propagation) {
-            roller = createDiffRoller(basicRoller, controllableRoller)
+            roller = createDiffRoller(basicRoller, controllableRoller, interventionColorIndex)
           } else {
             roller = controllableRoller
           }

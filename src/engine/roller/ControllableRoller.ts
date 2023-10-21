@@ -12,6 +12,7 @@ export let createControllableRoller = (
   stepper: Stepper,
   topology: TopologyFinite,
   randomMapper: RandomMapper,
+  interventionColorIndex: number,
   tOffset = 0,
 ): ControllableRoller => {
   let left = -Math.floor(topology.width / 2)
@@ -74,7 +75,7 @@ export let createControllableRoller = (
         let change = changeSet[changeIndex]
         for (let intervention of change.changes) {
           if (visualMode) {
-            targetLine[intervention.s] = 6
+            targetLine[intervention.s] = interventionColorIndex
           } else {
             targetLine[intervention.s] =
               (targetLine[intervention.s] + intervention.amount) % stepper.getStateCount()

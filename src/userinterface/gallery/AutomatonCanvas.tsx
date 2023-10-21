@@ -42,7 +42,12 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
 
   useEffect(() => {
     let canvas = canvasRef.current
-    let engine = createAutomatonEngine({ automaton: rule, topology, seed })
+    let engine = createAutomatonEngine({
+      automaton: rule,
+      topology,
+      seed,
+      interventionColorIndex: colorMap.length - 1,
+    })
 
     // draw
     let ctx = canvas.getContext("2d")!
