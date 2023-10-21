@@ -133,7 +133,7 @@ export function parseAutomaton(descriptor: string): TableAutomaton {
 
   if (result.reversible && !isPowerOfTwo(result.stateCount)) {
     throw new ErrorWithInfo(
-      "the color count of reversible automata must be a power of two",
+      `the color count of reversible automata must be a power of two (1,2,4,16,...) (got ${result.stateCount}c)`,
       undefined,
       descriptor,
     )

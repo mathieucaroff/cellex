@@ -1,7 +1,7 @@
 import { Space } from "antd"
 
 import { TableRuleAutomaton } from "../automatonType"
-import { randomGoodRuleFromDomain } from "../engine/curatedAutomata"
+import { randomGoodAutomatonFromDomainAndKind } from "../engine/curatedAutomata"
 import { parseAutomaton, presentAutomaton, presentDomain } from "../nomenclature/nomenclature"
 import { DomainSelect } from "./DomainSelect"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
@@ -22,11 +22,11 @@ export let RuleInput = () => {
       <OxEnterInput
         path="automaton"
         id="automatonInput"
-        title="Set the simulated rule"
+        title="Set the simulated automaton"
         style={{ width: "initial" }}
-        present={(rule: TableRuleAutomaton) => presentAutomaton(rule).descriptor}
+        present={(automaton: TableRuleAutomaton) => presentAutomaton(automaton).descriptor}
         parse={parseAutomaton}
-        randomizer={() => randomGoodRuleFromDomain(a)}
+        randomizer={() => randomGoodAutomatonFromDomainAndKind(a)}
         randomElementTitle={randomElementTitle}
       />
     </Space.Compact>

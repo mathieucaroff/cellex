@@ -132,6 +132,15 @@ export let randomGoodRuleFromDomain = (domain: Domain): TableRuleAutomaton => {
   return randomRuleFromDomain(domain)
 }
 
+export function randomGoodAutomatonFromDomainAndKind(
+  domain: Pick<TableAutomaton, keyof Domain | "kind">,
+): TableAutomaton {
+  if (domain.kind === "tableCode") {
+    return randomCodeFromDomain(domain)
+  }
+  return randomGoodRuleFromDomain(domain)
+}
+
 export let randomGoodRule = (): TableRuleAutomaton => {
   if (Math.random() < 0.3) {
     return elementaryRule(randomChoice(interestingElementaryRuleArray))
