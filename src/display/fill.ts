@@ -1,6 +1,8 @@
 import { Engine } from "../engineType"
 import { Color } from "../type"
 
+const GREY = { red: 128, green: 128, blue: 128 }
+
 /**
  *
  * @param engine The engine to request lines
@@ -38,7 +40,19 @@ export function fillImage(
   }
   for (let dy = 0; dy < height; dy += 1) {
     y = posY + baseY + dy
-    line = engine.getLine(y)
+
+    try {
+      line = engine.getLine(y)
+    } catch (e) {
+      let greyIndex = colorMap.findIndex((c) => c === GREY)
+      if (greyIndex === -1) {
+        console.log(e)
+        greyIndex = colorMap.length
+        colorMap.push(GREY)
+      }
+      line = Uint8Array.from({ length: engine.getLineLength() }, () => greyIndex)
+    }
+
     for (let dx = 0; dx < width; dx += 1) {
       x = Math.round(posX + baseX + dx + (line.length - ctx.canvas.width) / 2)
       if (x >= 0 && x < line.length) {

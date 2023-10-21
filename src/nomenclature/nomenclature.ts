@@ -2,6 +2,7 @@ import { default as nearley } from "nearley"
 
 import { Domain, TableAutomaton } from "../automatonType"
 import {
+  computeAnyTransitionTable,
   computeCodeTransitionTable,
   computeRuleTransitionTable,
   computeTransitionNumber,
@@ -85,44 +86,33 @@ export function parseAutomaton(descriptor: string): TableAutomaton {
       dimension: 1,
       neighborhoodSize: 3,
       stateCount: 2,
-      reversible: parserOutput.reversible,
+      reversible: !!parserOutput.reversible,
       transitionTable: computeRuleTransitionTable(3, 2, transitionNumber),
     }
-  } else if (parserOutput.automaton.table.tableKind === "rule") {
+  } else if (parserOutput.kind === "any") {
     // The grammar guarantees that a transition number is specified
     let { automaton } = parserOutput
     transitionNumber = BigInt(automaton.table.transitionString)
 
-    result = {
-      kind: "tableRule",
-      dimension: +(automaton.dimension ?? 1),
-      neighborhoodSize: +(automaton.neighborhoodSize ?? 3),
-      stateCount: +(automaton.colors ?? [2])[0],
-      reversible: automaton.reversible,
-      transitionTable: [],
-    }
-    result.transitionTable = computeRuleTransitionTable(
-      result.neighborhoodSize,
-      result.stateCount,
+    let isRule = parserOutput.automaton.table.tableKind === "rule"
+
+    let neighborhoodSize = +(automaton.neighborhoodSize ?? 3)
+    let stateCount = +(automaton.colors ?? 2)
+
+    let transitionTable = computeAnyTransitionTable(
+      stateCount,
+      isRule ? stateCount ** neighborhoodSize : (stateCount - 1) * neighborhoodSize + 1,
       transitionNumber,
     )
-  } else if (parserOutput.automaton.table.tableKind === "code") {
-    let { automaton } = parserOutput
-    transitionNumber = BigInt(automaton.table.transitionString)
 
     result = {
-      kind: "tableCode",
+      kind: isRule ? "tableRule" : "tableCode",
       dimension: +(automaton.dimension ?? 1),
-      neighborhoodSize: +(automaton.neighborhoodSize ?? 3),
-      stateCount: +(automaton.colors ?? [2])[0],
-      reversible: automaton.reversible,
-      transitionTable: [],
+      neighborhoodSize,
+      stateCount,
+      reversible: !!automaton.reversible,
+      transitionTable,
     }
-    result.transitionTable = computeCodeTransitionTable(
-      result.neighborhoodSize,
-      result.stateCount,
-      transitionNumber,
-    )
   } else {
     throw new Error("unrecognized parse output: " + JSON.stringify(parserOutput))
   }

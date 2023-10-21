@@ -29,4 +29,5 @@ export interface DiffRoller extends BasicRoller {
 export interface Engine {
   setDivineMode: (divineMode: DivineMode) => void
   getLine: (t: number) => Uint8Array
+  getLineLength: () => number
 }

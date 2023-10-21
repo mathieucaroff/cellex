@@ -50,5 +50,6 @@ export let createSlowLoopEngine = (
       })
       return line
     },
+    getLineLength: () => topology.width,
   }
 }

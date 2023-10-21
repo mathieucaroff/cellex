@@ -1,5 +1,7 @@
+import { TableAutomaton } from "../automatonType"
 import { DivineMode } from "../divineType"
 import { BasicRoller, ControllableRoller, Engine } from "../engineType"
+import { TopologyFinite } from "../topologyType"
 import { clone } from "../util/clone"
 import { createRandomMapper } from "./misc/RandomMapper"
 import { createBasicRoller } from "./roller/BasicRoller"
@@ -8,8 +10,8 @@ import { createDiffRoller } from "./roller/DiffRoller"
 import { createStepper } from "./stepper/Stepper"
 
 export interface EngineProp {
-  automaton: any
-  topology: any
+  automaton: TableAutomaton
+  topology: TopologyFinite
   seed: string
   interventionColorIndex: number
 }
@@ -72,6 +74,9 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
     },
     getLine(t) {
       return roller.getLine(t)
+    },
+    getLineLength() {
+      return topology.width
     },
   }
 }

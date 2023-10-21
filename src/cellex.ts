@@ -87,13 +87,6 @@ function main() {
       t: JSON.stringify(topology),
     }))
     .for(({ automaton, seed, topology }) => {
-      if (automaton.stateCount > state.colorMap.length) {
-        console.error(
-          `Cannot display rules ${automaton.stateCount} states with a palette of only ${state.colorMap.length} colors`,
-        )
-        return
-      }
-
       engine = createAutomatonEngine({
         automaton,
         topology,

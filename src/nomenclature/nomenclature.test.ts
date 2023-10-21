@@ -1,4 +1,4 @@
-import { TableAutomaton, TableRuleAutomaton } from "../automatonType"
+import { TableAutomaton, TableCodeAutomaton, TableRuleAutomaton } from "../automatonType"
 import { testUnit } from "../devlib/testUnit"
 import { parseAutomaton } from "./nomenclature"
 
@@ -24,19 +24,34 @@ function rule0(neighborhoodSize: number, stateCount: number): TableRuleAutomaton
     reversible: false,
     neighborhoodSize,
     stateCount,
-    transitionTable: Array.from({ length: stateCount ** neighborhoodSize }, (_, k) => 0),
+    transitionTable: Array.from({ length: stateCount ** neighborhoodSize }, () => 0),
   }
+}
+
+function code0(neighborhoodSize: number, stateCount: number): TableCodeAutomaton {
+  let code: any = rule0(neighborhoodSize, stateCount)
+  code.kind = "tableCode"
+  code.transitionTable = Array.from({ length: (stateCount - 1) * neighborhoodSize + 1 }, () => 0)
+  return code
 }
 
 success("e0", elementaryRule(0))
 success("e0000", elementaryRule(0))
 success("e0255", elementaryRule(255))
+
+success("c0", code0(3, 2))
+
 success("1c,r0", rule0(3, 1))
 success("2c,r0", rule0(3, 2))
 success("3c,r0", rule0(3, 3))
 success("4c,r0", rule0(3, 4))
 success("5c,r0", rule0(3, 5))
 success("6c,r0", rule0(3, 6))
+success("7c,r0", rule0(3, 7))
+success("8c,r0", rule0(3, 8))
+success("9c,r0", rule0(3, 9))
+success("10c,r0", rule0(3, 10))
+success("11c,r0", rule0(3, 11))
 
 success("ns1,r0", rule0(1, 2))
 success("ns3,r0", rule0(3, 2))

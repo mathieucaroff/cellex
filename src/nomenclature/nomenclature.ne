@@ -25,7 +25,7 @@ numeric_three_cell_neighborhood -> [0-9_]:+ {% ([x]) => ({
 }) %}
 
 # Elementary automata. They use the prefix letter `e`
-elementary_rule -> reversible:? ("e" | "elementary") _ [0-9]:+ _ {% ([r, _a, _b, x]) => ({
+elementary_rule -> reversible:? ("e" | "elementary") _ [0-9_]:+ _ {% ([r, _a, _b, x]) => ({
   kind: "elementary",
   transitionString: ruleNumber(x),
   reversible: r,
@@ -51,10 +51,10 @@ __ -> " ":+
 
 dimension -> [0-9]:+ _ ("d" | "dimension") _ "," _ {% first %}
 neighborhood_size -> ("ns" | ("neighborhood" _ "size")) _ [0-9]:+ _ "," _ {% ([_a, _b, x]) => x.join('') %}
-colors -> [0-9]:+ _ ("c" | "colors") _ "," _ {% first %}
+colors -> [0-9]:+ _ ("c" | "colors") _ "," _ {% ([x]) => x.join('') %}
 
 reversible -> ("r" | "reversible" __) {% ([value]) => !!value %}
-rule -> generic_rule  {% first %} | totalistic_code {% first %}
+rule -> generic_rule {% first %} | totalistic_code {% first %}
 generic_rule -> ("r" | "rule") _ [0-9_]:+ _ {% ([_a, _b, x]) => ({
   tableKind: "rule",
   transitionString: ruleNumber(x)
