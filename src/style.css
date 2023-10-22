@@ -185,3 +185,15 @@ th {
   width: 100%;
   overflow: hidden;
 }
+
+/* Social top-right bar */
+.socials {
+  float: right;
+}
+.socials a {
+  color: white;
+}
+.socials svg:hover {
+  transition: transform .3s ease-in;
+  transform: rotate(360deg);
+}

@@ -1,6 +1,7 @@
 import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Popover, Space, Switch } from "antd"
+import { Button, Collapse, Popover, Space, Switch, Tooltip } from "antd"
 import { useContext } from "react"
+import { FaDiscord, FaGithub } from "react-icons/fa"
 
 import { randomGoodAutomaton } from "../engine/curatedAutomata"
 import { presentAutomaton } from "../nomenclature/nomenclature"
@@ -21,14 +22,16 @@ import { SettingsUI } from "./menu/SettingsUI"
 import { ShorcutList } from "./menu/ShortcutList"
 import { TopBorderSelect } from "./menu/topologySelect"
 
-const { Panel } = Collapse
 interface UserInterfaceProp {
   shortcutList: [string, string][]
   displayDiv: HTMLDivElement
+  repositoryUrl: string
+  version: string
+  discordInviteUrl: string
 }
 
 export let UserInterface = (prop: UserInterfaceProp) => {
-  let { shortcutList, displayDiv } = prop
+  let { shortcutList, displayDiv, repositoryUrl, version, discordInviteUrl } = prop
   let { act, context } = useContext(ReactContext)
   let { automaton, divineMode, play, immersiveMode } = useStateSelection(
     ({ automaton, divineMode, immersiveMode, play }) => ({
@@ -45,10 +48,22 @@ export let UserInterface = (prop: UserInterfaceProp) => {
     return (
       <>
         <div>
-          <h1 className="title" title="Cellex">
-            Cellex
-          </h1>
+          <h1 className="title">Cellex</h1>
           <p className="subtitle">Unidimensional Cellular Automaton Explorer</p>
+          <Space className="socials">
+            {discordInviteUrl && (
+              <Tooltip title="Join the Cellex Discord server">
+                <a href={discordInviteUrl}>
+                  <FaDiscord size={40} />
+                </a>
+              </Tooltip>
+            )}
+            <Tooltip title={`Get the source code on GitHub (v${version})`}>
+              <a href={repositoryUrl}>
+                <FaGithub size={40} />
+              </a>
+            </Tooltip>
+          </Space>
         </div>
         <Space direction="vertical">
           <div>

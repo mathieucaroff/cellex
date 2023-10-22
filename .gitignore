@@ -11,7 +11,7 @@
 *.js
 
 !/.editorconfig
-!/.env
+!/.env.example
 !/.gitignore
 !/.parcelrc
 !/.prettier*

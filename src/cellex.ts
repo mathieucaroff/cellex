@@ -1,7 +1,6 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
 
-import * as packageInfo from "../package.json"
 import { App } from "./App"
 import { createAct } from "./control/Act"
 import { createDragManager } from "./control/DragManager"
@@ -12,7 +11,6 @@ import { createDivineModeManager } from "./engine/DivineModeManager"
 import { createAutomatonEngine } from "./engine/Engine"
 import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/curatedAutomata"
 import { Engine } from "./engineType"
-import { githubCornerHTML } from "./lib/githubCorner"
 import { h } from "./lib/hyper"
 import { parseAutomaton } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
@@ -24,16 +22,7 @@ import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { randomChoice } from "./util/randomChoice"
 
-declare const __COMMIT_HASH__: string
-
 function main() {
-  // /\ github corner / package
-  let version = `${packageInfo.version}-${__COMMIT_HASH__}`
-  let cornerDiv = h("div", { innerHTML: githubCornerHTML(packageInfo.repository, version) })
-  document.body.appendChild(cornerDiv)
-  // <a href="https://discord.gg/gF3C79GKPY" title="Join the Cellex Discord server"><BsDiscord /></a>
-  // \/ canvas
-
   let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
 
   let state = initialState()

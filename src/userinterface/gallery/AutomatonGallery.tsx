@@ -18,6 +18,7 @@ const { Panel } = Collapse
 const totalisticCodePreviewArray = (props: { neighborhoodSize: number; reversible?: boolean }) => {
   let { neighborhoodSize, reversible = false } = props
   let r = reversible ? "r" : ""
+  let genesisArray = ["1(0)", "([01])", "([0{9}1])"]
 
   return Array.from({ length: 2 ** (neighborhoodSize + 1) }, (_, k) => {
     let descriptor = `ns${neighborhoodSize},${r}c${k}`
@@ -28,7 +29,7 @@ const totalisticCodePreviewArray = (props: { neighborhoodSize: number; reversibl
         key={k}
         descriptor={descriptor}
         automatonTitle={title}
-        genesisArray={["1(0)", "([01])", "([0{9}1])"]}
+        genesisArray={genesisArray}
       />
     )
   })
