@@ -4,11 +4,12 @@ import { randomChoice, weightedRandomChoice } from "../util/randomChoice"
 
 // prettier-ignore
 export const interestingElementaryRuleSet = {
-  "Interesting": [30, 54, 60, 73, 90, 105, 106, 110, 150, 184],
-  "Triangle":    [18, 22, 26, 30, 122, 126, 146, 150, 154],
-  "Twinkling":   [15, 41, 45, 51, 62, 73, 91, 94, 105],
-  "XOR":         [60, 90, 105, 150],
-  "Primitives":  [0, 255, 204, 51, 170, 240],
+  "Interesting":     [30, 54, 60, 73, 90, 105, 106, 110, 150, 184],
+  "Triangle":        [18, 22, 26, 30, 122, 126, 146, 150, 154],
+  "Checked Pattern": [50, 58, 114, 122, 178, 186, 242, 250],
+  "Twinkling":       [15, 41, 45, 51, 62, 73, 91, 94, 105],
+  "XOR":             [60, 90, 105, 150],
+  "Primitives":      [0, 255, 204, 51, 170, 240],
 }
 
 let set = interestingElementaryRuleSet

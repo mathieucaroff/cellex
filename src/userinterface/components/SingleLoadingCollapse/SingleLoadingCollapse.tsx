@@ -38,7 +38,7 @@ export function SingleCollapse(prop: SingleCollapseProp) {
           openTimeout = setTimeout(() => {
             setOpen(true)
             setLoading(false)
-          })
+          }, 50)
         } else {
           setOpen(false)
         }

@@ -184,7 +184,7 @@ export function AutomatonGallery({ doExpandFirst }: { doExpandFirst?: boolean })
               onChange={(value) => {
                 setEAFilter(value)
               }}
-              style={{ width: 120 }}
+              style={{ width: 160 }}
             />
           </div>
         )}
