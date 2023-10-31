@@ -148,8 +148,8 @@ function main() {
     .use(({ immersiveMode }) => immersiveMode)
     .for((immersiveMode) => {
       if (immersiveMode === "immersive") {
-        document.documentElement.classList.add("immersive")
         document.documentElement.requestFullscreen().then(() => {
+          document.documentElement.classList.add("immersive")
           displayDiv.focus()
         })
       } else if (document.documentElement.classList.contains("immersive")) {
@@ -166,6 +166,14 @@ function main() {
         handleResize()
       })
     })
+
+  window.addEventListener("fullscreenchange", () => {
+    if (document.fullscreenElement === null) {
+      context.updateState((state) => {
+        state.immersiveMode = "off"
+      })
+    }
+  })
 
   // main canvas panning
   let panningDragManager = createDragManager({

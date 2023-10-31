@@ -1,5 +1,5 @@
 import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Popover, Space, Switch, Tooltip } from "antd"
+import { Button, Collapse, Popover, Segmented, Space, Switch, Tooltip } from "antd"
 import { useContext } from "react"
 import { FaDiscord, FaGithub } from "react-icons/fa"
 
@@ -8,6 +8,7 @@ import { presentAutomaton } from "../nomenclature/nomenclature"
 import { parseTopBorder } from "../patternlang/parser"
 import { presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/ReactContext"
+import { InterventionSegmented } from "./Intervention"
 import { RuleInput } from "./RuleInput"
 import { OxButton } from "./components/OxButton/OxButton"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
@@ -106,45 +107,13 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 />
               </Space.Compact>
 
-              <div className="topMenu">
-                <Popover
-                  placement="bottom"
-                  title="Settings"
-                  content={<SettingsUI />}
-                  trigger="click"
-                >
-                  <Button>
-                    <i className="fa fa-cog" />
-                    Settings
-                  </Button>
-                </Popover>
-                <Popover
-                  content={
-                    divineMode.status !== "off" && (
-                      <OxSwitch
-                        title="Toggle propagation mode"
-                        path="divineMode.propagation"
-                        checkedChildren="propagation"
-                        unCheckedChildren="intervention"
-                      />
-                    )
-                  }
-                >
-                  <Switch
-                    title="Toggle divine mode"
-                    checkedChildren="divine"
-                    unCheckedChildren="natural"
-                    checked={divineMode.status !== "off"}
-                    onChange={(checked) => {
-                      if (checked) {
-                        act.setDivineModeWaiting()
-                      } else {
-                        act.setDivineModeOff()
-                      }
-                    }}
-                  />
-                </Popover>
-              </div>
+              <InterventionSegmented />
+              <Popover placement="bottom" title="Settings" content={<SettingsUI />} trigger="click">
+                <Button>
+                  <i className="fa fa-cog" style={{ marginRight: "8px" }} />
+                  Settings
+                </Button>
+              </Popover>
             </Space>
             <div style={{ float: "right" }}>
               <OxSelect path="darkMode" valueArray={["dark", "light"]} />

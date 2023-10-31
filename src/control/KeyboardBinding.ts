@@ -134,12 +134,6 @@ export let keyboardBinding = (prop: KeyboardBindingProp): KeyboardBinding => {
 
   onSpecificSymbol([" "], act.togglePlay, "[space]**", "toggle play / pause")
   onSpecificSymbol(["Enter"], act.singleStep, "[enter]**", "process a single generation")
-  onSymbol(
-    ["Escape"],
-    act.handlePressEscape,
-    "[escape]",
-    "disable the *I*mmersive mode when it is enabled",
-  )
 
   onSymbol(["ArrowLeft"], act.goLeft, "[left]", "move camera left*")
   onSymbol(["ArrowRight"], act.goRight, "[right]", "move camera right*")

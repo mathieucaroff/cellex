@@ -262,10 +262,6 @@ export let createAct = (context: Context, info: Info) => {
       state.immersiveMode = state.immersiveMode === "off" ? "immersive" : "off"
     }),
 
-    handlePressEscape: action((state) => {
-      state.immersiveMode = "off"
-    }),
-
     /** Gallery */
 
     toggleGallery: action((state) => {
