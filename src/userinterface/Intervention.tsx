@@ -7,10 +7,26 @@ import { useStateSelection } from "./hooks"
 export function InterventionSegmented() {
   const { status, propagation } = useStateSelection(({ divineMode }) => divineMode)
   let { act, context } = useContext(ReactContext)
-  const options = ["off", "intervention", "propagation"]
+
   return (
     <Segmented
-      options={options}
+      options={[
+        {
+          label: "off",
+          value: "off",
+          title: "Turn off the modification mode",
+        },
+        {
+          label: "intervention",
+          value: "intervention",
+          title: "modify a cell",
+        },
+        {
+          label: "propagation",
+          value: "propagation",
+          title: "modify a cell and show which cells are affected",
+        },
+      ]}
       value={status === "off" ? "off" : propagation ? "propagation" : "intervention"}
       onChange={(value) => {
         if (value === "off") {

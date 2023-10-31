@@ -137,7 +137,6 @@ export function AutomatonGallery({ doExpandFirst }: { doExpandFirst?: boolean })
           {curatedAutomata.map(({ shorterLabel, label, value }) => (
             <AutomatonPreview
               key={value}
-              tooltip={label}
               descriptor={value}
               automatonTitle={shorterLabel}
               genesisArray={["1(0)", "([012])", "([0{9}1])"]}
@@ -153,7 +152,6 @@ export function AutomatonGallery({ doExpandFirst }: { doExpandFirst?: boolean })
         automatonPreviewArray={extraCurated3ColorCodeArray.map(({ shorterLabel, label, value }) => (
           <AutomatonPreview
             key={value}
-            tooltip={label}
             descriptor={value}
             automatonTitle={shorterLabel}
             genesisArray={["([012])"]}

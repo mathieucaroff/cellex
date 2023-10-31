@@ -7,8 +7,6 @@ export interface AutomatonPreviewProp {
   automatonTitle?: string
   /** Automaton name */
   descriptor: string
-  /** Tooltip for the automaton */
-  tooltip?: string
   /** Genesis descriptors. One canvas will be displayed for each genesis */
   genesisArray: string[]
   /** width of the canvas-es */
@@ -18,17 +16,10 @@ export interface AutomatonPreviewProp {
 }
 
 export function AutomatonPreview(props: AutomatonPreviewProp) {
-  let {
-    descriptor,
-    tooltip,
-    automatonTitle = descriptor,
-    genesisArray,
-    width = 100,
-    height = 100,
-  } = props
+  let { descriptor, automatonTitle = descriptor, genesisArray, width = 100, height = 100 } = props
 
   return (
-    <Tooltip className="automatonPreview inline" title={tooltip}>
+    <span className="automatonPreview">
       <p>{automatonTitle}</p>
       {genesisArray.map((genesis, k) => (
         <AutomatonCanvas
@@ -37,9 +28,9 @@ export function AutomatonPreview(props: AutomatonPreviewProp) {
           genesis={genesis}
           width={width}
           height={height}
-          title={tooltip ? (genesisArray.length > 1 ? genesis : "") : undefined}
+          title={true ? (genesisArray.length > 1 ? genesis : "") : undefined}
         />
       ))}
-    </Tooltip>
+    </span>
   )
 }
