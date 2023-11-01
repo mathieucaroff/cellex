@@ -52,6 +52,7 @@ export let RuleInput = () => {
         path="automaton"
         id="automatonInput"
         title="Set the simulated automaton"
+        miniLabel="automaton"
         style={{ width: "initial" }}
         present={(automaton: TableRuleAutomaton) => presentAutomaton(automaton).descriptor}
         parse={parse}

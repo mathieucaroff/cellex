@@ -193,3 +193,33 @@ th {
   transition: transform .3s ease-in;
   transform: rotate(360deg);
 }
+
+/* Mini-label */
+.oxEnterInputContainer {
+  position: relative;
+}
+
+.miniLabel {
+  font-size: 0.6rem;
+  color: #aaa;
+  margin-left: 4px;
+  position: absolute;
+  bottom: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-input-affix-wrapper:hover .miniLabel, .ant-segmented:hover .miniLabel {
+  color: white;
+}
+
+/* Theme selector */
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.themeSelect {
+  margin-left: 8px;
+}

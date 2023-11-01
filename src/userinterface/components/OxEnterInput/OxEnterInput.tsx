@@ -18,6 +18,7 @@ interface OxEnterInputProp {
   // randomizer2 is a second way to get a random value
   randomElementTitle?: string
   extraOnPressEnter?: () => void
+  miniLabel?: string
 }
 
 /** OxEnterInput is an input which maps to the value of the path of the state
@@ -35,6 +36,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     randomizer,
     randomElementTitle,
     extraOnPressEnter,
+    miniLabel,
   } = prop
 
   let { context } = useContext(ReactContext)
@@ -88,7 +90,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
   ) : null
 
   return (
-    <Space.Compact>
+    <Space.Compact className="oxEnterInputContainer">
       <Input
         id={id}
         style={style}
@@ -121,6 +123,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
         onFocus={() => setIsFocused(true)}
         ref={ref}
         status={error && "error"}
+        prefix={<label className="miniLabel">{miniLabel}</label>}
         suffix={<Tooltip title={error}>{error && <InfoCircleOutlined />}</Tooltip>}
       />
       {randomElement}

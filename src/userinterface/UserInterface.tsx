@@ -13,7 +13,6 @@ import { RuleInput } from "./RuleInput"
 import { OxButton } from "./components/OxButton/OxButton"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
 import { OxSelect } from "./components/OxSelect/OxSelect"
-import { OxSwitch } from "./components/OxSwittch/OxSwitch"
 import { AutomatonEditor } from "./editor/AutomatonEditor"
 import { GalleryButton } from "./gallery/GalleryButton"
 import { DivGraft } from "./graft"
@@ -67,12 +66,11 @@ export let UserInterface = (prop: UserInterfaceProp) => {
           </Space>
         </div>
         <Space direction="vertical">
-          <div>
-            <Space>
+          <div className="headerContainer">
+            <Space style={{ display: "flex" }}>
               <Button
                 type="primary"
                 title={play ? "pause" : "play"}
-                size="large"
                 icon={play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
                 onClick={() => act.togglePlay()}
               />
@@ -101,6 +99,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 <OxEnterInput
                   title="Set the simluation genesis"
                   path="topology.genesis"
+                  miniLabel="initialization"
                   style={{ width: "initial" }}
                   present={presentTopBorder}
                   parse={parseTopBorder}
@@ -115,8 +114,13 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 </Button>
               </Popover>
             </Space>
-            <div style={{ float: "right" }}>
-              <OxSelect path="darkMode" valueArray={["dark", "light"]} />
+            <div>
+              <OxSelect
+                path="darkMode"
+                valueArray={["dark", "light"]}
+                className="themeSelect"
+                title="Select a theme"
+              />
             </div>
           </div>
 
