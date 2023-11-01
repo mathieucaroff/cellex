@@ -19,12 +19,12 @@ export function InterventionSegmented() {
         {
           label: "intervention",
           value: "intervention",
-          title: "modify a cell",
+          title: "Modify a cell",
         },
         {
           label: "propagation",
           value: "propagation",
-          title: "modify a cell and show which cells are affected",
+          title: "Modify a cell and show which cells are affected",
         },
       ]}
       value={status === "off" ? "off" : propagation ? "propagation" : "intervention"}

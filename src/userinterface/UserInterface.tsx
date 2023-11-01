@@ -79,6 +79,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 path="immersiveMode"
                 icon={<FullscreenOutlined />}
                 switchValue={["off", "immersive"]}
+                title={"Enable immersive mode"}
               />
 
               <GalleryButton />

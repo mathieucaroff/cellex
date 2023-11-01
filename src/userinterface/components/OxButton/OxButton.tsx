@@ -1,13 +1,11 @@
-import { Button } from "antd"
+import { Button, ButtonProps } from "antd"
 import { useContext } from "react"
 
 import { ReactContext } from "../../../state/ReactContext"
 import { readPath } from "../../hooks"
 
-interface OxButtonProp {
+interface OxButtonProp extends ButtonProps {
   path: string
-  icon: React.ReactNode
-  disabled?: boolean
   switchValue?: string[]
   toggle?: boolean
   half?: boolean
@@ -18,10 +16,8 @@ interface OxButtonProp {
 
 // OxButton
 export function OxButton(prop: OxButtonProp) {
-  let { path, icon, disabled, switchValue, toggle, half, double, floor, ceil } = prop
+  let { path, switchValue, toggle, half, double, floor, ceil, ...buttonParameter } = prop
   let { context } = useContext(ReactContext)
-
-  let buttonParameter: any = { icon, disabled }
 
   if (toggle) {
     buttonParameter.onClick = () => {
