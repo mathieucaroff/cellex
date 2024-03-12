@@ -8,7 +8,7 @@ import { presentAutomaton } from "../nomenclature/nomenclature"
 import { parseTopBorder } from "../patternlang/parser"
 import { presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/ReactContext"
-import { InterventionSegmented } from "./Intervention"
+import { InterventionSelector } from "./Intervention"
 import { RuleInput } from "./RuleInput"
 import { OxButton } from "./components/OxButton/OxButton"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
@@ -107,7 +107,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                 />
               </Space.Compact>
 
-              <InterventionSegmented />
+              <InterventionSelector />
               <Popover placement="bottom" title="Settings" content={<SettingsUI />} trigger="click">
                 <Button>
                   <i className="fa fa-cog" style={{ marginRight: "8px" }} />
