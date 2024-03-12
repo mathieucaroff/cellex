@@ -1,6 +1,6 @@
 # Cellex Documentation
 
-Cellex is a cellular automaton exploration tool. It works with monodimensional automaton only and allows automaton using up to six states, each represented by a color, with a neighborhood size of three (left cell, self, right cell), though the engine can work with up to sixteen states, or with a neighborhood of size 11.
+Cellex is a cellular automaton exploration tool. It works with monodimensional automaton only and allows automaton using up to six states, each represented by a color, with a neighborhood size of up to 11 cells, though the engine can work with up to sixteen states, or with a neighborhood of size 11.
 
 # Content
 
@@ -9,8 +9,7 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
 - [Base interface](#base-interface)
   - [View](#view)
   - [Top Toolbar](#top-toolbar)
-    - [Automaton Input Widget](#automaton-input-widget)
-  - [Top Menu](#top-menu)
+  - [Automaton Input Widget](#automaton-input-widget)
     - [Genesis](#genesis)
   - [Automaton Editor](#automaton-editor)
     - [Simulation topology selector](#simulation-topology-selector)
@@ -24,17 +23,17 @@ Cellex is a cellular automaton exploration tool. It works with monodimensional a
 The application includes the following parts:
 
 - The **view**, or display -- this is where the cellular automaton is displayed
-- The **top toolbar**, followed by the **top menu**. They provide some controls for the view.
+- The **top toolbar**, which provides some controls for the view.
 - The **automaton editor**
 
 ## View
 
-The view canvas supports click and drag, allowing panning using the mouse. It also supports resizing by clicking and dragging the bottom right corner.
+The view canvas supports click and drag, allowing panning using the mouse.
 
 Please note that:
 
 - when the zoomed simulation is of the same width or of smaller width than the canvas, the view of the simulation is locked in the center of the canvas and the horizontal canvas moves are not possible
-- when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered. Also note that the heights of the two canvas are tied together.
+- when the cellular automaton is being played, the vertical component of the mouse panning is disabled, i.e. only the horizontal component is considered.
 
 The following shortcuts are available:
 
@@ -55,30 +54,29 @@ When the view is selected, it also supports the following keyboard actions:
 
 ## Top Toolbar
 
-The top toolbar is composed of a **play/pause** button, a **automaton input widget** and a **genesis selector**.
+The top toolbar is composed of a **play/pause** button, a **full screen** button, a button to **open the automata gallery**, an **automaton randomization button**, an **automaton input widget**, a **genesis selector**, a **differential mode selector**, and finally, a **settings button**.
 
 ## Automaton Input Widget
 
 The automaton input widget allows to input an automaton descriptor. For automata with more than two colors, the number of colors must be specified in the descriptor, e.g. "3 colors". For automata whose neighborhood is larger than 3 cells, the neighborhood size must be specified, e.g. "neighborhood size 5". Finally, the rule number or code number of the automaton must always be specified, e.g. "rule 901" or "code 376".
 
-## Top Menu
+Example: `neighborhood size 5, 3 colors, code 86_429`
 
 ### Genesis
 
-The genesis selector allows to choose what the how the starting state of the automaton should be generated. The genesis selector offers a preset of options:
+The genesis selector allows to choose how the starting state of the automaton should be generated. The genesis selector offers a preset of options:
 
-- Impulse 1, Impulse 3 and Impulse 5 are deterministic. They all correspond to a starting position where all but one or two cells are dead. Their names are chosen because of the binary notation of each number: 3 is written `0b11` and 5 is written `0b101`.
+- Impulse 1, Impulse 3, Impulse 5 and Impulse 7 are deterministic. They all correspond to a starting position where all but one or two cells are dead. Their names are chosen because of the binary notation of each number: 3 is written `0b11` and 5 is written `0b101`.
 
 - Random 10%, Random 50% and Random 90% are genesis states randomly generated states. The percentage is the likelihood to be alive, for each cell.
 
-  Please note that the random used in the simulator is generated with a seed. This allows the random of the application to be deterministic. It makes the initial state of the application reproducible, given the seed. The seed parameter can be found in the Topology menu.
+  Please note that the random used in the simulator is generated with a seed. This allows the random of the application to be deterministic. It makes the initial state of the application reproducible, given the seed. The seed parameter can be found in the Topology section of the settings panel.
 
-  Next to the seed selector is a dice button. This dice allows to randomly
-  generate a new seed, to obtain a new initial state.
+  Note that next to the seed input field is a dice button. This dice allows to randomly generate a new seed, to obtain a new initial state.
 
 ## Automaton Editor
 
-The automaton editor shows the resulting cell of for each of all the possible combinations of states. Click on a result cell or scrolling while hovering allows to change the automaton.
+The automaton editor shows the resulting cell of for each of all the possible combinations of states. Clicking on a result cell allows to change the automaton.
 
 ### Simulation topology selector
 
@@ -143,7 +141,7 @@ Note the `x2` and `/2` buttons will refuse to go past 0.25 or past 64.
 
 ### Canvas width and height
 
-The width and the height field allow reading and setting the size the canvas, in pixel. There is a resize handle in the bottom right corner of the canvas.
+The width and the height field allow reading and setting the size the canvas, in pixel.
 
 ### Generation and spatial position
 
