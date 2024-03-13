@@ -7,7 +7,7 @@ import { rule110Topology14 } from "../test-provisionning"
 import { createTableCodeStepper } from "./tableCode"
 
 describe("The tableCode calculator", () => {
-  it("Correctly computes one generation of rule 110 in looping topology", () => {
+  it("Correctly computes one generation of code 6, i.e. rule 126, in looping topology", () => {
     let topology8 = {
       ...rule110Topology14,
       width: 8,

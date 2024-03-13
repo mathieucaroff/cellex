@@ -29,10 +29,6 @@ export let initialState = (): State => {
     )
     let height = w.innerHeight - 150
 
-    if (param.has("width")) {
-      width = +param.get("width")!
-    }
-
     return { width, height }
   }
 
