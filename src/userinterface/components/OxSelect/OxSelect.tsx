@@ -4,8 +4,6 @@ import { useContext } from "react"
 import { ReactContext } from "../../../state/ReactContext"
 import { readPath, useStatePath } from "../../hooks"
 
-const { Option } = Select
-
 interface OxSelectProp extends Omit<SelectProps, "value" | "options"> {
   path: string
   valueArray: string[]
@@ -27,7 +25,7 @@ export function OxSelect(prop: OxSelectProp) {
         })
       }}
       {...rest}
-      options={valueArray.map((v) => ({ label: v }))}
+      options={valueArray.map((v) => ({ label: v, value: v }))}
     />
   )
 }

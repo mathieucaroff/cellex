@@ -223,3 +223,9 @@ th {
 .themeSelect {
   margin-left: 8px;
 }
+
+/** Remove antd's offset on number inputs
+ * -- since it messes up the rows of buttons-input-buttons */
+.ant-input-number {
+  position: initial;
+}

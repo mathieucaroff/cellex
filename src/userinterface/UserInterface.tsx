@@ -33,13 +33,8 @@ interface UserInterfaceProp {
 export let UserInterface = (prop: UserInterfaceProp) => {
   let { shortcutList, displayDiv, repositoryUrl, version, discordInviteUrl } = prop
   let { act, context } = useContext(ReactContext)
-  let { automaton, divineMode, play, immersiveMode } = useStateSelection(
-    ({ automaton, divineMode, immersiveMode, play }) => ({
-      divineMode,
-      immersiveMode,
-      play,
-      automaton,
-    }),
+  let { automaton, play, immersiveMode } = useStateSelection(
+    ({ automaton, immersiveMode, play }) => ({ immersiveMode, play, automaton }),
   )
 
   if (immersiveMode === "immersive") {
