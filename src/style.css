@@ -229,3 +229,26 @@ th {
 .ant-input-number {
   position: initial;
 }
+
+/* Minimap */
+#displayDiv {
+  position: relative;
+}
+
+.minimap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10%;
+  height: 50%;
+  border: 1px solid #222;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.minimapHighlight {
+  position: absolute;
+  border: 1px solid #0f0;
+  background-color: rgba(0, 255, 0, 0.5);
+  cursor: grab;
+}

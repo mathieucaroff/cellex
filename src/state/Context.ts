@@ -1,12 +1,13 @@
 import { State, StatePosition } from "../stateType"
 import { clone } from "../util/clone"
 import { deepEqual } from "../util/deepEqual"
+import { SafeStateWriter } from "./SafeStateWriter"
 
 /**
  * @param state the initial state to be held in the context
  * @returns a context instance for the state
  */
-export let createContext = (state: State) => {
+export let createContext = (state: State, safeStateWriter: SafeStateWriter) => {
   let propertyUtilizationShelf: [
     (s: State) => unknown,
     unknown,
@@ -93,14 +94,14 @@ export let createContext = (state: State) => {
         positionShelf = positionShelf.filter((fn) => fn !== runFunction)
       }
     },
-    updatePosition(changer: (p: StatePosition, st: State) => void) {
+    updatePosition(changer: (p: StatePosition, st: State, ssw: SafeStateWriter) => void) {
       if (updatingPosition || updatingState) {
-        changer(state, state)
+        changer(state, state, safeStateWriter)
         return
       }
       try {
         updatingPosition = true
-        changer(state, state)
+        changer(state, state, safeStateWriter)
       } finally {
         updatingPosition = false
         positionShelf.forEach((f) => {

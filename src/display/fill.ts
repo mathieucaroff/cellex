@@ -60,6 +60,8 @@ export function fillImage(
         if (!color) {
           lastError = [
             "Encountered a color index [",
+            line[x],
+            "] at postion [",
             x,
             "] which is absent from the colormap",
             colorMap,

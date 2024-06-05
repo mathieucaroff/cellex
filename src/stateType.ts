@@ -29,6 +29,7 @@ export interface State extends StatePosition {
   presentationMode: PresentationMode
   colorMap: Color[]
   divineMode: DivineMode // todo: rename DivineMode into something which encompasses the divine case and the differential case
+  displayMinimap: boolean
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
   seed: string
 

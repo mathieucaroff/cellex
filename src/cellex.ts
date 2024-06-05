@@ -7,6 +7,7 @@ import { createDragManager } from "./control/DragManager"
 import { createInfo } from "./control/Info"
 import { keyboardBinding } from "./control/KeyboardBinding"
 import { createDisplay } from "./display/Display"
+import { createMinimap } from "./display/Minimap"
 import { createDivineModeManager } from "./engine/DivineModeManager"
 import { createAutomatonEngine } from "./engine/Engine"
 import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/curatedAutomata"
@@ -15,6 +16,7 @@ import { h } from "./lib/hyper"
 import { parseAutomaton } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
+import { createSafeStateWriter } from "./state/SafeStateWriter"
 import { initialState } from "./state/state"
 import { ImmersiveMode, State } from "./stateType"
 import { DesktopOrMobile } from "./type"
@@ -26,8 +28,9 @@ function main() {
   let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
 
   let state = initialState()
-  let context = createContext(state)
   let info = createInfo(state)
+  let safeStateWriter = createSafeStateWriter(state, info)
+  let context = createContext(state, safeStateWriter)
   let act = createAct(context, info)
 
   // /\ canvas
@@ -206,6 +209,13 @@ function main() {
     drawDisplay(false)
   })
   // \/ display
+
+  // /\ minimap
+  let minimap = createMinimap({
+    rootElement: displayDiv,
+    context,
+  })
+  // \/ minimap
 
   // /\ divine mode, "divine intervention"
   let divineModeManager = createDivineModeManager({ context })

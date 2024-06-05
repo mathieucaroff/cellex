@@ -22,10 +22,11 @@ const { Option } = Select
 
 export let SettingsUI = () => {
   let { context, act } = useContext(ReactContext)
-  let [topologyKind, stateCount, presentationMode] = useStateSelection(
-    ({ automaton: { stateCount }, topology: { kind }, presentationMode }) => [
+  let [topologyKind, stateCount, displayMinimap, presentationMode] = useStateSelection(
+    ({ automaton: { stateCount }, topology: { kind }, displayMinimap, presentationMode }) => [
       kind,
       stateCount,
+      displayMinimap,
       presentationMode,
     ],
   )
@@ -198,6 +199,17 @@ export let SettingsUI = () => {
                 <Button onClick={() => act.setRandomGenesis("([0001])([0111])")()}>
                   Random Mode
                 </Button>
+              </p>
+            </li>
+            <li>
+              <p>
+                <Switch
+                  checked={displayMinimap}
+                  onChange={(enabled) => {
+                    context.updateState((state) => (state.displayMinimap = enabled))
+                  }}
+                />{" "}
+                Display minimap
               </p>
             </li>
             <li>
