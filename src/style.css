@@ -149,6 +149,10 @@ th {
   margin-bottom: 2px;
 }
 
+.automatonPreview canvas {
+  display: inline;
+}
+
 /* modal override */
 .ant-modal-root {
   visibility: hidden;

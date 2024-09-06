@@ -1,5 +1,9 @@
-import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Popover, Segmented, Space, Switch, Tooltip } from "antd"
+import {
+  FullscreenOutlined,
+  PauseCircleOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons"
+import { Button, Collapse, Popover, Space, Tooltip } from "antd"
 import { useContext } from "react"
 import { FaDiscord, FaGithub } from "react-icons/fa"
 
@@ -27,14 +31,19 @@ interface UserInterfaceProp {
   displayDiv: HTMLDivElement
   repositoryUrl: string
   version: string
-  discordInviteUrl: string
+  discordInviteUrl?: string
 }
 
 export let UserInterface = (prop: UserInterfaceProp) => {
-  let { shortcutList, displayDiv, repositoryUrl, version, discordInviteUrl } = prop
+  let { shortcutList, displayDiv, repositoryUrl, version, discordInviteUrl } =
+    prop
   let { act, context } = useContext(ReactContext)
   let { automaton, play, immersiveMode } = useStateSelection(
-    ({ automaton, immersiveMode, play }) => ({ immersiveMode, play, automaton }),
+    ({ automaton, immersiveMode, play }) => ({
+      immersiveMode,
+      play,
+      automaton,
+    }),
   )
 
   if (immersiveMode === "immersive") {
@@ -103,7 +112,12 @@ export let UserInterface = (prop: UserInterfaceProp) => {
               </Space.Compact>
 
               <InterventionSelector />
-              <Popover placement="bottom" title="Settings" content={<SettingsUI />} trigger="click">
+              <Popover
+                placement="bottom"
+                title="Settings"
+                content={<SettingsUI />}
+                trigger="click"
+              >
                 <Button>
                   <i className="fa fa-cog" style={{ marginRight: "8px" }} />
                   Settings

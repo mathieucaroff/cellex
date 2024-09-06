@@ -1,13 +1,16 @@
 import { ConfigProvider, theme as antdTheme } from "antd"
 import { StrictMode, useEffect, useState } from "react"
 
-import * as packageInfo from "../package.json"
+import packageInfo from "../package.json"
 import { Act } from "./control/Act"
 import { Info } from "./control/Info"
 import { Context } from "./state/Context"
 import { ReactContext } from "./state/ReactContext"
 import { DarkMode } from "./stateType"
 import { UserInterface } from "./userinterface/UserInterface"
+
+import "./style.ant.custom.css"
+import "./style.css"
 
 export interface AppProp {
   act: Act
@@ -17,14 +20,14 @@ export interface AppProp {
   displayDiv: HTMLDivElement
 }
 
-declare const __DISCORD_INVITE_URL__: string
-declare const __COMMIT_HASH__: string
-const version = `${packageInfo.version}-${__COMMIT_HASH__}`
+const version = `${packageInfo.version}-${process.env.COMMIT_HASH}`
 
 export function App(prop: AppProp) {
   const { act, context, info, shortcutList, displayDiv } = prop
 
-  let [darkMode, setDarkMode] = useState<DarkMode>(() => context.getState().darkMode)
+  let [darkMode, setDarkMode] = useState<DarkMode>(
+    () => context.getState().darkMode,
+  )
   useEffect(() => {
     context
       .use<DarkMode>((s) => s.darkMode)
@@ -37,13 +40,17 @@ export function App(prop: AppProp) {
   return (
     <StrictMode>
       <ReactContext.Provider value={{ act, context, info }}>
-        <ConfigProvider theme={{ algorithm: darkMode === "dark" ? [antdTheme.darkAlgorithm] : [] }}>
+        <ConfigProvider
+          theme={{
+            algorithm: darkMode === "dark" ? [antdTheme.darkAlgorithm] : [],
+          }}
+        >
           <UserInterface
             shortcutList={shortcutList}
             displayDiv={displayDiv}
             repositoryUrl={packageInfo.repository}
             version={version}
-            discordInviteUrl={__DISCORD_INVITE_URL__}
+            discordInviteUrl={process.env.DISCORD_INVITE_URL}
           />
         </ConfigProvider>
       </ReactContext.Provider>

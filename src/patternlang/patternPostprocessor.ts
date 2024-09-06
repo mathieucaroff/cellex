@@ -1,16 +1,25 @@
-import { Pattern, PatternElement, PatternGroup, PatternRootGroup, PatternSet } from "./PatternType"
+import {
+  Pattern,
+  PatternElement,
+  PatternGroup,
+  PatternRootGroup,
+  PatternSet,
+} from "./PatternType"
 import { totalWidth } from "./borderPostprocessor"
 
 export let zero = () => 0
 export let one = () => 1
 
 // ## Pattern
-export let pattern = ([iFlag, iGroup]: [Pattern, PatternRootGroup]): Pattern => {
+export let pattern = ([iFlag, iGroup]: [
+  Pattern,
+  PatternRootGroup,
+]): Pattern => {
   return { ...iFlag, pattern: iGroup }
 }
 
 // ## Flag
-export let flag = ([input]): Pattern => {
+export let flag = ([input]: [string]): Pattern => {
   let pattern = {} as PatternRootGroup
   // Note: `.pattern` is overwritten inside `pattern()`
 
@@ -62,7 +71,8 @@ export let group: FGroup = (capture) => (arg) => {
     })
 
   let isVisible =
-    capture === "visible" || elementList.some((e) => e.type === "group" && e.capture === "visible")
+    capture === "visible" ||
+    elementList.some((e) => e.type === "group" && e.capture === "visible")
   let visibility: typeof capture = isVisible ? "visible" : "hidden"
 
   return {
@@ -77,7 +87,8 @@ export let group: FGroup = (capture) => (arg) => {
 
 // ## StateSet
 export let patternSet = ([stateList]: [number[]]): PatternSet => {
-  let uniq = (x, k, arr) => !arr.slice(0, k).includes(x)
+  let uniq = (x: unknown, k: number, arr: unknown[]) =>
+    !arr.slice(0, k).includes(x)
 
   return {
     type: "set",

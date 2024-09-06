@@ -2,9 +2,12 @@ import { default as nearley } from "nearley"
 
 import { ordinalNumber } from "../util/ordinalNumber"
 import { SideBorder, TopBorder } from "./BorderType"
-import { default as patternGrammar } from "./patternLanguage.ne"
-import { default as sideBorderGrammar } from "./sideBorderLanguage.ne"
-import { default as topBorderGrammar } from "./topBorderLanguage.ne"
+// import { default as patternGrammar } from "./patternLanguage.ne"
+// import { default as sideBorderGrammar } from "./sideBorderLanguage.ne"
+// import { default as topBorderGrammar } from "./topBorderLanguage.ne"
+import patternGrammar from "./patternLanguage.ne"
+import sideBorderGrammar from "./sideBorderLanguage.ne"
+import topBorderGrammar from "./topBorderLanguage.ne"
 
 export class ErrorWithInfo extends Error {
   constructor(
@@ -32,12 +35,18 @@ export let createPatternParser = () => {
   return new nearley.Parser(patternGrammar)
 }
 
-export let parse = <T>(input: string, name: string, parser: nearley.Parser): T => {
+export let parse = <T>(
+  input: string,
+  name: string,
+  parser: nearley.Parser,
+): T => {
   // Run
   try {
     parser.feed(input)
-  } catch (e) {
-    let position = e.offset + 1 === input.length ? "last" : ordinalNumber(e.offset + 1)
+  } catch (err) {
+    let e = err as any
+    let position =
+      e.offset + 1 === input.length ? "last" : ordinalNumber(e.offset + 1)
     throw new ErrorWithInfo(
       String(e),
       `unexpected ${position} character: \`${e.token.value}\``,
@@ -52,7 +61,11 @@ export let parse = <T>(input: string, name: string, parser: nearley.Parser): T =
     if (input.length > 0) {
       info = "incomplete input"
     }
-    throw new ErrorWithInfo("invalid automaton descriptor (no result after parsing)", info, input)
+    throw new ErrorWithInfo(
+      "invalid automaton descriptor (no result after parsing)",
+      info,
+      input,
+    )
   }
 
   // if (parser.results.length > 1) {

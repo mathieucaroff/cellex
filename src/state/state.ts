@@ -8,8 +8,8 @@ export let oldColorMap = "#000000;#007fff;#b4b400;#7f00c8;#0aa00a;#7f1e1e;#f0b40
 export let defaultColorMap =
   "#0a0a0a;#00c3ff;#ffa700;#0100c8;#00bd00;#b60303;#ffff00;#B0B0B0;#ff57eb"
 
-export let initialState = (): State => {
-  let param = new URLSearchParams(location.search)
+export let initialState = (window: Window): State => {
+  let param = new URLSearchParams(window.location.search)
 
   let getOr = <T>(key: string, parse: (v: string) => T, alt: () => T) => {
     if (param.has(key)) {

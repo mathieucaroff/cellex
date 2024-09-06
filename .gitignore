@@ -1,18 +1,9 @@
-# Folders
 /*/
+.*
 
-!/contribute/
-!/doc/
+node_modules/
+
 !/src/
-
-# Files
-/.*
-*.log
-*.js
-
-!/.editorconfig
-!/.env.example
-!/.gitignore
-!/.parcelrc
-!/.prettier*
-!/.yarnrc.yml
+!.gitignore
+!.eslintrc.json
+!.prettierrc

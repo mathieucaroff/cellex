@@ -1,6 +1,3 @@
-import * as React from "react"
-import * as ReactDOM from "react-dom/client"
-
 import { App } from "./App"
 import { createAct } from "./control/Act"
 import { createDragManager } from "./control/DragManager"
@@ -10,7 +7,10 @@ import { createDisplay } from "./display/Display"
 import { createMinimap } from "./display/Minimap"
 import { createDivineModeManager } from "./engine/DivineModeManager"
 import { createAutomatonEngine } from "./engine/Engine"
-import { computeTransitionNumber, interestingElementaryRuleArray } from "./engine/curatedAutomata"
+import {
+  computeTransitionNumber,
+  interestingElementaryRuleArray,
+} from "./engine/curatedAutomata"
 import { Engine } from "./engineType"
 import { h } from "./lib/hyper"
 import { parseAutomaton } from "./nomenclature/nomenclature"
@@ -24,10 +24,10 @@ import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { randomChoice } from "./util/randomChoice"
 
-function main() {
+export function cellex(window: Window) {
   let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
 
-  let state = initialState()
+  let state = initialState(window)
   let info = createInfo(state)
   let safeStateWriter = createSafeStateWriter(state, info)
   let context = createContext(state, safeStateWriter)
@@ -58,16 +58,20 @@ function main() {
 
   let shortcutList = keyboardBindingReference.getHelp()
 
-  let reactRoot = ReactDOM.createRoot(document.getElementById("appRoot")!)
-  reactRoot.render(React.createElement(App, { act, context, info, shortcutList, displayDiv }))
-
   // /\ display
   let display = createDisplay(canvas)
   let engine: Engine
 
   // local display.draw method
   let drawDisplay = (redraw: boolean) => {
-    display.draw(state.posS, state.posT, state.zoom, state.zoom, state.colorMap, redraw)
+    display.draw(
+      state.posS,
+      state.posT,
+      state.zoom,
+      state.zoom,
+      state.colorMap,
+      redraw,
+    )
   }
 
   // engine-related change
@@ -244,7 +248,10 @@ function main() {
         state.play = true
       })
     } else {
-      if (state.automaton.kind !== "tableRule" && state.automaton.kind !== "tableCode") {
+      if (
+        state.automaton.kind !== "tableRule" &&
+        state.automaton.kind !== "tableCode"
+      ) {
         context.updateState(() => {
           state.presentationMode = "off"
         })
@@ -260,7 +267,9 @@ function main() {
         state.automaton = parseAutomaton(newRuleNumber.toString())
         state.posT = 0
 
-        let impulseOkRuleArray = [18, 22, 26, 30, 45, 60, 62, 73, 90, 105, 110, 126, 146, 150, 154]
+        let impulseOkRuleArray = [
+          18, 22, 26, 30, 45, 60, 62, 73, 90, 105, 110, 126, 146, 150, 154,
+        ]
         if (impulseOkRuleArray.includes(newRuleNumber) && Math.random() < 0.5) {
           // impulse genesis
           state.topology.genesis = parseTopBorder("1(0)")
@@ -280,7 +289,10 @@ function main() {
     .for((mode) => {
       clearTimeout(presentationTickTimeoutId)
       if (mode === "present") {
-        presentationTickTimeoutId = setTimeout(presentationTick, presentationModeWarmUpDuration)
+        presentationTickTimeoutId = setTimeout(
+          presentationTick,
+          presentationModeWarmUpDuration,
+        )
         presentationModeWarmUpDuration = 0
       }
     })
@@ -328,6 +340,9 @@ function main() {
       state.canvasSize.height -= 150
     }
   }
-}
 
-main()
+  return {
+    Component: App,
+    prop: { act, context, info, shortcutList, displayDiv },
+  }
+}
