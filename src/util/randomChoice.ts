@@ -14,4 +14,5 @@ export let weightedRandomChoice = <T>(optionArray: [number, T][]) => {
       return value
     }
   }
+  throw new Error("INTERNAL ERROR - the random value cannot be greater than the total weight")
 }

@@ -33,14 +33,12 @@ import {
 
 export let AutomatonEditor = () => {
   let { context } = useContext(ReactContext)
-  let { automaton, colorMap } = useStateSelection(({ automaton, colorMap }) => ({
-    automaton,
-    colorMap,
-  }))
-  let a = automaton
-  if (automaton.kind !== "tableRule" && automaton.kind !== "tableCode") {
-    return <></>
-  }
+  let { automaton, colorMap } = useStateSelection(
+    ({ automaton, colorMap }) => ({
+      automaton,
+      colorMap,
+    }),
+  )
   let canvasRef = useRef<HTMLCanvasElement>(null)
   let smallCanvas = document.createElement("canvas")
   let smallCtx = smallCanvas.getContext("2d")!
@@ -56,13 +54,25 @@ export let AutomatonEditor = () => {
   // iWidth and iHeight define how many occurences of entry per row or column
   const iWidth = Math.max(
     minimumIWidth,
-    iWidthPeriodicity * Math.floor((8 * length ** 0.5) / (xSpacing * iWidthPeriodicity)),
+    iWidthPeriodicity *
+      Math.floor((8 * length ** 0.5) / (xSpacing * iWidthPeriodicity)),
   )
   const iHeight = Math.ceil(length / iWidth)
 
-  fillAutomatonEditor(smallCtx, automaton, colorMap, xSpacing, ySpacing, iWidth, iHeight)
+  fillAutomatonEditor(
+    smallCtx,
+    automaton,
+    colorMap,
+    xSpacing,
+    ySpacing,
+    iWidth,
+    iHeight,
+  )
 
-  const zoom = Math.min(Math.floor(0.9 * (window.innerWidth / smallCanvas.width)), 24)
+  const zoom = Math.min(
+    Math.floor(0.9 * (window.innerWidth / smallCanvas.width)),
+    24,
+  )
   // useLayoutEffect here because we need to wait for the canvas to be instanciated
   useLayoutEffect(() => {
     let canvas = canvasRef.current!
@@ -83,6 +93,10 @@ export let AutomatonEditor = () => {
     )
   })
 
+  if (automaton.kind !== "tableRule" && automaton.kind !== "tableCode") {
+    return <></>
+  }
+
   let getPosition = (ev: any, exact: boolean): [number, string] => {
     let bound = ev.target.getBoundingClientRect()
     let mouseX = ev.clientX - bound.left
@@ -90,7 +104,10 @@ export let AutomatonEditor = () => {
     if (exact) {
       let x = Math.floor(mouseX / zoom)
       let y = Math.floor(mouseY / zoom)
-      if (x % (automaton.neighborhoodSize + 1) !== Math.floor(automaton.neighborhoodSize / 2)) {
+      if (
+        x % (automaton.neighborhoodSize + 1) !==
+        Math.floor(automaton.neighborhoodSize / 2)
+      ) {
         return [0, "inexact x coordinate"]
       } else if (y % 3 != 1) {
         return [0, "inexact y coordinate"]
@@ -105,7 +122,9 @@ export let AutomatonEditor = () => {
     return [position, ""]
   }
 
-  let clickChangeColor = (ev: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+  let clickChangeColor = (
+    ev: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+  ) => {
     let delta = ev.button === 0 ? 1 : -1
     let exact = true
     ev.preventDefault()
@@ -115,7 +134,10 @@ export let AutomatonEditor = () => {
       return
     }
     context.updateState(() => {
-      transitionTable[position] = mod(transitionTable[position] + delta, stateCount)
+      transitionTable[position] = mod(
+        transitionTable[position] + delta,
+        stateCount,
+      )
     })
   }
 
@@ -139,7 +161,9 @@ export let AutomatonEditor = () => {
   let identityFunction = automaton.transitionTable.map((v, k) => {
     let n = length - 1 - k
     let centerPosition = Math.floor(automaton.neighborhoodSize / 2)
-    let result = Math.floor(n / automaton.stateCount ** centerPosition) % automaton.stateCount
+    let result =
+      Math.floor(n / automaton.stateCount ** centerPosition) %
+      automaton.stateCount
     if (result !== v) {
       identityDifferenceArray.push(k)
     }
@@ -153,7 +177,10 @@ export let AutomatonEditor = () => {
     ;[
       [getMathWorldLink(ruleNumber), "on Wolfram MathWorld"],
       [getWikipediaLink(ruleNumber), "on Wikipedia"],
-      [getWikipediaDedicatedPageLink(ruleNumber), "on its dedicated Wikipedia page"],
+      [
+        getWikipediaDedicatedPageLink(ruleNumber),
+        "on its dedicated Wikipedia page",
+      ],
     ].forEach(([link, pageName]) => {
       if (link) {
         ulContent.push(
@@ -188,7 +215,7 @@ export let AutomatonEditor = () => {
             </Button>
           )}
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ ns: +2 }}
             derive={(old, { cc, ns, kind, length }) => {
               if (kind === "tableRule") {
@@ -198,25 +225,34 @@ export let AutomatonEditor = () => {
                 let table = Array.from({ length }, (_, k) => {
                   let head = k.toString(cc).padStart(ns, "0").slice(1, -1)
                   let narrowerK = parseInt(head, cc)
-                  return old[narrowerK] ?? log(`bad k (increasing ns)`, narrowerK, old.length, old)
+                  return (
+                    old[narrowerK] ??
+                    log(`bad k (increasing ns)`, narrowerK, old.length, old)
+                  )
                 })
                 return table
               } else {
                 // For codes, set the color to 0 for all totals which exceed the previous table length
-                return Array.from({ length: length - old.length }, () => 0).concat(old)
+                return Array.from(
+                  { length: length - old.length },
+                  () => 0,
+                ).concat(old)
               }
             }}
             label={({ ns }) => `⟷ Increase neighborhood size to ${ns}`}
           />
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ ns: -2 }}
             derive={(old, { cc, kind, length }) => {
               if (kind === "tableRule") {
                 // To decrease the neighborhood size, the strategy is to read the results from the old
                 // table, where the two neighborhood ends are dead cells (black cells)
                 let table = Array.from({ length }, (_, k) => {
-                  return old[k * cc] ?? log(`bad k (decreasing ns)`, k * cc, length, old)
+                  return (
+                    old[k * cc] ??
+                    log(`bad k (decreasing ns)`, k * cc, length, old)
+                  )
                 })
                 return table
               } else {
@@ -227,7 +263,7 @@ export let AutomatonEditor = () => {
             label={({ ns }) => `⟷ Decrease neighborhood size to ${ns}`}
           />
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ cc: +1 }}
             derive={(old, { cc, kind, length }) => {
               if (kind === "tableRule") {
@@ -245,7 +281,8 @@ export let AutomatonEditor = () => {
                   let hypoColoredK = old.length - 1 - parseInt(head, cc - 1)
                   // We can then perform the lookup in the old table to find the resulting color value
                   return (
-                    old[hypoColoredK] ?? log(`bad k (increasing color)`, k * cc, old.length, old)
+                    old[hypoColoredK] ??
+                    log(`bad k (increasing color)`, k * cc, old.length, old)
                   )
                 })
                 return table
@@ -253,13 +290,16 @@ export let AutomatonEditor = () => {
                 // For codes, we only know the total of the content of the neighborhood.
                 // To increase the color count, for all the totals greater than what was
                 // previously possible, we set the color to 0:
-                return Array.from({ length: length - old.length }, () => 0).concat(old)
+                return Array.from(
+                  { length: length - old.length },
+                  () => 0,
+                ).concat(old)
               }
             }}
             label={({ cc }) => `🎨 Increase color count to ${cc}`}
           />
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ cc: -1 }}
             derive={(old, { cc, kind, length }) => {
               if (kind === "tableRule") {
@@ -268,7 +308,8 @@ export let AutomatonEditor = () => {
                   let head = (length - 1 - k).toString(cc)
                   let hyperColoredK = old.length - 1 - parseInt(head, cc + 1)
                   let color =
-                    old[hyperColoredK] ?? log(`bad k (decreasing color)`, k * cc, old.length, old)
+                    old[hyperColoredK] ??
+                    log(`bad k (decreasing color)`, k * cc, old.length, old)
                   return color >= cc ? color - 1 : color
                 })
                 return table
@@ -287,7 +328,10 @@ export let AutomatonEditor = () => {
         </div>
         <div>
           <Button
-            disabled={deepEqual(automaton.transitionTable, complement.transitionTable)}
+            disabled={deepEqual(
+              automaton.transitionTable,
+              complement.transitionTable,
+            )}
             onClick={() => {
               context.updateState(({ automaton }) => {
                 automaton.transitionTable = complement.transitionTable
@@ -299,7 +343,10 @@ export let AutomatonEditor = () => {
           </Button>
           {symmetric && (
             <Button
-              disabled={deepEqual(automaton.transitionTable, symmetric.transitionTable)}
+              disabled={deepEqual(
+                automaton.transitionTable,
+                symmetric.transitionTable,
+              )}
               onClick={() => {
                 context.updateState(({ automaton }) => {
                   automaton.transitionTable = symmetric.transitionTable
@@ -312,14 +359,18 @@ export let AutomatonEditor = () => {
           )}
           {both && (
             <Button
-              disabled={deepEqual(automaton.transitionTable, both.transitionTable)}
+              disabled={deepEqual(
+                automaton.transitionTable,
+                both.transitionTable,
+              )}
               onClick={() => {
                 context.updateState(({ automaton }) => {
                   automaton.transitionTable = both.transitionTable
                 })
               }}
             >
-              🎨⟷ Switch both: {presentAutomaton(both, { lengthLimit }).descriptor}
+              🎨⟷ Switch both:{" "}
+              {presentAutomaton(both, { lengthLimit }).descriptor}
             </Button>
           )}
         </div>
@@ -336,19 +387,26 @@ export let AutomatonEditor = () => {
           </Button>
           {baseXComplement && (
             <Button
-              disabled={deepEqual(automaton.transitionTable, baseXComplement.transitionTable)}
+              disabled={deepEqual(
+                automaton.transitionTable,
+                baseXComplement.transitionTable,
+              )}
               onClick={() => {
                 context.updateState(({ automaton }) => {
                   automaton.transitionTable = baseXComplement.transitionTable
                 })
               }}
             >
-              ✨ Toggle twinkliness: {presentAutomaton(baseXComplement, { lengthLimit }).descriptor}
+              ✨ Toggle twinkliness:{" "}
+              {presentAutomaton(baseXComplement, { lengthLimit }).descriptor}
             </Button>
           )}
           {baseXReverse && (
             <Button
-              disabled={deepEqual(automaton.transitionTable, baseXReverse.transitionTable)}
+              disabled={deepEqual(
+                automaton.transitionTable,
+                baseXReverse.transitionTable,
+              )}
               onClick={() => {
                 context.updateState(({ automaton }) => {
                   automaton.transitionTable = baseXReverse.transitionTable

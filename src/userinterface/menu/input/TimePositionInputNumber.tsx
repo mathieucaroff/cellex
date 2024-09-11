@@ -11,13 +11,13 @@ export function TimePositionInputNumber() {
     return context.usePosition(({ posT }) => {
       setPosition(posT)
     })
-  }, [])
+  }, [context])
 
   return (
     <InputNumber
       value={timePosition}
       onChange={(posT) => {
-        if (posT < 0) {
+        if (posT === null || posT < 0) {
           return
         }
         setPosition(posT)

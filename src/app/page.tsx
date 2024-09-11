@@ -1,15 +1,20 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { cellex } from "../cellex"
+import { AppHome } from "@/AppHome"
+// import Head from "next/head"
 
 export default function Home() {
-  let [{ Component, prop }, setState] = useState(() => ({
-    Component: (() => <div>loading...</div>) as any,
-    prop: {} as any,
-  }))
-  useEffect(() => {
-    setState(cellex(window))
-  }, [])
-  return <Component {...prop} />
+// {
+//   searchParams,
+// }: {
+//   searchParams?: { [key: string]: string | string[] | undefined }
+// }
+  // const search = new URLSearchParams(searchParams as any)
+
+  return (
+    <>
+      {/* <Head>
+        <meta property="og:image" content={`/api/render.png?${search}`} />
+      </Head> */}
+      <AppHome />
+    </>
+  )
 }

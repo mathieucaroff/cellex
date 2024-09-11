@@ -29,7 +29,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
     }
   }
 
-  let canvasRef = useRef<HTMLCanvasElement>()
+  let canvasRef = useRef<HTMLCanvasElement>(null)
 
   let rule = parseAutomaton(prop.descriptor)
   let genesis = parseTopBorder(prop.genesis)
@@ -41,7 +41,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
   }
 
   useEffect(() => {
-    let canvas = canvasRef.current
+    let canvas = canvasRef.current!
     let engine = createAutomatonEngine({
       automaton: rule,
       topology,

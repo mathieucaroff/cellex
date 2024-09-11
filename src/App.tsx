@@ -35,7 +35,7 @@ export function App(prop: AppProp) {
         setDarkMode(darkModeState)
         document.documentElement.className = darkModeState
       })
-  }, [])
+  }, [context])
 
   return (
     <StrictMode>

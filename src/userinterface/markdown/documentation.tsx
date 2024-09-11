@@ -9,10 +9,9 @@ export let Documentation = () => {
     <section
       style={{ maxWidth: "700px", marginLeft: "60px", marginTop: "50px" }}
     >
-      <ReactMarkdown
-        children={markdownContent}
-        components={{ ...autoHashLinkingTitleSet }}
-      />
+      <ReactMarkdown components={{ ...autoHashLinkingTitleSet }}>
+        {markdownContent}
+      </ReactMarkdown>
     </section>
   )
 }

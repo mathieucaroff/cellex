@@ -26,18 +26,51 @@ export function fillImage(
   posY: number,
   colorMap: Color[],
 ) {
+  let imageData = ctx.createImageData(width, height)
+
+  if (!engine) {
+    console.error(
+      "/!\\ attempt to fill the canvas before the engine has been set.",
+    )
+    return
+  }
+
+  let canvasWidth = ctx.canvas.width
+
+  fillImageData(
+    canvasWidth,
+    engine,
+    imageData,
+    width,
+    height,
+    baseX,
+    baseY,
+    posX,
+    posY,
+    colorMap,
+  )
+
+  ctx.putImageData(imageData, baseX, baseY)
+}
+
+export function fillImageData(
+  canvasWidth: number,
+  engine: Engine,
+  imageData: { data: Uint8ClampedArray },
+  width: number,
+  height: number,
+  baseX: number,
+  baseY: number,
+  posX: number,
+  posY: number,
+  colorMap: Color[],
+) {
   let x: number
   let y: number
-  let line: Uint8Array
-  let imageData = ctx.createImageData(width, height)
+  let line: Uint8Array = new Uint8Array()
 
   let lastError: unknown[] = []
   let errorCount = 0
-
-  if (!engine) {
-    console.error("/!\\ attempt to fill the canvas before the engine has been set.")
-    return
-  }
   for (let dy = 0; dy < height; dy += 1) {
     y = posY + baseY + dy
 
@@ -50,11 +83,14 @@ export function fillImage(
         greyIndex = colorMap.length
         colorMap.push(GREY)
       }
-      line = Uint8Array.from({ length: engine.getLineLength() }, () => greyIndex)
+      line = Uint8Array.from(
+        { length: engine.getLineLength() },
+        () => greyIndex,
+      )
     }
 
     for (let dx = 0; dx < width; dx += 1) {
-      x = Math.round(posX + baseX + dx + (line.length - ctx.canvas.width) / 2)
+      x = Math.round(posX + baseX + dx + (line.length - canvasWidth) / 2)
       if (x >= 0 && x < line.length) {
         let color = colorMap[line[x]]
         if (!color) {
@@ -83,6 +119,4 @@ export function fillImage(
     console.log("line", line)
     debugger
   }
-
-  ctx.putImageData(imageData, baseX, baseY)
 }

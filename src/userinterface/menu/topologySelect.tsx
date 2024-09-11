@@ -5,8 +5,10 @@ import { useContext, useState } from "react"
 import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
 import { ReactContext } from "../../state/ReactContext"
 
-let entry = (label: string, value: string, ...options: DefaultOptionType[]): DefaultOptionType => {
-  let result: DefaultOptionType = { label }
+type OxOptionType = DefaultOptionType & { label: any }
+
+let entry = (label: string, value: string, ...options: OxOptionType[]): OxOptionType => {
+  let result: OxOptionType = { label }
   if (options.length > 0) {
     result.options = options
   } else {

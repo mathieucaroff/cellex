@@ -3,7 +3,6 @@ import { default as nearley } from "nearley"
 import { Domain, TableAutomaton } from "../automatonType"
 import {
   computeAnyTransitionTable,
-  computeCodeTransitionTable,
   computeRuleTransitionTable,
   computeTransitionNumber,
 } from "../engine/curatedAutomata"
@@ -167,7 +166,7 @@ export function presentDomain(domain: Domain) {
 
 export function presentAutomaton(automaton: TableAutomaton, param: { lengthLimit?: number } = {}) {
   let ts = thousandSplit(String(computeTransitionNumber(automaton)))
-  let tn = limitLength(ts, param.lengthLimit)
+  let tn = param.lengthLimit ? limitLength(ts, param.lengthLimit) : ts
 
   let { descriptor, longDescriptor } = presentDomainBeginning(automaton)
   let regular: string[] = descriptor ? [descriptor] : []

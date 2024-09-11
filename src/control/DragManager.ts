@@ -45,7 +45,7 @@ export let createDragManager = (prop: DragManagerProp) => {
    *
    * It is unregsitered when `.remove()` is called
    */
-  const handleStart = (ev: MouseEvent & TouchEvent) => {
+  const handleStart = ((ev: MouseEvent & TouchEvent) => {
     reset = getDisplayInit()
     ev.stopImmediatePropagation()
 
@@ -72,7 +72,7 @@ export let createDragManager = (prop: DragManagerProp) => {
       }
     }
     state = "down"
-  }
+  }) as (ev: Event) => void
 
   if (desktopOrMobile === "desktop") {
     element.addEventListener("mousedown", handleStart, false)
@@ -100,7 +100,7 @@ export let createDragManager = (prop: DragManagerProp) => {
    * This way the objet can be dragged even while the mouse is out of
    * the area of `element`.
    */
-  const handleMove = (ev: MouseEvent & TouchEvent) => {
+  const handleMove = ((ev: MouseEvent & TouchEvent) => {
     if (desktopOrMobile === "desktop") {
       let x = init.x - ev.pageX
       let y = init.y - ev.pageY
@@ -110,7 +110,7 @@ export let createDragManager = (prop: DragManagerProp) => {
       let y = init.y - ev.touches[0].clientY
       onMoveCallback({ x, y })
     }
-  }
+  }) as (ev: Event) => void
 
   const handleEnd = () => {
     if (state == "down") {

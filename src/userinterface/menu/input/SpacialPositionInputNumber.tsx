@@ -17,7 +17,7 @@ export function SpacialPositionInputNumber() {
     <InputNumber
       value={spacialPosition}
       onChange={(posS) => {
-        if (posS < info.maxLeft() || posS > info.maxRight()) {
+        if (posS === null || posS < info.maxLeft() || posS > info.maxRight()) {
           return
         }
         setPosition(posS)
