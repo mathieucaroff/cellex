@@ -47,3 +47,31 @@ _All the below explorers are limited to elementary automata_
 ## License
 
 See [JAM license](https://opensource.org/license/jam/)
+
+## Deploying the server
+
+First, install node_modules: `yarn`. Then go to `src/server` and build the server:
+
+```sh
+cd src/server
+yarn vite build
+```
+
+Copy the generated server file up
+
+```sh
+cd ../..
+cp src/server/dist/server.js .
+```
+
+Compile the app
+
+```sh
+yarn build
+```
+
+Start the server with the path of the `dist` folder as parameter
+
+```
+node server.js dist
+```
