@@ -1,4 +1,5 @@
-import { BorderGroup, SideBorder, StochasticState, TopBorder } from "./BorderType"
+import { deepEqual } from "../util/deepEqual"
+import { BorderElement, BorderGroup, SideBorder, StochasticState, TopBorder } from "./BorderType"
 
 export let presentTopBorder = (border: TopBorder): string => {
   let a = presentGroup(border.cycleLeft)
@@ -14,42 +15,28 @@ export let presentSideBorder = (border: SideBorder): string => {
 }
 
 export let presentGroup = (group: BorderGroup): string => {
-  let content = group.content.map((x) => (x.type === "group" ? presentGroup(x) : presentState(x)))
+  let normalizedContent = getNormalizedContent(group)
+  let content = normalizedContent.map((x) =>
+    x.type === "group" ? presentGroup(x) : presentState(x),
+  )
 
-  let lastElement = content[0] || ""
-  let count = 0
-  let compactContent: string[] = []
-  content.forEach((x) => {
-    if (!lastElement) {
-      lastElement = x
-      return
-    }
-    if (x === lastElement && !x.includes("{")) {
-      // this approach is unable to deal with any preexisting quantity
-      count += 1
-    } else {
-      if (lastElement.length * (count - 1) > +3) {
-        compactContent.push(`${lastElement}{${count}}`)
-      } else {
-        compactContent.push(...Array(count).fill(lastElement))
-      }
-      count = 1
-    }
-    lastElement = x
-  })
-  if (lastElement.length * (count - 1) > 3) {
-    compactContent.push(`${lastElement}{${count}}`)
-  } else {
-    compactContent.push(...Array(count).fill(lastElement))
-  }
-
-  return decorate(compactContent.join(""), group, true)
+  return decorate(content.join(""), group, true)
 }
 
 export let presentState = (state: StochasticState): string => {
+  let array = presentCumulativeMap(state.cumulativeMap)
+  let result = array.join("")
+  if (result.length > 1) {
+    return decorate(`[${result}]`, state, false)
+  } else {
+    return decorate(result, state, false)
+  }
+}
+
+export let presentCumulativeMap = (cumulativeMap: number[]): string[] => {
   let last = 0
   let array: string[] = []
-  state.cumulativeMap.forEach((counter, index) => {
+  cumulativeMap.forEach((counter, index) => {
     if (counter > last) {
       let diff = counter - last
       if (diff > 3) {
@@ -60,12 +47,7 @@ export let presentState = (state: StochasticState): string => {
     }
     last = counter
   })
-  let result = array.join("")
-  if (result.length > 1) {
-    return decorate(`[${result}]`, state, false)
-  } else {
-    return decorate(result, state, false)
-  }
+  return array
 }
 
 export let decorate = (
@@ -81,4 +63,38 @@ export let decorate = (
     }
   }
   return representation
+}
+
+export let getNormalizedContent = (group: BorderGroup): BorderElement[] => {
+  let compactContent: BorderElement[] = []
+  let lastElement: BorderElement | undefined
+  group.content.forEach((element) => {
+    if (
+      element.type !== "state" ||
+      lastElement?.type !== "state" ||
+      !deepEqual(element.cumulativeMap, lastElement?.cumulativeMap)
+    ) {
+      lastElement = { ...element }
+      compactContent.push(lastElement)
+    } else {
+      lastElement.quantity += element.quantity
+      lastElement.width += element.width
+    }
+  })
+
+  let normalizedContent: BorderElement[] = []
+  compactContent.forEach((element) => {
+    if (
+      element.type === "state" &&
+      2 <= element.quantity &&
+      element.quantity <= 4 &&
+      presentCumulativeMap(element.cumulativeMap).length === 1
+    ) {
+      let singleElement = { ...element, quantity: 1, width: 1 }
+      normalizedContent.push(...Array.from({ length: element.quantity }, () => singleElement))
+    } else {
+      normalizedContent.push(element)
+    }
+  })
+  return normalizedContent
 }

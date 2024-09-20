@@ -19,6 +19,7 @@ interface OxEnterInputProp {
   randomElementTitle?: string
   extraOnPressEnter?: () => void
   miniLabel?: string
+  lax?: boolean
 }
 
 /** OxEnterInput is an input which maps to the value of the path of the state
@@ -30,13 +31,14 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     id,
     title,
     disabled,
-    present = (x) => x,
-    parse = (y) => y,
+    present = (x: any): string => x,
+    parse = (y: string): any => y,
     style = {},
     randomizer,
     randomElementTitle,
     extraOnPressEnter,
     miniLabel,
+    lax,
   } = prop
 
   let { context } = useContext(ReactContext)
@@ -46,6 +48,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
   let [error, setError] = useState("")
   let ref = createRef<InputRef>()
 
+  // Handle external updates to piece[last]
   let p: string
   useEffect(() => {
     if (!isFocused && localValue !== p) {
@@ -53,9 +56,10 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     }
   }, [isFocused || (p = present(piece[last]))])
 
+  // Handle auto-save
   useEffect(() => {
     let p: any
-    let pv: any
+    let pv: string
     try {
       p = parse(localValue)
       pv = present(p)
@@ -68,6 +72,8 @@ export function OxEnterInput(prop: OxEnterInputProp) {
     }
     if (pv !== undefined) {
       setError("")
+    }
+    if (pv === localValue || (pv !== undefined && lax)) {
       context.updateState((state) => {
         let { piece, last } = readPath(path, state)
         piece[last] = p

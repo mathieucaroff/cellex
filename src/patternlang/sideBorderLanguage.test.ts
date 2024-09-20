@@ -2,16 +2,22 @@ import { default as nearley } from "nearley"
 
 import { testUnit } from "../devlib/testUnit"
 import { BorderRootGroup, SideBorder, StochasticState } from "./BorderType"
+import { presentSideBorder } from "./presenter"
 import sideBorderGrammar from "./sideBorderLanguage.ne"
 
-let { success, failure } = testUnit<string, SideBorder>((input: string) => {
-  let parser = new nearley.Parser(sideBorderGrammar)
-  parser.feed(input)
-  if (parser.results.length === 0) {
-    throw new Error("no results")
-  }
-  return parser.results[0]
-})
+let { success, failure, successRevert } = testUnit<string, SideBorder>(
+  (input: string) => {
+    let parser = new nearley.Parser(sideBorderGrammar)
+    parser.feed(input)
+    if (parser.results.length === 0) {
+      throw new Error("no results")
+    }
+    return parser.results[0]
+  },
+  (output: SideBorder) => {
+    return presentSideBorder(output)
+  },
+)
 
 /**
  * Note how the cumulative map is [1, 1] for 0 and is [0, 1] for 1.
@@ -37,11 +43,11 @@ let emptyGroup: BorderRootGroup = {
   width: 0,
 }
 
-success("(0)", {
+successRevert("(0)", {
   init: emptyGroup,
   cycle: { type: "group", content: [zero], ...qw1 },
 })
-success("(1)", {
+successRevert("(1)", {
   init: emptyGroup,
   cycle: { type: "group", content: [one], ...qw1 },
 })
@@ -54,23 +60,23 @@ success("(0[0](0){1})", {
     width: 3,
   },
 })
-success("(11)", {
+successRevert("(11)", {
   init: emptyGroup,
   cycle: { type: "group", content: [one, one], quantity: 1, width: 2 },
 })
-success("(01)", {
+successRevert("(01)", {
   init: emptyGroup,
   cycle: { type: "group", content: [zero, one], quantity: 1, width: 2 },
 })
-success("11(0)", {
+successRevert("11(0)", {
   init: { type: "group", content: [one, one], quantity: 1, width: 2 },
   cycle: { type: "group", content: [zero], ...qw1 },
 })
-success("([01])", {
+successRevert("([01])", {
   init: emptyGroup,
   cycle: { type: "group", content: [rand01], ...qw1 },
 })
-success("([0001])", {
+successRevert("([0001])", {
   init: emptyGroup,
   cycle: {
     type: "group",
@@ -87,7 +93,7 @@ success("([01111])", {
     width: 1,
   },
 })
-success("(0[01]0)", {
+successRevert("(0[01]0)", {
   init: emptyGroup,
   cycle: {
     type: "group",
@@ -96,7 +102,7 @@ success("(0[01]0)", {
     width: 3,
   },
 })
-success("(01{31})", {
+successRevert("(01{31})", {
   init: emptyGroup,
   cycle: {
     type: "group",

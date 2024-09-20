@@ -1,5 +1,5 @@
 import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Popover, Segmented, Space, Switch, Tooltip } from "antd"
+import { Button, Collapse, Popover, Space, Tooltip } from "antd"
 import { useContext } from "react"
 import { FaDiscord, FaGithub } from "react-icons/fa"
 
@@ -99,6 +99,7 @@ export let UserInterface = (prop: UserInterfaceProp) => {
                   style={{ width: "initial" }}
                   present={presentTopBorder}
                   parse={parseTopBorder}
+                  lax
                 />
               </Space.Compact>
 
