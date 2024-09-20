@@ -11,8 +11,8 @@ import { parseTopBorder } from "../patternlang/parser"
 export function addRenderRoute(fastify: FastifyInstance) {
   fastify.get("/render.png", async (request, reply) => {
     let query = request.query as Record<string, string>
-    let width = Number(query.width) || 455
-    let height = Number(query.height) || 256
+    let width = Number(query.width) || 450
+    let height = Number(query.height) || 230
     let data = new Uint8ClampedArray(width * height * 4)
 
     let getFirst = <T>(key: string, parse: (v: string) => T, alt: () => T) => {
