@@ -15,10 +15,11 @@ export let initialState = (): State => {
     if (param.has(key)) {
       try {
         return parse(param.get(key)!)
-      } catch {}
-    } else {
-      return alt()
+      } catch (e) {
+        console.error(`Error parsing ${key} from search param: ${e}`)
+      }
     }
+    return alt()
   }
 
   let adaptiveCanvasSize = (w: Window) => {
@@ -66,6 +67,7 @@ export let initialState = (): State => {
       borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("(0)")),
       borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("(0)")),
     },
+    infiniteHorizontalPanning: false,
     seed: getOr(
       "seed",
       (x) => x,

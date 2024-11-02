@@ -39,7 +39,9 @@ export let createContext = (state: State, safeStateWriter: SafeStateWriter) => {
           }
           // return the removal function
           return () => {
-            propertyUtilizationShelf.filter(([s, dc, f]) => s !== selector || f !== runFunction)
+            propertyUtilizationShelf = propertyUtilizationShelf.filter(
+              ([s, dc, f]) => s !== selector || f !== runFunction,
+            )
           }
         },
       }

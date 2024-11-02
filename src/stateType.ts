@@ -1,4 +1,4 @@
-import { TableAutomaton, TableCodeAutomaton, TableRuleAutomaton } from "./automatonType"
+import { TableAutomaton } from "./automatonType"
 import { DivineMode } from "./divineType"
 import { TopologyFiniteBorder } from "./topologyType"
 import { Color } from "./type"
@@ -31,6 +31,7 @@ export interface State extends StatePosition {
   divineMode: DivineMode // todo: rename DivineMode into something which encompasses the divine case and the differential case
   displayMinimap: boolean
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
+  infiniteHorizontalPanning: boolean
   seed: string
 
   canvasSize: {
