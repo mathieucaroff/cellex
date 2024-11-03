@@ -11,7 +11,10 @@ export function createMinimap(prop: MinimapProp) {
   minimap.className = "minimap"
   let highlight = document.createElement("div")
   highlight.className = "minimapHighlight"
+  let highlight2 = document.createElement("div")
+  highlight2.className = "minimapHighlight"
   minimap.appendChild(highlight)
+  minimap.appendChild(highlight2)
   rootElement.appendChild(minimap)
 
   context
@@ -23,14 +26,25 @@ export function createMinimap(prop: MinimapProp) {
   context.usePosition((pos, st) => {
     let minimapWidth = 0.1 * st.canvasSize.width
     let minimapHeight = 0.5 * st.canvasSize.height
-    highlight.style.left =
-      (0.5 + (pos.posS - st.canvasSize.width / st.zoom / 2) / st.topology.width) * 100 + "%"
-    highlight.style.top = (pos.posT / 2000) * 100 + "%"
-    highlight.style.width = (st.canvasSize.width / (st.topology.width * st.zoom)) * 100 + "%"
-    highlight.style.height =
-      (((st.canvasSize.height / (st.topology.width * st.zoom)) * minimapWidth) / minimapHeight) *
-        100 +
-      "%"
+    let s = highlight.style
+    let s2 = highlight2.style
+    let left = 0.5 + (pos.posS - st.canvasSize.width / st.zoom / 2) / st.topology.width
+    let width = st.canvasSize.width / (st.topology.width * st.zoom)
+    let height =
+      ((st.canvasSize.height / (st.topology.width * st.zoom)) * minimapWidth) / minimapHeight
+    s.top = s2.top = (pos.posT / 3850) * 100 + "%"
+    s.width = s2.width = width * 100 + "%"
+    s.height = s2.height = height * 100 + "%"
+
+    if (width <= 1) {
+      s.left = left * 100 + "%"
+      s2.display = "block"
+      s2.left = (left + (left < 0 ? 1 : -1)) * 100 + "%"
+    } else {
+      s.left = (-(width - 1) / 2) * 100 + "%"
+      s2.display = "none"
+      s2.left = "0"
+    }
   })
 
   const getEventX = (ev: MouseEvent) => 10 * ev.clientX
@@ -38,7 +52,7 @@ export function createMinimap(prop: MinimapProp) {
 
   let isMouseDown = false
   let startPosition = { x: 0, y: 0 }
-  highlight.addEventListener("mousedown", (ev) => {
+  let handleMouseDown = (ev) => {
     isMouseDown = true
     ev.preventDefault()
     ev.stopImmediatePropagation()
@@ -46,7 +60,8 @@ export function createMinimap(prop: MinimapProp) {
       x: getEventX(ev) - context.getState().posS,
       y: getEventY(ev) - context.getState().posT,
     }
-  })
+  }
+  highlight.addEventListener("mousedown", handleMouseDown)
   window.addEventListener("mouseup", () => {
     isMouseDown = false
   })

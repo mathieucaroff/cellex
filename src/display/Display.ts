@@ -18,6 +18,7 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
   let preCtx = preCanvas.getContext("2d")!
 
   let engine: Engine
+  let wrapHorizontal = false
 
   let lastX = 0
   let lastY = 0
@@ -49,7 +50,7 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
 
     if (redraw) {
       // fill the whole canvas at the current coordinates
-      fillImage(engine, preCtx, preWidth, preHeight, 0, 0, x, y, colorMap)
+      fillImage(engine, preCtx, preWidth, preHeight, 0, 0, x, y, colorMap, wrapHorizontal)
       lastX = x
       lastY = y
       return
@@ -63,14 +64,14 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
       // Vertical empty band
       let imageWidth = Math.min(Math.abs(deltaX), preWidth)
       let baseX = deltaX > 0 ? Math.max(preWidth - deltaX, 0) : 0
-      fillImage(engine, preCtx, imageWidth, preHeight, baseX, 0, x, y, colorMap)
+      fillImage(engine, preCtx, imageWidth, preHeight, baseX, 0, x, y, colorMap, wrapHorizontal)
     }
 
     if (deltaY !== 0) {
       // Horizontal empty band
       let imageHeight = Math.min(Math.abs(deltaY), preHeight)
       let baseY = deltaY > 0 ? Math.max(preHeight - deltaY, 0) : 0
-      fillImage(engine, preCtx, preWidth, imageHeight, 0, baseY, x, y, colorMap)
+      fillImage(engine, preCtx, preWidth, imageHeight, 0, baseY, x, y, colorMap, wrapHorizontal)
     }
 
     lastX = x
@@ -103,7 +104,15 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
      * @param colorMap an array specifying the color to use for each state number
      * @param redraw whether the display needs a full redraw
      */
-    draw(xx: number, yy: number, zoomX: number, zoomY: number, colorMap: Color[], redraw: boolean) {
+    draw(
+      xx: number,
+      yy: number,
+      zoomX: number,
+      zoomY: number,
+      colorMap: Color[],
+      infiniteHorizontalPanning: boolean,
+      redraw: boolean,
+    ) {
       // position
       // x, y is the integer x / y position
       let x = Math.floor(xx)
@@ -118,6 +127,7 @@ export let createDisplay = (canvas: HTMLCanvasElement) => {
       }
 
       lastZoomX = zoomX
+      wrapHorizontal = infiniteHorizontalPanning
       preDraw(x, y, zoomX, zoomY, colorMap, redraw)
       scaleUpDraw(fx, fy, zoomX, zoomY)
     },

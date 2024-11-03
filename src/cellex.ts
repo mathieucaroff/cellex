@@ -67,7 +67,15 @@ function main() {
 
   // local display.draw method
   let drawDisplay = (redraw: boolean) => {
-    display.draw(state.posS, state.posT, state.zoom, state.zoom, state.colorMap, redraw)
+    display.draw(
+      state.posS,
+      state.posT,
+      state.zoom,
+      state.zoom,
+      state.colorMap,
+      state.infiniteHorizontalPanning,
+      redraw,
+    )
   }
 
   // engine-related change
@@ -112,8 +120,11 @@ function main() {
     })
 
   context
-    .use(({ canvasSize }) => ({ canvasSize }))
-    .for(({ canvasSize }) => {
+    .use(
+      ({ canvasSize, infiniteHorizontalPanning }) =>
+        [canvasSize, infiniteHorizontalPanning] as const,
+    )
+    .for(([canvasSize]) => {
       canvas.width = canvasSize.width
       canvas.height = canvasSize.height
       let ctx = canvas.getContext("2d")
@@ -190,8 +201,7 @@ function main() {
   })
   panningDragManager.onMove((xy) => {
     context.updatePosition((position, state) => {
-      position.posS = xy.x / state.zoom
-      act.fixPosition()
+      safeStateWriter.setPosS(xy.x / state.zoom)
       if (!state.play) {
         position.posT = Math.max(xy.y / state.zoom, 0)
       }

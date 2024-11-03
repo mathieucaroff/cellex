@@ -67,7 +67,7 @@ export let initialState = (): State => {
       borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("(0)")),
       borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("(0)")),
     },
-    infiniteHorizontalPanning: false,
+    infiniteHorizontalPanning: true,
     seed: getOr(
       "seed",
       (x) => x,

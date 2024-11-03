@@ -22,14 +22,16 @@ const { Option } = Select
 
 export let SettingsUI = () => {
   let { context, act } = useContext(ReactContext)
-  let [topologyKind, stateCount, displayMinimap, presentationMode] = useStateSelection(
-    ({ automaton: { stateCount }, topology: { kind }, displayMinimap, presentationMode }) => [
-      kind,
-      stateCount,
-      displayMinimap,
-      presentationMode,
-    ],
-  )
+  let [topologyKind, stateCount, displayMinimap, infiniteHorizontalPanning, presentationMode] =
+    useStateSelection(
+      ({
+        automaton: { stateCount },
+        topology: { kind },
+        displayMinimap,
+        infiniteHorizontalPanning,
+        presentationMode,
+      }) => [kind, stateCount, displayMinimap, infiniteHorizontalPanning, presentationMode],
+    )
   let topologyIsLoop = topologyKind == "loop"
 
   let { colorMap } = useStateSelection(({ colorMap }) => ({ colorMap }))
@@ -210,6 +212,18 @@ export let SettingsUI = () => {
                   }}
                 />{" "}
                 Display minimap
+              </p>
+            </li>
+            <li>
+              <p>
+                <Switch
+                  checked={infiniteHorizontalPanning}
+                  onChange={(enabled) => {
+                    context.updateState((state) => (state.infiniteHorizontalPanning = enabled))
+                    act.fixPosition()
+                  }}
+                />{" "}
+                Infinite horizontal panning
               </p>
             </li>
             <li>

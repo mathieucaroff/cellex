@@ -25,6 +25,7 @@ export function fillImage(
   posX: number,
   posY: number,
   colorMap: Color[],
+  wrapHorizontal = false,
 ) {
   let imageData = ctx.createImageData(width, height)
 
@@ -35,7 +36,19 @@ export function fillImage(
 
   let canvasWidth = ctx.canvas.width
 
-  fillImageData(canvasWidth, engine, imageData, width, height, baseX, baseY, posX, posY, colorMap)
+  fillImageData(
+    canvasWidth,
+    engine,
+    imageData,
+    width,
+    height,
+    baseX,
+    baseY,
+    posX,
+    posY,
+    colorMap,
+    wrapHorizontal,
+  )
 
   ctx.putImageData(imageData, baseX, baseY)
 }
@@ -51,6 +64,7 @@ export function fillImageData(
   posX: number,
   posY: number,
   colorMap: Color[],
+  wrapHorizontal = false,
 ) {
   let x: number
   let y: number
@@ -75,26 +89,31 @@ export function fillImageData(
 
     for (let dx = 0; dx < width; dx += 1) {
       x = Math.round(posX + baseX + dx + (line.length - canvasWidth) / 2)
-      if (x >= 0 && x < line.length) {
-        let color = colorMap[line[x]]
-        if (!color) {
-          lastError = [
-            "Encountered a color index [",
-            line[x],
-            "] at postion [",
-            x,
-            "] which is absent from the colormap",
-            colorMap,
-          ]
-          errorCount += 1
+      if (x < 0 || x >= line.length) {
+        if (wrapHorizontal) {
+          x = ((x % line.length) + line.length) % line.length
+        } else {
           continue
         }
-        let u = 4 * (dy * width + dx)
-        imageData.data[u] = color.red
-        imageData.data[u + 1] = color.green
-        imageData.data[u + 2] = color.blue
-        imageData.data[u + 3] = 255
       }
+      let color = colorMap[line[x]]
+      if (!color) {
+        lastError = [
+          "Encountered a color index [",
+          line[x],
+          "] at postion [",
+          x,
+          "] which is absent from the colormap",
+          colorMap,
+        ]
+        errorCount += 1
+        continue
+      }
+      let u = 4 * (dy * width + dx)
+      imageData.data[u] = color.red
+      imageData.data[u + 1] = color.green
+      imageData.data[u + 2] = color.blue
+      imageData.data[u + 3] = 255
     }
   }
 
