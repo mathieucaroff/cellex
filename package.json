@@ -8,6 +8,9 @@
   "type": "module",
   "packageManager": "yarn@4.2.2",
   "main": "./src/expo/main.ts",
+  "engines": {
+    "node": ">=20.12.2"
+  },
   "scripts": {
     "check": "tsc --noEmit",
     "checkwatch": "tsc --noEmit --watch",
