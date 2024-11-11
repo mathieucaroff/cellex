@@ -1,7 +1,7 @@
-import { TableAutomaton, TableCodeAutomaton, TableRuleAutomaton } from "../../automatonType"
+import { TableAutomaton } from "../../automatonType"
 import { computeTransitionNumber } from "../../engine/curatedAutomata"
 
-export let getMathworldLink = (ruleNumber: number) => {
+export let getMathWorldLink = (ruleNumber: number) => {
   let knownRuleNumbers = [
     30, 50, 54, 60, 62, 90, 94, 102, 110, 126, 150, 158, 182, 188, 190, 220, 222,
   ]
@@ -28,6 +28,9 @@ export let getWikipediaDedicatedPageLink = (ruleNumber: number) => {
 }
 
 export let getWolframAlphaLink = (rule: TableAutomaton) => {
+  if (rule.reversible) {
+    return ""
+  }
   let prefix = "https://www.wolframalpha.com/input/?i="
   let r = fractionToString(rule.neighborhoodSize - 1, 2)
   let ruleNumber = computeTransitionNumber(rule)

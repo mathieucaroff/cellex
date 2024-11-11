@@ -25,7 +25,7 @@ import { DomainChangeButton } from "./DomainChangeButton"
 import "./automatonEditor.css"
 import { fillAutomatonEditor } from "./fillAutomatonEditor"
 import {
-  getMathworldLink as getMathWorldLink,
+  getMathWorldLink,
   getWikipediaDedicatedPageLink,
   getWikipediaLink,
   getWolframAlphaLink,
@@ -37,7 +37,6 @@ export let AutomatonEditor = () => {
     automaton,
     colorMap,
   }))
-  let a = automaton
   if (automaton.kind !== "tableRule" && automaton.kind !== "tableCode") {
     return <></>
   }
@@ -109,12 +108,12 @@ export let AutomatonEditor = () => {
     let delta = ev.button === 0 ? 1 : -1
     let exact = true
     ev.preventDefault()
-    let { stateCount, transitionTable } = automaton
     let [position, error] = getPosition(ev, exact)
     if (error) {
       return
     }
-    context.updateState(() => {
+    context.updateState((state) => {
+      let { stateCount, transitionTable } = state.automaton
       transitionTable[position] = mod(transitionTable[position] + delta, stateCount)
     })
   }
@@ -188,7 +187,7 @@ export let AutomatonEditor = () => {
             </Button>
           )}
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ ns: +2 }}
             derive={(old, { cc, ns, kind, length }) => {
               if (kind === "tableRule") {
@@ -209,7 +208,7 @@ export let AutomatonEditor = () => {
             label={({ ns }) => `⟷ Increase neighborhood size to ${ns}`}
           />
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ ns: -2 }}
             derive={(old, { cc, kind, length }) => {
               if (kind === "tableRule") {
@@ -227,7 +226,7 @@ export let AutomatonEditor = () => {
             label={({ ns }) => `⟷ Decrease neighborhood size to ${ns}`}
           />
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ cc: +1 }}
             derive={(old, { cc, kind, length }) => {
               if (kind === "tableRule") {
@@ -259,7 +258,7 @@ export let AutomatonEditor = () => {
             label={({ cc }) => `🎨 Increase color count to ${cc}`}
           />
           <DomainChangeButton
-            automaton={a}
+            automaton={automaton}
             delta={{ cc: -1 }}
             derive={(old, { cc, kind, length }) => {
               if (kind === "tableRule") {
@@ -391,11 +390,13 @@ export let AutomatonEditor = () => {
       />
       <RuleInfo />
       <ul>
-        <a href={getWolframAlphaLink(automaton)} target="_blank">
-          <li>
-            See this rule on WolframAlpha <i className="fa fa-external-link" />
-          </li>
-        </a>
+        {!automaton.reversible && (
+          <a href={getWolframAlphaLink(automaton)} target="_blank">
+            <li>
+              See this rule on WolframAlpha <i className="fa fa-external-link" />
+            </li>
+          </a>
+        )}
         {ulContent.length > 0 && (
           <li>
             Also read about rule {ruleNumber}:<ul>{ulContent}</ul>
