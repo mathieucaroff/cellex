@@ -28,6 +28,8 @@ function main() {
   let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
 
   let state = initialState()
+  console.log("initial state", state)
+
   let info = createInfo(state)
   let safeStateWriter = createSafeStateWriter(state, info)
   let context = createContext(state, safeStateWriter)
