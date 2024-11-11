@@ -1,6 +1,7 @@
 import { parseColorMap } from "../display/Display"
 import { randomGoodRule } from "../engine/curatedAutomata"
-import { parseAutomaton } from "../nomenclature/nomenclature"
+import { resolveSearch } from "../lib/urlParameter"
+import { parseAutomaton, presentAutomaton } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../stateType"
 
@@ -33,49 +34,59 @@ export let initialState = (): State => {
     return { width, height }
   }
 
-  let automaton = getOr("automaton", parseAutomaton, () =>
-    getOr("rule", parseAutomaton, randomGoodRule),
-  )
-  let isElementary = automaton.neighborhoodSize === 3 && automaton.stateCount === 2
-  const presentationMode = new URLSearchParams(location.search).has("rule") ? "off" : "present"
+  return resolveSearch<State>(location, {
+    automaton: [
+      () =>
+        getOr(
+          "rule",
+          (x) => x,
+          () => presentAutomaton(randomGoodRule()).descriptor,
+        ),
+      parseAutomaton,
+    ],
 
-  return {
-    automaton,
+    speed: [() => 1],
+    posS: [() => 0],
+    posT: [() => 0],
+    play: [() => false],
+    divineMode: [() => ({ status: "off", active: false, propagation: true })],
+    displayMinimap: [() => true],
+    zoom: [() => 1],
+    darkMode: [() => "dark"],
+    immersiveMode: [() => "off"],
+    presentationMode: [() => (param.has("rule") ? "off" : "present")],
+    colorMap: [
+      () => defaultColorMap,
+      (map) => {
+        let colorMap = parseColorMap(map)
+        let completion = parseColorMap(defaultColorMap).slice(colorMap.length)
+        return [...colorMap, ...completion]
+      },
+    ],
+    topology: [
+      ({ automaton }) => {
+        let isElementary = automaton().neighborhoodSize === 3 && automaton().stateCount === 2
+        return {
+          finitness: "finite",
+          kind: getOr(
+            "topologyKind",
+            (x) => x as any,
+            () => "loop",
+          ),
+          width: adaptiveCanvasSize(window).width,
+          genesis: getOr("genesis", parseTopBorder, () =>
+            parseTopBorder(isElementary ? "([01])" : "(0)1(0)"),
+          ),
+          borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("(0)")),
+          borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("(0)")),
+        }
+      },
+    ],
+    infiniteHorizontalPanning: [() => true],
+    seed: [() => "_"],
 
-    speed: 1,
-    posS: 0,
-    posT: 0,
-    play: false,
-    divineMode: { status: "off", active: false, propagation: true },
-    displayMinimap: true,
-    zoom: 1,
-    darkMode: "dark",
-    immersiveMode: "off",
-    presentationMode,
-    colorMap: parseColorMap(defaultColorMap),
-    topology: {
-      finitness: "finite",
-      kind: getOr(
-        "topologyKind",
-        (x) => x as any,
-        () => "loop",
-      ),
-      width: adaptiveCanvasSize(window).width,
-      genesis: getOr("genesis", parseTopBorder, () =>
-        parseTopBorder(isElementary ? "([01])" : "(0)1(0)"),
-      ),
-      borderLeft: getOr("borderLeft", parseSideBorder, () => parseSideBorder("(0)")),
-      borderRight: getOr("borderRight", parseSideBorder, () => parseSideBorder("(0)")),
-    },
-    infiniteHorizontalPanning: true,
-    seed: getOr(
-      "seed",
-      (x) => x,
-      () => "_",
-    ),
+    canvasSize: [() => adaptiveCanvasSize(window)],
 
-    canvasSize: adaptiveCanvasSize(window),
-
-    galleryIsOpen: false,
-  }
+    galleryIsOpen: [() => false],
+  })
 }
