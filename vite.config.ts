@@ -12,6 +12,7 @@ export default defineConfig({
   define: {
     __COMMIT_HASH__: JSON.stringify(commitHash),
     __DISCORD_INVITE_URL__: JSON.stringify(process.env.DISCORD_INVITE_URL),
+    __POSTHOG_API_KEY__: JSON.stringify(process.env.POSTHOG_API_KEY),
   },
   plugins: [nearley(), react()],
 })

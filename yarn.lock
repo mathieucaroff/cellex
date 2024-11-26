@@ -2619,6 +2619,7 @@ __metadata:
     js-xxhash: "npm:^2.0.0"
     nearley: "npm:^2.20.1"
     npm-check-updates: "npm:^16.10.12"
+    posthog-js: "npm:^1.189.0"
     prettier: "npm:^2.8.8"
     react: "npm:^18.0.10"
     react-dom: "npm:^18.2.0"
@@ -2895,6 +2896,13 @@ __metadata:
   dependencies:
     toggle-selection: "npm:^1.0.6"
   checksum: 10/e0a325e39b7615108e6c1c8ac110ae7b829cdc4ee3278b1df6a0e4228c490442cc86444cd643e2da344fbc424b3aab8909e2fec82f8bc75e7e5b190b7c24eecf
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.38.1":
+  version: 3.39.0
+  resolution: "core-js@npm:3.39.0"
+  checksum: 10/a3d34e669783dfc878e545f1983f60d9ff48a3867cd1d7ff8839b849e053002a208c7c14a5ca354b8e0b54982901e2f83dc87c3d9b95de0a94b4071d1c74e5f6
   languageName: node
   linkType: hard
 
@@ -3500,6 +3508,13 @@ __metadata:
   dependencies:
     reusify: "npm:^1.0.4"
   checksum: 10/67c01b1c972e2d5b6fea197a1a39d5d582982aea69ff4c504badac71080d8396d4843b165a9686e907c233048f15a86bbccb0e7f83ba771f6fa24bcde059d0c3
+  languageName: node
+  linkType: hard
+
+"fflate@npm:^0.4.8":
+  version: 0.4.8
+  resolution: "fflate@npm:0.4.8"
+  checksum: 10/c0c75029bcbefd0b47cede4ad2a3698f571e38d3d93dfbb96d744c655ec3bf5e31111044c2c01fa3965109874f5be8b5a6b3686b958392693689665cbabf3ece
   languageName: node
   linkType: hard
 
@@ -5712,6 +5727,25 @@ __metadata:
     picocolors: "npm:^1.0.0"
     source-map-js: "npm:^1.0.2"
   checksum: 10/4171086e54a90b5d9e7e043b3ea4acf5dce808f3501ebf7bf10caaff73f69a5c8d0dff7036752a648beb6317777d144af5b5b8b3ef9a84428630308735df07c2
+  languageName: node
+  linkType: hard
+
+"posthog-js@npm:^1.189.0":
+  version: 1.189.0
+  resolution: "posthog-js@npm:1.189.0"
+  dependencies:
+    core-js: "npm:^3.38.1"
+    fflate: "npm:^0.4.8"
+    preact: "npm:^10.19.3"
+    web-vitals: "npm:^4.2.0"
+  checksum: 10/315429cec8cc34c9d17b8ec180ae3f99cad8d043a1817a39d55815fc3898ed0404c3a22fe962fe850dfaf93a04e4ac4d880d6a937f7eac04ab6767f596e0fd8b
+  languageName: node
+  linkType: hard
+
+"preact@npm:^10.19.3":
+  version: 10.25.0
+  resolution: "preact@npm:10.25.0"
+  checksum: 10/576700f2781e33577804ba7f1fc5f7ff858106fbb598475ecd12d27ac1123327b6337cdda9de20081c67735750fbb1cd8cbfd17451b98635e740c3f52912aab2
   languageName: node
   linkType: hard
 
@@ -7950,6 +7984,13 @@ __metadata:
   bin:
     vitest: vitest.mjs
   checksum: 10/84ad9fbea05ffb07cfc4a596009ed7dc2d27475fbc5ca6c7ee4a34473b6c1d767d2c5de960ce5b967b23a8cce40fbe2b87366eee38301d8dfc851ea90ff5775c
+  languageName: node
+  linkType: hard
+
+"web-vitals@npm:^4.2.0":
+  version: 4.2.4
+  resolution: "web-vitals@npm:4.2.4"
+  checksum: 10/68cd1c2625a04b26e7eab67110623396afc6c9ef8c3a76f4e780aefe5b7d4ca1691737a0b99119e1d1ca9a463c4d468c0f0090b1875b6d784589d3a4a8503313
   languageName: node
   linkType: hard
 

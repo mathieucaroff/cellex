@@ -172,10 +172,13 @@ th {
   overflow-y: auto;
 }
 
-/* immersive mode */
+/* immersive mode and phone mode */
 .immersive,
 .immersive body,
-.immersive .bodyDiv {
+.immersive .bodyDiv,
+.phone,
+.phone body,
+.phone .bodyDiv {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -187,6 +190,9 @@ th {
   float: right;
 }
 .socials a {
+  color: black;
+}
+html.dark .socials a {
   color: white;
 }
 .socials svg:hover {

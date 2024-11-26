@@ -55,6 +55,7 @@ export let initialState = (): State => {
     darkMode: [() => "dark"],
     immersiveMode: [() => "off"],
     presentationMode: [() => (param.has("rule") ? "off" : "present")],
+    userHasInteracted: [() => false],
     colorMap: [
       () => defaultColorMap,
       (map) => {

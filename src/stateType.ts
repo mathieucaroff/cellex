@@ -27,6 +27,7 @@ export interface State extends StatePosition {
   darkMode: DarkMode
   immersiveMode: ImmersiveMode
   presentationMode: PresentationMode
+  userHasInteracted: boolean
   colorMap: Color[]
   divineMode: DivineMode // todo: rename DivineMode into something which encompasses the divine case and the differential case
   displayMinimap: boolean

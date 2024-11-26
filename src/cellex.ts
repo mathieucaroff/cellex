@@ -1,3 +1,4 @@
+import posthog from "posthog-js"
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
 
@@ -20,11 +21,19 @@ import { createSafeStateWriter } from "./state/SafeStateWriter"
 import { initialState } from "./state/state"
 import { ImmersiveMode, State } from "./stateType"
 import { DesktopOrMobile } from "./type"
+import { getUiMode } from "./userinterface/UserInterface"
 import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { randomChoice } from "./util/randomChoice"
 
+declare const __POSTHOG_API_KEY__: string
+
 function main() {
+  posthog.init(__POSTHOG_API_KEY__, {
+    api_host: "https://eu.i.posthog.com",
+    person_profiles: "always",
+  })
+
   let desktopOrMobile: DesktopOrMobile = getDesktopOrMobile(navigator)
 
   let state = initialState()
@@ -150,6 +159,12 @@ function main() {
   }
 
   const handleResize = () => {
+    if (getUiMode() === "phone") {
+      document.documentElement.classList.add("phone")
+    } else {
+      document.documentElement.classList.remove("phone")
+    }
+
     if (state.immersiveMode === "immersive") {
       updateCanvasSizeAndTopologyWidth("immersive")
     } else {
@@ -303,6 +318,7 @@ function main() {
     function disablePresentationMode() {
       context.updateState((state) => {
         state.presentationMode = "off"
+        state.userHasInteracted = true
       })
       body.removeEventListener("mousedown", disablePresentationMode, true)
       body.removeEventListener("keydown", disablePresentationMode, true)
@@ -335,7 +351,7 @@ function main() {
       width: window.innerWidth,
       height: window.innerHeight,
     }
-    if (immersiveMode === "off") {
+    if (immersiveMode === "off" && getUiMode() === "desktop") {
       state.canvasSize.width -= 70
       state.canvasSize.height -= 150
     }
