@@ -1,7 +1,6 @@
-import { FullscreenOutlined, PauseCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"
-import { Button, Collapse, Popover, Space, Tooltip } from "antd"
+import { FullscreenOutlined } from "@ant-design/icons"
+import { Button, Collapse, Popover, Space } from "antd"
 import { useContext } from "react"
-import { FaDiscord, FaGithub } from "react-icons/fa"
 
 import { randomGoodAutomaton } from "../engine/curatedAutomata"
 import { presentAutomaton } from "../nomenclature/nomenclature"
@@ -9,7 +8,9 @@ import { parseTopBorder } from "../patternlang/parser"
 import { presentTopBorder } from "../patternlang/presenter"
 import { ReactContext } from "../state/ReactContext"
 import { InterventionSelector } from "./Intervention"
+import { PlayButton } from "./PlayButton"
 import { RuleInput } from "./RuleInput"
+import { Social } from "./Social"
 import { UserInterfaceProp } from "./UserInterface"
 import { OxButton } from "./components/OxButton/OxButton"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
@@ -24,40 +25,21 @@ import { ShorcutList } from "./menu/ShortcutList"
 import { TopBorderSelect } from "./menu/topologySelect"
 
 export function UserInterfaceDesktop(prop: UserInterfaceProp) {
-  let { shortcutList, displayDiv, repositoryUrl, version, discordInviteUrl } = prop
-  let { act, context } = useContext(ReactContext)
-  let { automaton, play } = useStateSelection(({ automaton, play }) => ({ automaton, play }))
+  let { shortcutList, displayDiv } = prop
+  let { context } = useContext(ReactContext)
+  let { automaton } = useStateSelection(({ automaton }) => ({ automaton }))
 
   return (
     <>
       <div>
         <h1 className="title">Cellex</h1>
         <p className="subtitle">Unidimensional Cellular Automaton Explorer</p>
-        <Space className="socials">
-          {discordInviteUrl && (
-            <Tooltip title="Join the Cellex Discord server">
-              <a href={discordInviteUrl}>
-                <FaDiscord size={40} />
-              </a>
-            </Tooltip>
-          )}
-          <Tooltip title={`Get the source code on GitHub (v${version})`}>
-            <a href={repositoryUrl}>
-              <FaGithub size={40} />
-            </a>
-          </Tooltip>
-        </Space>
+        <Social />
       </div>
       <Space direction="vertical">
         <div className="headerContainer">
           <Space style={{ display: "flex" }}>
-            <Button
-              type="primary"
-              title={play ? "pause" : "play"}
-              icon={play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
-              onClick={() => act.togglePlay()}
-            />
-
+            <PlayButton />
             <OxButton
               path="immersiveMode"
               icon={<FullscreenOutlined />}

@@ -186,16 +186,16 @@ th {
 }
 
 /* Social top-right bar */
-.socials {
+.social {
   float: right;
 }
-.socials a {
+.social a {
   color: black;
 }
-html.dark .socials a {
+html.dark .social a {
   color: white;
 }
-.socials svg:hover {
+.social svg:hover {
   transition: transform .3s ease-in;
   transform: rotate(360deg);
 }

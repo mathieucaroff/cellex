@@ -5,13 +5,12 @@ import { ReactContext } from "../state/ReactContext"
 import { UserInterfaceProp } from "./UserInterface"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
+import { BottomBar } from "./phone/BottomBar"
 
 export function UserInterfacePhone(prop: UserInterfaceProp) {
-  let { shortcutList, displayDiv, repositoryUrl, version, discordInviteUrl } = prop
-  let { act, context } = useContext(ReactContext)
-  let { automaton, play, userHasInteracted } = useStateSelection(
-    ({ automaton, play, userHasInteracted }) => ({ automaton, play }),
-  )
+  let { displayDiv } = prop
+  let { context } = useContext(ReactContext)
+  let { userHasInteracted } = useStateSelection(({ userHasInteracted }) => ({ userHasInteracted }))
 
   useEffect(() => {
     context.updateState((state) => {
@@ -24,13 +23,14 @@ export function UserInterfacePhone(prop: UserInterfaceProp) {
 
   return (
     <>
-      <DivGraft element={displayDiv} />
       {userHasInteracted || (
-        <Modal open>
+        <Modal open footer={<></>}>
           <h1 className="title">Cellex</h1>
           <p className="subtitle">Unidimensional Cellular Automaton Explorer</p>
         </Modal>
       )}
+      <DivGraft element={displayDiv} />
+      <BottomBar />
     </>
   )
 }

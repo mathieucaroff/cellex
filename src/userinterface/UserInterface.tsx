@@ -8,13 +8,10 @@ import { useStateSelection } from "./hooks"
 export interface UserInterfaceProp {
   shortcutList: [string, string][]
   displayDiv: HTMLDivElement
-  repositoryUrl: string
-  version: string
-  discordInviteUrl: string
 }
 
-export function getUiMode(): "desktop" | "phone" {
-  return innerWidth > 400 ? "desktop" : "phone"
+export function getUiSizing(w: number): "sizeCLarge" | "sizeBMedium" | "sizeASmall" {
+  return w > 1202 ? "sizeCLarge" : w > 725 ? "sizeBMedium" : "sizeASmall"
 }
 
 export let UserInterface = (prop: UserInterfaceProp) => {
@@ -22,17 +19,20 @@ export let UserInterface = (prop: UserInterfaceProp) => {
     immersiveMode,
   }))
 
-  let uiMode = useSyncExternalStore((resizeHandler) => {
-    window.addEventListener("resize", resizeHandler)
-    return () => {
-      window.removeEventListener("resize", resizeHandler)
-    }
-  }, getUiMode)
+  let uiMode = useSyncExternalStore(
+    (resizeHandler) => {
+      window.addEventListener("resize", resizeHandler)
+      return () => {
+        window.removeEventListener("resize", resizeHandler)
+      }
+    },
+    () => getUiSizing(window.innerWidth),
+  )
 
   if (immersiveMode === "immersive") {
     return <UserInterfaceImmersive {...prop} />
   } else if (immersiveMode === "off") {
-    if (uiMode === "desktop") {
+    if (uiMode === "sizeCLarge") {
       return <UserInterfaceDesktop {...prop} />
     } else {
       return <UserInterfacePhone {...prop} />
