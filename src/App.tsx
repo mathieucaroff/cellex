@@ -23,9 +23,15 @@ export function App(prop: AppProp) {
   useEffect(() => {
     context
       .use<DarkMode>((s) => s.darkMode)
-      .for((darkModeState) => {
-        setDarkMode(darkModeState)
-        document.documentElement.className = darkModeState
+      .for((darkModeValue) => {
+        setDarkMode(darkModeValue)
+        if (darkModeValue === "dark") {
+          document.documentElement.classList.add("dark")
+          document.documentElement.classList.remove("light")
+        } else {
+          document.documentElement.classList.remove("dark")
+          document.documentElement.classList.add("light")
+        }
       })
   }, [])
 

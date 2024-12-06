@@ -8,16 +8,22 @@ import { OxButton } from "../components/OxButton/OxButton"
 import { OxEnterInput } from "../components/OxEnterInput/OxEnterInput"
 import { AutomatonEditor } from "../editor/AutomatonEditor"
 import { GalleryButton } from "../gallery/GalleryButton"
-import { useStateSelection } from "../hooks"
 import { Documentation } from "../markdown/documentation"
 import { TopBorderSelect } from "../menu/topologySelect"
 import { SettingsPhoneUI } from "./SettingsPhoneUI"
 
 export function BottomBar() {
-  let darkMode = useStateSelection(({ darkMode }) => darkMode)
-
   return (
-    <>
+    <div
+      style={{
+        margin: "10px 10px 10px 10px",
+        position: "absolute",
+        bottom: "0px",
+        display: "inline-flex",
+        flexWrap: "wrap",
+        gap: "12px 8px",
+      }}
+    >
       <PlayButton />
       <GalleryButton />
       <RuleInput />
@@ -59,8 +65,10 @@ export function BottomBar() {
         className="themeSelect"
         title="Select a theme"
       >
-        <i className={`fa fa-${darkMode ? "sun" : "moon"}`} style={{ marginRight: "8px" }} />
+        <i className={`fa fa-sun-o`} style={{ marginRight: "8px" }} />
+        /
+        <i className={`fa fa-moon-o`} style={{ marginLeft: "8px" }} />
       </OxButton>
-    </>
+    </div>
   )
 }

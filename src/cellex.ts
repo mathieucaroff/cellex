@@ -18,8 +18,8 @@ import { parseAutomaton } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
 import { createSafeStateWriter } from "./state/SafeStateWriter"
-import { initialState } from "./state/state"
-import { ImmersiveMode, State } from "./stateType"
+import { computeCanvasSize, initialState } from "./state/state"
+import { ImmersiveMode } from "./stateType"
 import { DesktopOrMobile } from "./type"
 import { getUiSizing } from "./userinterface/UserInterface"
 import { emitterLoop } from "./util/emitterLoop"
@@ -150,7 +150,6 @@ function main() {
 
   const updateCanvasSizeAndTopologyWidth = (immersiveMode: ImmersiveMode) => {
     context.updateState((state) => {
-      autosetCanvasSize(state, immersiveMode)
       const newWidth = Math.floor(state.canvasSize.width / state.zoom)
       if (
         immersiveMode === "immersive"
@@ -164,21 +163,16 @@ function main() {
 
   const handleResize = () => {
     let uiMode = getUiSizing(window.innerWidth)
-    document.documentElement.classList.add(uiMode)
-    ;["desktop", "tablet", "phone"].forEach((mode) => {
-      if (mode !== uiMode) {
-        document.documentElement.classList.remove(mode)
-      }
+    ;["sizeCLarge", "sizeBMedium", "sizeASmall"].forEach((mode) => {
+      document.documentElement.classList.remove(mode)
     })
+    document.documentElement.classList.add(uiMode)
 
-    if (state.immersiveMode === "immersive") {
-      updateCanvasSizeAndTopologyWidth("immersive")
-    } else {
-      context.updateState((state) => {
-        autosetCanvasSize(state, "off")
-      })
-    }
+    context.updateState((state) => {
+      state.canvasSize = computeCanvasSize(window, state.immersiveMode)
+    })
   }
+  handleResize()
 
   window.addEventListener("resize", handleResize, true)
   context
@@ -351,17 +345,6 @@ function main() {
     },
     true,
   )
-
-  function autosetCanvasSize(state: State, immersiveMode: ImmersiveMode) {
-    state.canvasSize = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    }
-    if (immersiveMode === "off" && getUiSizing(window.innerWidth) !== "sizeASmall") {
-      state.canvasSize.width -= 70
-      state.canvasSize.height -= 150
-    }
-  }
 }
 
 main()

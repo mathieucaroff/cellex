@@ -3,11 +3,26 @@ import { randomGoodRule } from "../engine/curatedAutomata"
 import { resolveSearch } from "../lib/urlParameter"
 import { parseAutomaton, presentAutomaton } from "../nomenclature/nomenclature"
 import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
-import { State } from "../stateType"
+import { ImmersiveMode, State } from "../stateType"
+import { getUiSizing } from "../userinterface/UserInterface"
 
 export let oldColorMap = "#000000;#007fff;#b4b400;#7f00c8;#0aa00a;#7f1e1e;#f0b400"
 export let defaultColorMap =
   "#0a0a0a;#00c3ff;#ffa700;#0100c8;#00bd00;#b60303;#ffff00;#B0B0B0;#ff57eb"
+
+export function computeCanvasSize(window: Window, immersiveMode: ImmersiveMode) {
+  let width = window.innerWidth
+  let height = window.innerHeight
+  if (immersiveMode === "off") {
+    if (getUiSizing(window.innerWidth) === "sizeCLarge") {
+      width -= 70
+      height -= 150
+    } else {
+      height -= 56
+    }
+  }
+  return { width, height }
+}
 
 export let initialState = (): State => {
   let param = new URLSearchParams(location.search)
@@ -21,17 +36,6 @@ export let initialState = (): State => {
       }
     }
     return alt()
-  }
-
-  let adaptiveCanvasSize = (w: Window) => {
-    let width = getOr<number>(
-      "width",
-      (x) => +x,
-      () => w.innerWidth - 70,
-    )
-    let height = w.innerHeight - 150
-
-    return { width, height }
   }
 
   return resolveSearch<State>(location, {
@@ -65,7 +69,7 @@ export let initialState = (): State => {
       },
     ],
     topology: [
-      ({ automaton }) => {
+      ({ automaton, immersiveMode }) => {
         let isElementary = automaton().neighborhoodSize === 3 && automaton().stateCount === 2
         return {
           finitness: "finite",
@@ -74,7 +78,7 @@ export let initialState = (): State => {
             (x) => x as any,
             () => "loop",
           ),
-          width: adaptiveCanvasSize(window).width,
+          width: computeCanvasSize(window, immersiveMode()).width,
           genesis: getOr("genesis", parseTopBorder, () =>
             parseTopBorder(isElementary ? "([01])" : "(0)1(0)"),
           ),
@@ -86,7 +90,7 @@ export let initialState = (): State => {
     infiniteHorizontalPanning: [() => true],
     seed: [() => "_"],
 
-    canvasSize: [() => adaptiveCanvasSize(window)],
+    canvasSize: [({ immersiveMode }) => computeCanvasSize(window, immersiveMode())],
 
     galleryIsOpen: [() => false],
   })

@@ -176,9 +176,12 @@ th {
 .immersive,
 .immersive body,
 .immersive .bodyDiv,
-.phone,
-.phone body,
-.phone .bodyDiv {
+.sizeASmall,
+.sizeASmall body,
+.sizeASmall .bodyDiv,
+.sizeBMedium,
+.sizeBMedium body,
+.sizeBMedium .bodyDiv {
   margin: 0;
   padding: 0;
   width: 100%;
