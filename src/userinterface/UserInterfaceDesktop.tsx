@@ -10,7 +10,6 @@ import { ReactContext } from "../state/ReactContext"
 import { InterventionSelector } from "./Intervention"
 import { PlayButton } from "./PlayButton"
 import { RuleInput } from "./RuleInput"
-import { Social } from "./Social"
 import { UserInterfaceProp } from "./UserInterface"
 import { OxButton } from "./components/OxButton/OxButton"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
@@ -23,6 +22,7 @@ import { Documentation } from "./markdown/documentation"
 import { SettingsUI } from "./menu/SettingsUI"
 import { ShorcutList } from "./menu/ShortcutList"
 import { TopBorderSelect } from "./menu/topologySelect"
+import { Social } from "./social/Social"
 
 export function UserInterfaceDesktop(prop: UserInterfaceProp) {
   let { shortcutList, displayDiv } = prop

@@ -72,14 +72,6 @@ html.light {
   font-weight: 400;
 }
 
-.appInfo {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  text-align: right;
-  line-height: 12px;
-}
-
 /* automaton editor */
 .automatonEditor {
   /* automaton names can be extremely long */
@@ -149,6 +141,10 @@ th {
   margin-bottom: 2px;
 }
 
+.ant-cascader-dropdown .ant-cascader-menus .ant-cascader-menu {
+  height: initial;
+}
+
 /* modal override */
 .ant-modal-root {
   visibility: hidden;
@@ -188,76 +184,12 @@ th {
   overflow: hidden;
 }
 
-/* Social top-right bar */
-.social {
-  float: right;
-}
-.social a {
-  color: black;
-}
-html.dark .social a {
-  color: white;
-}
-.social svg:hover {
-  transition: transform .3s ease-in;
-  transform: rotate(360deg);
-}
-
-/* Mini-label */
-.oxEnterInputContainer {
-  position: relative;
-}
-
-.miniLabel {
-  font-size: 0.6rem;
-  color: #aaa;
-  margin-left: 4px;
-  position: absolute;
-  bottom: 31px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ant-input-affix-wrapper:hover .miniLabel, .ant-segmented:hover .miniLabel {
-  color: white;
-}
-
 /* Theme selector */
 .headerContainer {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .themeSelect {
   margin-left: 8px;
-}
-
-/** Remove antd's offset on number inputs
- * -- since it messes up the rows of buttons-input-buttons */
-.ant-input-number {
-  position: initial;
-}
-
-/* Minimap */
-#displayDiv {
-  position: relative;
-}
-
-.minimap {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 10%;
-  height: 50%;
-  border: 1px solid #222;
-  background-color: rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-}
-
-.minimapHighlight {
-  position: absolute;
-  border: 1px solid #0f0;
-  background-color: rgba(0, 255, 0, 0.5);
-  cursor: grab;
 }

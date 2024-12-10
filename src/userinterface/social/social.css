@@ -1,0 +1,13 @@
+.social {
+  float: right;
+}
+.social a {
+  color: black;
+}
+html.dark .social a {
+  color: white;
+}
+.social svg:hover {
+  transition: transform 0.3s ease-in;
+  transform: rotate(360deg);
+}

@@ -4,6 +4,7 @@ import { CSSProperties, createRef, useContext, useEffect, useState } from "react
 
 import { ReactContext } from "../../../state/ReactContext"
 import { readPath, useStatePath } from "../../hooks"
+import "./OxEnterInput.css"
 
 interface OxEnterInputProp {
   path: string

@@ -1,7 +1,8 @@
 import { Space, Tooltip } from "antd"
 import { FaDiscord, FaGithub } from "react-icons/fa"
 
-import * as packageInfo from "../../package.json"
+import * as packageInfo from "../../../package.json"
+import "./social.css"
 
 declare const __DISCORD_INVITE_URL__: string
 declare const __COMMIT_HASH__: string

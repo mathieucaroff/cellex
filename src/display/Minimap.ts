@@ -1,4 +1,5 @@
 import { Context } from "../state/Context"
+import "./minimap.css"
 
 export interface MinimapProp {
   rootElement: HTMLElement
