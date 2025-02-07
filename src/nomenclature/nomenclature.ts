@@ -3,7 +3,6 @@ import { default as nearley } from "nearley"
 import { Domain, TableAutomaton } from "../automatonType"
 import {
   computeAnyTransitionTable,
-  computeCodeTransitionTable,
   computeRuleTransitionTable,
   computeTransitionNumber,
 } from "../engine/curatedAutomata"
