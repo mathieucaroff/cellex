@@ -32,6 +32,7 @@ export interface State extends StatePosition {
   divineMode: DivineMode // todo: rename DivineMode into something which encompasses the divine case and the differential case
   displayMinimap: boolean
   topology: Omit<TopologyFiniteBorder, "kind"> & { kind: "border" | "loop" }
+  history: string[]
   infiniteHorizontalPanning: boolean
   seed: string
 

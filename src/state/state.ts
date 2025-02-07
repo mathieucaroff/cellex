@@ -87,6 +87,7 @@ export let initialState = (): State => {
         }
       },
     ],
+    history: [() => []],
     infiniteHorizontalPanning: [() => true],
     seed: [() => "_"],
 

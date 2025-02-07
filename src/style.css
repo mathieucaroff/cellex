@@ -198,3 +198,13 @@ html.light {
 .themeSelect {
   margin-left: 8px;
 }
+
+.automatonViewRowCanvas {
+  float: left;
+  margin: 6px;
+}
+
+.automatonViewRowText p {
+  margin: 2px;
+  text-overflow: ellipsis;
+}

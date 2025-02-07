@@ -4,6 +4,7 @@ import { TableRuleAutomaton } from "../automatonType"
 import { createAutomatonEngine } from "../engine/Engine"
 import { randomGoodAutomatonFromDomainAndKind } from "../engine/curatedAutomata"
 import { parseAutomaton, presentAutomaton, presentDomain } from "../nomenclature/nomenclature"
+import { AutomatonViewHistorySelect } from "./AutomatonViewHistorySelect"
 import { DomainSelect } from "./DomainSelect"
 import { OxEnterInput } from "./components/OxEnterInput/OxEnterInput"
 import { useStateSelection } from "./hooks"
@@ -47,6 +48,7 @@ export let RuleInput = () => {
 
   return (
     <Space.Compact>
+      <AutomatonViewHistorySelect />
       <DomainSelect />
       <OxEnterInput
         path="automaton"

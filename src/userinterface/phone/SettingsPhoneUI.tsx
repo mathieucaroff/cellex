@@ -9,9 +9,9 @@ export function SettingsPhoneUI() {
         className="themeSelect"
         title="Select a theme"
       >
-        <i className={`fa fa-sun-o`} style={{ marginRight: "8px" }} />
+        <i className="fa fa-sun-o" style={{ marginRight: "8px" }} />
         /
-        <i className={`fa fa-moon-o`} style={{ marginLeft: "8px" }} />
+        <i className="fa fa-moon-o" style={{ marginLeft: "8px" }} />
       </OxButton>
     </>
   )

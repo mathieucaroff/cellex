@@ -18,6 +18,7 @@ import { parseAutomaton } from "./nomenclature/nomenclature"
 import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
 import { createSafeStateWriter } from "./state/SafeStateWriter"
+import { enableAutomatonViewTracking } from "./state/automatonViewTracking"
 import { computeCanvasSize, initialState } from "./state/state"
 import { ImmersiveMode } from "./stateType"
 import { DesktopOrMobile } from "./type"
@@ -45,6 +46,7 @@ function main() {
   let safeStateWriter = createSafeStateWriter(state, info)
   let context = createContext(state, safeStateWriter)
   let act = createAct(context, info)
+  enableAutomatonViewTracking(context)
 
   // /\ canvas
   let displayDiv = h("div", { id: "displayDiv", tabIndex: 0 })

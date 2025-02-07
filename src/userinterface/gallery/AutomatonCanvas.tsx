@@ -12,6 +12,7 @@ export interface AutomatonOverviewProp {
   descriptor: string
   genesis: string
   title?: string
+  className?: string
   width: number
   height: number
 }
@@ -67,7 +68,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
 
   return (
     <canvas
-      className="automatonOverview"
+      className={`automatonOverview ${prop.className}`}
       title={title}
       width={prop.width}
       height={prop.height}
