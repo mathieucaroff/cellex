@@ -1,26 +1,31 @@
 import { InputNumber } from "antd"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useSyncExternalStore } from "react"
 
 import { ReactContext } from "../../../state/ReactContext"
 
 export function SpacialPositionInputNumber() {
   let { context, info } = useContext(ReactContext)
-  let [spacialPosition, setPosition] = useState(0)
 
-  useEffect(() => {
-    return context.usePosition(({ posS }) => {
-      setPosition(posS)
-    })
-  }, [])
+  let spatialPosition = useSyncExternalStore(
+    (callback) => {
+      return context.usePosition(callback)
+    },
+    () => {
+      return context.getState().posS
+    },
+  )
 
   return (
     <InputNumber
-      value={spacialPosition}
+      value={spatialPosition}
       onChange={(posS) => {
-        if (posS < info.maxLeft() || posS > info.maxRight()) {
+        let state = context.getState()
+        if (state.infiniteHorizontalPanning) {
+          let { width } = state.topology
+          posS = (posS + width) % width
+        } else if (posS < info.maxLeft() || posS > info.maxRight()) {
           return
         }
-        setPosition(posS)
         context.updatePosition((position) => {
           position.posS = posS
         })

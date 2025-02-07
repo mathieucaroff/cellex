@@ -1,5 +1,3 @@
-@import "./style.ant.custom.css";
-
 @import "font-awesome/css/font-awesome.min.css";
 
 * {
@@ -102,11 +100,12 @@ html.light {
 }
 
 /* help table */
-th {
+.longShortcutTable th {
   text-align: left;
 }
 
 .shortShortcutTable th {
+  text-align: left;
   width: 16px;
 }
 
@@ -145,7 +144,7 @@ th {
   height: initial;
 }
 
-/* modal override */
+/* modal override for automaton gallery */
 .ant-modal-root {
   visibility: hidden;
 }
@@ -156,6 +155,12 @@ th {
 
 .ant-modal-root .ant-modal {
   transform: translate(-45vw, -45vh) scale(0);
+  transition: 0.4s;
+}
+
+.sizeASmall .ant-modal-root .ant-modal,
+.sizeBMedium .ant-modal-root .ant-modal {
+  transform: translate(-35vw, 40vh) scale(0);
   transition: 0.4s;
 }
 

@@ -4,7 +4,6 @@ import { parseTopBorder } from "../../patternlang/parser"
 import { presentTopBorder } from "../../patternlang/presenter"
 import { PlayButton } from "../PlayButton"
 import { RuleInput } from "../RuleInput"
-import { OxButton } from "../components/OxButton/OxButton"
 import { OxEnterInput } from "../components/OxEnterInput/OxEnterInput"
 import { AutomatonEditor } from "../editor/AutomatonEditor"
 import { GalleryButton } from "../gallery/GalleryButton"
@@ -42,6 +41,7 @@ export function BottomBar() {
       <Popover placement="top" title="Settings" content={<SettingsPhoneUI />} trigger="click">
         <Button>
           <i className="fa fa-cog" style={{ marginRight: "8px" }} />
+          Settings
         </Button>
       </Popover>
       <Popover
@@ -52,23 +52,15 @@ export function BottomBar() {
       >
         <Button>
           <i className="fa fa-cog" style={{ marginRight: "8px" }} />
+          Editor
         </Button>
       </Popover>
       <Popover placement="top" title="Documentation" content={<Documentation />} trigger="click">
         <Button>
           <i className="fa fa-cog" style={{ marginRight: "8px" }} />
+          Docs
         </Button>
       </Popover>
-      <OxButton
-        path="darkMode"
-        switchValue={["dark", "light"]}
-        className="themeSelect"
-        title="Select a theme"
-      >
-        <i className={`fa fa-sun-o`} style={{ marginRight: "8px" }} />
-        /
-        <i className={`fa fa-moon-o`} style={{ marginLeft: "8px" }} />
-      </OxButton>
     </div>
   )
 }
