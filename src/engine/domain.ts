@@ -51,11 +51,11 @@ export function generateSupportedDomainArray() {
     }
 
     const subArray: DefaultOptionType[] = []
-    Array.from({ length: 8 }, (_, c) => {
+    Array.from({ length: 9 }, (_, c) => {
       /* prettier-ignore */
       if (
         false
-        || c < 2 || c > 7 // c out of bound
+        || c < 2 || c > 8 // c out of bound
         || c ** ns > 4096 // rule too big
       ) {
         return
