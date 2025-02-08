@@ -18,7 +18,7 @@ export function computeCanvasSize(window: Window, immersiveMode: ImmersiveMode) 
       width -= 70
       height -= 150
     } else {
-      height -= 56
+      height -= 100
     }
   }
   return { width, height }
