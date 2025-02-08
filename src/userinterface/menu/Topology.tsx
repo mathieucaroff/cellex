@@ -1,4 +1,4 @@
-import { Divider, Select, Space } from "antd"
+import { Select, Space } from "antd"
 import { useContext } from "react"
 
 import { parseSideBorder } from "../../patternlang/parser"
@@ -6,7 +6,6 @@ import { presentSideBorder } from "../../patternlang/presenter"
 import { ReactContext } from "../../state/ReactContext"
 import { OxEnterInput } from "../components/OxEnterInput/OxEnterInput"
 import { useStateSelection } from "../hooks"
-import { MiscSettings } from "./MiscSettings"
 import { SideBorderCascader } from "./topologySelect"
 
 const { Option } = Select
@@ -17,9 +16,6 @@ export function Topology() {
   let topologyIsLoop = topologyKind == "loop"
   return (
     <div>
-      <p>
-        <i className="fa fa-circle-o" /> Topology
-      </p>
       <ul>
         <li>
           Topology kind:{" "}
@@ -69,8 +65,6 @@ export function Topology() {
           </div>
         </li>
       </ul>
-      <Divider />
-      <MiscSettings />
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { useStateSelection } from "./hooks"
 export interface UserInterfaceProp {
   shortcutList: [string, string][]
   displayDiv: HTMLDivElement
+  uiBarRef: React.RefObject<HTMLDivElement>
 }
 
 export function getUiSizing(w: number): "sizeCLarge" | "sizeBMedium" | "sizeASmall" {

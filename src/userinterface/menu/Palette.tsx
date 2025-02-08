@@ -18,9 +18,6 @@ export function Palette() {
 
   return (
     <div>
-      <p>
-        <i>🎨</i> Palette
-      </p>
       <ul>
         {colorMap.map((c, k) => (
           <li key={k}>

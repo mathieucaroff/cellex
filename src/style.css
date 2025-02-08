@@ -208,3 +208,16 @@ html.light {
   margin: 2px;
   text-overflow: ellipsis;
 }
+
+.phonePopupContentWrapper {
+  max-width: 90vw;
+  margin: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.phonePopupContent {
+  margin: 10px;
+  width: calc(100vw - 80px);
+}

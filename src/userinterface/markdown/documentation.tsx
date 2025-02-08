@@ -14,13 +14,7 @@ export let Documentation = () => {
 
 export let DocumentationPhone = () => {
   return (
-    <section
-      style={{
-        maxWidth: "600px",
-        maxHeight: "80vh",
-        overflow: "auto",
-      }}
-    >
+    <section className="phonePopupContent">
       <ReactMarkdown children={markdownContent} components={{ ...autoHashLinkingTitleSet }} />
     </section>
   )

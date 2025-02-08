@@ -1,7 +1,7 @@
 import { Typography } from "antd"
 import { ReactNode } from "react"
 
-import { SingleCollapse } from "../components/SingleLoadingCollapse/SingleLoadingCollapse"
+import { SingleCollapse } from "../components/SingleCollapse/SingleCollapse"
 
 const { Title } = Typography
 

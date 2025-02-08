@@ -48,6 +48,7 @@ export function UserInterfaceDesktop(prop: UserInterfaceProp) {
             />
 
             <GalleryButton />
+
             <Button
               icon={"🎲"}
               title="Fully random automaton"

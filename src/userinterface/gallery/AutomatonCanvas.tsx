@@ -73,6 +73,7 @@ export function AutomatonCanvas(prop: AutomatonOverviewProp) {
       width={prop.width}
       height={prop.height}
       onClick={handleClick}
+      onTouchStart={handleClick}
       ref={canvasRef}
     />
   )

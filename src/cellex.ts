@@ -19,10 +19,11 @@ import { parseTopBorder } from "./patternlang/parser"
 import { createContext } from "./state/Context"
 import { createSafeStateWriter } from "./state/SafeStateWriter"
 import { enableAutomatonViewTracking } from "./state/automatonViewTracking"
-import { computeCanvasSize, initialState } from "./state/state"
+import { initialState } from "./state/state"
 import { ImmersiveMode } from "./stateType"
 import { DesktopOrMobile } from "./type"
 import { getUiSizing } from "./userinterface/UserInterface"
+import { computeCanvasSize } from "./util/canvasSize"
 import { emitterLoop } from "./util/emitterLoop"
 import { getDesktopOrMobile } from "./util/isMobile"
 import { randomChoice } from "./util/randomChoice"
@@ -42,6 +43,7 @@ function main() {
   let state = initialState()
   console.log("initial state", state)
 
+  let uiBarRef = React.createRef<HTMLDivElement>()
   let info = createInfo(state)
   let safeStateWriter = createSafeStateWriter(state, info)
   let context = createContext(state, safeStateWriter)
@@ -75,7 +77,7 @@ function main() {
 
   let reactRoot = ReactDOM.createRoot(document.getElementById("appRoot")!)
   reactRoot.render(
-    React.createElement(App, { act, context, info, shortcutList, displayDiv }, []) as any,
+    React.createElement(App, { act, context, info, shortcutList, displayDiv, uiBarRef }, []) as any,
   )
 
   // /\ display
@@ -171,7 +173,12 @@ function main() {
     document.documentElement.classList.add(uiMode)
 
     context.updateState((state) => {
-      state.canvasSize = computeCanvasSize(window, state.immersiveMode)
+      state.canvasSize = computeCanvasSize(
+        window,
+        state.canvasSizeAdjust,
+        state.immersiveMode,
+        uiBarRef.current?.clientHeight ?? 0,
+      )
     })
   }
   handleResize()

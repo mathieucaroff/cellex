@@ -10,10 +10,18 @@ export interface SingleCollapseProp extends Omit<CollapseProps, "activeKey"> {
   /** doExpand is a way to force-open the collapse. The collapse cannot be closed
    * while this parameter is true. */
   doExpand?: boolean
+  /** defaultOpen can be set to true to open the collapse by default */
+  defaultOpen?: boolean
 }
 
 export function SingleCollapse(prop: SingleCollapseProp) {
-  let { children, doExpand = false, label = "Click to expand/collapse", ...remainingProp } = prop
+  let {
+    children,
+    doExpand = false,
+    defaultOpen = false,
+    label = "Click to expand/collapse",
+    ...remainingProp
+  } = prop
   let [open, setOpen] = useState(false)
   let [loading, setLoading] = useState(false)
   let openTimeout: ReturnType<typeof setTimeout>
@@ -32,6 +40,7 @@ export function SingleCollapse(prop: SingleCollapseProp) {
 
   return (
     <Collapse
+      defaultActiveKey={defaultOpen ? [1] : []}
       onChange={() => {
         if (!open) {
           setLoading(true)

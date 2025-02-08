@@ -1,19 +1,22 @@
 import { Button, Input } from "antd"
 
+import { SingleCollapse } from "../SingleCollapse/SingleCollapse"
 import "./NumberVariator.css"
 
 export interface NumberVariatorProp {
   valueArray: number[]
+  defaultOpen?: boolean
   onChange: (valueArray: number[]) => void
-  titleIncreaseFunction: (k: number) => string
-  titleDecreaseFunction: (k: number) => string
+  titleVariationFunction: (k: number) => string
 }
 
 export let NumberVariator = (prop: NumberVariatorProp) => {
-  let { valueArray, onChange, titleIncreaseFunction, titleDecreaseFunction } = prop
+  let { valueArray, defaultOpen, onChange, titleVariationFunction } = prop
+
   return (
-    <>
+    <SingleCollapse label={`Variator (${valueArray.length} handles)`} defaultOpen={defaultOpen}>
       {valueArray.map((value, k) => {
+        let titleVariation = titleVariationFunction(valueArray.length - 1 - k)
         return (
           <SingleVariator
             key={valueArray.length - 1 - k}
@@ -21,12 +24,12 @@ export let NumberVariator = (prop: NumberVariatorProp) => {
             onChange={(newValue) => {
               onChange([...valueArray.slice(0, k), newValue, ...valueArray.slice(k + 1)])
             }}
-            titleIncrease={titleIncreaseFunction(valueArray.length - 1 - k)}
-            titleDecrease={titleDecreaseFunction(valueArray.length - 1 - k)}
+            titleIncrease={`- ${titleVariation}`}
+            titleDecrease={`+ ${titleVariation}`}
           />
         )
       })}
-    </>
+    </SingleCollapse>
   )
 }
 

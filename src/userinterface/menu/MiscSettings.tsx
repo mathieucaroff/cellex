@@ -16,7 +16,6 @@ export function MiscSettings() {
 
   return (
     <>
-      <p>Misc</p>
       <ul>
         <li>
           <p>

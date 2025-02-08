@@ -14,6 +14,11 @@ export type ImmersiveMode = "immersive" | "off"
 
 export type PresentationMode = "present" | "off"
 
+export interface CanvasSizeAdjust {
+  phoneCanvasBottom: "screen" | "gui"
+  desktopCanvasSize: "adjust" | "fixed"
+}
+
 /**
  * @param postS Spatial position
  * @param postT Temporal position
@@ -40,6 +45,7 @@ export interface State extends StatePosition {
     width: number
     height: number
   }
+  canvasSizeAdjust: CanvasSizeAdjust
 
   galleryIsOpen: boolean
 }

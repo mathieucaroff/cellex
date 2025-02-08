@@ -2,13 +2,13 @@ import { Modal } from "antd"
 import { useContext, useEffect } from "react"
 
 import { ReactContext } from "../state/ReactContext"
+import { UiBar } from "./UiBar"
 import { UserInterfaceProp } from "./UserInterface"
 import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
-import { BottomBar } from "./phone/BottomBar"
 
 export function UserInterfacePhone(prop: UserInterfaceProp) {
-  let { displayDiv } = prop
+  let { displayDiv, uiBarRef } = prop
   let { context } = useContext(ReactContext)
   let { userHasInteracted } = useStateSelection(({ userHasInteracted }) => ({ userHasInteracted }))
 
@@ -30,7 +30,7 @@ export function UserInterfacePhone(prop: UserInterfaceProp) {
         </Modal>
       )}
       <DivGraft element={displayDiv} />
-      <BottomBar />
+      <UiBar uiBarRef={uiBarRef} />
     </>
   )
 }

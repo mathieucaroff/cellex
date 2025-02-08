@@ -360,28 +360,18 @@ export let AutomatonEditor = () => {
           )}
         </div>
       </div>
-      {length > 512 ? (
-        <></>
-      ) : (
-        <div>
-          <NumberVariator
-            valueArray={automaton.transitionTable}
-            onChange={(array) => {
-              context.updateState((state) => {
-                let base = automaton.stateCount
-                normalizeArray(array, base)
-                state.automaton.transitionTable = array
-              })
-            }}
-            titleIncreaseFunction={(k) =>
-              `+ ${numberToStringWithThousandSplit(automaton.stateCount ** k)}`
-            }
-            titleDecreaseFunction={(k) =>
-              `- ${numberToStringWithThousandSplit(automaton.stateCount ** k)}`
-            }
-          />
-        </div>
-      )}
+      <NumberVariator
+        valueArray={automaton.transitionTable}
+        onChange={(array) => {
+          context.updateState((state) => {
+            let base = automaton.stateCount
+            normalizeArray(array, base)
+            state.automaton.transitionTable = array
+          })
+        }}
+        defaultOpen={length <= 512}
+        titleVariationFunction={(k) => numberToStringWithThousandSplit(automaton.stateCount ** k)}
+      />
       <canvas
         className="automatonEditorCanvas"
         style={{ display: "table" }}
