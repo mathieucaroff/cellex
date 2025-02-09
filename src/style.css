@@ -210,14 +210,31 @@ html.light {
 }
 
 .phonePopupContentWrapper {
-  max-width: 90vw;
   margin: 10px;
+  max-width: 90vw;
   max-height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
+.phonePopupContentWrapper ul {
+  padding: 0;
+  margin: 0;
+}
+
+.phonePopupContentWrapper li {
+  margin: 4px 0;
+}
+
 .phonePopupContent {
   margin: 10px;
   width: calc(100vw - 80px);
+}
+
+.uiBar {
+  margin: 10px 10px 10px 10px;
+  bottom: 0px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 12px 8px;
 }

@@ -17,25 +17,22 @@ import { Display } from "./menu/Display"
 import { Engine } from "./menu/Engine"
 import { MiscSettings } from "./menu/MiscSettings"
 import { Palette } from "./menu/Palette"
+import { ShorcutList } from "./menu/ShortcutList"
 import { Topology } from "./menu/Topology"
 import { TopBorderSelect } from "./menu/topologySelect"
 import { OxPopover } from "./phone/OxPopover"
 
-export function UiBar(prop: { uiBarRef: React.RefObject<HTMLDivElement> }) {
+export interface UiBarProp {
+  position: "top" | "bottom"
+  shortcutList?: [string, string][]
+  uiBarRef: React.RefObject<HTMLDivElement>
+}
+
+export function UiBar(prop: UiBarProp) {
   let { context } = useContext(ReactContext)
 
   return (
-    <div
-      ref={prop.uiBarRef}
-      style={{
-        margin: "10px 10px 10px 10px",
-        position: "absolute",
-        bottom: "0px",
-        display: "inline-flex",
-        flexWrap: "wrap",
-        gap: "12px 8px",
-      }}
-    >
+    <div ref={prop.uiBarRef} className="uiBar">
       <PlayButton />
       <GalleryButton />
 
@@ -75,13 +72,25 @@ export function UiBar(prop: { uiBarRef: React.RefObject<HTMLDivElement> }) {
 
       <OxPopover icon="🎨" title="Palette" content={<Palette />} />
 
-      <OxPopover icon={<i className="fa fa-cog" />} title="Editor" content={<AutomatonEditor />} />
-
-      <OxPopover
-        icon={<i className="fa fa-book" />}
-        title="Docs"
-        content={<DocumentationPhone />}
-      />
+      {prop.position === "bottom" ? (
+        <>
+          <OxPopover
+            icon={<i className="fa fa-cog" />}
+            title="Editor"
+            content={<AutomatonEditor />}
+          />
+          <OxPopover
+            icon={<i className="fa fa-book" />}
+            title="Shortcuts"
+            content={<ShorcutList list={prop.shortcutList} />}
+          />
+          <OxPopover
+            icon={<i className="fa fa-book" />}
+            title="Docs"
+            content={<DocumentationPhone />}
+          />
+        </>
+      ) : null}
     </div>
   )
 }

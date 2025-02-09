@@ -8,7 +8,7 @@ import { DivGraft } from "./graft"
 import { useStateSelection } from "./hooks"
 
 export function UserInterfacePhone(prop: UserInterfaceProp) {
-  let { displayDiv, uiBarRef } = prop
+  let { displayDiv, shortcutList, uiBarRef } = prop
   let { context } = useContext(ReactContext)
   let { userHasInteracted } = useStateSelection(({ userHasInteracted }) => ({ userHasInteracted }))
 
@@ -30,7 +30,7 @@ export function UserInterfacePhone(prop: UserInterfaceProp) {
         </Modal>
       )}
       <DivGraft element={displayDiv} />
-      <UiBar uiBarRef={uiBarRef} />
+      <UiBar position="bottom" shortcutList={shortcutList} uiBarRef={uiBarRef} />
     </>
   )
 }

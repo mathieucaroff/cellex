@@ -12,14 +12,13 @@ export interface UserInterfaceProp {
 }
 
 export function getUiSizing(w: number): "sizeCLarge" | "sizeBMedium" | "sizeASmall" {
-  return w > 1202 ? "sizeCLarge" : w > 725 ? "sizeBMedium" : "sizeASmall"
+  return w > 1420 ? "sizeCLarge" : w > 725 ? "sizeBMedium" : "sizeASmall"
 }
 
 export let UserInterface = (prop: UserInterfaceProp) => {
   let { immersiveMode } = useStateSelection(({ immersiveMode }) => ({
     immersiveMode,
   }))
-
   let uiMode = useSyncExternalStore(
     (resizeHandler) => {
       window.addEventListener("resize", resizeHandler)
