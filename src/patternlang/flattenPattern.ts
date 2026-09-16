@@ -1,22 +1,21 @@
-import { FlatPattern, Pattern, PatternElement, StateSet } from "./PatternType"
-
-/**
- * The file is probably unused
- */
+import { FlatPattern, MonoPatternSet, Pattern, PatternGroup } from "./PatternType"
 
 let repeat = <T>(arr: T[], count): T[] => {
-  return ([] as T[]).concat(...Array(count).fill(arr))
+  return Array.from({ length: count }, () => arr).flat()
 }
 
 export let flattenPattern = (original: Pattern): FlatPattern => {
-  let flatten = (element: PatternElement): StateSet[] => {
-    let base: StateSet[] = []
-    if (element.type === "set") {
-      base.push(element.stateSet)
-    } else {
-      base = base.concat(...element.content.map(flatten))
-    }
-    return repeat(base, element.quantity)
+  let flatten = (group: PatternGroup): MonoPatternSet[] => {
+    let base = group.content.flatMap((element) => {
+      if (element.type === "group") {
+        return flatten(element)
+      }
+      return repeat(
+        [{ visibility: group.visibility, stateSet: element.stateSet }],
+        element.quantity,
+      )
+    })
+    return repeat(base, group.quantity)
   }
 
   return {

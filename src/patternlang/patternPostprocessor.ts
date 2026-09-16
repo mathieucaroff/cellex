@@ -77,7 +77,7 @@ export let group: FGroup = (capture) => (arg) => {
 
 // ## StateSet
 export let patternSet = ([stateList]: [number[]]): PatternSet => {
-  let uniq = (x, k, arr) => !arr.slice(0, k).includes(x)
+  let uniq = (x: number, k: number, arr: number[]) => !arr.slice(0, k).includes(x)
 
   return {
     type: "set",
