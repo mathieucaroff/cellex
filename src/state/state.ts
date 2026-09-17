@@ -2,7 +2,7 @@ import { parseColorMap } from "../display/Display"
 import { randomGoodRule } from "../engine/curatedAutomata"
 import { resolveSearch } from "../lib/urlParameter"
 import { parseAutomaton, presentAutomaton } from "../nomenclature/nomenclature"
-import { parseSideBorder, parseTopBorder } from "../patternlang/parser"
+import { parsePatternList, parseSideBorder, parseTopBorder } from "../patternlang/parser"
 import { State } from "../stateType"
 import { computeCanvasSize } from "../util/canvasSize"
 
@@ -46,6 +46,7 @@ export let initialState = (): State => {
     immersiveMode: [() => "off"],
     presentationMode: [() => (param.has("rule") ? "off" : "present")],
     userHasInteracted: [() => false],
+    patternList: [() => "", parsePatternList],
     colorMap: [
       () => defaultColorMap,
       (map) => {

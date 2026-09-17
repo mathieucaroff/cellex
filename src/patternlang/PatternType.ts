@@ -33,6 +33,13 @@ export interface GridPattern {
 /** A parsed pattern mode together with its root content group. */
 export type Pattern = ExactPattern | TrianglePattern | CyclicPattern | GridPattern
 
+export type PatternColor = "red" | "green" | "blue" | "cyan" | "magenta" | "yellow"
+
+export interface PatternWithColor {
+  pattern: Pattern
+  color: PatternColor
+}
+
 /** Pattern content expanded into one state-set choice per horizontal position. */
 export interface FlatPattern {
   original: Pattern

@@ -2,6 +2,7 @@ import { default as nearley } from "nearley"
 
 import { ordinalNumber } from "../util/ordinalNumber"
 import { SideBorder, TopBorder } from "./BorderType"
+import { Pattern, PatternColor, PatternWithColor } from "./PatternType"
 import { default as patternGrammar } from "./patternLanguage.ne"
 import { default as sideBorderGrammar } from "./sideBorderLanguage.ne"
 import { default as topBorderGrammar } from "./topBorderLanguage.ne"
@@ -52,7 +53,7 @@ export let parse = <T>(input: string, name: string, parser: nearley.Parser): T =
     if (input.length > 0) {
       info = "incomplete input"
     }
-    throw new ErrorWithInfo("invalid automaton descriptor (no result after parsing)", info, input)
+    throw new ErrorWithInfo(`invalid ${name} descriptor (no result after parsing)`, info, input)
   }
 
   // if (parser.results.length > 1) {
@@ -90,5 +91,28 @@ export let parseSideBorder = (input: string): SideBorder => {
 export let parseTopBorder = (input: string): TopBorder => {
   return parse(input, "top border", createTopBorderParser())
 }
+
+export let parsePatternList = (input: string): PatternWithColor[] => {
+  if (input === "") {
+    return []
+  }
+  return input.split(",").map((patternWithColor) => {
+    let [descriptor, colorName] = patternWithColor.split(":")
+    let pattern = parse<Pattern>(descriptor, "pattern", createPatternParser())
+    let colorMap: Record<string, PatternColor> = {
+      r: "red",
+      g: "green",
+      b: "blue",
+      c: "cyan",
+      m: "magenta",
+      y: "yellow",
+    }
+
+    let color = colorMap[colorName.slice(0, 1).toLowerCase()]
+
+    return { pattern, color }
+  })
+}
 ;(globalThis as any).parseTopBorder = parseTopBorder
 ;(globalThis as any).parseSideBorder = parseSideBorder
+;(globalThis as any).parsePatternList = parsePatternList

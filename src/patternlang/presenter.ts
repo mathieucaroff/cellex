@@ -1,5 +1,6 @@
 import { deepEqual } from "../util/deepEqual"
 import { BorderElement, BorderGroup, SideBorder, StochasticState, TopBorder } from "./BorderType"
+import { Pattern, PatternElement, PatternWithColor } from "./PatternType"
 
 export let presentTopBorder = (border: TopBorder): string => {
   let a = presentGroup(border.cycleLeft)
@@ -97,4 +98,38 @@ export let getNormalizedContent = (group: BorderGroup): BorderElement[] => {
     }
   })
   return normalizedContent
+}
+
+export let presentPatternWithColor = (patternWithColor: PatternWithColor): string => {
+  return `${presentPattern(patternWithColor.pattern)}:${patternWithColor.color}`
+}
+
+export let presentPattern = (pattern: Pattern): string => {
+  let patternString = presentPatternElement(pattern.pattern)
+  let prefix = {
+    exact: "!",
+    triangle: "^",
+    cyclic: "=",
+    grid: "#",
+  }[pattern.type]
+  return `${prefix}${patternString}`
+}
+
+export let presentPatternElement = (element: PatternElement): string => {
+  let content: string
+  if (element.type === "set") {
+    if (element.stateSet.length === 1) {
+      content = element.stateSet[0].toString(36)
+    } else {
+      content = `[${element.stateSet.map((s) => s.toString(36)).join("")}]`
+    }
+  } else if (element.type === "group") {
+    let capture = element.capture === "hidden" ? "?:" : ""
+    let center = element.content.map((child) => presentPatternElement(child)).join("")
+    content = `(${capture}${center})`
+  }
+  if (element.quantity === 1) {
+    return content
+  }
+  return `${content}{${element.quantity}}`
 }
