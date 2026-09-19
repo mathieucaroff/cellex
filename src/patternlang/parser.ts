@@ -56,32 +56,7 @@ export let parse = <T>(input: string, name: string, parser: nearley.Parser): T =
     throw new ErrorWithInfo(`invalid ${name} descriptor (no result after parsing)`, info, input)
   }
 
-  // if (parser.results.length > 1) {
-  //   console.warn(`parsed several ${name} results:`, parser.results)
-  // }
-
   return parser.results[0]
-}
-
-const emptyRootGroup = {
-  content: [] as any[],
-  quantity: 1 as const,
-  width: 0,
-  type: "group" as const,
-}
-const defaultCycle = {
-  content: [
-    {
-      type: "state" as const,
-      quantity: 1,
-      width: 1,
-      cumulativeMap: [1, 2],
-      total: 2,
-    },
-  ],
-  quantity: 1 as const,
-  width: 1,
-  type: "group" as const,
 }
 
 export let parseSideBorder = (input: string): SideBorder => {
@@ -97,7 +72,9 @@ export let parsePatternList = (input: string): PatternWithColor[] => {
     return []
   }
   return input.split(",").map((patternWithColor) => {
-    let [descriptor, colorName] = patternWithColor.split(":")
+    let colorSeparator = patternWithColor.lastIndexOf(":")
+    let descriptor = patternWithColor.slice(0, colorSeparator)
+    let colorName = patternWithColor.slice(colorSeparator + 1)
     let pattern = parse<Pattern>(descriptor, "pattern", createPatternParser())
     let colorMap: Record<string, PatternColor> = {
       r: "red",

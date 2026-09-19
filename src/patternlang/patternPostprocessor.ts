@@ -1,8 +1,9 @@
 import { Pattern, PatternElement, PatternGroup, PatternRootGroup, PatternSet } from "./PatternType"
 import { totalWidth } from "./borderPostprocessor"
 
-export let zero = () => 0
-export let one = () => 1
+export let asNumber = ([input]) => {
+  return parseInt(input, 36)
+}
 
 // ## Pattern
 export let pattern = ([iFlag, iGroup]: [Pattern, PatternRootGroup]): Pattern => {

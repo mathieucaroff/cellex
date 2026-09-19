@@ -2,8 +2,6 @@
 
 @{%
 const {
-   zero,
-   one,
    asNumber,
    asSimpleState,
    emptyGroup,

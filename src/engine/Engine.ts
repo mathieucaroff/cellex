@@ -1,8 +1,10 @@
 import { TableAutomaton } from "../automatonType"
 import { DivineMode } from "../divineType"
 import { BasicRoller, ControllableRoller, Engine } from "../engineType"
+import { PatternWithColor } from "../patternlang/PatternType"
 import { TopologyFinite } from "../topologyType"
 import { clone } from "../util/clone"
+import { createPatternDetector } from "./PatternDetector"
 import { createRandomMapper } from "./misc/RandomMapper"
 import { createBasicRoller } from "./roller/BasicRoller"
 import { createControllableRoller } from "./roller/ControllableRoller"
@@ -14,10 +16,11 @@ export interface EngineProp {
   topology: TopologyFinite
   seed: string
   interventionColorIndex: number
+  patternList?: PatternWithColor[]
 }
 
 export function createAutomatonEngine(prop: EngineProp): Engine {
-  let { automaton, topology, seed, interventionColorIndex } = prop
+  let { automaton, topology, seed, interventionColorIndex, patternList = [] } = prop
 
   let randomMapper = createRandomMapper({ seedString: seed })
   let stepper = createStepper(automaton, topology, randomMapper)
@@ -31,6 +34,13 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
     status: "off",
     propagation: true,
   }
+
+  let patternDetector = createPatternDetector(
+    patternList,
+    topology,
+    automaton.neighborhoodSize,
+    (t) => roller.getLine(t),
+  )
 
   return {
     setDivineMode(newDivineMode: DivineMode) {
@@ -71,9 +81,13 @@ export function createAutomatonEngine(prop: EngineProp): Engine {
       }
 
       divineMode = clone(newDivineMode)
+      patternDetector.reset()
     },
     getLine(t) {
       return roller.getLine(t)
+    },
+    getPatternOverlayLine(t) {
+      return patternDetector.getOverlayLine(t)
     },
     getLineLength() {
       return topology.width

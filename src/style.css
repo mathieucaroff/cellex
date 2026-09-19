@@ -117,6 +117,50 @@ html.light {
   margin-top: 0;
 }
 
+.patternDeclarations {
+  display: grid;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.patternDeclaration {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) 52px 32px;
+  gap: 4px;
+  align-items: center;
+}
+
+.patternDeclaration__color {
+  width: 52px;
+}
+
+.patternColorSwatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.patternColorSwatch--red {
+  background-color: #f00;
+}
+.patternColorSwatch--green {
+  background-color: #0f0;
+}
+.patternColorSwatch--blue {
+  background-color: #00f;
+}
+.patternColorSwatch--cyan {
+  background-color: #0ff;
+}
+.patternColorSwatch--magenta {
+  background-color: #f0f;
+}
+.patternColorSwatch--yellow {
+  background-color: #ff0;
+}
+
 /* automaton gallery */
 .automatonGalleryModal {
   min-height: 71vh;

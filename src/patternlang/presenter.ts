@@ -105,7 +105,8 @@ export let presentPatternWithColor = (patternWithColor: PatternWithColor): strin
 }
 
 export let presentPattern = (pattern: Pattern): string => {
-  let patternString = presentPatternElement(pattern.pattern)
+  let patternGroupString = presentPatternElement(pattern.pattern)
+  let patternString = patternGroupString.slice(1, -1)
   let prefix = {
     exact: "!",
     triangle: "^",

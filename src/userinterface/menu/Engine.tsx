@@ -5,6 +5,7 @@ import { ReactContext } from "../../state/ReactContext"
 import { OxButton } from "../components/OxButton/OxButton"
 import { OxInput } from "../components/OxInput/OxInput"
 import { OxInputNumber } from "../components/OxInputNumber/OxInputNumber"
+import { PatternInput } from "./PatternInput"
 
 export function Engine() {
   let { context, act } = useContext(ReactContext)
@@ -45,6 +46,10 @@ export function Engine() {
               <Button icon={"🎲"} onClick={() => act.randomizeSeed()} />
             </Space.Compact>
           </div>
+        </li>
+        <li>
+          Patterns:
+          <PatternInput />
         </li>
       </ul>
     </div>

@@ -99,18 +99,20 @@ function main() {
 
   // engine-related change
   context
-    .use(({ automaton, seed, topology }) => ({
+    .use(({ automaton, seed, topology, patternList }) => ({
       automaton,
       seed,
       topology,
+      patternList,
       t: JSON.stringify(topology),
     }))
-    .for(({ automaton, seed, topology }) => {
+    .for(({ automaton, seed, topology, patternList }) => {
       engine = createAutomatonEngine({
         automaton,
         topology,
         seed,
         interventionColorIndex: state.colorMap.length - 1,
+        patternList,
       })
       act.setDivineModeOff(state)
 
@@ -247,7 +249,7 @@ function main() {
   // \/ display
 
   // /\ minimap
-  let minimap = createMinimap({
+  createMinimap({
     rootElement: displayDiv,
     context,
   })

@@ -38,7 +38,7 @@ export let AutomatonViewHistorySelect = () => {
       title="Select a past automaton view"
       value=""
       style={{ width: "34px" }}
-      dropdownStyle={{ minWidth: "340px", height: "" }}
+      styles={{ popup: { root: { minWidth: "340px", height: "" } } }}
       options={history.map((value) => ({ label: getRow(value), value }))}
       listHeight={400}
       onChange={(value) => {

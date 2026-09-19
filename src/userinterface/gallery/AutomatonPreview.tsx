@@ -1,5 +1,3 @@
-import { Tooltip } from "antd"
-
 import { AutomatonCanvas } from "./AutomatonCanvas"
 
 export interface AutomatonPreviewProp {

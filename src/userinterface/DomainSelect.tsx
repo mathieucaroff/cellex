@@ -14,7 +14,7 @@ export let DomainSelect = () => {
       title="Select a domain"
       value=""
       style={{ width: "34px" }}
-      dropdownStyle={{ minWidth: "340px", height: "" }}
+      styles={{ popup: { root: { minWidth: "340px", height: "" } } }}
       options={generateSupportedDomainArray()}
       listHeight={400}
       onChange={(value) => {

@@ -21,9 +21,9 @@ export let createControllableRoller = (
   })
 
   let currentT = 0
-  let lineA = new Uint8Array(genesis) // current
-  let lineB = Uint8Array.from({ length: genesis.length }) // previous
-  let lineC = Uint8Array.from({ length: genesis.length }) // one-before-previous
+  let lineA: Uint8Array<ArrayBufferLike> = new Uint8Array(genesis) // current
+  let lineB: Uint8Array<ArrayBufferLike> = Uint8Array.from({ length: genesis.length }) // previous
+  let lineC: Uint8Array<ArrayBufferLike> = Uint8Array.from({ length: genesis.length }) // one-before-previous
   let snapshotArray: [Uint8Array, Uint8Array][] = [[lineA, lineB]]
 
   let changeSet: ChangeSet = []

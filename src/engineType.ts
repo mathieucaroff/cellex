@@ -1,4 +1,5 @@
 import { ChangeSet, DivineMode } from "./divineType"
+import { PatternColor } from "./patternlang/PatternType"
 
 /** A stepper computes a single generation of cells by going simultaneously
     through the three buffers it has as input */
@@ -29,5 +30,6 @@ export interface DiffRoller extends BasicRoller {
 export interface Engine {
   setDivineMode: (divineMode: DivineMode) => void
   getLine: (t: number) => Uint8Array
+  getPatternOverlayLine: (t: number) => (PatternColor | undefined)[]
   getLineLength: () => number
 }

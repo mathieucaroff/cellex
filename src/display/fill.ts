@@ -1,7 +1,22 @@
 import { Engine } from "../engineType"
+import { PatternColor } from "../patternlang/PatternType"
 import { Color } from "../type"
 
 const GREY = { red: 128, green: 128, blue: 128 }
+const patternColorMap: Record<PatternColor, Color> = {
+  red: { red: 255, green: 0, blue: 0 },
+  green: { red: 0, green: 255, blue: 0 },
+  blue: { red: 0, green: 0, blue: 255 },
+  cyan: { red: 0, green: 255, blue: 255 },
+  magenta: { red: 255, green: 0, blue: 255 },
+  yellow: { red: 255, green: 255, blue: 0 },
+}
+
+let blend = (base: Color, overlay: Color): Color => ({
+  red: (base.red + overlay.red) / 2,
+  green: (base.green + overlay.green) / 2,
+  blue: (base.blue + overlay.blue) / 2,
+})
 
 /**
  *
@@ -69,6 +84,7 @@ export function fillImageData(
   let x: number
   let y: number
   let line: Uint8Array = new Uint8Array()
+  let overlayLine: (PatternColor | undefined)[] = []
 
   let lastError: unknown[] = []
   let errorCount = 0
@@ -77,6 +93,7 @@ export function fillImageData(
 
     try {
       line = engine.getLine(y)
+      overlayLine = engine.getPatternOverlayLine(y)
     } catch (e) {
       let greyIndex = colorMap.findIndex((c) => c === GREY)
       if (greyIndex === -1) {
@@ -108,6 +125,10 @@ export function fillImageData(
         ]
         errorCount += 1
         continue
+      }
+      let overlay = overlayLine[x]
+      if (overlay) {
+        color = blend(color, patternColorMap[overlay])
       }
       let u = 4 * (dy * width + dx)
       imageData.data[u] = color.red

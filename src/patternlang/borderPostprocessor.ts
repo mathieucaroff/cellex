@@ -1,8 +1,6 @@
-export let zero = () => 0
-export let one = () => 1
-
-export let cmZero = [1] // 100% odds of getting 0
-export let cmOne = [0, 1] // 100% odds of getting 1
+export let asNumber = ([input]) => {
+  return parseInt(input, 36)
+}
 
 export let totalWidth = (list) => {
   return list.reduce((acc, elem) => acc + elem.width, 0)
@@ -25,10 +23,6 @@ export let withQuantity = ([input]) => {
     value: input,
     quantity: 1,
   }
-}
-
-export let asNumber = ([input]) => {
-  return +input
 }
 
 // stochasticState builds a cumulativeMap and makes a stochastic state from it

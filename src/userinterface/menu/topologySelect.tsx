@@ -5,8 +5,10 @@ import { useContext, useState } from "react"
 import { parseSideBorder, parseTopBorder } from "../../patternlang/parser"
 import { ReactContext } from "../../state/ReactContext"
 
-let entry = (label: string, value: string, ...options: DefaultOptionType[]): DefaultOptionType => {
-  let result: DefaultOptionType = { label }
+type OptionType = DefaultOptionType & { label: any }
+
+let entry = (label: string, value: string, ...options: DefaultOptionType[]): OptionType => {
+  let result: OptionType = { label }
   if (options.length > 0) {
     result.options = options
   } else {
@@ -83,7 +85,7 @@ export let TopBorderSelect = () => {
       onFocus={() => setIsOpen(true)}
       onBlur={() => setIsOpen(false)}
       style={{ width: "34px" }}
-      dropdownStyle={{ minWidth: "200px" }}
+      styles={{ popup: { root: { minWidth: "200px" } } }}
       options={topSelectOptionSet}
       onChange={(value, option) => {
         context.updateState((state) => {
@@ -116,7 +118,7 @@ export let SideBorderCascader = (prop: SideBorderCascaderProp) => {
       disabled={disabled}
       value={""}
       style={{ maxWidth: "34px" }}
-      dropdownStyle={{ minWidth: "200px" }}
+      styles={{ popup: { root: { minWidth: "200px" } } }}
       options={sideCascaderOptionSet}
       onChange={(value) => {
         context.updateState((state) => {

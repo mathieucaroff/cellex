@@ -2,12 +2,11 @@
 
 @{%
 const {
-    zero,
-    one,
     pattern,
     flag,
     group,
     patternSet,
+    asNumber,
 } = require('./patternPostprocessor')
 %}
 
@@ -35,4 +34,4 @@ stateSingle -> (state) {% patternSet %}
 
 stateSet -> state:+ {% patternSet %}
 
-state -> "0" {% zero %} | "1" {% one %}
+state -> [0-9a-zA-Z] {% asNumber %}

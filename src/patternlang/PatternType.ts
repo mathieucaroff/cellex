@@ -36,7 +36,7 @@ export type Pattern = ExactPattern | TrianglePattern | CyclicPattern | GridPatte
 export type PatternColor = "red" | "green" | "blue" | "cyan" | "magenta" | "yellow"
 
 export interface PatternWithColor {
-  pattern: Pattern
+  pattern?: Pattern
   color: PatternColor
 }
 
