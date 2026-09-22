@@ -11,7 +11,8 @@ export function PlayButton() {
 
   return (
     <Button
-      type="primary"
+      variant="solid"
+      color={play ? "green" : "primary"}
       title={play ? "pause" : "play"}
       icon={play ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
       onClick={() => act.togglePlay()}

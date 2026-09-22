@@ -1,7 +1,5 @@
 import { Modal } from "antd"
-import { useContext, useEffect } from "react"
 
-import { ReactContext } from "../state/ReactContext"
 import { UiBar } from "./UiBar"
 import { UserInterfaceProp } from "./UserInterface"
 import { DivGraft } from "./graft"
@@ -9,17 +7,7 @@ import { useStateSelection } from "./hooks"
 
 export function UserInterfacePhone(prop: UserInterfaceProp) {
   let { displayDiv, shortcutList, uiBarRef } = prop
-  let { context } = useContext(ReactContext)
   let { userHasInteracted } = useStateSelection(({ userHasInteracted }) => ({ userHasInteracted }))
-
-  useEffect(() => {
-    context.updateState((state) => {
-      state.canvasSize = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      }
-    })
-  }, [])
 
   return (
     <>

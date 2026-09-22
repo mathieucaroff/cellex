@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react"
 
+import { UiSize } from "../type"
 import { UserInterfaceDesktop } from "./UserInterfaceDesktop"
 import { UserInterfaceImmersive } from "./UserInterfaceImmersive"
 import { UserInterfacePhone } from "./UserInterfacePhone"
@@ -11,7 +12,7 @@ export interface UserInterfaceProp {
   uiBarRef: React.RefObject<HTMLDivElement>
 }
 
-export function getUiSizing(w: number): "sizeCLarge" | "sizeBMedium" | "sizeASmall" {
+export function getUiSizing(w: number): UiSize {
   return w > 1420 ? "sizeCLarge" : w > 725 ? "sizeBMedium" : "sizeASmall"
 }
 

@@ -21,7 +21,7 @@ import { createSafeStateWriter } from "./state/SafeStateWriter"
 import { enableAutomatonViewTracking } from "./state/automatonViewTracking"
 import { initialState } from "./state/state"
 import { ImmersiveMode } from "./stateType"
-import { DesktopOrMobile } from "./type"
+import { DesktopOrMobile, UiSizeArray } from "./type"
 import { getUiSizing } from "./userinterface/UserInterface"
 import { computeCanvasSize } from "./util/canvasSize"
 import { emitterLoop } from "./util/emitterLoop"
@@ -76,9 +76,6 @@ function main() {
   let shortcutList = keyboardBindingReference.getHelp()
 
   let reactRoot = ReactDOM.createRoot(document.getElementById("appRoot")!)
-  reactRoot.render(
-    React.createElement(App, { act, context, info, shortcutList, displayDiv, uiBarRef }, []) as any,
-  )
 
   // /\ display
   let display = createDisplay(canvas)
@@ -169,7 +166,7 @@ function main() {
 
   const handleResize = () => {
     let uiMode = getUiSizing(window.innerWidth)
-    ;["sizeCLarge", "sizeBMedium", "sizeASmall"].forEach((mode) => {
+    ;(["sizeCLarge", "sizeBMedium", "sizeASmall"] satisfies UiSizeArray).forEach((mode) => {
       document.documentElement.classList.remove(mode)
     })
     document.documentElement.classList.add(uiMode)
@@ -185,32 +182,59 @@ function main() {
   }
   handleResize()
 
+  reactRoot.render(
+    React.createElement(
+      App,
+      { act, context, displayDiv, info, handleResize, shortcutList, uiBarRef },
+      [],
+    ) as any,
+  )
+
   window.addEventListener("resize", handleResize, true)
   context
     .use(({ immersiveMode }) => immersiveMode)
     .for((immersiveMode) => {
       if (immersiveMode === "immersive") {
-        document.documentElement.requestFullscreen().then(() => {
-          document.documentElement.classList.add("immersive")
-          displayDiv.focus()
-        })
-      } else if (document.documentElement.classList.contains("immersive")) {
+        document.documentElement
+          .requestFullscreen()
+          .then(() => {
+            if (state.immersiveMode === "immersive") {
+              document.documentElement.classList.add("immersive")
+              displayDiv.focus()
+            } else if (document.fullscreenElement === document.documentElement) {
+              return document.exitFullscreen()
+            }
+          })
+          .catch(() => {
+            if (state.immersiveMode === "immersive") {
+              context.updateState((state) => {
+                state.immersiveMode = "off"
+              })
+            }
+          })
+      } else {
         document.documentElement.classList.remove("immersive")
-        document.exitFullscreen().then(() => {
-          displayDiv.focus()
-        })
+        if (document.fullscreenElement === document.documentElement) {
+          document
+            .exitFullscreen()
+            .then(() => {
+              displayDiv.focus()
+            })
+            .catch(() => {})
+        }
       }
 
       setTimeout(() => {
+        handleResize()
         if (immersiveMode === "off") {
           updateCanvasSizeAndTopologyWidth("off")
         }
-        handleResize()
       })
     })
 
   window.addEventListener("fullscreenchange", () => {
-    if (document.fullscreenElement === null) {
+    if (document.fullscreenElement !== document.documentElement) {
+      document.documentElement.classList.remove("immersive")
       context.updateState((state) => {
         state.immersiveMode = "off"
       })

@@ -11,14 +11,15 @@ import { UserInterface } from "./userinterface/UserInterface"
 export interface AppProp {
   act: Act
   context: Context
+  displayDiv: HTMLDivElement
+  handleResize: () => void
   info: Info
   shortcutList: [string, string][]
-  displayDiv: HTMLDivElement
   uiBarRef: React.RefObject<HTMLDivElement>
 }
 
 export function App(prop: AppProp) {
-  const { act, context, info, shortcutList, displayDiv, uiBarRef } = prop
+  const { act, context, displayDiv, handleResize, info, shortcutList, uiBarRef } = prop
 
   let [darkMode, setDarkMode] = useState<DarkMode>(() => context.getState().darkMode)
   useEffect(() => {
@@ -35,6 +36,15 @@ export function App(prop: AppProp) {
         }
       })
   }, [])
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      handleResize()
+    }, 0)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [handleResize])
 
   return (
     <StrictMode>

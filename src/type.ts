@@ -20,3 +20,6 @@ export interface Remover {
 }
 
 export type DesktopOrMobile = "desktop" | "mobile"
+
+export type UiSize = "sizeCLarge" | "sizeBMedium" | "sizeASmall"
+export type UiSizeArray = [UiSize, UiSize, UiSize]
