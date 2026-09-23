@@ -89,7 +89,7 @@ export let TopBorderSelect = () => {
       options={topSelectOptionSet}
       onChange={(value, option) => {
         context.updateState((state) => {
-          if (!Array.isArray(option)) {
+          if (option && !Array.isArray(option)) {
             let lowerLabel = option.label.toLowerCase()
             if (lowerLabel.includes("random") || lowerLabel.includes("%")) {
               // Randomize the seed whenever the clicked option label contains

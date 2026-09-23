@@ -19,6 +19,9 @@ export function SpacialPositionInputNumber() {
     <InputNumber
       value={spatialPosition}
       onChange={(posS) => {
+        if (posS === null) {
+          return
+        }
         let state = context.getState()
         if (state.infiniteHorizontalPanning) {
           let { width } = state.topology

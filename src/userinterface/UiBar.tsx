@@ -82,7 +82,7 @@ export function UiBar(prop: UiBarProp) {
           <OxPopover
             icon={<i className="fa fa-book" />}
             title="Shortcuts"
-            content={<ShorcutList list={prop.shortcutList} />}
+            content={<ShorcutList list={prop.shortcutList ?? []} />}
           />
           <OxPopover
             icon={<i className="fa fa-book" />}

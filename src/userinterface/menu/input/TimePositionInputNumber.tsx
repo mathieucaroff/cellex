@@ -17,6 +17,9 @@ export function TimePositionInputNumber() {
     <InputNumber
       value={timePosition}
       onChange={(posT) => {
+        if (posT === null) {
+          return
+        }
         setPosition(posT)
         context.updatePosition((position) => {
           position.posT = posT

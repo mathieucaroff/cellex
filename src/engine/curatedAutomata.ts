@@ -37,7 +37,7 @@ export let elementaryRule = (ruleNumberValue: number): TableRuleAutomaton => {
 }
 
 export let randomDomain = (): Domain => {
-  let [neighborhoodSize, stateCount, r] = weightedRandomChoice([
+  let choice = weightedRandomChoice([
     // weight, [neighborhoodSize, colorCount]
     [1, [3, 2, 0]], // elementary automaton
     [1, [3, 2, 1]],
@@ -74,6 +74,10 @@ export let randomDomain = (): Domain => {
     // ...
     // [1, [2, 64, 0]],
   ])
+  if (!choice) {
+    throw new Error("Could not select a random domain")
+  }
+  let [neighborhoodSize, stateCount, r] = choice
   return { dimension: 1, reversible: !!r, neighborhoodSize, stateCount }
 }
 

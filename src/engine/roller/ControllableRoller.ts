@@ -91,7 +91,10 @@ export let createControllableRoller = (
 
   return {
     setChangeSet: (newChangeSet: ChangeSet) => {
-      reset(earliestDifference(changeSet, newChangeSet))
+      let difference = earliestDifference(changeSet, newChangeSet)
+      if (difference !== null) {
+        reset(difference)
+      }
       changeSet = newChangeSet
     },
     getLine: (t: number): Uint8Array => {

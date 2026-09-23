@@ -60,7 +60,7 @@ export function OxEnterInput(prop: OxEnterInputProp) {
   // Handle auto-save
   useEffect(() => {
     let p: any
-    let pv: string
+    let pv: string | undefined
     try {
       p = parse(localValue)
       pv = present(p)

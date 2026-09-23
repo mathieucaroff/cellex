@@ -12,14 +12,14 @@ export function testUnit<TInput, TOutput>(
     it(JSON.stringify(input), () => {
       if (target === "success" || target === "successRevert") {
         expect(unitUnderTest(input)).toEqual(output)
-      } else {
+      } else if (target === "failure") {
         expect(() => unitUnderTest(input)).toThrow()
       }
     })
     it("REV:" + JSON.stringify(input), () => {
       if (target === "revert" || target === "successRevert") {
         if (reverseUnitTest) {
-          expect(reverseUnitTest(output)).toEqual(input)
+          expect(reverseUnitTest(output as TOutput)).toEqual(input)
         } else {
           throw new Error("reverseUnitTest not provided")
         }

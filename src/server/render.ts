@@ -16,7 +16,7 @@ export function addRenderRoute(fastify: FastifyInstance) {
     let data = new Uint8ClampedArray(width * height * 4)
 
     let getFirst = <T>(key: string, parse: (v: string) => T, alt: () => T) => {
-      let value = request.query[key]
+      let value = query[key]
       try {
         if (Array.isArray(value)) {
           return parse(value[0])

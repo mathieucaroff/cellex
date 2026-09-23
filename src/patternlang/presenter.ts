@@ -101,7 +101,8 @@ export let getNormalizedContent = (group: BorderGroup): BorderElement[] => {
 }
 
 export let presentPatternWithColor = (patternWithColor: PatternWithColor): string => {
-  return `${presentPattern(patternWithColor.pattern)}:${patternWithColor.color}`
+  let pattern = patternWithColor.pattern ? presentPattern(patternWithColor.pattern) : ""
+  return `${pattern}:${patternWithColor.color}`
 }
 
 export let presentPattern = (pattern: Pattern): string => {
@@ -117,7 +118,7 @@ export let presentPattern = (pattern: Pattern): string => {
 }
 
 export let presentPatternElement = (element: PatternElement): string => {
-  let content: string
+  let content = ""
   if (element.type === "set") {
     if (element.stateSet.length === 1) {
       content = element.stateSet[0].toString(36)
